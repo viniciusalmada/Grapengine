@@ -1,0 +1,6 @@
+#ifndef GRAPHICENGINE3D_GE_PCH_HPP
+#define GRAPHICENGINE3D_GE_PCH_HPP
+
+#include <string>
+
+#endif // GRAPHICENGINE3D_GE_PCH_HPP
