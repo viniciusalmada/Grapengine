@@ -47,11 +47,13 @@ struct BufferLayout
 class VertexBuffer
 {
 public:
-  VertexBuffer(uint32_t verticesSize, unsigned int parent);
+  VertexBuffer(float* ptr, uint32_t verticesSize, unsigned int parent);
 
   [[nodiscard]] const BufferLayout& GetLayout() const { return layout; };
 
   void Bind() const;
+
+  void UpdateData(const void* data, uint32_t size);
 
 private:
   unsigned int id;
@@ -62,14 +64,11 @@ private:
 class IndexBuffer
 {
 public:
-  static std::shared_ptr<IndexBuffer> Create(const std::vector<uint32_t>& indices,
-                                             unsigned int parent);
-  IndexBuffer(const std::vector<uint32_t>& indices, unsigned int parent);
+  IndexBuffer(const uint32_t* indices,uint32_t count,  unsigned int parent);
 
   void Bind() const;
 
 private:
-
   unsigned int id;
   unsigned int count;
   unsigned int parent;

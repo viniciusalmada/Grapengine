@@ -2,6 +2,9 @@
 #define GRAPHICENGINE3D_GE_PCH_HPP
 
 #include <any>
+#include <array>
+#include <functional>
+#include <iomanip>
 #include <iostream>
 #include <memory>
 #include <string>

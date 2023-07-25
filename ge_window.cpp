@@ -37,6 +37,7 @@ struct Window::Impl
   bool vsync = true;
   GLFWwindow* window;
   std::unique_ptr<Context> context;
+  std::function<void()> on_esc;
 
   static void ErrorCB(int error_code, const char* description)
   {
@@ -51,7 +52,7 @@ struct Window::Impl
 };
 
 //--PIMPL idiom
-Window::Window(const WindowProps& props)
+Window::Window(const WindowProps& props) : m_pimpl(std::make_unique<Impl>())
 {
   m_pimpl->window_props = props;
   if (!glfw_initialized)
@@ -103,4 +104,20 @@ void Window::OnUpdate()
 {
   glfwPollEvents();
   m_pimpl->context->SwapBuffers();
+}
+
+void Window::OnEscPressed(std::function<void()> cb)
+{
+  m_pimpl->on_esc = cb;
+
+  auto action = [](GLFWwindow* window, int key, int scancode, int action, int mods)
+  {
+    if (key == GLFW_KEY_ESCAPE)
+    {
+      Window& self = *(Window*)glfwGetWindowUserPointer(window);
+      self.m_pimpl->on_esc();
+    }
+  };
+
+  glfwSetKeyCallback(m_pimpl->window, action);
 }

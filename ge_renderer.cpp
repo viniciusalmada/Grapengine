@@ -1,5 +1,7 @@
 #include "ge_renderer.hpp"
 
+#include "ge_entities.hpp"
+
 #include <glad/glad.h>
 
 void OpenGLDebuggerFunc(GLenum /* source */,
@@ -15,7 +17,7 @@ void OpenGLDebuggerFunc(GLenum /* source */,
     return;
 
   std::cerr << "OpenGL Error:" << std::endl;
-  std::cerr << "  (0x" << std::hex << id << "): " << message << std::endl;
+  std::cerr << "  (0x" << std::setfill('0') << std::setw(4) << std::hex << id << "): " << message << std::endl;
 }
 
 void Renderer::Init()
@@ -29,11 +31,9 @@ void Renderer::Init()
 
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-  glEnable(GL_DEPTH_TEST);
 }
 
-void Renderer::SetViewpport(unsigned int x, unsigned int y, unsigned int width, unsigned int height)
+void Renderer::SetViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height)
 {
   glViewport(x, y, width, height);
 }
@@ -46,5 +46,11 @@ void Renderer::SetClearColor(const Vec4& color)
 
 void Renderer::Clear()
 {
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT);
+}
+
+void Renderer::DrawIndexed(std::shared_ptr<VertexArray> vao, int count)
+{
+  vao->Bind();
+  glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 }

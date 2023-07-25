@@ -2,7 +2,11 @@
 
 #include "ge_entities.hpp"
 #include "ge_renderer.hpp"
+#include "ge_shader.hpp"
 #include "ge_window.hpp"
+
+#include <GLFW/glfw3.h>
+#include <glad/glad.h>
 
 constexpr auto VERTEX_PER_QUAD = 6;
 constexpr auto MAX_QUADS = 100;
@@ -14,6 +18,7 @@ struct Application::Impl
   std::unique_ptr<Window> window;
   bool running = true;
   bool minimized = false;
+  std::shared_ptr<VertexArray> vao;
 
   static Application* instance;
 };
@@ -31,29 +36,74 @@ Application::Application(std::string&& title, unsigned int width, unsigned int h
   m_pimpl->window = std::make_unique<Window>(WindowProps{ title, width, height });
 
   Renderer::Init();
+  Renderer::SetViewport(0, 0, width, height);
 
-  // TESTING
-  std::shared_ptr<VertexArray> vao = std::make_unique<VertexArray>();
-  vao->Bind();
+  m_pimpl->vao = std::make_shared<VertexArray>();
+  m_pimpl->vao->Bind();
 
-  auto vbo = std::make_shared<VertexBuffer>(MAX_VERTICES * sizeof(SimpleVertexData), vao->GetID());
+  float vertices[] = {
+    -0.5f, -0.5f, +0.0f, 1.0f,  0.0f,  0.0f,  1.0f,
+    +0.5f, -0.5f, +0.0f, 0.0f,  1.0f,  0.0f,  1.0f,
+    +0.5f, +0.5f, +0.0f, 0.0f,  0.0f,  1.0f,  1.0f,
+    -0.5f, +0.5f, +0.0f, 1.0f,  0.0f,  1.0f,  1.0f,
+  };
+  auto vbo = std::make_shared<VertexBuffer>(vertices, sizeof(float) * 7 * 4, m_pimpl->vao->GetID());
 
-  vao->SetVertexBuffer(vbo);
+  vbo->Bind();
+  m_pimpl->vao->SetVertexBuffer(vbo);
 
-  std::vector<uint32_t> quad_indices(MAX_INDICES);
-  uint32_t offset = 0;
-  for (int i = 0; i < MAX_VERTICES; ++i)
+  unsigned int indices[] = { 0, 1, 2, 2, 3, 0 };
+  auto ibo = std::make_shared<IndexBuffer>(indices, 6, m_pimpl->vao->GetID());
+  m_pimpl->vao->SetIndexBuffer(ibo);
+
+  auto shader = std::make_shared<Shader>(R"glsl(
+#version 330 core
+
+layout (location = 0) in vec3 in_position;
+layout (location = 1) in vec4 in_color;
+
+out vec4 vertexColor;
+
+void main()
+{
+    gl_Position = vec4(in_position, 1.0);
+    vertexColor = in_color;
+}
+
+)glsl",
+
+                                         R"glsl(
+#version 330 core
+
+in vec4 vertexColor;
+out vec4 fragColor;
+
+void main()
+{
+    fragColor = vertexColor;
+}
+
+)glsl");
+
+  shader->Bind();
+
+  m_pimpl->window->OnEscPressed([this]() { m_pimpl->running = false; });
+}
+
+Application::~Application() = default;
+
+void Application::Run()
+{
+  while (m_pimpl->running)
   {
-    quad_indices[i + 0] = offset + 0;
-    quad_indices[i + 1] = offset + 1;
-    quad_indices[i + 2] = offset + 2;
+    if (!m_pimpl->minimized)
+    {
+      Renderer::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
+      Renderer::Clear();
 
-    quad_indices[i + 3] = offset + 3;
-    quad_indices[i + 4] = offset + 0;
-    quad_indices[i + 5] = offset + 1;
+      Renderer::DrawIndexed(m_pimpl->vao, 6);
+
+      m_pimpl->window->OnUpdate();
+    }
   }
-  auto ibo = std::make_shared<IndexBuffer>(quad_indices, vao->GetID());
-  vao->SetIndexBuffer(ibo);
-
-
 }

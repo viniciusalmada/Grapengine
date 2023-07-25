@@ -1,4 +1,5 @@
 #include "ge_entities.hpp"
+
 #include "glad/glad.h"
 
 namespace
@@ -27,6 +28,8 @@ namespace
     case ShaderDataType::None:
       return 0;
     }
+
+    return 0;
   }
 
   unsigned int ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
@@ -50,6 +53,8 @@ namespace
     case ShaderDataType::None:
       return 0;
     }
+
+    return 0;
   }
 
   bool CheckValidVAO(unsigned int vaoID)
@@ -78,6 +83,7 @@ namespace
 VertexArray::VertexArray() : id(0), vertex_buffer(nullptr), index_buffer(nullptr)
 {
   glGenVertexArrays(1, &id);
+  glBindVertexArray(id);
 }
 
 VertexArray::~VertexArray()
@@ -96,6 +102,9 @@ void VertexArray::Bind() const
 
 void VertexArray::SetVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer)
 {
+  if (!CheckValidVAO(id))
+    return;
+
   const auto& layout = vertexBuffer->GetLayout();
 
   unsigned int attrib_index = 0;
@@ -107,7 +116,7 @@ void VertexArray::SetVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuf
                           GetComponentCount(elem),
                           ShaderDataTypeToOpenGLBaseType(elem.type),
                           elem.normalized,
-                          (int)elem.size,
+                          layout.stride,
                           (void*)offset);
     attrib_index++;
   }
@@ -119,22 +128,32 @@ void VertexArray::SetIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer
   this->index_buffer = indexBuffer;
 }
 
-VertexBuffer::VertexBuffer(uint32_t verticesSize, unsigned int parent) :
-    id(0),
-    parent(parent),
-    layout({
-        {"in_position", ShaderDataType::Float3, sizeof(float) * 3,                 0, false},
-        {   "in_color", ShaderDataType::Float4, sizeof(float) * 4, sizeof(float) * 3, false}
-})
+VertexBuffer::VertexBuffer(float* ptr, uint32_t verticesSize, unsigned int parent)
 {
   if (!CheckValidVAO(parent))
     return;
 
+  {
+    layout = BufferLayout{};
+    layout.elements = std::vector<BufferElem>{
+      BufferElem{"in_position", ShaderDataType::Float3, sizeof(float) * 3,                 0, false},
+      BufferElem{   "in_color", ShaderDataType::Float4, sizeof(float) * 4, sizeof(float) * 3, false}
+    };
+
+    uint32_t offset = 0;
+    layout.stride = 0;
+
+    for (auto& elem : layout.elements)
+    {
+      elem.offset = offset;
+      offset += elem.size;
+      layout.stride += elem.size;
+    }
+  }
+
   glGenBuffers(1, &id);
   glBindBuffer(GL_ARRAY_BUFFER, id);
-  glBufferData(GL_ARRAY_BUFFER, verticesSize, nullptr, GL_DYNAMIC_DRAW);
-
-  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  glBufferData(GL_ARRAY_BUFFER, verticesSize, ptr, GL_DYNAMIC_DRAW);
 }
 
 void VertexBuffer::Bind() const
@@ -145,6 +164,12 @@ void VertexBuffer::Bind() const
   glBindBuffer(GL_ARRAY_BUFFER, id);
 }
 
+void VertexBuffer::UpdateData(const void* data, uint32_t size)
+{
+  Bind();
+  glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
+}
+
 void IndexBuffer::Bind() const
 {
   if (!CheckValidVAO(parent))
@@ -153,15 +178,9 @@ void IndexBuffer::Bind() const
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
 }
 
-std::shared_ptr<IndexBuffer> IndexBuffer::Create(const std::vector<uint32_t>& indices,
-                                                 unsigned int parent)
-{
-  return std::make_shared<IndexBuffer>(indices, parent);
-}
-
-IndexBuffer::IndexBuffer(const std::vector<uint32_t>& indices, unsigned int parent) :
+IndexBuffer::IndexBuffer(const uint32_t* indices, uint32_t count, unsigned int parent) :
     id(0),
-    count(indices.size()),
+    count(count),
     parent(parent)
 {
   if (!CheckValidVAO(parent))
@@ -171,6 +190,6 @@ IndexBuffer::IndexBuffer(const std::vector<uint32_t>& indices, unsigned int pare
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER,
                (long long)(count * sizeof(uint32_t)),
-               indices.data(),
+               indices,
                GL_STATIC_DRAW);
 }

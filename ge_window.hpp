@@ -35,6 +35,8 @@ public:
 
   void OnUpdate();
 
+  void OnEscPressed(std::function<void()> cb);
+
 private:
   struct Impl;
   std::unique_ptr<Impl> m_pimpl;

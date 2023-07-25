@@ -7,6 +7,8 @@ public:
   Application(std::string&& title, unsigned int width, unsigned int height);
   virtual ~Application();
 
+  void Run();
+
 private:
   struct Impl;
   std::unique_ptr<Impl> m_pimpl;
