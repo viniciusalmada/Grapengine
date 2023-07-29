@@ -110,7 +110,7 @@ void Window::OnEscPressed(std::function<void()> cb)
 {
   m_pimpl->on_esc = cb;
 
-  auto action = [](GLFWwindow* window, int key, int scancode, int action, int mods)
+  auto action = [](GLFWwindow* window, int key, int /*scancode*/, int /*action*/, int /*mods*/)
   {
     if (key == GLFW_KEY_ESCAPE)
     {
