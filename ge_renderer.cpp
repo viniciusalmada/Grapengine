@@ -31,6 +31,9 @@ void Renderer::Init()
 
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+  glEnable(GL_DEPTH_TEST);
+
 }
 
 void Renderer::SetViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height)
@@ -46,7 +49,7 @@ void Renderer::SetClearColor(const Vec4& color)
 
 void Renderer::Clear()
 {
-  glClear(GL_COLOR_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Renderer::DrawIndexed(std::shared_ptr<VertexArray> vao, int count)
