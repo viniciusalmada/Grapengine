@@ -8,7 +8,9 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <tuple>
 #include <utility>
+#include <variant>
 #include <vector>
 
 #endif // GRAPHICENGINE3D_GE_PCH_HPP
