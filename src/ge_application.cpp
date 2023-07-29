@@ -42,12 +42,21 @@ Application::Application(std::string&& title, unsigned int width, unsigned int h
   m_pimpl->vao->Bind();
 
   float vertices[] = {
-    -0.5f, -0.5f, +0.0f, 1.0f,  0.0f,  0.0f,  1.0f,
-    +0.5f, -0.5f, +0.0f, 0.0f,  1.0f,  0.0f,  1.0f,
-    +0.5f, +0.5f, +0.0f, 0.0f,  0.0f,  1.0f,  1.0f,
-    -0.5f, +0.5f, +0.0f, 1.0f,  0.0f,  1.0f,  1.0f,
+    // Positions                       // Colors (R, G, B, A)
+    0.000f,  0.000f,  1.000f,        1.0f, 0.0f, 0.0f, 1.0f, // Vertex 0
+    0.894f,  0.000f,  0.447f,        0.0f, 1.0f, 0.0f, 1.0f, // Vertex 1
+    0.276f,  0.851f,  0.447f,        0.0f, 0.0f, 1.0f, 1.0f, // Vertex 2
+    -0.724f,  0.526f,  0.447f,        1.0f, 1.0f, 0.0f, 1.0f, // Vertex 3
+    -0.724f, -0.526f,  0.447f,        0.0f, 1.0f, 1.0f, 1.0f, // Vertex 4
+    0.276f, -0.851f,  0.447f,        1.0f, 0.0f, 1.0f, 1.0f, // Vertex 5
+    0.724f,  0.526f, -0.447f,        1.0f, 0.0f, 0.0f, 1.0f, // Vertex 6
+    -0.276f,  0.851f, -0.447f,        0.0f, 1.0f, 0.0f, 1.0f, // Vertex 7
+    -0.894f,  0.000f, -0.447f,        0.0f, 0.0f, 1.0f, 1.0f, // Vertex 8
+    -0.276f, -0.851f, -0.447f,        1.0f, 1.0f, 0.0f, 1.0f, // Vertex 9
+    0.724f, -0.526f, -0.447f,        0.0f, 1.0f, 1.0f, 1.0f, // Vertex 10
+    0.000f,  0.000f, -1.000f,        1.0f, 0.0f, 1.0f, 1.0f  // Vertex 11
   };
-  auto vbo = std::make_shared<VertexBuffer>(vertices, sizeof(float) * 7 * 4, m_pimpl->vao->GetID());
+  auto vbo = std::make_shared<VertexBuffer>(vertices, (uint32_t)(sizeof(float) * 7 * 12), m_pimpl->vao->GetID());
 
   vbo->Bind();
   m_pimpl->vao->SetVertexBuffer(vbo);

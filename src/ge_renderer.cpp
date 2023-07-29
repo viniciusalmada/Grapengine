@@ -34,6 +34,8 @@ void Renderer::Init()
 
   glEnable(GL_DEPTH_TEST);
 
+  // Enable wireframe mode
+  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
 void Renderer::SetViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height)

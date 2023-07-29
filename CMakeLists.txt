@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.0)
 project(GraphicEngine3D)
 
 set(CMAKE_CXX_STANDARD 20)
-set(PROJECT GraphicEngine3D)
 
 # #############################################################################
 # GLFW library
@@ -14,22 +13,32 @@ add_subdirectory(vendor/GLAD)
 
 # #############################################################################
 # Engine
-add_executable(${PROJECT} main.cpp ge_application.cpp ge_application.hpp ge_window.cpp ge_window.hpp ge_renderer.cpp ge_renderer.hpp ge_vector.cpp ge_vector.hpp ge_entities.hpp ge_entities.cpp ge_shader.cpp ge_shader.hpp
-    ge_event_type.hpp
-    ge_event.cpp
-    ge_event.hpp)
-target_precompile_headers(${PROJECT} PRIVATE ge_pch.hpp)
-target_include_directories(${PROJECT} SYSTEM PUBLIC
+add_executable(GraphicEngine3D
+    src/main.cpp
+    src/ge_application.cpp
+    src/ge_window.cpp
+    src/ge_renderer.cpp
+    src/ge_vector.cpp
+    src/ge_entities.cpp
+    src/ge_shader.cpp
+    src/ge_event.cpp
+)
+target_precompile_headers(GraphicEngine3D PRIVATE include/ge_pch.hpp)
+target_include_directories(GraphicEngine3D PRIVATE include)
+target_include_directories(GraphicEngine3D SYSTEM PUBLIC
     vendor/GLFW/include
     vendor/GLAD/include)
-target_compile_definitions(${PROJECT} PRIVATE GLFW_INCLUDE_NONE)
-target_compile_options(${PROJECT} PRIVATE /WX /W4)
+target_compile_definitions(GraphicEngine3D PRIVATE GLFW_INCLUDE_NONE)
+target_compile_options(GraphicEngine3D PRIVATE /WX /W4)
 
-target_link_libraries(${PROJECT}
+target_link_libraries(GraphicEngine3D
     PUBLIC GLAD
     PUBLIC glfw)
 if(WIN32)
-  target_link_libraries(${PROJECT} PRIVATE opengl32.lib)
+  target_link_libraries(GraphicEngine3D PRIVATE opengl32.lib)
 elseif(UNIX)
-  target_link_libraries(${PROJECT} PRIVATE GL)
+  target_link_libraries(GraphicEngine3D PRIVATE GL)
 endif(WIN32)
+
+# #############################################################################
+# Tests
