@@ -14,12 +14,16 @@ add_subdirectory(vendor/GLAD)
 
 # #############################################################################
 # Engine
-add_executable(${PROJECT} main.cpp ge_application.cpp ge_application.hpp ge_window.cpp ge_window.hpp ge_renderer.cpp ge_renderer.hpp ge_vector.cpp ge_vector.hpp ge_entities.hpp ge_entities.cpp ge_shader.cpp ge_shader.hpp)
+add_executable(${PROJECT} main.cpp ge_application.cpp ge_application.hpp ge_window.cpp ge_window.hpp ge_renderer.cpp ge_renderer.hpp ge_vector.cpp ge_vector.hpp ge_entities.hpp ge_entities.cpp ge_shader.cpp ge_shader.hpp
+    ge_event_type.hpp
+    ge_event.cpp
+    ge_event.hpp)
 target_precompile_headers(${PROJECT} PRIVATE ge_pch.hpp)
 target_include_directories(${PROJECT} SYSTEM PUBLIC
     vendor/GLFW/include
     vendor/GLAD/include)
 target_compile_definitions(${PROJECT} PRIVATE GLFW_INCLUDE_NONE)
+target_compile_options(${PROJECT} PRIVATE /WX /W4)
 
 target_link_libraries(${PROJECT}
     PUBLIC GLAD
