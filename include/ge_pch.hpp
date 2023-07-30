@@ -13,4 +13,6 @@
 #include <variant>
 #include <vector>
 
+#include "ge_config.hpp"
+
 #endif // GRAPHICENGINE3D_GE_PCH_HPP

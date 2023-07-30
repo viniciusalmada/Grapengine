@@ -4,10 +4,10 @@
 class Application
 {
 public:
-  Application(std::string&& title, unsigned int width, unsigned int height);
-  virtual ~Application();
+  GE3D Application(std::string&& title, unsigned int width, unsigned int height);
+  GE3D virtual ~Application();
 
-  void Run();
+  GE3D void Run();
 
 private:
   struct Impl;

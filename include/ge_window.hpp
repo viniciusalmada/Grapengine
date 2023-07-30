@@ -20,8 +20,8 @@ struct WindowProps
 class Window
 {
 public:
-  explicit Window(const WindowProps& props);
-  ~Window();
+  GE3D explicit Window(const WindowProps& props);
+  GE3D ~Window();
 
   [[nodiscard]] unsigned int GetWidth() const;
   [[nodiscard]] unsigned int GetHeight() const;
