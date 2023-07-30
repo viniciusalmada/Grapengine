@@ -23,8 +23,8 @@ public:
   GE3D explicit Window(const WindowProps& props);
   GE3D ~Window();
 
-  [[nodiscard]] unsigned int GetWidth() const;
-  [[nodiscard]] unsigned int GetHeight() const;
+  [[nodiscard]] GE3D unsigned int GetWidth() const;
+  [[nodiscard]] GE3D unsigned int GetHeight() const;
 
   //  void SetEventCallback(const EventCallbackFn& callback) ;
 

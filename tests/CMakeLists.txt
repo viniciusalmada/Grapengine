@@ -26,5 +26,5 @@ target_include_directories(EngineTests PRIVATE ${CMAKE_SOURCE_DIR}/include)
 target_precompile_headers(EngineTests PRIVATE ${CMAKE_SOURCE_DIR}/include/ge_pch.hpp)
 target_link_libraries(EngineTests
     PRIVATE GTest::GTest
-    ${ENGINE_NAME}
+    PRIVATE ${ENGINE_NAME}
 )

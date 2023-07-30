@@ -81,6 +81,7 @@ Window::Window(const WindowProps& props) : m_pimpl(std::make_unique<Impl>())
 Window::~Window()
 {
   m_pimpl->Destroy();
+  glfw_initialized = false;
 }
 
 unsigned int Window::GetWidth() const
@@ -108,7 +109,7 @@ void Window::OnUpdate()
 
 void Window::OnEscPressed(std::function<void()> cb)
 {
-  m_pimpl->on_esc = cb;
+  m_pimpl->on_esc = std::move(cb);
 
   auto action = [](GLFWwindow* window, int key, int /*scancode*/, int /*action*/, int /*mods*/)
   {
