@@ -1,0 +1,51 @@
+## This is Vinicius Almada <viniciusalmada10@gmail.com>
+## clang-format options.
+## Available at <https://gist.github.com/viniciusalmada/198b4db50618437aa3d8d5e757bb2ed7>
+
+---
+BasedOnStyle: LLVM
+IndentWidth: 2
+---
+Language: Cpp
+UseTab: Never
+IndentWidth: 2
+TabWidth: 2
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterCaseLabel: true
+  AfterClass: true
+  AfterControlStatement: Always
+  AfterEnum: true
+  AfterFunction: true
+  AfterNamespace: true
+  AfterStruct: true
+  AfterUnion: true
+  AfterExternBlock: false
+  BeforeCatch: true
+  BeforeElse: true
+  BeforeLambdaBody: true
+IndentCaseLabels: false
+ColumnLimit: 100
+IncludeBlocks: Regroup
+ContinuationIndentWidth: 2
+AccessModifierOffset: -2
+NamespaceIndentation: All
+FixNamespaceComments: false
+Cpp11BracedListStyle: false
+PointerAlignment: Left
+Standard: c++20
+AlignAfterOpenBracket: Align
+AlignOperands: Align
+AllowShortLambdasOnASingleLine: All
+AlignTrailingComments: true
+AllowAllArgumentsOnNextLine: false
+BinPackArguments: false
+BinPackParameters: false
+AllowAllParametersOfDeclarationOnNextLine: false
+ForEachMacros: [ TEST_CLASS, TEST_METHOD ]
+IndentPPDirectives: None
+AlwaysBreakTemplateDeclarations: Yes
+BreakConstructorInitializers: AfterColon
+AllowShortFunctionsOnASingleLine: Inline
+## Use PackConstructorInitializers: CurrentLine in clang-format 14+
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
