@@ -6,6 +6,7 @@
 #include "ge_window.hpp"
 
 #include <GLFW/glfw3.h>
+#include <ge_event_type.hpp>
 #include <glad/glad.h>
 
 constexpr auto VERTEX_PER_QUAD = 6;
@@ -21,6 +22,19 @@ struct Application::Impl
   std::shared_ptr<VertexArray> vao;
 
   static Application* instance;
+
+  void Finish() { running = false; }
+
+  void OnEvent(Event& event)
+  {
+    Event::Dispatch(EvType::WINDOW_CLOSE,
+                    event,
+                    [this](auto&&)
+                    {
+                      Finish();
+                      return true;
+                    });
+  }
 };
 
 Application* Application::Impl::instance = nullptr;
@@ -33,7 +47,8 @@ Application::Application(std::string&& title, unsigned int width, unsigned int h
 
   m_pimpl->instance = this;
 
-  m_pimpl->window = std::make_unique<Window>(WindowProps{ title, width, height });
+  m_pimpl->window = std::make_unique<Window>(WindowProps{ title, width, height },
+                                             [this](Event& e) { m_pimpl->OnEvent(e); });
 
   Renderer::Init();
   Renderer::SetViewport(0, 0, width, height);
@@ -43,20 +58,22 @@ Application::Application(std::string&& title, unsigned int width, unsigned int h
 
   float vertices[] = {
     // Positions                       // Colors (R, G, B, A)
-    0.000f,  0.000f,  1.000f,        1.0f, 0.0f, 0.0f, 1.0f, // Vertex 0
-    0.894f,  0.000f,  0.447f,        0.0f, 1.0f, 0.0f, 1.0f, // Vertex 1
-    0.276f,  0.851f,  0.447f,        0.0f, 0.0f, 1.0f, 1.0f, // Vertex 2
-    -0.724f,  0.526f,  0.447f,        1.0f, 1.0f, 0.0f, 1.0f, // Vertex 3
-    -0.724f, -0.526f,  0.447f,        0.0f, 1.0f, 1.0f, 1.0f, // Vertex 4
-    0.276f, -0.851f,  0.447f,        1.0f, 0.0f, 1.0f, 1.0f, // Vertex 5
-    0.724f,  0.526f, -0.447f,        1.0f, 0.0f, 0.0f, 1.0f, // Vertex 6
-    -0.276f,  0.851f, -0.447f,        0.0f, 1.0f, 0.0f, 1.0f, // Vertex 7
-    -0.894f,  0.000f, -0.447f,        0.0f, 0.0f, 1.0f, 1.0f, // Vertex 8
-    -0.276f, -0.851f, -0.447f,        1.0f, 1.0f, 0.0f, 1.0f, // Vertex 9
-    0.724f, -0.526f, -0.447f,        0.0f, 1.0f, 1.0f, 1.0f, // Vertex 10
-    0.000f,  0.000f, -1.000f,        1.0f, 0.0f, 1.0f, 1.0f  // Vertex 11
+    0.000f,  0.000f,  1.000f,  1.0f, 0.0f, 0.0f, 1.0f, // Vertex 0
+    0.894f,  0.000f,  0.447f,  0.0f, 1.0f, 0.0f, 1.0f, // Vertex 1
+    0.276f,  0.851f,  0.447f,  0.0f, 0.0f, 1.0f, 1.0f, // Vertex 2
+    -0.724f, 0.526f,  0.447f,  1.0f, 1.0f, 0.0f, 1.0f, // Vertex 3
+    -0.724f, -0.526f, 0.447f,  0.0f, 1.0f, 1.0f, 1.0f, // Vertex 4
+    0.276f,  -0.851f, 0.447f,  1.0f, 0.0f, 1.0f, 1.0f, // Vertex 5
+    0.724f,  0.526f,  -0.447f, 1.0f, 0.0f, 0.0f, 1.0f, // Vertex 6
+    -0.276f, 0.851f,  -0.447f, 0.0f, 1.0f, 0.0f, 1.0f, // Vertex 7
+    -0.894f, 0.000f,  -0.447f, 0.0f, 0.0f, 1.0f, 1.0f, // Vertex 8
+    -0.276f, -0.851f, -0.447f, 1.0f, 1.0f, 0.0f, 1.0f, // Vertex 9
+    0.724f,  -0.526f, -0.447f, 0.0f, 1.0f, 1.0f, 1.0f, // Vertex 10
+    0.000f,  0.000f,  -1.000f, 1.0f, 0.0f, 1.0f, 1.0f  // Vertex 11
   };
-  auto vbo = std::make_shared<VertexBuffer>(vertices, (uint32_t)(sizeof(float) * 7 * 12), m_pimpl->vao->GetID());
+  auto vbo = std::make_shared<VertexBuffer>(vertices,
+                                            (uint32_t)(sizeof(float) * 7 * 12),
+                                            m_pimpl->vao->GetID());
 
   vbo->Bind();
   m_pimpl->vao->SetVertexBuffer(vbo);
@@ -95,8 +112,6 @@ void main()
 )glsl");
 
   shader->Bind();
-
-  m_pimpl->window->OnEscPressed([this]() { m_pimpl->running = false; });
 }
 
 Application::~Application() = default;

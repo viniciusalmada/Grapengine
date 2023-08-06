@@ -37,7 +37,7 @@ struct Window::Impl
   bool vsync = true;
   GLFWwindow* window;
   std::unique_ptr<Context> context;
-  std::function<void()> on_esc;
+  EventCallbackFn event_callback;
 
   static void ErrorCB(int error_code, const char* description)
   {
@@ -52,7 +52,8 @@ struct Window::Impl
 };
 
 //--PIMPL idiom
-Window::Window(const WindowProps& props) : m_pimpl(std::make_unique<Impl>())
+Window::Window(const WindowProps& props, const EventCallbackFn& cb) :
+    m_pimpl(std::make_unique<Impl>())
 {
   m_pimpl->window_props = props;
   if (!glfw_initialized)
@@ -68,7 +69,7 @@ Window::Window(const WindowProps& props) : m_pimpl(std::make_unique<Impl>())
 
   glfwWindowHint(GLFW_SAMPLES, 4);
   m_pimpl->window =
-      glfwCreateWindow(props.width, props.height, props.title.c_str(), nullptr, nullptr);
+    glfwCreateWindow(props.width, props.height, props.title.c_str(), nullptr, nullptr);
 
   glfwSetWindowUserPointer(m_pimpl->window, this);
 
@@ -76,6 +77,68 @@ Window::Window(const WindowProps& props) : m_pimpl(std::make_unique<Impl>())
   m_pimpl->context->Init();
 
   SetVsync(m_pimpl->vsync);
+
+  if (cb)
+  {
+    m_pimpl->event_callback = cb;
+
+    //-----------------------------
+    auto close_callback = [](GLFWwindow* win)
+    {
+      Event event{ std::make_tuple(EvType::WINDOW_CLOSE) };
+      auto* data = (Window*)glfwGetWindowUserPointer(win);
+      data->m_pimpl->event_callback(event);
+    };
+    glfwSetWindowCloseCallback(m_pimpl->window, close_callback);
+
+    //-----------------------------
+    auto key_callback = [](GLFWwindow* win, int key, int /*scancode*/, int action, int /*mods*/)
+    {
+      EvType type = EvType::NONE;
+      if (action == GLFW_PRESS)
+        type = EvType::KEY_PRESS;
+      else if (action == GLFW_RELEASE)
+        type = EvType::KEY_RELEASE;
+
+      Event event{ std::make_tuple(type, key) };
+      auto* data = (Window*)glfwGetWindowUserPointer(win);
+      data->m_pimpl->event_callback(event);
+    };
+    glfwSetKeyCallback(m_pimpl->window, key_callback);
+
+    //-----------------------------
+    auto mouse_bt_callback = [](GLFWwindow* win, int button, int action, int /*mods*/)
+    {
+      EvType type = EvType::NONE;
+      if (action == GLFW_PRESS)
+        type = EvType::MOUSE_BUTTON_PRESSED;
+      else if (action == GLFW_RELEASE)
+        type = EvType::MOUSE_BUTTON_RELEASE;
+
+      Event event{ std::make_tuple(type, button) };
+      auto* data = (Window*)glfwGetWindowUserPointer(win);
+      data->m_pimpl->event_callback(event);
+    };
+    glfwSetMouseButtonCallback(m_pimpl->window, mouse_bt_callback);
+
+    //-----------------------------
+    auto mouse_move = [](GLFWwindow* win, double xpos, double ypos)
+    {
+      Event event{ std::make_tuple(EvType::MOUSE_MOVE, (float)xpos, (float)ypos) };
+      auto* data = (Window*)glfwGetWindowUserPointer(win);
+      data->m_pimpl->event_callback(event);
+    };
+    glfwSetCursorPosCallback(m_pimpl->window, mouse_move);
+
+    //-----------------------------
+    auto mouse_scroll = [](GLFWwindow* win, double xoffset, double yoffset)
+    {
+      Event event{ std::make_tuple(EvType::MOUSE_SCROLL, (float)xoffset, (float)yoffset) };
+      auto* data = (Window*)glfwGetWindowUserPointer(win);
+      data->m_pimpl->event_callback(event);
+    };
+    glfwSetScrollCallback(m_pimpl->window, mouse_scroll);
+  }
 }
 
 Window::~Window()
@@ -105,20 +168,4 @@ void Window::OnUpdate()
 {
   glfwPollEvents();
   m_pimpl->context->SwapBuffers();
-}
-
-void Window::OnEscPressed(std::function<void()> cb)
-{
-  m_pimpl->on_esc = std::move(cb);
-
-  auto action = [](GLFWwindow* window, int key, int /*scancode*/, int /*action*/, int /*mods*/)
-  {
-    if (key == GLFW_KEY_ESCAPE)
-    {
-      Window& self = *(Window*)glfwGetWindowUserPointer(window);
-      self.m_pimpl->on_esc();
-    }
-  };
-
-  glfwSetKeyCallback(m_pimpl->window, action);
 }
