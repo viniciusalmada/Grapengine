@@ -41,7 +41,7 @@ struct BufferElem
 struct BufferLayout
 {
   std::vector<BufferElem> elements;
-  unsigned int stride;
+  int stride;
 };
 
 class VertexBuffer
@@ -56,15 +56,15 @@ public:
   void UpdateData(const void* data, uint32_t size);
 
 private:
-  unsigned int id;
-  unsigned int parent;
+  unsigned int id = 0;
+  unsigned int parent = 0;
   BufferLayout layout;
 };
 
 class IndexBuffer
 {
 public:
-  IndexBuffer(const uint32_t* indices,uint32_t count,  unsigned int parent);
+  IndexBuffer(const uint32_t* indices, uint32_t count, unsigned int parent);
 
   void Bind() const;
 
@@ -93,4 +93,4 @@ private:
   std::shared_ptr<IndexBuffer> index_buffer;
 };
 
-#endif // GRAPHICENGINE3D_GE_ENTITIES_HPP
+#endif

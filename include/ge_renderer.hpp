@@ -18,4 +18,4 @@ public:
   static void DrawIndexed(std::shared_ptr<VertexArray> vao, int count);
 };
 
-#endif // GRAPHICENGINE3D_GE_RENDERER_HPP
+#endif

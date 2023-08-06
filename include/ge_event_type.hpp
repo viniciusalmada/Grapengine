@@ -40,4 +40,4 @@ struct TypeGetter : Ts...
 template <typename... Ts>
 TypeGetter(Ts...) -> TypeGetter<Ts...>;
 
-#endif // GRAPHICENGINE3D_GE_EVENT_TYPE_HPP
+#endif

@@ -37,4 +37,4 @@ private:
   std::unique_ptr<Impl> m_pimpl;
 };
 
-#endif // GRAPHICENGINE3D_GE_WINDOW_HPP
+#endif
