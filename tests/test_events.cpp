@@ -15,9 +15,10 @@ TEST(Event, WindowCloseDataDispatcher)
 
   bool dispatch = Event::Dispatch(EvType::WINDOW_CLOSE,
                                   close_ev,
-                                  [](Event& ev)
+                                  [](const EvData& ev)
                                   {
-                                    EXPECT_EQ(ev.GetType(), EvType::WINDOW_CLOSE);
+                                    auto type = std::get<0>(*std::get_if<WindowCloseData>(&ev));
+                                    EXPECT_EQ(type, EvType::WINDOW_CLOSE);
                                     return true;
                                   });
   EXPECT_TRUE(dispatch);
@@ -35,12 +36,10 @@ TEST(Event, KeyPressDataDispatcher)
 
   bool dispatch = Event::Dispatch(EvType::KEY_PRESS,
                                   key_press_ev,
-                                  [](Event& ev)
+                                  [](const EvData& ev)
                                   {
-                                    EXPECT_EQ(ev.GetType(), EvType::KEY_PRESS);
-                                    const KeyPressData& data =
-                                      *std::get_if<KeyPressData>(&ev.GetData());
-                                    int key = std::get<1>(data);
+                                    const auto& [type, key] = *std::get_if<KeyPressData>(&ev);
+                                    EXPECT_EQ(type, EvType::KEY_PRESS);
 
                                     return key == GLFW_KEY_A;
                                   });

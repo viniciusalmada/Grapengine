@@ -22,7 +22,7 @@ public:
     if (type != t)
       return false;
 
-    bool handled = fun(std::ref(e));
+    bool handled = fun(std::ref(e.GetData()));
     e.SetHandled(handled);
     return true;
   }
