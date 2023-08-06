@@ -7,9 +7,9 @@ endif ()
 
 include(FetchContent)
 FetchContent_Declare(
-    googletest
-    GIT_REPOSITORY  https://github.com/google/googletest.git
-    GIT_TAG         release-1.11.0
+  googletest
+  GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_TAG release-1.11.0
 )
 
 # For Windows: Prevent overriding the parent project's compiler/linker settings
@@ -21,10 +21,10 @@ endif (WIN32)
 add_library(GTest::GTest INTERFACE IMPORTED)
 target_link_libraries(GTest::GTest INTERFACE gtest_main)
 
-add_executable(EngineTests test_main.cpp test_window.cpp)
+add_executable(EngineTests test_main.cpp test_window.cpp test_events.cpp)
 target_include_directories(EngineTests PRIVATE ${CMAKE_SOURCE_DIR}/include)
 target_precompile_headers(EngineTests PRIVATE ${CMAKE_SOURCE_DIR}/include/ge_pch.hpp)
 target_link_libraries(EngineTests
-    PRIVATE GTest::GTest
-    PRIVATE ${ENGINE_NAME}
+  PRIVATE GTest::GTest
+  PRIVATE ${ENGINE_NAME}
 )

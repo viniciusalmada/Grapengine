@@ -5,22 +5,24 @@
 
 class Event
 {
-  explicit Event(EvData data);
-  ~Event();
+public:
+  GE3D explicit Event(EvData data);
+  GE3D ~Event();
 
   [[nodiscard]] bool IsHandled() const;
-  void SetHandled(bool handled);
+  void GE3D SetHandled(bool handled);
 
-  [[nodiscard]] EvType GetType() const;
+  [[nodiscard]] EvType GE3D GetType() const;
 
   template <typename Fun>
-  [[nodiscard]] static bool Dispatch(EvType t, Event& e, const Fun& fun)
+  [[nodiscard]] static bool Dispatch(EvType t, Event& e, Fun fun)
   {
     EvType type = e.GetType();
     if (type != t)
       return false;
 
-    e.SetHandled(fun(e));
+    bool handled = fun(std::ref(e));
+    e.SetHandled(handled);
     return true;
   }
 
