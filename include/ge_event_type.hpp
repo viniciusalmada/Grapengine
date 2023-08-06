@@ -23,19 +23,13 @@ enum class EvType
 
 using WindowCloseData = std::tuple<EvType>;
 using KeyPressData = std::tuple<EvType, int>;
-using KeyReleaseData = std::tuple<EvType, int>;
-using MouseButtonPressData = std::tuple<EvType, int>;
-using MouseButtonReleaseData = std::tuple<EvType, int>;
+using KeyReleaseData = KeyPressData;
+using MouseButtonPressData = KeyPressData;
+using MouseButtonReleaseData = KeyPressData;
 using MouseMoveData = std::tuple<EvType, float, float>;
-using MouseScrollData = std::tuple<EvType, float, float>;
+using MouseScrollData = MouseMoveData;
 
-using EvData = std::variant<WindowCloseData,
-                            KeyPressData,
-                            KeyReleaseData,
-                            MouseButtonPressData,
-                            MouseButtonReleaseData,
-                            MouseMoveData,
-                            MouseScrollData>;
+using EvData = std::variant<WindowCloseData, KeyPressData, MouseMoveData>;
 
 template <typename... Ts>
 struct TypeGetter : Ts...

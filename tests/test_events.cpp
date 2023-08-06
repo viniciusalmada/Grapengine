@@ -1,5 +1,6 @@
 #include "ge_event.hpp"
 
+#include <GLFW/glfw3.h>
 #include <gtest/gtest.h>
 
 TEST(Event, WindowCloseData)
@@ -18,6 +19,30 @@ TEST(Event, WindowCloseDataDispatcher)
                                   {
                                     EXPECT_EQ(ev.GetType(), EvType::WINDOW_CLOSE);
                                     return true;
+                                  });
+  EXPECT_TRUE(dispatch);
+}
+
+TEST(Event, KeyPressData)
+{
+  Event key_press_ev{ KeyPressData(EvType::KEY_PRESS, GLFW_KEY_A) };
+  EXPECT_EQ(key_press_ev.GetType(), EvType::KEY_PRESS);
+}
+
+TEST(Event, KeyPressDataDispatcher)
+{
+  Event key_press_ev{ KeyPressData(EvType::KEY_PRESS, GLFW_KEY_A) };
+
+  bool dispatch = Event::Dispatch(EvType::KEY_PRESS,
+                                  key_press_ev,
+                                  [](Event& ev)
+                                  {
+                                    EXPECT_EQ(ev.GetType(), EvType::KEY_PRESS);
+                                    const KeyPressData& data =
+                                      *std::get_if<KeyPressData>(&ev.GetData());
+                                    int key = std::get<1>(data);
+
+                                    return key == GLFW_KEY_A;
                                   });
   EXPECT_TRUE(dispatch);
 }

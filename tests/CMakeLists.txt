@@ -23,6 +23,9 @@ target_link_libraries(GTest::GTest INTERFACE gtest_main)
 
 add_executable(EngineTests test_main.cpp test_window.cpp test_events.cpp)
 target_include_directories(EngineTests PRIVATE ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(EngineTests SYSTEM PUBLIC
+  ${CMAKE_SOURCE_DIR}/vendor/glfw/include
+)
 target_precompile_headers(EngineTests PRIVATE ${CMAKE_SOURCE_DIR}/include/ge_pch.hpp)
 target_link_libraries(EngineTests
   PRIVATE GTest::GTest

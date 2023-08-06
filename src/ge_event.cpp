@@ -27,3 +27,8 @@ EvType Event::GetType() const
 {
   return std::visit(TypeGetter{ [](auto&& data) { return std::get<0>(data); } }, m_pimpl->data);
 }
+
+const EvData& Event::GetData() const
+{
+  return m_pimpl->data;
+}

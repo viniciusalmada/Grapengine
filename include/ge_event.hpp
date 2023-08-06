@@ -12,7 +12,8 @@ public:
   [[nodiscard]] bool IsHandled() const;
   void GE3D SetHandled(bool handled);
 
-  [[nodiscard]] EvType GE3D GetType() const;
+  [[nodiscard]] GE3D EvType GetType() const;
+  [[nodiscard]] GE3D const EvData& GetData() const;
 
   template <typename Fun>
   [[nodiscard]] static bool Dispatch(EvType t, Event& e, Fun fun)
