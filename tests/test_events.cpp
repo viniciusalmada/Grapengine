@@ -58,12 +58,33 @@ TEST(Event, KeyReleaseDataDispatcher)
 
   bool dispatch = Event::Dispatch(EvType::KEY_RELEASE,
                                   key_rel_ev,
-                                  [](Event& ev)
+                                  [](const EvData& ev)
                                   {
-                                    EXPECT_EQ(ev.GetType(), EvType::KEY_RELEASE);
-                                    const KeyPressData& data =
-                                      *std::get_if<KeyPressData>(&ev.GetData());
-                                    int key = std::get<1>(data);
+                                    const auto& [type, key] = *std::get_if<KeyReleaseData>(&ev);
+                                    EXPECT_EQ(type, EvType::KEY_RELEASE);
+
+                                    return key == GLFW_KEY_B;
+                                  });
+  EXPECT_TRUE(dispatch);
+}
+
+TEST(Event, MouseButtonPressData)
+{
+  Event mouse_press{ MouseButtonPressData(EvType::MOUSE_BUTTON_PRESSED, GLFW_MOUSE_BUTTON_1) };
+  EXPECT_EQ(mouse_press.GetType(), EvType::MOUSE_BUTTON_PRESSED);
+}
+
+TEST(Event, MouseButtonPressDataDispatcher)
+{
+  Event mouse_press{ MouseButtonPressData(EvType::MOUSE_BUTTON_PRESSED, GLFW_MOUSE_BUTTON_1) };
+
+  bool dispatch = Event::Dispatch(EvType::MOUSE_BUTTON_PRESSED,
+                                  mouse_press,
+                                  [](const EvData& ev)
+                                  {
+                                    const auto& [type, key] =
+                                      *std::get_if<MouseButtonPressData>(&ev);
+                                    EXPECT_EQ(type, EvType::MOUSE_BUTTON_PRESSED);
 
                                     return key == GLFW_KEY_B;
                                   });
