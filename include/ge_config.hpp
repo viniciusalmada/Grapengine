@@ -1,5 +1,5 @@
-#ifndef GRAPHICENGINE3D_GE_CONFIG_HPP
-#define GRAPHICENGINE3D_GE_CONFIG_HPP
+#ifndef GRAPHIC_ENGINE3D_GE_CONFIG_HPP
+#define GRAPHIC_ENGINE3D_GE_CONFIG_HPP
 
 #if defined(GraphicEngine3D_EXPORTS)
   #define GE3D __declspec(dllexport)
