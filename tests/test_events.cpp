@@ -133,3 +133,25 @@ TEST(Event, MouseMoveDataDispatcher)
                   });
   EXPECT_TRUE(mouse_move.IsHandled());
 }
+
+TEST(Event, MouseScrollData)
+{
+  Event mouse_scroll{ MouseScrollData(EvType::MOUSE_SCROLL, 0.5f, -0.5f) };
+  EXPECT_EQ(mouse_scroll.GetType(), EvType::MOUSE_SCROLL);
+}
+
+TEST(Event, MouseScrollDataDispatcher)
+{
+  Event mouse_scroll{ MouseScrollData(EvType::MOUSE_SCROLL, 0.5f, -0.5f) };
+
+  Event::Dispatch(EvType::MOUSE_SCROLL,
+                  mouse_scroll,
+                  [](const EvData& ev)
+                  {
+                    const auto& [type, x, y] = *std::get_if<MouseMoveData>(&ev);
+                    EXPECT_EQ(type, EvType::MOUSE_SCROLL);
+
+                    return x > 0.0f && y < 0.0f;
+                  });
+  EXPECT_TRUE(mouse_scroll.IsHandled());
+}
