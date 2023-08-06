@@ -111,3 +111,25 @@ TEST(Event, MouseButtonRelDataDispatcher)
                   });
   EXPECT_TRUE(mouse_rel.IsHandled());
 }
+
+TEST(Event, MouseMoveData)
+{
+  Event mouse_move{ MouseMoveData(EvType::MOUSE_MOVE, 1.0f, 2.0f) };
+  EXPECT_EQ(mouse_move.GetType(), EvType::MOUSE_MOVE);
+}
+
+TEST(Event, MouseMoveDataDispatcher)
+{
+  Event mouse_move{ MouseMoveData(EvType::MOUSE_MOVE, 1.0f, 2.0f) };
+
+  Event::Dispatch(EvType::MOUSE_MOVE,
+                  mouse_move,
+                  [](const EvData& ev)
+                  {
+                    const auto& [type, x, y] = *std::get_if<MouseMoveData>(&ev);
+                    EXPECT_EQ(type, EvType::MOUSE_MOVE);
+
+                    return x > 0.0f && y > 0.0f;
+                  });
+  EXPECT_TRUE(mouse_move.IsHandled());
+}
