@@ -17,7 +17,8 @@ void OpenGLDebuggerFunc(GLenum /* source */,
     return;
 
   std::cerr << "OpenGL Error:" << std::endl;
-  std::cerr << "  (0x" << std::setfill('0') << std::setw(4) << std::hex << id << "): " << message << std::endl;
+  std::cerr << "  (0x" << std::setfill('0') << std::setw(4) << std::hex << id << "): " << message
+            << std::endl;
 }
 
 void Renderer::Init()
@@ -35,7 +36,7 @@ void Renderer::Init()
   glEnable(GL_DEPTH_TEST);
 
   // Enable wireframe mode
-  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  //  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
 void Renderer::SetViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height)

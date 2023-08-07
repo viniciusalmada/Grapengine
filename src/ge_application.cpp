@@ -56,21 +56,49 @@ Application::Application(std::string&& title, unsigned int width, unsigned int h
   m_pimpl->vao = std::make_shared<VertexArray>();
   m_pimpl->vao->Bind();
 
+  // clang-format off
+  // X - left to right axis
+  // Y - bottom to top axis
+  // Z - back to front axis
   float vertices[] = {
-    // Positions                       // Colors (R, G, B, A)
-    0.000f,  0.000f,  1.000f,  1.0f, 0.0f, 0.0f, 1.0f, // Vertex 0
-    0.894f,  0.000f,  0.447f,  0.0f, 1.0f, 0.0f, 1.0f, // Vertex 1
-    0.276f,  0.851f,  0.447f,  0.0f, 0.0f, 1.0f, 1.0f, // Vertex 2
-    -0.724f, 0.526f,  0.447f,  1.0f, 1.0f, 0.0f, 1.0f, // Vertex 3
-    -0.724f, -0.526f, 0.447f,  0.0f, 1.0f, 1.0f, 1.0f, // Vertex 4
-    0.276f,  -0.851f, 0.447f,  1.0f, 0.0f, 1.0f, 1.0f, // Vertex 5
-    0.724f,  0.526f,  -0.447f, 1.0f, 0.0f, 0.0f, 1.0f, // Vertex 6
-    -0.276f, 0.851f,  -0.447f, 0.0f, 1.0f, 0.0f, 1.0f, // Vertex 7
-    -0.894f, 0.000f,  -0.447f, 0.0f, 0.0f, 1.0f, 1.0f, // Vertex 8
-    -0.276f, -0.851f, -0.447f, 1.0f, 1.0f, 0.0f, 1.0f, // Vertex 9
-    0.724f,  -0.526f, -0.447f, 0.0f, 1.0f, 1.0f, 1.0f, // Vertex 10
-    0.000f,  0.000f,  -1.000f, 1.0f, 0.0f, 1.0f, 1.0f  // Vertex 11
+    // Front face
+    -0.5f, -0.5f,  +0.5f,  1.0f, 0.0f, 0.0f, 1.0f,
+    +0.5f, -0.5f,  +0.5f,  1.0f, 0.0f, 0.0f, 1.0f,
+    +0.5f, +0.5f,  +0.5f,  1.0f, 0.0f, 0.0f, 1.0f,
+    -0.5f, +0.5f,  +0.5f,  1.0f, 0.0f, 0.0f, 1.0f,
+
+    // Right face
+    +0.5f, -0.5f,  +0.5f,  0.0f, 1.0f, 0.0f, 1.0f,
+    +0.5f, -0.5f,  -0.5f,  0.0f, 1.0f, 0.0f, 1.0f,
+    +0.5f, +0.5f,  -0.5f,  0.0f, 1.0f, 0.0f, 1.0f,
+    +0.5f, +0.5f,  +0.5f,  0.0f, 1.0f, 0.0f, 1.0f,
+
+    // Back face
+    +0.5f, -0.5f,  -0.5f,  0.0f, 0.0f, 1.0f, 1.0f,
+    -0.5f, -0.5f,  -0.5f,  0.0f, 0.0f, 1.0f, 1.0f,
+    -0.5f, +0.5f,  -0.5f,  0.0f, 0.0f, 1.0f, 1.0f,
+    +0.5f, +0.5f,  -0.5f,  0.0f, 0.0f, 1.0f, 1.0f,
+
+    // Left face
+    -0.5f, -0.5f,  -0.5f,  1.0f, 1.0f, 0.0f, 1.0f,
+    -0.5f, -0.5f,  +0.5f,  1.0f, 1.0f, 0.0f, 1.0f,
+    -0.5f, +0.5f,  +0.5f,  1.0f, 1.0f, 0.0f, 1.0f,
+    -0.5f, +0.5f,  -0.5f,  1.0f, 1.0f, 0.0f, 1.0f,
+
+    // Top face
+    -0.5f, +0.5f,  +0.5f,  1.0f, 0.0f, 1.0f, 1.0f,
+    +0.5f, +0.5f,  +0.5f,  1.0f, 0.0f, 1.0f, 1.0f,
+    +0.5f, +0.5f,  -0.5f,  1.0f, 0.0f, 1.0f, 1.0f,
+    -0.5f, +0.5f,  -0.5f,  1.0f, 0.0f, 1.0f, 1.0f,
+
+    // Bottom face
+    -0.5f, -0.5f,  -0.5f,  0.0f, 1.0f, 1.0f, 1.0f,
+    +0.5f, -0.5f,  -0.5f,  0.0f, 1.0f, 1.0f, 1.0f,
+    +0.5f, -0.5f,  +0.5f,  0.0f, 1.0f, 1.0f, 1.0f,
+    -0.5f, -0.5f,  +0.5f,  0.0f, 1.0f, 1.0f, 1.0f,
   };
+  // clang-format on
+
   auto vbo = std::make_shared<VertexBuffer>(vertices,
                                             (uint32_t)(sizeof(float) * 7 * 12),
                                             m_pimpl->vao->GetID());
@@ -78,8 +106,15 @@ Application::Application(std::string&& title, unsigned int width, unsigned int h
   vbo->Bind();
   m_pimpl->vao->SetVertexBuffer(vbo);
 
-  unsigned int indices[] = { 0, 1, 2, 2, 3, 0 };
-  auto ibo = std::make_shared<IndexBuffer>(indices, 6, m_pimpl->vao->GetID());
+  unsigned int indices[] = {
+    0,  1,  2,  2,  3,  0,  // Front face
+    4,  5,  6,  6,  7,  4,  // Right face
+    8,  9,  10, 10, 11, 8,  // Back face
+    12, 13, 14, 14, 15, 12, // Left face
+    16, 17, 18, 18, 19, 16, // Top face
+    20, 21, 22, 22, 23, 20, // Bottom face
+  };
+  auto ibo = std::make_shared<IndexBuffer>(indices, 36, m_pimpl->vao->GetID());
   m_pimpl->vao->SetIndexBuffer(ibo);
 
   auto shader = std::make_shared<Shader>(R"glsl(
@@ -125,7 +160,7 @@ void Application::Run()
       Renderer::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
       Renderer::Clear();
 
-      Renderer::DrawIndexed(m_pimpl->vao, 6);
+      Renderer::DrawIndexed(m_pimpl->vao, 36);
 
       m_pimpl->window->OnUpdate();
     }
