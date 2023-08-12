@@ -14,4 +14,7 @@ namespace Transform
   Mat4<float> RotateZ(float degrees);
 };
 
+  Mat4<float> Scale(float xFac, float yFac, float zFac);
+
+
 #endif // GRAPHICENGINE3D_GE_TRANSFORMATIONS_HPP

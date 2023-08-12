@@ -54,3 +54,13 @@ Mat4<float> Transform::RotateZ(float degrees)
     { 0, 0, 0, 1 },
   } };
 }
+
+Mat4<float> Transform::Scale(float xFac, float yFac, float zFac)
+{
+  return Mat4<float>{ {
+    { xFac, 0, 0, 0 },
+    { 0, yFac, 0, 0 },
+    { 0, 0, zFac, 0 },
+    { 0, 0, 0, 1 },
+  } };
+}
