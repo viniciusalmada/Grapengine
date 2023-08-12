@@ -44,7 +44,7 @@ namespace
 
     unsigned int shader = glCreateShader(shader_type);
     const char* chars = src.c_str();
-    glShaderSource(shader, 1, &chars, 0);
+    glShaderSource(shader, 1, &chars, nullptr);
 
     glCompileShader(shader);
 
