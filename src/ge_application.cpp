@@ -34,6 +34,15 @@ struct Application::Impl
                       Finish();
                       return true;
                     });
+
+    Event::Dispatch(EvType::WINDOW_RESIZE,
+                    event,
+                    [this](const EvData& ev)
+                    {
+                      const auto& [_, w, h] = *std::get_if<WindowResizeData>(&ev);
+                      Renderer::SetViewport(0, 0, w, h);
+                      return true;
+                    });
   }
 };
 

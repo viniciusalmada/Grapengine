@@ -5,7 +5,7 @@ enum class EvType
 {
   NONE,
   WINDOW_CLOSE,
-  //  WINDOW_RESIZE,
+  WINDOW_RESIZE,
   //  WINDOW_FOCUS,
   //  WINDOW_LOST_FOCUS,
   //  WINDOW_MOVED,
@@ -22,6 +22,7 @@ enum class EvType
 };
 
 using WindowCloseData = std::tuple<EvType>;
+using WindowResizeData = std::tuple<EvType, int, int>;
 using KeyPressData = std::tuple<EvType, int>;
 using KeyReleaseData = KeyPressData;
 using MouseButtonPressData = KeyPressData;
@@ -29,7 +30,7 @@ using MouseButtonReleaseData = KeyPressData;
 using MouseMoveData = std::tuple<EvType, float, float>;
 using MouseScrollData = MouseMoveData;
 
-using EvData = std::variant<WindowCloseData, KeyPressData, MouseMoveData>;
+using EvData = std::variant<WindowCloseData, WindowResizeData, KeyPressData, MouseMoveData>;
 
 template <typename... Ts>
 struct TypeGetter : Ts...

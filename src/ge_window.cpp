@@ -92,6 +92,15 @@ Window::Window(const WindowProps& props, const EventCallbackFn& cb) :
     glfwSetWindowCloseCallback(m_pimpl->window, close_callback);
 
     //-----------------------------
+    auto resize_callback = [](GLFWwindow* win, int width, int height)
+    {
+      Event event{ std::make_tuple(EvType::WINDOW_RESIZE, width, height) };
+      auto* data = (Window*)glfwGetWindowUserPointer(win);
+      data->m_pimpl->event_callback(event);
+    };
+    glfwSetWindowSizeCallback(m_pimpl->window, resize_callback);
+
+    //-----------------------------
     auto key_callback = [](GLFWwindow* win, int key, int /*scancode*/, int action, int /*mods*/)
     {
       EvType type = EvType::NONE;
