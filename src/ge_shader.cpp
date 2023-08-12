@@ -118,7 +118,34 @@ namespace
 
 struct Shader::Impl
 {
-  uint32_t renderer_id;
+  uint32_t renderer_id{ 0 };
+  std::unordered_map<std::string, int> uniforms;
+
+  [[nodiscard]] bool IsBound() const
+  {
+    int curr_program = -1;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &curr_program);
+    if (curr_program <= 0)
+      return false;
+
+    return static_cast<decltype(renderer_id)>(curr_program) == renderer_id;
+  }
+
+  int RetrieveUniform(const std::string& name)
+  {
+    if (!IsBound())
+      std::cerr << "Shader not bound!!" << std::endl;
+  check:
+    if (uniforms.contains(name))
+      return uniforms[name];
+
+    int location = glGetUniformLocation(renderer_id, name.c_str());
+    if (location == -1)
+      std::cerr << "Invalid uniform name!!" << std::endl;
+
+    uniforms[name] = location;
+    goto check;
+  }
 };
 
 Shader::Shader(std::string&& vertexSrc, std::string&& fragmentSrc) :
@@ -133,3 +160,9 @@ void Shader::Bind()
 }
 
 Shader::~Shader() = default;
+
+void Shader::UploadMat4F(const std::string& name, const Mat4<float>& mat)
+{
+  auto location = m_pimpl->RetrieveUniform(name);
+  glUniformMatrix4fv(location, 1, GL_FALSE, mat.data()->data());
+}
