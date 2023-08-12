@@ -10,6 +10,8 @@ namespace
     FRAGMENT
   };
 
+  DISABLE_WARNING_PUSH
+  DISABLE_UNREACHABLE_CODE
   uint32_t GetGLShaderType(ShaderType type)
   {
     switch (type)
@@ -19,9 +21,11 @@ namespace
     case ShaderType::FRAGMENT:
       return GL_FRAGMENT_SHADER;
     }
-    return 0;
   }
+  DISABLE_WARNING_POP
 
+  DISABLE_WARNING_PUSH
+  DISABLE_UNREACHABLE_CODE
   std::string GetGLShaderName(ShaderType type)
   {
     switch (type)
@@ -31,8 +35,8 @@ namespace
     case ShaderType::FRAGMENT:
       return "Fragment";
     }
-    return {};
   }
+  DISABLE_WARNING_POP
 
   std::tuple<uint32_t, bool> Compile(const std::string& src, ShaderType type)
   {
