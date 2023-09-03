@@ -4,6 +4,12 @@
 using Vec3 = std::tuple<float, float, float>;
 using Vec4 = std::tuple<float, float, float, float>;
 
+Vec3 operator-(const Vec3& v1, const Vec3& v2);
+Vec3& operator-(Vec3& v);
+Vec3 Normalize(const Vec3& v);
+Vec3 Cross(const Vec3& v1, const Vec3& v2);
+float Dot(const Vec3& v1, const Vec3& v2);
+
 template <typename T> // Mat[row][column]
 using Mat4 = std::array<std::array<T, 4>, 4>;
 
