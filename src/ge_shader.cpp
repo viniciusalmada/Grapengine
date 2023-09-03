@@ -163,6 +163,11 @@ Shader::~Shader() = default;
 
 void Shader::UploadMat4F(const std::string& name, const Mat4<float>& mat)
 {
+  UploadMat4F(name, mat.data()->data());
+}
+
+void Shader::UploadMat4F(const std::string& name, const float* data)
+{
   auto location = m_pimpl->RetrieveUniform(name);
-  glUniformMatrix4fv(location, 1, GL_FALSE, mat.data()->data());
+  glUniformMatrix4fv(location, 1, GL_FALSE, data);
 }

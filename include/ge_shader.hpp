@@ -13,6 +13,8 @@ public:
 
   void UploadMat4F(const std::string& name, const Mat4<float>& mat);
 
+  void UploadMat4F(const std::string& name, const float* mat);
+
 private:
   struct Impl;
   std::unique_ptr<Impl> m_pimpl;
