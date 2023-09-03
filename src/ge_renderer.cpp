@@ -35,6 +35,9 @@ void Renderer::Init()
 
   glEnable(GL_DEPTH_TEST);
 
+  glEnable(GL_LINE_SMOOTH);
+  glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+
   // Enable wireframe mode
   //  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
