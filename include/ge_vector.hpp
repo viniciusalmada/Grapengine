@@ -1,7 +1,7 @@
 #ifndef GRAPHIC_ENGINE3D_GE_VECTOR_HPP
 #define GRAPHIC_ENGINE3D_GE_VECTOR_HPP
 
-struct Vec3
+struct GE3D Vec3
 {
   float x;
   float y;
@@ -22,7 +22,7 @@ struct Vec4
   float x3;
 };
 
-class Mat4
+class GE3D Mat4
 {
 public:
   Mat4();
@@ -34,8 +34,8 @@ public:
 
   Mat4 operator*(const Mat4& other) const;
 
-  float& operator()(unsigned int i, unsigned int j);
-  const float& operator()(unsigned int i, unsigned int j) const;
+  float& operator()(unsigned int row, unsigned int col);
+  const float& operator()(unsigned int row, unsigned int col) const;
 
   [[nodiscard]] const float* ValuePtr() const;
 

@@ -49,10 +49,10 @@ Mat4::Mat4(const std::array<float, 4>& row0,
 {
   for (int i = 0; i < 4; ++i)
   {
-    data[0][i] = row0[i];
-    data[1][i] = row1[i];
-    data[2][i] = row2[i];
-    data[3][i] = row3[i];
+    data[i][0] = row0[i];
+    data[i][1] = row1[i];
+    data[i][2] = row2[i];
+    data[i][3] = row3[i];
   }
 }
 
