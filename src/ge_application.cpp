@@ -7,11 +7,96 @@
 
 #include <ge_event_type.hpp>
 #include <ge_transformations.hpp>
+#include <glm/ext/matrix_transform.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 constexpr auto VERTEX_PER_QUAD = 6;
 constexpr auto MAX_QUADS = 100;
 constexpr auto MAX_VERTICES = MAX_QUADS * 4;
 constexpr auto MAX_INDICES = MAX_QUADS * VERTEX_PER_QUAD;
+
+const auto VERTEX_SHADER = R"glsl(
+#version 330 core
+
+layout (location = 0) in vec3 in_position;
+layout (location = 1) in vec4 in_color;
+
+out vec4 out_color;
+
+uniform mat4 u_model;
+uniform mat4 u_view;
+uniform mat4 u_proj;
+
+void main()
+{
+    gl_Position = (u_proj) * (u_view) * (u_model) * vec4(in_position, 1.0);
+    out_color = in_color;
+}
+
+)glsl";
+const auto FRAG_SHADER = R"glsl(
+#version 330 core
+
+in vec4 out_color;
+
+out vec4 fragColor;
+
+void main()
+{
+    fragColor = out_color;
+}
+
+)glsl";
+
+// clang-format off
+  // X - left to right axis
+  // Y - bottom to top axis
+  // Z - near to far axis
+  float vertices[] = {
+    // Front face - RED
+    -0.5, -0.5,  +0.5,  1.0f, 0.3f, 0.3f, 1.0f,
+    +0.5, -0.5,  +0.5,  1.0f, 0.3f, 0.3f, 1.0f,
+    +0.5, +0.5,  +0.5,  1.0f, 0.3f, 0.3f, 1.0f,
+    -0.5, +0.5,  +0.5,  1.0f, 0.3f, 0.3f, 1.0f,
+
+    // Right face - GREEN
+    +0.5, -0.5,  +0.5,  0.3f, 1.0f, 0.3f, 1.0f,
+    +0.5, -0.5,  -0.5,  0.3f, 1.0f, 0.3f, 1.0f,
+    +0.5, +0.5,  -0.5,  0.3f, 1.0f, 0.3f, 1.0f,
+    +0.5, +0.5,  +0.5,  0.3f, 1.0f, 0.3f, 1.0f,
+
+    // Back face - BLUE
+    +0.5, -0.5,  -0.5,  0.3f, 0.3f, 1.0f, 1.0f,
+    -0.5, -0.5,  -0.5,  0.3f, 0.3f, 1.0f, 1.0f,
+    -0.5, +0.5,  -0.5,  0.3f, 0.3f, 1.0f, 1.0f,
+    +0.5, +0.5,  -0.5,  0.3f, 0.3f, 1.0f, 1.0f,
+
+    // Left face - YELLOW
+    -0.5, -0.5,  -0.5,  1.0f, 1.0f, 0.3f, 1.0f,
+    -0.5, -0.5,  +0.5,  1.0f, 1.0f, 0.3f, 1.0f,
+    -0.5, +0.5,  +0.5,  1.0f, 1.0f, 0.3f, 1.0f,
+    -0.5, +0.5,  -0.5,  1.0f, 1.0f, 0.3f, 1.0f,
+
+    // Top face - MAGENTA
+    -0.5, +0.5,  +0.5,  1.0f, 0.3f, 1.0f, 1.0f,
+    +0.5, +0.5,  +0.5,  1.0f, 0.3f, 1.0f, 1.0f,
+    +0.5, +0.5,  -0.5,  1.0f, 0.3f, 1.0f, 1.0f,
+    -0.5, +0.5,  -0.5,  1.0f, 0.3f, 1.0f, 1.0f,
+
+    // Bottom face - CYAN
+    -0.5, -0.5,  -0.5,  0.3f, 1.0f, 1.0f, 1.0f,
+    +0.5, -0.5,  -0.5,  0.3f, 1.0f, 1.0f, 1.0f,
+    +0.5, -0.5,  +0.5,  0.3f, 1.0f, 1.0f, 1.0f,
+    -0.5, -0.5,  +0.5,  0.3f, 1.0f, 1.0f, 1.0f,
+  };
+// clang-format on
+
+const glm::vec3 cubePositions[] = { glm::vec3(0.0f, 0.0f, 0.0f),    glm::vec3(2.0f, 5.0f, -15.0f),
+                                    glm::vec3(-1.5f, -2.2f, -2.5f), glm::vec3(-3.8f, -2.0f, -12.3f),
+                                    glm::vec3(2.4f, -0.4f, -3.5f),  glm::vec3(-1.7f, 3.0f, -7.5f),
+                                    glm::vec3(1.3f, -2.0f, -2.5f),  glm::vec3(1.5f, 2.0f, -2.5f),
+                                    glm::vec3(1.5f, 0.2f, -1.5f),   glm::vec3(-1.3f, 1.0f, -1.5f) };
 
 struct Application::Impl
 {
@@ -37,7 +122,7 @@ struct Application::Impl
 
     Event::Dispatch(EvType::WINDOW_RESIZE,
                     event,
-                    [this](const EvData& ev)
+                    [](const EvData& ev)
                     {
                       const auto& [_, w, h] = *std::get_if<WindowResizeData>(&ev);
                       Renderer::SetViewport(0, 0, w, h);
@@ -65,52 +150,8 @@ Application::Application(std::string&& title, unsigned int width, unsigned int h
   m_pimpl->vao = std::make_shared<VertexArray>();
   m_pimpl->vao->Bind();
 
-  // clang-format off
-  // X - left to right axis
-  // Y - bottom to top axis
-  // Z - front to back axis
-  float vertices[] = {
-    // Front face - RED
-    -0.25, -0.25,  -0.25,  1.0f, 0.3f, 0.3f, 1.0f,
-    +0.25, -0.25,  -0.25,  1.0f, 0.3f, 0.3f, 1.0f,
-    +0.25, +0.25,  -0.25,  1.0f, 0.3f, 0.3f, 1.0f,
-    -0.25, +0.25,  -0.25,  1.0f, 0.3f, 0.3f, 1.0f,
-
-    // Right face - GREEN
-    +0.25, -0.25,  -0.25,  0.3f, 1.0f, 0.3f, 1.0f,
-    +0.25, -0.25,  +0.25,  0.3f, 1.0f, 0.3f, 1.0f,
-    +0.25, +0.25,  +0.25,  0.3f, 1.0f, 0.3f, 1.0f,
-    +0.25, +0.25,  -0.25,  0.3f, 1.0f, 0.3f, 1.0f,
-
-    // Back face - BLUE
-    +0.25, -0.25,  +0.25,  0.3f, 0.3f, 1.0f, 1.0f,
-    -0.25, -0.25,  +0.25,  0.3f, 0.3f, 1.0f, 1.0f,
-    -0.25, +0.25,  +0.25,  0.3f, 0.3f, 1.0f, 1.0f,
-    +0.25, +0.25,  +0.25,  0.3f, 0.3f, 1.0f, 1.0f,
-
-    // Left face - YELLOW
-    -0.25, -0.25,  +0.25,  1.0f, 1.0f, 0.3f, 1.0f,
-    -0.25, -0.25,  -0.25,  1.0f, 1.0f, 0.3f, 1.0f,
-    -0.25, +0.25,  -0.25,  1.0f, 1.0f, 0.3f, 1.0f,
-    -0.25, +0.25,  +0.25,  1.0f, 1.0f, 0.3f, 1.0f,
-
-    // Top face - MAGENTA
-    -0.25, +0.25,  -0.25,  1.0f, 0.3f, 1.0f, 1.0f,
-    +0.25, +0.25,  -0.25,  1.0f, 0.3f, 1.0f, 1.0f,
-    +0.25, +0.25,  +0.25,  1.0f, 0.3f, 1.0f, 1.0f,
-    -0.25, +0.25,  +0.25,  1.0f, 0.3f, 1.0f, 1.0f,
-
-    // Bottom face - CYAN
-    -0.25, -0.25,  +0.25,  0.3f, 1.0f, 1.0f, 1.0f,
-    +0.25, -0.25,  +0.25,  0.3f, 1.0f, 1.0f, 1.0f,
-    +0.25, -0.25,  -0.25,  0.3f, 1.0f, 1.0f, 1.0f,
-    -0.25, -0.25,  -0.25,  0.3f, 1.0f, 1.0f, 1.0f,
-  };
-  // clang-format on
-
-  auto vbo = std::make_shared<VertexBuffer>(vertices,
-                                            (uint32_t)(sizeof(float) * 7 * 6 * 4),
-                                            m_pimpl->vao->GetID());
+  auto vbo =
+    std::make_shared<VertexBuffer>(vertices, (uint32_t)(sizeof(vertices)), m_pimpl->vao->GetID());
 
   vbo->Bind();
   m_pimpl->vao->SetVertexBuffer(vbo);
@@ -126,50 +167,41 @@ Application::Application(std::string&& title, unsigned int width, unsigned int h
   auto ibo = std::make_shared<IndexBuffer>(indices, 36, m_pimpl->vao->GetID());
   m_pimpl->vao->SetIndexBuffer(ibo);
 
-  m_pimpl->shader = std::make_shared<Shader>(R"glsl(
-#version 330 core
-
-layout (location = 0) in vec3 in_position;
-layout (location = 1) in vec4 in_color;
-
-out vec4 vertexColor;
-
-uniform mat4 u_model;
-
-void main()
-{
-    gl_Position = transpose(u_model) * vec4(in_position, 1.0);
-    vertexColor = in_color;
-}
-
-)glsl",
-
-                                             R"glsl(
-#version 330 core
-
-in vec4 vertexColor;
-out vec4 fragColor;
-
-void main()
-{
-    fragColor = vertexColor;
-}
-
-)glsl");
+  m_pimpl->shader = std::make_shared<Shader>(VERTEX_SHADER, FRAG_SHADER);
 
   m_pimpl->shader->Bind();
 
-  //  Mat4<float> model_mat = Transform::RotateY(240);
-  //
-  //  m_pimpl->shader->UploadMat4F("u_model", model_mat);
+  //  const Mat4<float> T = Transform::Translate(-15, -15, -15);
+  //  const Mat4<float> S = Transform::Scale(0.08f, 0.08f, 0.08f);
+  //    const Mat4<float> R = Transform::RotateX(30) * Transform::RotateY(30);
+
+  // Move draw to origin (-5, +5)
+  // Scale to normalize coordinates -5x = -0.4 (margin of 0.6)
+  // Rotate in X and Y axis after transformations
+  const auto M = Transform::Identity(); ///*R **/ S * T;
+
+  m_pimpl->shader->UploadMat4F("u_model", M);
+
+  const auto V =
+    glm::lookAt(glm::vec3{ 0.0f, 0.0f, 4.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f });
+  /*Transform::LookAt(std::make_tuple(0.f, 0.f, 10.f),
+                                        std::make_tuple(0.f, 0.f, 0.f),
+                                        std::make_tuple(0.f, 1.f, 0.f));*/
+  m_pimpl->shader->UploadMat4F("u_view", glm::value_ptr(V));
+
+  const auto P = glm::perspective(45.0f, 1.0f, 0.1f, 100.f);
+  // Transform::Perspective(45, 1.0f, 0.1f, 100.0);
+  m_pimpl->shader->UploadMat4F("u_proj", glm::value_ptr(P));
 }
 
 Application::~Application() = default;
 
 void Application::Run()
 {
-  long long sec_count = 0;
-  float rot = 0;
+  //  long long sec_count = 0;
+  //  float rot = 0;
+  //  float transl_x = 0;
+  //  bool increment = true;
   while (m_pimpl->running)
   {
     auto start = std::chrono::high_resolution_clock ::now();
@@ -178,24 +210,44 @@ void Application::Run()
       Renderer::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
       Renderer::Clear();
 
-      Renderer::DrawIndexed(m_pimpl->vao, 36);
+      float angle = 0.0f;
+      for (auto cubePosition : cubePositions)
+      {
+        glm::mat4 i_model = glm::translate(glm::mat4{ 1.0f }, cubePosition);
+        i_model = glm::rotate(i_model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+        m_pimpl->shader->UploadMat4F("u_model", glm::value_ptr(i_model));
+        Renderer::DrawIndexed(m_pimpl->vao, 36);
+        angle += 20.0f;
+      }
 
       m_pimpl->window->OnUpdate();
     }
-    auto end = std::chrono::high_resolution_clock ::now();
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-    sec_count += duration.count();
-    if (sec_count > 16)
-    {
-      m_pimpl->shader->Bind();
-
-      Mat4<float> model_matx = Transform::RotateX(rot / 2);
-      Mat4<float> model_maty = Transform::RotateY(rot += 1);
-      auto model_mat = model_matx * model_maty;
-      std::cout << "ROT: " << rot << std::endl;
-      m_pimpl->shader->UploadMat4F("u_model", model_mat);
-      sec_count = 0;
-    }
+    //    auto end = std::chrono::high_resolution_clock ::now();
+    //    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    //    sec_count += duration.count();
+    //    if (sec_count > 16)
+    //    {
+    //      m_pimpl->shader->Bind();
+    //
+    //      Mat4<float> model_matx = Transform::RotateX(rot / 2);
+    //      Mat4<float> model_maty = Transform::RotateY(rot += 1);
+    //      Mat4<float> model_transl;
+    //      if (increment)
+    //      {
+    //        model_transl = Transform::Translate(transl_x -= 0.01f, 0.0, 0.0);
+    //        if (transl_x <= -0.5)
+    //          increment = !increment;
+    //      }
+    //      else
+    //      {
+    //        model_transl = Transform::Translate(transl_x += 0.01f, 0.0, 0.0);
+    //        if (transl_x >= 0.5)
+    //          increment = !increment;
+    //      }
+    //      auto model_mat = model_transl * model_matx * model_maty;
+    //      m_pimpl->shader->UploadMat4F("u_model", model_mat);
+    //      sec_count = 0;
+    //  }
     //    std::cout << "FPS: " << 1000 / duration.count() << std::endl;
   }
 }
