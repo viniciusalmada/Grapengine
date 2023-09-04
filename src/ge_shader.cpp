@@ -134,7 +134,10 @@ struct Shader::Impl
   int RetrieveUniform(const std::string& name)
   {
     if (!IsBound())
+    {
       std::cerr << "Shader not bound!!" << std::endl;
+      return -1;
+    }
   check:
     if (uniforms.contains(name))
       return uniforms[name];
