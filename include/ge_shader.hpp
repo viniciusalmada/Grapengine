@@ -11,7 +11,7 @@ public:
 
   void Bind();
 
-  void UploadMat4F(const std::string& name, const Mat4<float>& mat);
+  void UploadMat4F(const std::string& name, const Mat4& mat);
 
   void UploadMat4F(const std::string& name, const float* mat);
 

@@ -161,9 +161,9 @@ void Shader::Bind()
 
 Shader::~Shader() = default;
 
-void Shader::UploadMat4F(const std::string& name, const Mat4<float>& mat)
+void Shader::UploadMat4F(const std::string& name, const Mat4& mat)
 {
-  UploadMat4F(name, mat.data()->data());
+  UploadMat4F(name, mat.ValuePtr());
 }
 
 void Shader::UploadMat4F(const std::string& name, const float* data)
