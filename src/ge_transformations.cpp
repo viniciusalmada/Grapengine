@@ -62,7 +62,7 @@ Mat4 Transform::Scale(float xFac, float yFac, float zFac)
 
 Mat4 Transform::LookAt(const Vec3& eye, const Vec3& target, const Vec3& up)
 {
-  Vec3 view = (eye - target).Normalize();
+  Vec3 view = (target - eye).Normalize();
   Vec3 z_eye = -view;
   Vec3 x_eye = (up.Cross(z_eye)).Normalize();
   Vec3 y_eye = z_eye.Cross(x_eye);

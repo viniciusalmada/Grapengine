@@ -132,3 +132,31 @@ TEST(Transform, Scale)
   ASSERT_FLOAT_EQ(tra(3, 2), 0);
   ASSERT_FLOAT_EQ(tra(3, 3), 1);
 }
+
+TEST(Transform, LookAt)
+{
+  Vec3 eye{ 1, 2, 3 };
+  Vec3 target{ 0, 0, 0 };
+  Vec3 up{ 0, 1, 0 };
+  Mat4 tra = Transform::LookAt(eye, target, up);
+
+  ASSERT_NEAR(tra(0, 0), 0.94868332, float(1e9));
+  ASSERT_NEAR(tra(0, 1), 0, float(1e9));
+  ASSERT_NEAR(tra(0, 2), -0.31622779, float(1e9));
+  ASSERT_NEAR(tra(0, 3), 0, float(1e9));
+
+  ASSERT_NEAR(tra(1, 0), -0.169031, float(1e9));
+  ASSERT_NEAR(tra(1, 1), 0.845154, float(1e9));
+  ASSERT_NEAR(tra(1, 2), -0.507093, float(1e9));
+  ASSERT_NEAR(tra(1, 3), 0, float(1e9));
+
+  ASSERT_NEAR(tra(2, 0), 0.267261, float(1e9));
+  ASSERT_NEAR(tra(2, 1), 0.534522, float(1e9));
+  ASSERT_NEAR(tra(2, 2), 0.801784, float(1e9));
+  ASSERT_NEAR(tra(2, 3), -3.741657, float(1e9));
+
+  ASSERT_NEAR(tra(3, 0), 0, float(1e9));
+  ASSERT_NEAR(tra(3, 1), 0, float(1e9));
+  ASSERT_NEAR(tra(3, 2), 0, float(1e9));
+  ASSERT_NEAR(tra(3, 3), 1.00000, float(1e9));
+}
