@@ -4,7 +4,7 @@
 
 #include "ge_transformations.hpp"
 
-inline auto radians(float deg)
+inline float Transform::Deg2Rad(float deg)
 {
   return deg * (std::numbers::pi_v<decltype(deg)> / 180.0f);
 }
@@ -21,30 +21,30 @@ Mat4 Transform::Translate(float xFac, float yFac, float zFac)
 
 Mat4 Transform::RotateX(float degrees)
 {
-  auto c = std::cosf(radians(degrees));
-  auto s = std::sinf(radians(degrees));
+  auto c = std::cosf(Deg2Rad(degrees));
+  auto s = std::sinf(Deg2Rad(degrees));
   return Mat4{
     { 1, 0, 0, 0 },
-    { 0, c, s, 0 },
-    { 0, -s, c, 0 },
+    { 0, c, -s, 0 },
+    { 0, s, c, 0 },
     { 0, 0, 0, 1 },
   };
 }
 
 Mat4 Transform::RotateY(float degrees)
 {
-  auto c = std::cosf(radians(degrees));
-  auto s = std::sinf(radians(degrees));
+  auto c = std::cosf(Deg2Rad(degrees));
+  auto s = std::sinf(Deg2Rad(degrees));
   return Mat4{ { c, 0, s, 0 }, { 0, 1, 0, 0 }, { -s, 0, c, 0 }, { 0, 0, 0, 1 } };
 }
 
 Mat4 Transform::RotateZ(float degrees)
 {
-  auto c = std::cosf(radians(degrees));
-  auto s = std::sinf(radians(degrees));
+  auto c = std::cosf(Deg2Rad(degrees));
+  auto s = std::sinf(Deg2Rad(degrees));
   return Mat4{
-    { c, s, 0, 0 },
-    { -s, c, 0, 0 },
+    { c, -s, 0, 0 },
+    { s, c, 0, 0 },
     { 0, 0, 1, 0 },
     { 0, 0, 0, 1 },
   };
@@ -100,7 +100,7 @@ Mat4 Transform::Identity()
 
 Mat4 Transform::Perspective(float fovDegrees, float aspectRatio, float near, float far)
 {
-  auto tan_half_fov = std::tanf(radians(fovDegrees) / 2.0f);
+  auto tan_half_fov = std::tanf(Deg2Rad(fovDegrees) / 2.0f);
 
   Mat4 res{
     { 1 / (aspectRatio * tan_half_fov), 0, 0, 0 },

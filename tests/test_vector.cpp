@@ -53,7 +53,7 @@ TEST(Vec3, Dot)
   ASSERT_FLOAT_EQ(res, 32);
 }
 
-TEST(Vector, Mat4Multiply)
+TEST(Mat4, Mat4Multiply)
 {
   Mat4 m1{
     { 1, 2, 3, 4 },
