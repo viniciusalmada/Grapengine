@@ -163,8 +163,31 @@ TEST(Transform, LookAt)
   ASSERT_NEAR(tra(3, 3), 1.00000, DELTA);
 }
 
-  ASSERT_NEAR(tra(3, 0), 0, float(1e9));
-  ASSERT_NEAR(tra(3, 1), 0, float(1e9));
-  ASSERT_NEAR(tra(3, 2), 0, float(1e9));
-  ASSERT_NEAR(tra(3, 3), 1.00000, float(1e9));
+TEST(Transform, Perspective)
+{
+  float angle = 45;
+  float aspect_ratio = 1;
+  float near = 0.1f;
+  float far = 100.f;
+  Mat4 tra = Transform::Perspective(angle, aspect_ratio, near, far);
+
+  ASSERT_NEAR(tra(0, 0), 2.414213, DELTA);
+  ASSERT_NEAR(tra(0, 1), 0.000000, DELTA);
+  ASSERT_NEAR(tra(0, 2), 0.000000, DELTA);
+  ASSERT_NEAR(tra(0, 3), 0.000000, DELTA);
+
+  ASSERT_NEAR(tra(1, 0), 0.000000, DELTA);
+  ASSERT_NEAR(tra(1, 1), 2.414213, DELTA);
+  ASSERT_NEAR(tra(1, 2), 0.000000, DELTA);
+  ASSERT_NEAR(tra(1, 3), 0.000000, DELTA);
+
+  ASSERT_NEAR(tra(2, 0), 0.000000, DELTA);
+  ASSERT_NEAR(tra(2, 1), 0.000000, DELTA);
+  ASSERT_NEAR(tra(2, 2), -1.002002, DELTA);
+  ASSERT_NEAR(tra(2, 3), -0.200200, DELTA);
+
+  ASSERT_NEAR(tra(3, 0), 0.000000, DELTA);
+  ASSERT_NEAR(tra(3, 1), 0.000000, DELTA);
+  ASSERT_NEAR(tra(3, 2), -1.000000, DELTA);
+  ASSERT_NEAR(tra(3, 3), 0.000000, DELTA);
 }

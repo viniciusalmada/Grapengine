@@ -105,8 +105,8 @@ Mat4 Transform::Perspective(float fovDegrees, float aspectRatio, float near, flo
   Mat4 res{
     { 1 / (aspectRatio * tan_half_fov), 0, 0, 0 },
     { 0, 1 / (tan_half_fov), 0, 0 },
-    { 0, 0, -(far + near) / (far - near), -1 },
-    { 0, 0, (2 * far * near) / (far - near), 0 },
+    { 0, 0, -(far + near) / (far - near), -(2 * far * near) / (far - near) },
+    { 0, 0, -1, 0 },
   };
 
   return res;
