@@ -1,7 +1,9 @@
 #include "ge_window.hpp"
 
 #include <GLFW/glfw3.h>
-#include <glad/glad.h>
+
+#define GLAD_GL_IMPLEMENTATION
+#include <glad/gl.h>
 
 static bool glfw_initialized = false;
 
@@ -13,10 +15,9 @@ public:
   void Init()
   {
     glfwMakeContextCurrent(m_window);
-    auto loader = [](const char* name)
-    { return reinterpret_cast<void*>(glfwGetProcAddress(name)); };
-    int status = gladLoadGLLoader(loader);
-    if (!status)
+
+    int version = gladLoaderLoadGL();
+    if (version == 0)
       throw std::exception("Error with GLAD");
 
     std::cout << "OpenGL Vendor: " << (char*)glGetString(GL_VENDOR) << std::endl;
@@ -48,6 +49,8 @@ struct Window::Impl
   {
     glfwDestroyWindow(window);
     glfwTerminate();
+
+    gladLoaderUnloadGL();
   }
 };
 

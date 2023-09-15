@@ -20,7 +20,6 @@ target_compile_definitions(${ENGINE_NAME} PRIVATE GLFW_INCLUDE_NONE)
 target_compile_options(${ENGINE_NAME} PRIVATE /WX /W4)
 
 target_link_libraries(${ENGINE_NAME}
-    PUBLIC GLAD
     PUBLIC glfw)
 if (WIN32)
   target_link_libraries(${ENGINE_NAME} PRIVATE opengl32.lib)

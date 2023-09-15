@@ -2,7 +2,7 @@
 
 #include "ge_entities.hpp"
 
-#include <glad/glad.h>
+#include <glad/gl.h>
 
 void OpenGLDebuggerFunc(GLenum /* source */,
                         GLenum /* type */,

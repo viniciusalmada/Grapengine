@@ -14,10 +14,6 @@ set(ENGINE_NAME GraphicEngine3D)
 add_subdirectory(vendor/glfw)
 
 # #############################################################################
-# GLAD library
-add_subdirectory(vendor/GLAD)
-
-# #############################################################################
 # Engine
 add_subdirectory(src)
 

@@ -1,6 +1,6 @@
 #include "ge_entities.hpp"
 
-#include "glad/glad.h"
+#include "glad/gl.h"
 
 namespace
 {
