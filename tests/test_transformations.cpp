@@ -133,6 +133,8 @@ TEST(Transform, Scale)
   ASSERT_FLOAT_EQ(tra(3, 3), 1);
 }
 
+constexpr float DELTA = 1.0e-6f;
+
 TEST(Transform, LookAt)
 {
   Vec3 eye{ 1, 2, 3 };
@@ -140,20 +142,26 @@ TEST(Transform, LookAt)
   Vec3 up{ 0, 1, 0 };
   Mat4 tra = Transform::LookAt(eye, target, up);
 
-  ASSERT_NEAR(tra(0, 0), 0.94868332, float(1e9));
-  ASSERT_NEAR(tra(0, 1), 0, float(1e9));
-  ASSERT_NEAR(tra(0, 2), -0.31622779, float(1e9));
-  ASSERT_NEAR(tra(0, 3), 0, float(1e9));
+  ASSERT_NEAR(tra(0, 0), 0.94868332, DELTA);
+  ASSERT_NEAR(tra(0, 1), 0, DELTA);
+  ASSERT_NEAR(tra(0, 2), -0.31622779, DELTA);
+  ASSERT_NEAR(tra(0, 3), 0, DELTA);
 
-  ASSERT_NEAR(tra(1, 0), -0.169031, float(1e9));
-  ASSERT_NEAR(tra(1, 1), 0.845154, float(1e9));
-  ASSERT_NEAR(tra(1, 2), -0.507093, float(1e9));
-  ASSERT_NEAR(tra(1, 3), 0, float(1e9));
+  ASSERT_NEAR(tra(1, 0), -0.169031, DELTA);
+  ASSERT_NEAR(tra(1, 1), 0.845154, DELTA);
+  ASSERT_NEAR(tra(1, 2), -0.507093, DELTA);
+  ASSERT_NEAR(tra(1, 3), 0, DELTA);
 
-  ASSERT_NEAR(tra(2, 0), 0.267261, float(1e9));
-  ASSERT_NEAR(tra(2, 1), 0.534522, float(1e9));
-  ASSERT_NEAR(tra(2, 2), 0.801784, float(1e9));
-  ASSERT_NEAR(tra(2, 3), -3.741657, float(1e9));
+  ASSERT_NEAR(tra(2, 0), 0.267261, DELTA);
+  ASSERT_NEAR(tra(2, 1), 0.534522, DELTA);
+  ASSERT_NEAR(tra(2, 2), 0.801784, DELTA);
+  ASSERT_NEAR(tra(2, 3), -3.741657, DELTA);
+
+  ASSERT_NEAR(tra(3, 0), 0, DELTA);
+  ASSERT_NEAR(tra(3, 1), 0, DELTA);
+  ASSERT_NEAR(tra(3, 2), 0, DELTA);
+  ASSERT_NEAR(tra(3, 3), 1.00000, DELTA);
+}
 
   ASSERT_NEAR(tra(3, 0), 0, float(1e9));
   ASSERT_NEAR(tra(3, 1), 0, float(1e9));
