@@ -90,10 +90,10 @@ void main()
 // clang-format on
 
 const Vec3 cubePositions[] = { Vec3(0.0f, 0.0f, 0.0f),    Vec3(2.0f, 5.0f, -15.0f),
-                                    Vec3(-1.5f, -2.2f, -2.5f), Vec3(-3.8f, -2.0f, -12.3f),
-                                    Vec3(2.4f, -0.4f, -3.5f),  Vec3(-1.7f, 3.0f, -7.5f),
-                                    Vec3(1.3f, -2.0f, -2.5f),  Vec3(1.5f, 2.0f, -2.5f),
-                                    Vec3(1.5f, 0.2f, -1.5f),   Vec3(-1.3f, 1.0f, -1.5f) };
+                               Vec3(-1.5f, -2.2f, -2.5f), Vec3(-3.8f, -2.0f, -12.3f),
+                               Vec3(2.4f, -0.4f, -3.5f),  Vec3(-1.7f, 3.0f, -7.5f),
+                               Vec3(1.3f, -2.0f, -2.5f),  Vec3(1.5f, 2.0f, -2.5f),
+                               Vec3(1.5f, 0.2f, -1.5f),   Vec3(-1.3f, 1.0f, -1.5f) };
 
 struct Application::Impl
 {
@@ -186,7 +186,7 @@ Application::Application(std::string&& title, unsigned int width, unsigned int h
                                         std::make_tuple(0.f, 1.f, 0.f));*/
   m_pimpl->shader->UploadMat4F("u_view", V);
 
-  const auto P = Transform::Perspective(45.0f, 1.0f, 0.1f, 100.f);
+  const auto P = Transform::Perspective(60.0f, 1.0f, 0.1f, 100.f);
   std::cout << Transform::ToString(P) << std::endl;
   m_pimpl->shader->UploadMat4F("u_proj", P);
 }
