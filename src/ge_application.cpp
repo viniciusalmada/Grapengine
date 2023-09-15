@@ -168,22 +168,12 @@ Application::Application(std::string&& title, unsigned int width, unsigned int h
 
   m_pimpl->shader->Bind();
 
-  //  const Mat4<float> T = Transform::Translate(-15, -15, -15);
-  //  const Mat4<float> S = Transform::Scale(0.08f, 0.08f, 0.08f);
-  //    const Mat4<float> R = Transform::RotateX(30) * Transform::RotateY(30);
-
-  // Move draw to origin (-5, +5)
-  // Scale to normalize coordinates -5x = -0.4 (margin of 0.6)
-  // Rotate in X and Y axis after transformations
   const auto M = Transform::Identity(); ///*R **/ S * T;
 
   m_pimpl->shader->UploadMat4F("u_model", M);
 
   const auto V =
-    Transform::LookAt(Vec3{ 0.0f, 0.0f, 4.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f });
-  /*Transform::LookAt(std::make_tuple(0.f, 0.f, 10.f),
-                                        std::make_tuple(0.f, 0.f, 0.f),
-                                        std::make_tuple(0.f, 1.f, 0.f));*/
+    Transform::LookAt({ 0.0f, 0.0f, 4.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f });
   m_pimpl->shader->UploadMat4F("u_view", V);
 
   const auto P = Transform::Perspective(60.0f, 1.0f, 0.1f, 100.f);
