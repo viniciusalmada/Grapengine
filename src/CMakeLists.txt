@@ -15,7 +15,6 @@ target_include_directories(${ENGINE_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(${ENGINE_NAME} SYSTEM PUBLIC
     ${CMAKE_SOURCE_DIR}/vendor/glfw/include
     ${CMAKE_SOURCE_DIR}/vendor/GLAD/include
-    ${CMAKE_SOURCE_DIR}/vendor/glm/
     )
 target_compile_definitions(${ENGINE_NAME} PRIVATE GLFW_INCLUDE_NONE)
 target_compile_options(${ENGINE_NAME} PRIVATE /WX /W4)

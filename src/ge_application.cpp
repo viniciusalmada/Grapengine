@@ -7,9 +7,6 @@
 
 #include <ge_event_type.hpp>
 #include <ge_transformations.hpp>
-#include <glm/ext/matrix_transform.hpp>
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 constexpr auto VERTEX_PER_QUAD = 6;
 constexpr auto MAX_QUADS = 100;
@@ -92,11 +89,11 @@ void main()
   };
 // clang-format on
 
-const glm::vec3 cubePositions[] = { glm::vec3(0.0f, 0.0f, 0.0f),    glm::vec3(2.0f, 5.0f, -15.0f),
-                                    glm::vec3(-1.5f, -2.2f, -2.5f), glm::vec3(-3.8f, -2.0f, -12.3f),
-                                    glm::vec3(2.4f, -0.4f, -3.5f),  glm::vec3(-1.7f, 3.0f, -7.5f),
-                                    glm::vec3(1.3f, -2.0f, -2.5f),  glm::vec3(1.5f, 2.0f, -2.5f),
-                                    glm::vec3(1.5f, 0.2f, -1.5f),   glm::vec3(-1.3f, 1.0f, -1.5f) };
+const Vec3 cubePositions[] = { Vec3(0.0f, 0.0f, 0.0f),    Vec3(2.0f, 5.0f, -15.0f),
+                                    Vec3(-1.5f, -2.2f, -2.5f), Vec3(-3.8f, -2.0f, -12.3f),
+                                    Vec3(2.4f, -0.4f, -3.5f),  Vec3(-1.7f, 3.0f, -7.5f),
+                                    Vec3(1.3f, -2.0f, -2.5f),  Vec3(1.5f, 2.0f, -2.5f),
+                                    Vec3(1.5f, 0.2f, -1.5f),   Vec3(-1.3f, 1.0f, -1.5f) };
 
 struct Application::Impl
 {
@@ -183,15 +180,15 @@ Application::Application(std::string&& title, unsigned int width, unsigned int h
   m_pimpl->shader->UploadMat4F("u_model", M);
 
   const auto V =
-    glm::lookAt(glm::vec3{ 0.0f, 0.0f, 4.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f });
+    Transform::LookAt(Vec3{ 0.0f, 0.0f, 4.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f });
   /*Transform::LookAt(std::make_tuple(0.f, 0.f, 10.f),
                                         std::make_tuple(0.f, 0.f, 0.f),
                                         std::make_tuple(0.f, 1.f, 0.f));*/
-  m_pimpl->shader->UploadMat4F("u_view", glm::value_ptr(V));
+  m_pimpl->shader->UploadMat4F("u_view", V);
 
-  const auto P = glm::perspective(45.0f, 1.0f, 0.1f, 100.f);
-  // Transform::Perspective(45, 1.0f, 0.1f, 100.0);
-  m_pimpl->shader->UploadMat4F("u_proj", glm::value_ptr(P));
+  const auto P = Transform::Perspective(45.0f, 1.0f, 0.1f, 100.f);
+  std::cout << Transform::ToString(P) << std::endl;
+  m_pimpl->shader->UploadMat4F("u_proj", P);
 }
 
 Application::~Application() = default;
@@ -213,9 +210,9 @@ void Application::Run()
       float angle = 0.0f;
       for (auto cubePosition : cubePositions)
       {
-        glm::mat4 i_model = glm::translate(glm::mat4{ 1.0f }, cubePosition);
-        i_model = glm::rotate(i_model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-        m_pimpl->shader->UploadMat4F("u_model", glm::value_ptr(i_model));
+        Mat4 i_model = Transform::Translate(cubePosition.x, cubePosition.y, cubePosition.z);
+        i_model = Transform::RotateZ(angle) * i_model;
+        m_pimpl->shader->UploadMat4F("u_model", i_model);
         Renderer::DrawIndexed(m_pimpl->vao, 36);
         angle += 20.0f;
       }
