@@ -211,7 +211,7 @@ void Application::Run()
       for (auto cubePosition : cubePositions)
       {
         Mat4 i_model = Transform::Translate(cubePosition.x, cubePosition.y, cubePosition.z);
-        i_model = Transform::RotateZ(angle) * i_model;
+        i_model = i_model * Transform::Rotate(angle, Vec3{ 1.0f, 0.3f, 0.5f });
         m_pimpl->shader->UploadMat4F("u_model", i_model);
         Renderer::DrawIndexed(m_pimpl->vao, 36);
         angle += 20.0f;

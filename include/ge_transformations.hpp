@@ -15,6 +15,8 @@ namespace Transform
 
   Mat4 GE3D RotateZ(float degrees);
 
+  Mat4 GE3D Rotate(float degrees, const Vec3& vector);
+
   Mat4 GE3D Scale(float xFac, float yFac, float zFac);
 
   Mat4 GE3D LookAt(const Vec3& eye, const Vec3& dir, const Vec3& up);

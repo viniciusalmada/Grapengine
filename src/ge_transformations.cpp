@@ -4,6 +4,8 @@
 
 #include "ge_transformations.hpp"
 
+#include <ge_vector.hpp>
+
 inline float Transform::Deg2Rad(float deg)
 {
   return deg * (std::numbers::pi_v<decltype(deg)> / 180.0f);
@@ -48,6 +50,31 @@ Mat4 Transform::RotateZ(float degrees)
     { 0, 0, 1, 0 },
     { 0, 0, 0, 1 },
   };
+}
+
+Mat4 Transform::Rotate(float degrees, const Vec3& vector)
+{
+  Mat4 res = Identity();
+  Vec3 norm = vector.Normalize();
+  const auto& vx = norm.x;
+  const auto& vy = norm.y;
+  const auto& vz = norm.z;
+  const auto& ct = std::cosf(Deg2Rad(degrees));
+  const auto& st = std::sinf(Deg2Rad(degrees));
+
+  res(0, 0) = vx * vx + ct * (1 - vx * vx);
+  res(0, 1) = vx * vy * (1 - ct) - vz * st;
+  res(0, 2) = vz * vx * (1 - ct) + vy * st;
+
+  res(1, 0) = vx * vy * (1 - ct) + vz * st;
+  res(1, 1) = vy * vy + ct * (1 - vy * vy);
+  res(1, 2) = vy * vz * (1 - ct) - vx * st;
+
+  res(2, 0) = vx * vz * (1 - ct) - vy * st;
+  res(2, 1) = vy * vz * (1 - ct) + vx * st;
+  res(2, 2) = vz * vz + ct * (1 - vz * vz);
+
+  return res;
 }
 
 Mat4 Transform::Scale(float xFac, float yFac, float zFac)

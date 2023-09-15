@@ -111,6 +111,30 @@ TEST(Transform, RotateZ)
   ASSERT_FLOAT_EQ(tra(3, 3), 1);
 }
 
+TEST(Transform, Rotate)
+{
+  auto angle = 55.0f;
+  auto vec = Vec3{ 1.5f, -20.0f, 5.0f };
+  auto tra = Transform::Rotate(angle, vec);
+
+  ASSERT_FLOAT_EQ(tra(0, 0), 0.57582208f);
+  ASSERT_FLOAT_EQ(tra(0, 1), -0.22809170f);
+  ASSERT_FLOAT_EQ(tra(0, 2), -0.78511343f);
+  ASSERT_FLOAT_EQ(tra(0, 3), 0);
+  ASSERT_FLOAT_EQ(tra(1, 0), 0.16820776f);
+  ASSERT_FLOAT_EQ(tra(1, 1), 0.97280271f);
+  ASSERT_FLOAT_EQ(tra(1, 2), -0.15925149f);
+  ASSERT_FLOAT_EQ(tra(1, 3), 0);
+  ASSERT_FLOAT_EQ(tra(2, 0), 0.80008442f);
+  ASSERT_FLOAT_EQ(tra(2, 1), -0.04036165f);
+  ASSERT_FLOAT_EQ(tra(2, 2), 0.59852808f);
+  ASSERT_FLOAT_EQ(tra(2, 3), 0);
+  ASSERT_FLOAT_EQ(tra(3, 0), 0);
+  ASSERT_FLOAT_EQ(tra(3, 1), 0);
+  ASSERT_FLOAT_EQ(tra(3, 2), 0);
+  ASSERT_FLOAT_EQ(tra(3, 3), 1);
+}
+
 TEST(Transform, Scale)
 {
   Mat4 tra = Transform::Scale(0.1f, 0.2f, 0.3f);
