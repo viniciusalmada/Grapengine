@@ -13,39 +13,6 @@ constexpr auto MAX_QUADS = 100;
 constexpr auto MAX_VERTICES = MAX_QUADS * 4;
 constexpr auto MAX_INDICES = MAX_QUADS * VERTEX_PER_QUAD;
 
-const auto VERTEX_SHADER = R"glsl(
-#version 330 core
-
-layout (location = 0) in vec3 in_position;
-layout (location = 1) in vec4 in_color;
-
-out vec4 out_color;
-
-uniform mat4 u_model;
-uniform mat4 u_view;
-uniform mat4 u_proj;
-
-void main()
-{
-    gl_Position = (u_proj) * (u_view) * (u_model) * vec4(in_position, 1.0);
-    out_color = in_color;
-}
-
-)glsl";
-const auto FRAG_SHADER = R"glsl(
-#version 330 core
-
-in vec4 out_color;
-
-out vec4 fragColor;
-
-void main()
-{
-    fragColor = out_color;
-}
-
-)glsl";
-
 // clang-format off
   // X - left to right axis
   // Y - bottom to top axis
