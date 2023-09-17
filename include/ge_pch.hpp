@@ -7,11 +7,14 @@
 #include <array>
 #include <chrono>
 #include <filesystem>
+#include <fstream>
 #include <functional>
 #include <iomanip>
 #include <iostream>
 #include <memory>
 #include <numbers>
+#include <sstream>
+#include <stdexcept>
 #include <string>
 #include <tuple>
 #include <utility>
