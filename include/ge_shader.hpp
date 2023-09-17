@@ -6,6 +6,7 @@
 class Shader
 {
 public:
+  Shader(const std::filesystem::path& vertexPath, const std::filesystem::path& fragPath);
   Shader(std::string&& vertexSrc, std::string&& fragmentSrc);
   ~Shader();
 

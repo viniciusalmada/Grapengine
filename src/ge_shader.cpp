@@ -1,5 +1,6 @@
 #include "ge_shader.hpp"
 
+#include <ge_io.hpp>
 #include <glad/gl.h>
 
 namespace
@@ -157,6 +158,14 @@ Shader::Shader(std::string&& vertexSrc, std::string&& fragmentSrc) :
   m_pimpl->renderer_id = CreateProgram(vertexSrc, fragmentSrc);
 }
 
+Shader::Shader(const std::filesystem::path& vertexPath, const std::filesystem::path& fragPath) :
+    m_pimpl(std::make_unique<Impl>())
+{
+  auto vertex_src = IO::ReadFileToString(vertexPath);
+  auto frag_src = IO::ReadFileToString(fragPath);
+  m_pimpl->renderer_id = CreateProgram(vertex_src, frag_src);
+}
+
 void Shader::Bind()
 {
   glUseProgram(m_pimpl->renderer_id);
@@ -175,7 +184,8 @@ void Shader::UploadMat4F(const std::string& name, const float* data)
   glUniformMatrix4fv(location, 1, GL_FALSE, data);
 }
 
-void Shader::UploadInt(const std::string& name, int i) {
+void Shader::UploadInt(const std::string& name, int i)
+{
   auto location = m_pimpl->RetrieveUniform(name);
   glUniform1i(location, i);
 }
