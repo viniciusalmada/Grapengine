@@ -174,3 +174,8 @@ void Shader::UploadMat4F(const std::string& name, const float* data)
   auto location = m_pimpl->RetrieveUniform(name);
   glUniformMatrix4fv(location, 1, GL_FALSE, data);
 }
+
+void Shader::UploadInt(const std::string& name, int i) {
+  auto location = m_pimpl->RetrieveUniform(name);
+  glUniform1i(location, i);
+}
