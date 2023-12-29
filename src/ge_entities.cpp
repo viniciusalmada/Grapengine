@@ -82,8 +82,7 @@ namespace
 
 VertexArray::VertexArray() : id(0), vertex_buffer(nullptr), index_buffer(nullptr)
 {
-  glGenVertexArrays(1, &id);
-  glBindVertexArray(id);
+  glCreateVertexArrays(1, &id);
 }
 
 VertexArray::~VertexArray()
