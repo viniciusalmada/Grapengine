@@ -24,6 +24,8 @@ namespace Transform
   Mat4 GE3D Perspective(float fovDegrees, float aspectRatio, float near, float far);
 
   Mat4 GE3D Identity();
+
+  std::string ToString(const Mat4& mat4);
 }
 
 #endif // GRAPHICENGINE3D_GE_TRANSFORMATIONS_HPP
