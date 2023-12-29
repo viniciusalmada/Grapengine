@@ -3,7 +3,7 @@
 #include <GLFW/glfw3.h>
 
 #define GLAD_GL_IMPLEMENTATION
-#include <glad/gl.h>
+#include <glad/glad.h>
 
 static bool glfw_initialized = false;
 
@@ -16,7 +16,7 @@ public:
   {
     glfwMakeContextCurrent(m_window);
 
-    int version = gladLoaderLoadGL();
+    int version = gladLoadGL();
     if (version == 0)
       throw std::exception("Error with GLAD");
 
@@ -49,8 +49,6 @@ struct Window::Impl
   {
     glfwDestroyWindow(window);
     glfwTerminate();
-
-    gladLoaderUnloadGL();
   }
 };
 

@@ -1,0 +1,9 @@
+{
+  "dependencies": [
+    "glad",
+    "glfw3",
+    "stb"
+  ],
+  "name": "graphic-engine-3d",
+  "version": "0.0.1"
+}

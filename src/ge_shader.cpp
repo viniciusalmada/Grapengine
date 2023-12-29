@@ -1,7 +1,7 @@
 #include "ge_shader.hpp"
 
 #include <ge_io.hpp>
-#include <glad/gl.h>
+#include <glad/glad.h>
 
 namespace
 {

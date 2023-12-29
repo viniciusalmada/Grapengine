@@ -23,10 +23,11 @@ target_include_directories(${ENGINE_NAME} SYSTEM PUBLIC
 target_compile_definitions(${ENGINE_NAME} PRIVATE GLFW_INCLUDE_NONE)
 target_compile_options(${ENGINE_NAME} PRIVATE /WX /W4 /wd4305)
 
-target_link_libraries(${ENGINE_NAME}
-    PUBLIC glfw)
-if (WIN32)
-  target_link_libraries(${ENGINE_NAME} PRIVATE opengl32.lib)
-elseif (UNIX)
-  target_link_libraries(${ENGINE_NAME} PRIVATE GL)
-endif (WIN32)
+find_package(glfw3 CONFIG REQUIRED)
+target_link_libraries(${ENGINE_NAME} PRIVATE glfw)
+
+find_package(glad CONFIG REQUIRED)
+target_link_libraries(${ENGINE_NAME} PRIVATE glad::glad)
+
+find_package(Stb REQUIRED)
+target_include_directories(${ENGINE_NAME} PRIVATE ${Stb_INCLUDE_DIR})
