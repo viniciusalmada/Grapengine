@@ -117,7 +117,7 @@ namespace
   }
 }
 
-struct Shader::Impl
+struct ShaderProgram::Impl
 {
   uint32_t renderer_id{ 0 };
   std::unordered_map<std::string, int> uniforms;
@@ -152,13 +152,13 @@ struct Shader::Impl
   }
 };
 
-Shader::Shader(std::string&& vertexSrc, std::string&& fragmentSrc) :
+ShaderProgram::ShaderProgram(std::string&& vertexSrc, std::string&& fragmentSrc) :
     m_pimpl(std::make_unique<Impl>())
 {
   m_pimpl->renderer_id = CreateProgram(vertexSrc, fragmentSrc);
 }
 
-Shader::Shader(const std::filesystem::path& vertexPath, const std::filesystem::path& fragPath) :
+ShaderProgram::ShaderProgram(const std::filesystem::path& vertexPath, const std::filesystem::path& fragPath) :
     m_pimpl(std::make_unique<Impl>())
 {
   auto vertex_src = IO::ReadFileToString(vertexPath);
@@ -166,25 +166,25 @@ Shader::Shader(const std::filesystem::path& vertexPath, const std::filesystem::p
   m_pimpl->renderer_id = CreateProgram(vertex_src, frag_src);
 }
 
-void Shader::Bind()
+void ShaderProgram::Bind()
 {
   glUseProgram(m_pimpl->renderer_id);
 }
 
-Shader::~Shader() = default;
+ShaderProgram::~ShaderProgram() = default;
 
-void Shader::UploadMat4F(const std::string& name, const Mat4& mat)
+void ShaderProgram::UploadMat4F(const std::string& name, const Mat4& mat)
 {
   UploadMat4F(name, mat.ValuePtr());
 }
 
-void Shader::UploadMat4F(const std::string& name, const float* data)
+void ShaderProgram::UploadMat4F(const std::string& name, const float* data)
 {
   auto location = m_pimpl->RetrieveUniform(name);
   glUniformMatrix4fv(location, 1, GL_FALSE, data);
 }
 
-void Shader::UploadInt(const std::string& name, int i)
+void ShaderProgram::UploadInt(const std::string& name, int i)
 {
   auto location = m_pimpl->RetrieveUniform(name);
   glUniform1i(location, i);

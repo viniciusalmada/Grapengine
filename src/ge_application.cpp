@@ -69,6 +69,7 @@ struct Application::Impl
   bool minimized = false;
   std::shared_ptr<VertexArray> vao;
   std::shared_ptr<Shader> shader;
+  std::shared_ptr<ShaderProgram> shader;
 
   static Application* instance;
 
@@ -131,7 +132,7 @@ Application::Application(std::string&& title, unsigned int width, unsigned int h
   auto ibo = std::make_shared<IndexBuffer>(indices, 36, m_pimpl->vao->GetID());
   m_pimpl->vao->SetIndexBuffer(ibo);
 
-  m_pimpl->shader = std::make_shared<Shader>(
+  m_pimpl->shader = std::make_shared<ShaderProgram>(
     std::filesystem::path{ "assets/shaders/PositionAndTex2D.vshader.glsl" },
     std::filesystem::path{ "assets/shaders/PositionAndTex2D.fshader.glsl" });
 

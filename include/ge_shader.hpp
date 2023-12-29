@@ -3,12 +3,12 @@
 
 #include "ge_vector.hpp"
 
-class Shader
+class ShaderProgram
 {
 public:
-  Shader(const std::filesystem::path& vertexPath, const std::filesystem::path& fragPath);
-  Shader(std::string&& vertexSrc, std::string&& fragmentSrc);
-  ~Shader();
+  ShaderProgram(const std::filesystem::path& vertexPath, const std::filesystem::path& fragPath);
+  ShaderProgram(std::string&& vertexSrc, std::string&& fragmentSrc);
+  ~ShaderProgram();
 
   void Bind();
 
