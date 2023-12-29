@@ -1,5 +1,4 @@
 build*/
 cmake-build-*/
 *.ini
-*.json
 .idea/
