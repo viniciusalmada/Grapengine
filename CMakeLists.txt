@@ -10,10 +10,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(ENGINE_NAME GraphicEngine3D)
 
 # #############################################################################
-# GLFW library
-add_subdirectory(vendor/glfw)
-
-# #############################################################################
 # Engine
 add_subdirectory(src)
 
