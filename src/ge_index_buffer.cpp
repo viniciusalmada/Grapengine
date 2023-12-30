@@ -4,19 +4,30 @@
 
 #include <glad/glad.h>
 
-void IndexBuffer::Bind() const
+struct IndexBuffer::Impl
 {
+  u32 id;
+  u32 count;
+  u32 parent;
+};
+
+IndexBuffer::IndexBuffer(const u32* indices, u32 count, u32 parent) : m_pimpl(MakeScope<Impl>())
+{
+  m_pimpl->id = 0;
+  m_pimpl->count = count;
+  m_pimpl->parent = parent;
   Assert(GL::CheckValidVAO(parent), "The associated VAO lacks a binding");
 
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
+  glGenBuffers(1, &m_pimpl->id);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_pimpl->id);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, (u32)(count * sizeof(u32)), indices, GL_STATIC_DRAW);
 }
 
-IndexBuffer::IndexBuffer(const u32* indices, u32 count, u32 parent) :
-    id(0), count(count), parent(parent)
-{
-  Assert(GL::CheckValidVAO(parent), "The associated VAO lacks a binding");
+IndexBuffer::~IndexBuffer() = default;
 
-  glGenBuffers(1, &id);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, (u32)(count * sizeof(u32)), indices, GL_STATIC_DRAW);
+void IndexBuffer::Bind() const
+{
+  Assert(GL::CheckValidVAO(m_pimpl->parent), "The associated VAO lacks a binding");
+
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_pimpl->id);
 }
