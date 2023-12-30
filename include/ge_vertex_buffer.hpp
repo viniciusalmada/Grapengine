@@ -7,17 +7,16 @@ class VertexBuffer
 {
 public:
   VertexBuffer(float* ptr, u64 verticesSize, u32 parent);
+  ~VertexBuffer();
 
-  [[nodiscard]] const BufferLayout& GetLayout() const { return layout; };
+  [[nodiscard]] const BufferLayout& GetLayout() const;;
 
   void Bind() const;
 
   void UpdateData(const void* data, u32 size);
 
 private:
-  u32 id = 0;
-  u32 parent = 0;
-  BufferLayout layout;
+  POINTER_TO_IMPLEMENTATION_IDIOM
 };
 
 #endif // GRAPHICENGINE3D_GE_VERTEX_BUFFER_HPP
