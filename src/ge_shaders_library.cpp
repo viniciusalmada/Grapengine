@@ -13,4 +13,4 @@ ShadersLibrary& ShadersLibrary::Get()
   return self;
 }
 
-ShadersLibrary::ShadersLibrary() : m_pimpl(std::make_unique<Impl>()) {}
+ShadersLibrary::ShadersLibrary() : m_pimpl(MakeScope<Impl>()) {}

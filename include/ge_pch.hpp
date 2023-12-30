@@ -3,6 +3,7 @@
 
 #include "ge_assert.hpp"
 #include "ge_config.hpp"
+#include "ge_memory.hpp"
 #include "ge_using.hpp"
 
 #include <any>

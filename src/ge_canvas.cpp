@@ -9,7 +9,7 @@ struct Canvas::Impl
   u32 height;
 };
 
-Canvas::Canvas(u32 width, u32 height) : m_pimpl(std::make_unique<Impl>())
+Canvas::Canvas(u32 width, u32 height) : m_pimpl(MakeScope<Impl>())
 {
   m_pimpl->width = width;
   m_pimpl->height = height;

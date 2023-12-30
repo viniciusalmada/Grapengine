@@ -6,7 +6,7 @@ struct Event::Impl
   bool handled = false;
 };
 
-Event::Event(EvData data) : m_pimpl(std::make_unique<Impl>())
+Event::Event(EvData data) : m_pimpl(MakeScope<Impl>())
 {
   m_pimpl->data = std::move(data);
 }

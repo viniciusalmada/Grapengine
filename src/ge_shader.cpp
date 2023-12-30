@@ -151,14 +151,14 @@ struct ShaderProgram::Impl
 };
 
 ShaderProgram::ShaderProgram(std::string&& vertexSrc, std::string&& fragmentSrc) :
-    m_pimpl(std::make_unique<Impl>())
+    m_pimpl(MakeScope<Impl>())
 {
   m_pimpl->renderer_id = CreateProgram(vertexSrc, fragmentSrc);
 }
 
 ShaderProgram::ShaderProgram(const std::filesystem::path& vertexPath,
                              const std::filesystem::path& fragPath) :
-    m_pimpl(std::make_unique<Impl>())
+    m_pimpl(MakeScope<Impl>())
 {
   auto vertex_src = IO::ReadFileToString(vertexPath);
   auto frag_src = IO::ReadFileToString(fragPath);

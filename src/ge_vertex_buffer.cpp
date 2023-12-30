@@ -12,7 +12,7 @@ struct VertexBuffer::Impl
 };
 
 VertexBuffer::VertexBuffer(float* ptr, u64 verticesSize, u32 parent) :
-    m_pimpl(std::make_unique<Impl>())
+    m_pimpl(MakeScope<Impl>())
 {
   Assert(GL::CheckValidVAO(parent), "The associated VAO lacks a binding");
 

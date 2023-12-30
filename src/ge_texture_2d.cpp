@@ -12,7 +12,7 @@ struct Texture2D::Impl
   u32 renderer_ID;
 };
 
-Texture2D::Texture2D(const std::filesystem::path& path) : m_pimpl(std::make_unique<Impl>())
+Texture2D::Texture2D(const std::filesystem::path& path) : m_pimpl(MakeScope<Impl>())
 {
   stbi_uc* data;
   stbi_set_flip_vertically_on_load(true);

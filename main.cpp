@@ -8,11 +8,11 @@ int main()
 {
   Application application{ "Graphic Engine", 512, 512 };
 
-  auto d = std::make_shared<Drawable>(-0.5f, -0.5f, 0.4f);
-  auto d2 = std::make_shared<Drawable>(-0.5f, 0.5f, 0.4f);
-  auto d3 = std::make_shared<Drawable>(0.5f, -0.5f, 0.4f);
-  auto d4 = std::make_shared<Drawable>(0.5f, 0.5f, 0.4f);
-  //  auto d2 = std::make_shared<Drawable>(-0.25f, -0.25f, 0.5f, 0.5f);
+  auto d = MakeRef<Drawable>(-0.5f, -0.5f, 0.4f);
+  auto d2 = MakeRef<Drawable>(-0.5f, 0.5f, 0.4f);
+  auto d3 = MakeRef<Drawable>(0.5f, -0.5f, 0.4f);
+  auto d4 = MakeRef<Drawable>(0.5f, 0.5f, 0.4f);
+  //  auto d2 = MakeRef<Drawable>(-0.25f, -0.25f, 0.5f, 0.5f);
 
   application.Run(
     [&](Window& window)

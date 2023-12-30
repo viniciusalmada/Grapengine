@@ -58,7 +58,7 @@ struct Window::Impl
 
 //--PIMPL idiom
 Window::Window(const WindowProps& props, const EventCallbackFn& cb) :
-    m_pimpl(std::make_unique<Impl>())
+    m_pimpl(MakeScope<Impl>())
 {
   m_pimpl->window_props = props;
   if (!glfw_initialized)
@@ -78,9 +78,9 @@ Window::Window(const WindowProps& props, const EventCallbackFn& cb) :
 
   glfwSetWindowUserPointer(m_pimpl->window, this);
 
-  m_pimpl->canvas = std::make_shared<Canvas>(props.width, props.height);
+  m_pimpl->canvas = MakeRef<Canvas>(props.width, props.height);
 
-  m_pimpl->context = std::make_unique<Context>(m_pimpl->window);
+  m_pimpl->context = MakeScope<Context>(m_pimpl->window);
   m_pimpl->context->Init();
 
   SetVsync(m_pimpl->vsync);

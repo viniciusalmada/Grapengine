@@ -10,14 +10,14 @@ Drawable::Drawable(float x, float y, float rad) :
     //    width(w),
     //    height(h),
     radius(rad),
-    vao(std::make_shared<VertexArray>()),
+    vao(MakeRef<VertexArray>()),
     vbo(nullptr),
     ibo(nullptr)
 {
 #ifdef QUAD
   vao->Bind();
 
-  vbo = std::make_shared<VertexBuffer>(nullptr, 4 * sizeof(SimpleVertexData), vao->GetID());
+  vbo = MakeRef<VertexBuffer>(nullptr, 4 * sizeof(SimpleVertexData), vao->GetID());
 
   std::array<SimpleVertexData, 4> positions = {
     SimpleVertexData{ { x, y, 0.0f }, { 0.f, 0.f, 1.0f, 1.0f } },
@@ -28,14 +28,14 @@ Drawable::Drawable(float x, float y, float rad) :
   vbo->UpdateData(positions.data(), sizeof(positions));
 
   u32 indices[] = { 0, 1, 2, 2, 3, 0 };
-  ibo = std::make_shared<IndexBuffer>(indices, 6, vao->GetID());
+  ibo = MakeRef<IndexBuffer>(indices, 6, vao->GetID());
 
   vao->SetVertexBuffer(vbo);
   vao->SetIndexBuffer(ibo);
 #else
   vao->Bind();
 
-  vbo = std::make_shared<VertexBuffer>(nullptr, (CP + 1) * sizeof(SimpleVertexData), vao->GetID());
+  vbo = MakeRef<VertexBuffer>(nullptr, (CP + 1) * sizeof(SimpleVertexData), vao->GetID());
 
   constexpr Vec4 color{ 0.f, 0.f, 1.0f, 1.0f };
   auto* positions = new SimpleVertexData[CP + 1];
@@ -69,7 +69,7 @@ Drawable::Drawable(float x, float y, float rad) :
 
   vbo->UpdateData(positions, (CP + 1) * sizeof(SimpleVertexData));
 
-  ibo = std::make_shared<IndexBuffer>(indices, CP * 3, vao->GetID());
+  ibo = MakeRef<IndexBuffer>(indices, CP * 3, vao->GetID());
 
   vao->SetVertexBuffer(vbo);
   vao->SetIndexBuffer(ibo);
