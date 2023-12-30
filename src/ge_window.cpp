@@ -3,6 +3,8 @@
 #include <GLFW/glfw3.h>
 
 #define GLAD_GL_IMPLEMENTATION
+#include <ge_canvas.hpp>
+#include <utility>
 #include <glad/glad.h>
 
 static bool glfw_initialized = false;
@@ -39,6 +41,7 @@ struct Window::Impl
   GLFWwindow* window;
   std::unique_ptr<Context> context;
   EventCallbackFn event_callback;
+  std::shared_ptr<Canvas> canvas;
 
   static void ErrorCB(i32 error_code, const char* description)
   {
@@ -73,6 +76,8 @@ Window::Window(const WindowProps& props, const EventCallbackFn& cb) :
     glfwCreateWindow(props.width, props.height, props.title.c_str(), nullptr, nullptr);
 
   glfwSetWindowUserPointer(m_pimpl->window, this);
+
+  m_pimpl->canvas = std::make_shared<Canvas>(props.width, props.height);
 
   m_pimpl->context = std::make_unique<Context>(m_pimpl->window);
   m_pimpl->context->Init();
@@ -178,4 +183,14 @@ void Window::OnUpdate()
 {
   glfwPollEvents();
   m_pimpl->context->SwapBuffers();
+}
+
+void Window::Clear(const Vec4& color) const
+{
+  m_pimpl->canvas->Clear(color);
+}
+
+void Window::Draw(std::shared_ptr<Drawable> drawable) const
+{
+  m_pimpl->canvas->Draw(std::move(drawable));
 }
