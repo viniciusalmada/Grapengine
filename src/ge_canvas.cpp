@@ -23,7 +23,7 @@ void Canvas::Clear(const Vec4& color) const
   Renderer::Clear();
 }
 
-void Canvas::Draw(std::shared_ptr<Drawable> drawable) const
+void Canvas::Draw(Ref<Drawable> drawable) const
 {
   drawable->Draw();
 }

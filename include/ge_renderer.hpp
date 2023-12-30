@@ -15,7 +15,7 @@ public:
 
   static void Clear();
 
-  static void DrawIndexed(std::shared_ptr<VertexArray> vao, i32 count);
+  static void DrawIndexed(Ref<VertexArray> vao, i32 count);
 };
 
 #endif

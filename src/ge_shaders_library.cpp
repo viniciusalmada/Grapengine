@@ -4,7 +4,7 @@
 
 struct ShadersLibrary::Impl
 {
-  std::list<std::shared_ptr<ShaderProgram>> shaders;
+  std::list<Ref<ShaderProgram>> shaders;
 };
 
 ShadersLibrary& ShadersLibrary::Get()

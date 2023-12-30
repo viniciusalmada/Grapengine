@@ -8,10 +8,10 @@
 
 struct Application::Impl
 {
-  std::unique_ptr<Window> window;
+  Scope<Window> window;
   bool running = true;
   bool minimized = false;
-  std::shared_ptr<ShaderProgram> shader;
+  Ref<ShaderProgram> shader;
 
   static Application* instance;
 

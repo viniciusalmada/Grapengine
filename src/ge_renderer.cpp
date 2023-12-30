@@ -60,7 +60,7 @@ void Renderer::Clear()
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Renderer::DrawIndexed(std::shared_ptr<VertexArray> vao, i32 count)
+void Renderer::DrawIndexed(Ref<VertexArray> vao, i32 count)
 {
   vao->Bind();
   glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);

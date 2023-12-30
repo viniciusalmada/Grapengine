@@ -13,7 +13,7 @@ public:
   ~Canvas();
 
   void Clear(const Vec4& color) const;
-  void Draw(std::shared_ptr<Drawable> drawable) const;
+  void Draw(Ref<Drawable> drawable) const;
 
 private:
   POINTER_TO_IMPLEMENTATION_IDIOM;

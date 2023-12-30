@@ -38,9 +38,9 @@ struct Window::Impl
   WindowProps window_props{};
   bool vsync = true;
   GLFWwindow* window;
-  std::unique_ptr<Context> context;
+  Scope<Context> context;
   EventCallbackFn event_callback;
-  std::shared_ptr<Canvas> canvas;
+  Ref<Canvas> canvas;
 
   static void ErrorCB(i32 error_code, const char* description)
   {
@@ -191,7 +191,7 @@ void Window::Clear(const Vec4& color) const
   m_pimpl->canvas->Clear(color);
 }
 
-void Window::Draw(std::shared_ptr<Drawable> drawable) const
+void Window::Draw(Ref<Drawable> drawable) const
 {
   m_pimpl->canvas->Draw(std::move(drawable));
 }

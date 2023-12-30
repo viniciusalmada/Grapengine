@@ -20,9 +20,9 @@ private:
   float radius;
 //  float width;
 //  float height;
-  std::shared_ptr<VertexArray> vao;
-  std::shared_ptr<VertexBuffer> vbo;
-  std::shared_ptr<IndexBuffer> ibo;
+  Ref<VertexArray> vao;
+  Ref<VertexBuffer> vbo;
+  Ref<IndexBuffer> ibo;
 };
 
 #endif // GRAPHICENGINE3D_GE_DRAWABLE_HPP

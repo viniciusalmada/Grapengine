@@ -14,15 +14,15 @@ public:
 
   void Bind() const;
 
-  void SetVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer);
-  void SetIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer);
+  void SetVertexBuffer(const Ref<VertexBuffer>& vertexBuffer);
+  void SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer);
 
   [[nodiscard]] u32 GetID() const { return id; }
 
 private:
   u32 id;
-  std::shared_ptr<VertexBuffer> vertex_buffer;
-  std::shared_ptr<IndexBuffer> index_buffer;
+  Ref<VertexBuffer> vertex_buffer;
+  Ref<IndexBuffer> index_buffer;
 };
 
 #endif // GRAPHICENGINE3D_GE_VERTEXARRAY_HPP

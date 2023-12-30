@@ -32,7 +32,7 @@ public:
   void OnUpdate();
 
   GE3D void Clear(const Vec4& color = Vec4(0.0, 0.0, 0.0, 1.0f)) const;
-  GE3D void Draw(std::shared_ptr<Drawable> drawable) const;
+  GE3D void Draw(Ref<Drawable> drawable) const;
 
 private:
   POINTER_TO_IMPLEMENTATION_IDIOM

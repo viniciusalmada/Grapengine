@@ -81,7 +81,7 @@ void VertexArray::Bind() const
     index_buffer->Bind();
 }
 
-void VertexArray::SetVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer)
+void VertexArray::SetVertexBuffer(const Ref<VertexBuffer>& vertexBuffer)
 {
   Assert(GL::CheckValidVAO(id), "The associated VAO lacks a binding");
 
@@ -103,7 +103,7 @@ void VertexArray::SetVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuf
   this->vertex_buffer = vertexBuffer;
 }
 
-void VertexArray::SetIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer)
+void VertexArray::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer)
 {
   this->index_buffer = indexBuffer;
 }
