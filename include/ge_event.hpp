@@ -27,8 +27,7 @@ public:
   }
 
 private:
-  struct Impl;
-  std::unique_ptr<Impl> m_pimpl;
+  POINTER_TO_IMPLEMENTATION_IDIOM
 };
 
 #endif

@@ -10,8 +10,7 @@ public:
   void Bind(uint32_t slot) const;
 
 private:
-  struct Impl;
-  std::unique_ptr<Impl> m_pimpl;
+  POINTER_TO_IMPLEMENTATION_IDIOM
 };
 
 #endif // GRAPHIC_ENGINE3D_GE_TEXTURE_2D_HPP

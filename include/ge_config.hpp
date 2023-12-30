@@ -20,4 +20,8 @@
   #define DISABLE_UNREACHABLE_CODE
 #endif
 
+#define POINTER_TO_IMPLEMENTATION_IDIOM                                                            \
+  struct Impl;                                                                                     \
+  std::unique_ptr<Impl> m_pimpl;
+
 #endif // GRAPHICENGINE3D_GE_CONFIG_HPP
