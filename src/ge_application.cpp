@@ -63,12 +63,13 @@ Application::Application(std::string&& title, u32 width, u32 height)
 
 Application::~Application() = default;
 
-void Application::Run()
+void Application::Run(const std::function<void(Window&)>& onLoop)
 {
   while (m_pimpl->running)
   {
     if (!m_pimpl->minimized)
     {
+      onLoop(std::ref(*m_pimpl->window));
 
       m_pimpl->window->OnUpdate();
     }
