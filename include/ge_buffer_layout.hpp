@@ -7,15 +7,15 @@ struct BufferElem
 {
   std::string name;
   ShaderDataType type;
-  unsigned int size;
-  unsigned int offset;
+  u32 size;
+  u32 offset;
   bool normalized;
 };
 
 struct BufferLayout
 {
   std::vector<BufferElem> elements;
-  int stride;
+  i32 stride;
 };
 
 #endif // GRAPHICENGINE3D_GE_BUFFER_LAYOUT_HPP

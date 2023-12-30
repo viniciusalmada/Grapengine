@@ -2,6 +2,7 @@
 #define GRAPHIC_ENGINE3D_GE_PCH_HPP
 
 #include "ge_config.hpp"
+#include "ge_using.hpp"
 
 #include <any>
 #include <array>

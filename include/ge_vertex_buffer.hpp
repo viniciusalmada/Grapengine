@@ -6,17 +6,17 @@
 class VertexBuffer
 {
 public:
-  VertexBuffer(float* ptr, uint32_t verticesSize, unsigned int parent);
+  VertexBuffer(float* ptr, u32 verticesSize, u32 parent);
 
   [[nodiscard]] const BufferLayout& GetLayout() const { return layout; };
 
   void Bind() const;
 
-  void UpdateData(const void* data, uint32_t size);
+  void UpdateData(const void* data, u32 size);
 
 private:
-  unsigned int id = 0;
-  unsigned int parent = 0;
+  u32 id = 0;
+  u32 parent = 0;
   BufferLayout layout;
 };
 

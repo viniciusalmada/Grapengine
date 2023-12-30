@@ -6,12 +6,12 @@
 struct WindowProps
 {
   std::string title;
-  unsigned int width;
-  unsigned int height;
+  u32 width;
+  u32 height;
 
   explicit WindowProps(std::string title = "Graphic Engine",
-                       unsigned int w = 1280,
-                       unsigned int h = 720) :
+                       u32 w = 1280,
+                       u32 h = 720) :
       title(std::move(title)), width(w), height(h)
   {
   }
@@ -25,8 +25,8 @@ public:
   GE3D explicit Window(const WindowProps& props, const EventCallbackFn& cb);
   GE3D ~Window();
 
-  [[nodiscard]] GE3D unsigned int GetWidth() const;
-  [[nodiscard]] GE3D unsigned int GetHeight() const;
+  [[nodiscard]] GE3D u32 GetWidth() const;
+  [[nodiscard]] GE3D u32 GetHeight() const;
 
   void SetVsync(bool enabled);
 

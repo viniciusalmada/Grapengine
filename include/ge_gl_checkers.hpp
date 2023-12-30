@@ -3,7 +3,7 @@
 
 namespace GL
 {
-  bool CheckValidVAO(unsigned int vaoID);
+  bool CheckValidVAO(u32 vaoID);
 }
 
 #endif // GRAPHICENGINE3D_GE_GL_CHECKERS_HPP

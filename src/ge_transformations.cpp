@@ -142,8 +142,8 @@ Mat4 Transform::Perspective(float fovDegrees, float aspectRatio, float near, flo
 std::string Transform::ToString(const Mat4& mat4)
 {
   std::string str{ "mat4x4(" };
-  int count = 0;
-  for (int i = 0; i < 16; ++i)
+  i32 count = 0;
+  for (i32 i = 0; i < 16; ++i)
   {
     if (count == 0)
       str.append("(");

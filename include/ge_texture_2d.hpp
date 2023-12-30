@@ -7,7 +7,7 @@ public:
   explicit Texture2D(const std::filesystem::path& path);
   ~Texture2D();
 
-  void Bind(uint32_t slot) const;
+  void Bind(u32 slot) const;
 
 private:
   POINTER_TO_IMPLEMENTATION_IDIOM

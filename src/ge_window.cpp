@@ -16,7 +16,7 @@ public:
   {
     glfwMakeContextCurrent(m_window);
 
-    int version = gladLoadGL();
+    i32 version = gladLoadGL();
     if (version == 0)
       throw std::exception("Error with GLAD");
 
@@ -40,7 +40,7 @@ struct Window::Impl
   std::unique_ptr<Context> context;
   EventCallbackFn event_callback;
 
-  static void ErrorCB(int error_code, const char* description)
+  static void ErrorCB(i32 error_code, const char* description)
   {
     std::cerr << "Code:" << error_code << "\"" << description << "\"" << std::endl;
   }
@@ -93,7 +93,7 @@ Window::Window(const WindowProps& props, const EventCallbackFn& cb) :
     glfwSetWindowCloseCallback(m_pimpl->window, close_callback);
 
     //-----------------------------
-    auto resize_callback = [](GLFWwindow* win, int width, int height)
+    auto resize_callback = [](GLFWwindow* win, i32 width, i32 height)
     {
       Event event{ std::make_tuple(EvType::WINDOW_RESIZE, width, height) };
       auto* data = (Window*)glfwGetWindowUserPointer(win);
@@ -102,7 +102,7 @@ Window::Window(const WindowProps& props, const EventCallbackFn& cb) :
     glfwSetWindowSizeCallback(m_pimpl->window, resize_callback);
 
     //-----------------------------
-    auto key_callback = [](GLFWwindow* win, int key, int /*scancode*/, int action, int /*mods*/)
+    auto key_callback = [](GLFWwindow* win, i32 key, i32 /*scancode*/, i32 action, i32 /*mods*/)
     {
       EvType type = EvType::NONE;
       if (action == GLFW_PRESS)
@@ -117,7 +117,7 @@ Window::Window(const WindowProps& props, const EventCallbackFn& cb) :
     glfwSetKeyCallback(m_pimpl->window, key_callback);
 
     //-----------------------------
-    auto mouse_bt_callback = [](GLFWwindow* win, int button, int action, int /*mods*/)
+    auto mouse_bt_callback = [](GLFWwindow* win, i32 button, i32 action, i32 /*mods*/)
     {
       EvType type = EvType::NONE;
       if (action == GLFW_PRESS)
@@ -157,12 +157,12 @@ Window::~Window()
   glfw_initialized = false;
 }
 
-unsigned int Window::GetWidth() const
+u32 Window::GetWidth() const
 {
   return m_pimpl->window_props.width;
 }
 
-unsigned int Window::GetHeight() const
+u32 Window::GetHeight() const
 {
   return m_pimpl->window_props.height;
 }

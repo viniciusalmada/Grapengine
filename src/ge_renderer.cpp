@@ -6,7 +6,7 @@
 
 void OpenGLDebuggerFunc(GLenum /* source */,
                         GLenum /* type */,
-                        unsigned int id,
+                        u32 id,
                         GLenum /* severity */,
                         GLsizei /* length */,
                         const char* message,
@@ -42,7 +42,7 @@ void Renderer::Init()
   //  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
-void Renderer::SetViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height)
+void Renderer::SetViewport(u32 x, u32 y, u32 width, u32 height)
 {
   glViewport(x, y, width, height);
 }
@@ -58,7 +58,7 @@ void Renderer::Clear()
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Renderer::DrawIndexed(std::shared_ptr<VertexArray> vao, int count)
+void Renderer::DrawIndexed(std::shared_ptr<VertexArray> vao, i32 count)
 {
   vao->Bind();
   glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);

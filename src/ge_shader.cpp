@@ -13,7 +13,7 @@ namespace
 
   DISABLE_WARNING_PUSH
   DISABLE_UNREACHABLE_CODE
-  uint32_t GetGLShaderType(ShaderType type)
+  u32 GetGLShaderType(ShaderType type)
   {
     switch (type)
     {
@@ -39,21 +39,21 @@ namespace
   }
   DISABLE_WARNING_POP
 
-  std::tuple<uint32_t, bool> Compile(const std::string& src, ShaderType type)
+  std::tuple<u32, bool> Compile(const std::string& src, ShaderType type)
   {
-    uint32_t shader_type = GetGLShaderType(type);
+    u32 shader_type = GetGLShaderType(type);
 
-    unsigned int shader = glCreateShader(shader_type);
+    u32 shader = glCreateShader(shader_type);
     const char* chars = src.c_str();
     glShaderSource(shader, 1, &chars, nullptr);
 
     glCompileShader(shader);
 
-    int success = 0;
+    i32 success = 0;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
     if (!success)
     {
-      int max_length = 0;
+      i32 max_length = 0;
       glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &max_length);
 
       std::vector<char> info_log;
@@ -66,10 +66,10 @@ namespace
 
       glDeleteShader(shader);
     }
-    return std::tuple<unsigned int, bool>{ shader, success == 1 };
+    return std::tuple<u32, bool>{ shader, success == 1 };
   }
 
-  unsigned int CreateProgram(const std::string& vertexSrc, const std::string& fragmentSrc)
+  u32 CreateProgram(const std::string& vertexSrc, const std::string& fragmentSrc)
   {
     auto [vertex_shader, vertex_ok] = Compile(vertexSrc, ShaderType::VERTEX);
     if (!vertex_ok)
@@ -89,11 +89,11 @@ namespace
 
     glLinkProgram(renderer_id);
 
-    int is_linked = 0;
+    i32 is_linked = 0;
     glGetProgramiv(renderer_id, GL_LINK_STATUS, &is_linked);
     if (!is_linked)
     {
-      int max_length = 0;
+      i32 max_length = 0;
       glGetProgramiv(renderer_id, GL_INFO_LOG_LENGTH, &max_length);
 
       std::vector<char> info_log;
@@ -119,12 +119,12 @@ namespace
 
 struct ShaderProgram::Impl
 {
-  uint32_t renderer_id{ 0 };
-  std::unordered_map<std::string, int> uniforms;
+  u32 renderer_id{ 0 };
+  std::unordered_map<std::string, i32> uniforms;
 
   [[nodiscard]] bool IsBound() const
   {
-    int curr_program = -1;
+    i32 curr_program = -1;
     glGetIntegerv(GL_CURRENT_PROGRAM, &curr_program);
     if (curr_program <= 0)
       return false;
@@ -132,7 +132,7 @@ struct ShaderProgram::Impl
     return static_cast<decltype(renderer_id)>(curr_program) == renderer_id;
   }
 
-  int RetrieveUniform(const std::string& name)
+  i32 RetrieveUniform(const std::string& name)
   {
     if (!IsBound())
     {
@@ -143,7 +143,7 @@ struct ShaderProgram::Impl
     if (uniforms.contains(name))
       return uniforms[name];
 
-    int location = glGetUniformLocation(renderer_id, name.c_str());
+    i32 location = glGetUniformLocation(renderer_id, name.c_str());
     if (location == -1)
       std::cerr << "Invalid uniform name!!" << std::endl;
 
@@ -185,7 +185,7 @@ void ShaderProgram::UploadMat4F(const std::string& name, const float* data)
   glUniformMatrix4fv(location, 1, GL_FALSE, data);
 }
 
-void ShaderProgram::UploadInt(const std::string& name, int i)
+void ShaderProgram::UploadInt(const std::string& name, i32 i)
 {
   auto location = m_pimpl->RetrieveUniform(name);
   glUniform1i(location, i);

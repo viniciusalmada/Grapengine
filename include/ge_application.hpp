@@ -4,7 +4,7 @@
 class Application
 {
 public:
-  GE3D Application(std::string&& title, unsigned int width, unsigned int height);
+  GE3D Application(std::string&& title, u32 width, u32 height);
   GE3D virtual ~Application();
 
   GE3D void Run();

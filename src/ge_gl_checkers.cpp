@@ -2,7 +2,7 @@
 
 #include <glad/glad.h>
 
-bool GL::CheckValidVAO(unsigned int vaoID)
+bool GL::CheckValidVAO(u32 vaoID)
 {
   // Check valid parent VAO
   bool is_valid_vao = glIsVertexArray(vaoID);
@@ -10,8 +10,8 @@ bool GL::CheckValidVAO(unsigned int vaoID)
     return false;
 
   // Check passed VAO is bound
-  uint32_t current_VAO = 0;
-  glGetIntegerv(GL_VERTEX_ARRAY_BINDING, (int*)(&current_VAO));
+  u32 current_VAO = 0;
+  glGetIntegerv(GL_VERTEX_ARRAY_BINDING, (i32*)(&current_VAO));
 
   bool is_any_vao_bound = current_VAO != 0;
   if (!is_any_vao_bound)

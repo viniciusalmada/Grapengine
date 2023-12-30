@@ -4,7 +4,7 @@
 #include <ge_gl_checkers.hpp>
 #include <glad/glad.h>
 
-VertexBuffer::VertexBuffer(float* ptr, uint32_t verticesSize, unsigned int parent)
+VertexBuffer::VertexBuffer(float* ptr, u32 verticesSize, u32 parent)
 {
   if (!GL::CheckValidVAO(parent))
     return;
@@ -20,7 +20,7 @@ VertexBuffer::VertexBuffer(float* ptr, uint32_t verticesSize, unsigned int paren
                   false }
     };
 
-    uint32_t offset = 0;
+    u32 offset = 0;
     layout.stride = 0;
 
     for (auto& elem : layout.elements)
@@ -44,7 +44,7 @@ void VertexBuffer::Bind() const
   glBindBuffer(GL_ARRAY_BUFFER, id);
 }
 
-void VertexBuffer::UpdateData(const void* data, uint32_t size)
+void VertexBuffer::UpdateData(const void* data, u32 size)
 {
   Bind();
   glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);

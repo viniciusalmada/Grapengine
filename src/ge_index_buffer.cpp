@@ -12,7 +12,7 @@ void IndexBuffer::Bind() const
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
 }
 
-IndexBuffer::IndexBuffer(const uint32_t* indices, uint32_t count, unsigned int parent) :
+IndexBuffer::IndexBuffer(const u32* indices, u32 count, u32 parent) :
     id(0), count(count), parent(parent)
 {
   if (!GL::CheckValidVAO(parent))
@@ -21,7 +21,7 @@ IndexBuffer::IndexBuffer(const uint32_t* indices, uint32_t count, unsigned int p
   glGenBuffers(1, &id);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-               (long long)(count * sizeof(uint32_t)),
+               (u32)(count * sizeof(u32)),
                indices,
                GL_STATIC_DRAW);
 }

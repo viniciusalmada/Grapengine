@@ -47,7 +47,7 @@ Mat4::Mat4(const std::array<float, 4>& row0,
            const std::array<float, 4>& row2,
            const std::array<float, 4>& row3)
 {
-  for (int i = 0; i < 4; ++i)
+  for (i32 i = 0; i < 4; ++i)
   {
     data[i][0] = row0[i];
     data[i][1] = row1[i];
@@ -58,7 +58,7 @@ Mat4::Mat4(const std::array<float, 4>& row0,
 
 Mat4 Mat4::operator*(const Mat4& other) const
 {
-  auto prod = [m1 = *this, m2 = other](unsigned int r, unsigned c)
+  auto prod = [m1 = *this, m2 = other](u32 r, unsigned c)
   {
     // clang-format off
     return m1(r, 0) * m2(0, c) +
@@ -69,9 +69,9 @@ Mat4 Mat4::operator*(const Mat4& other) const
   };
 
   Mat4 res;
-  for (int row = 0; row < 4; ++row)
+  for (i32 row = 0; row < 4; ++row)
   {
-    for (int col = 0; col < 4; ++col)
+    for (i32 col = 0; col < 4; ++col)
     {
       res(row, col) = prod(row, col);
     }
@@ -80,12 +80,12 @@ Mat4 Mat4::operator*(const Mat4& other) const
   return res;
 }
 
-float& Mat4::operator()(unsigned int row, unsigned int col)
+float& Mat4::operator()(u32 row, u32 col)
 {
   return data[col][row];
 }
 
-const float& Mat4::operator()(unsigned int row, unsigned int col) const
+const float& Mat4::operator()(u32 row, u32 col) const
 {
   return data[col][row];
 }

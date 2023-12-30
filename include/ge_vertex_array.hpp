@@ -17,10 +17,10 @@ public:
   void SetVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer);
   void SetIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer);
 
-  [[nodiscard]] unsigned int GetID() const { return id; }
+  [[nodiscard]] u32 GetID() const { return id; }
 
 private:
-  unsigned int id;
+  u32 id;
   std::shared_ptr<VertexBuffer> vertex_buffer;
   std::shared_ptr<IndexBuffer> index_buffer;
 };

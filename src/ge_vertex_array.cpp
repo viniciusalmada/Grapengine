@@ -8,7 +8,7 @@
 
 namespace
 {
-  int GetComponentCount(const BufferElem& e)
+  i32 GetComponentCount(const BufferElem& e)
   {
     switch (e.type)
     {
@@ -36,7 +36,7 @@ namespace
     return 0;
   }
 
-  unsigned int ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
+  u32 ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
   {
     switch (type)
     {
@@ -88,7 +88,7 @@ void VertexArray::SetVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuf
 
   const auto& layout = vertexBuffer->GetLayout();
 
-  unsigned int attrib_index = 0;
+  u32 attrib_index = 0;
   for (const auto& elem : layout.elements)
   {
     glEnableVertexAttribArray(attrib_index);

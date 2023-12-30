@@ -22,8 +22,8 @@ enum class EvType
 };
 
 using WindowCloseData = std::tuple<EvType>;
-using WindowResizeData = std::tuple<EvType, int, int>;
-using KeyPressData = std::tuple<EvType, int>;
+using WindowResizeData = std::tuple<EvType, i32, i32>;
+using KeyPressData = std::tuple<EvType, i32>;
 using KeyReleaseData = KeyPressData;
 using MouseButtonPressData = KeyPressData;
 using MouseButtonReleaseData = KeyPressData;

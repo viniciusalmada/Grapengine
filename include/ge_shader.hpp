@@ -16,7 +16,7 @@ public:
 
   void UploadMat4F(const std::string& name, const float* mat);
 
-  void UploadInt(const std::string& name, int i);
+  void UploadInt(const std::string& name, i32 i);
 
 private:
   POINTER_TO_IMPLEMENTATION_IDIOM

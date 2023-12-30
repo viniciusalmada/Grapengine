@@ -102,7 +102,7 @@ struct Application::Impl
 
 Application* Application::Impl::instance = nullptr;
 
-Application::Application(std::string&& title, unsigned int width, unsigned int height)
+Application::Application(std::string&& title, u32 width, u32 height)
 {
   m_pimpl = std::make_unique<Impl>();
   if (m_pimpl->instance != nullptr)
@@ -120,12 +120,12 @@ Application::Application(std::string&& title, unsigned int width, unsigned int h
   m_pimpl->vao->Bind();
 
   auto vbo =
-    std::make_shared<VertexBuffer>(vertices, (uint32_t)(sizeof(vertices)), m_pimpl->vao->GetID());
+    std::make_shared<VertexBuffer>(vertices, (u32)(sizeof(vertices)), m_pimpl->vao->GetID());
 
   vbo->Bind();
   m_pimpl->vao->SetVertexBuffer(vbo);
 
-  unsigned int indices[] = {
+  u32 indices[] = {
     0,  1,  2,  2,  3,  0,  // Front face
     4,  5,  6,  6,  7,  4,  // Right face
     8,  9,  10, 10, 11, 8,  // Back face

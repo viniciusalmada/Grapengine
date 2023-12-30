@@ -9,13 +9,13 @@ class Renderer
 public:
   static void Init();
 
-  static void SetViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height);
+  static void SetViewport(u32 x, u32 y, u32 width, u32 height);
 
   static void SetClearColor(const Vec4& color);
 
   static void Clear();
 
-  static void DrawIndexed(std::shared_ptr<VertexArray> vao, int count);
+  static void DrawIndexed(std::shared_ptr<VertexArray> vao, i32 count);
 };
 
 #endif

@@ -7,23 +7,23 @@
 struct Texture2D::Impl
 {
   std::filesystem::path path;
-  uint32_t width;
-  uint32_t height;
-  uint32_t renderer_ID;
+  u32 width;
+  u32 height;
+  u32 renderer_ID;
 };
 
 Texture2D::Texture2D(const std::filesystem::path& path) : m_pimpl(std::make_unique<Impl>())
 {
   stbi_uc* data;
   stbi_set_flip_vertically_on_load(true);
-  int w{}, h{}, channels{};
+  i32 w{}, h{}, channels{};
   data = stbi_load(path.string().c_str(), &w, &h, &channels, 0);
 
   m_pimpl->width = w;
   m_pimpl->height = h;
 
-  int internal_format = 0;
-  uint32_t format = 0;
+  i32 internal_format = 0;
+  u32 format = 0;
   if (channels == 4)
   {
     internal_format = GL_RGBA8;
@@ -54,7 +54,7 @@ Texture2D::~Texture2D()
   glDeleteTextures(1, &m_pimpl->renderer_ID);
 }
 
-void Texture2D::Bind(uint32_t slot) const
+void Texture2D::Bind(u32 slot) const
 {
   glBindTextureUnit(slot, m_pimpl->renderer_ID);
 }

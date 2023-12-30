@@ -4,14 +4,14 @@
 class IndexBuffer
 {
 public:
-  IndexBuffer(const uint32_t* indices, uint32_t count, unsigned int parent);
+  IndexBuffer(const u32* indices, u32 count, u32 parent);
 
   void Bind() const;
 
 private:
-  unsigned int id;
-  unsigned int count;
-  unsigned int parent;
+  u32 id;
+  u32 count;
+  u32 parent;
 };
 
 #endif // GRAPHICENGINE3D_GE_INDEX_BUFFER_HPP

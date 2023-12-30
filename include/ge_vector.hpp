@@ -34,8 +34,8 @@ public:
 
   Mat4 operator*(const Mat4& other) const;
 
-  float& operator()(unsigned int row, unsigned int col);
-  const float& operator()(unsigned int row, unsigned int col) const;
+  float& operator()(u32 row, u32 col);
+  const float& operator()(u32 row, u32 col) const;
 
   [[nodiscard]] const float* ValuePtr() const;
 
