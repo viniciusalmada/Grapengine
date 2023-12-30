@@ -35,9 +35,17 @@ DrawPrimitive::DrawPrimitive(const Ref<std::vector<SimpleVertexData>>& vertices,
   m_pimpl->vao->SetIndexBuffer(m_pimpl->ibo);
 }
 
+DrawPrimitive::~DrawPrimitive() = default;
+
 void DrawPrimitive::Draw() const
 {
   Renderer::DrawIndexed(m_pimpl->vao, static_cast<i32>(m_pimpl->triangles_count * 3));
 }
 
-DrawPrimitive::~DrawPrimitive() = default;
+void DrawPrimitive::UpdateVerticesData(Ref<std::vector<SimpleVertexData>> data)
+{
+  m_pimpl->vao->Bind();
+
+  float* v_data = reinterpret_cast<float*>(data->data());
+  m_pimpl->vbo->UpdateData(v_data, static_cast<u32>(sizeof(SimpleVertexData) * data->size()));
+}

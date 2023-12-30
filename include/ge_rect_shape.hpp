@@ -11,6 +11,9 @@ public:
 
   void Draw() const override;
 
+  [[nodiscard]] GE3D Vec2 GetPosition() const;
+  GE3D void SetPosition(float x, float y) const;
+
 private:
   POINTER_TO_IMPLEMENTATION_IDIOM
 };

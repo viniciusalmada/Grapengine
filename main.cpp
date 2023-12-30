@@ -12,21 +12,18 @@ int main()
 
   auto d = MakeRef<RectShape>(-0.5f, -0.5f, 0.4f, 0.2f);
   auto c = MakeRef<CircleShape>(+0.5f, +0.5f, 0.4f);
-  //  auto d2 = MakeRef<Drawable>(-0.5f, 0.5f, 0.4f);
-  //  auto d3 = MakeRef<Drawable>(0.5f, -0.5f, 0.4f);
-  //  auto d4 = MakeRef<Drawable>(0.5f, 0.5f, 0.4f);
-  //  auto d2 = MakeRef<Drawable>(-0.25f, -0.25f, 0.5f, 0.5f);
+
+  float vel = 0.0025f;
 
   application.Run(
     [&](Window& window)
     {
+      d->SetPosition(d->GetPosition().x + vel, d->GetPosition().y + vel);
+      d->SetPosition(d->GetPosition().x + vel, d->GetPosition().y + vel);
+
       window.Clear();
       window.Draw(d);
       window.Draw(c);
-//      window.Draw(d2);
-//      window.Draw(d3);
-//      window.Draw(d4);
-      //      canvas->Draw(d2);
     });
   return 0;
 }

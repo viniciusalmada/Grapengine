@@ -12,6 +12,8 @@ public:
 
   void Draw() const;
 
+  void UpdateVerticesData(Ref<std::vector<SimpleVertexData>>);
+
 private:
   POINTER_TO_IMPLEMENTATION_IDIOM
 };

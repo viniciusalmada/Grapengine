@@ -23,7 +23,8 @@ RectShape::RectShape(float x, float y, float width, float height) : m_pimpl(Make
   positions->reserve(4);
   positions->emplace_back(Vec3{ x, y, 0.0f }, Vec4{ 0.f, 0.f, 1.0f, 1.0f });
   positions->emplace_back(Vec3{ x + m_pimpl->width, y, 0.0f }, Vec4{ 0.f, 0.f, 1.0f, 1.0f });
-  positions->emplace_back(Vec3{ x + m_pimpl->width, y + m_pimpl->height, 0.0f },Vec4{ 0.f, 0.f, 1.0f, 1.0f });
+  positions->emplace_back(Vec3{ x + m_pimpl->width, y + m_pimpl->height, 0.0f },
+                          Vec4{ 0.f, 0.f, 1.0f, 1.0f });
   positions->emplace_back(Vec3{ x, y + m_pimpl->height, 0.0f }, Vec4{ 0.f, 0.f, 1.0f, 1.0f });
 
   Ref<std::vector<u32>> indices =
@@ -35,6 +36,25 @@ RectShape::RectShape(float x, float y, float width, float height) : m_pimpl(Make
 void RectShape::Draw() const
 {
   m_pimpl->draw_primitive->Draw();
+}
+
+Vec2 RectShape::GetPosition() const
+{
+  return Vec2{ m_pimpl->position_x, m_pimpl->position_y };
+}
+
+void RectShape::SetPosition(float x, float y) const
+{
+  m_pimpl->position_x = x;
+  m_pimpl->position_y = y;
+  Ref<std::vector<SimpleVertexData>> positions = MakeRef<std::vector<SimpleVertexData>>();
+  positions->reserve(4);
+  positions->emplace_back(Vec3{ x, y, 0.0f }, Vec4{ 0.f, 0.f, 1.0f, 1.0f });
+  positions->emplace_back(Vec3{ x + m_pimpl->width, y, 0.0f }, Vec4{ 0.f, 0.f, 1.0f, 1.0f });
+  positions->emplace_back(Vec3{ x + m_pimpl->width, y + m_pimpl->height, 0.0f },
+                          Vec4{ 0.f, 0.f, 1.0f, 1.0f });
+  positions->emplace_back(Vec3{ x, y + m_pimpl->height, 0.0f }, Vec4{ 0.f, 0.f, 1.0f, 1.0f });
+  m_pimpl->draw_primitive->UpdateVerticesData(positions);
 }
 
 RectShape::~RectShape() = default;
