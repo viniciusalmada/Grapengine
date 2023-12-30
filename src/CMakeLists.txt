@@ -15,6 +15,8 @@ add_library(${ENGINE_NAME} SHARED
   ge_vertex_array.cpp
   ge_vertex_buffer.cpp
   ge_window.cpp
+  ge_canvas.cpp
+  ge_drawable.cpp
 )
 target_precompile_headers(${ENGINE_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/include/ge_pch.hpp)
 target_include_directories(${ENGINE_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include)
