@@ -4,22 +4,16 @@
 
 bool GL::CheckValidVAO(u32 vaoID)
 {
-  // Check valid parent VAO
-  bool is_valid_vao = glIsVertexArray(vaoID);
-  if (!is_valid_vao)
-    return false;
+  const bool is_valid_vao = glIsVertexArray(vaoID);
+  Assert(is_valid_vao, "This VAO fails the validity test.");
 
-  // Check passed VAO is bound
   u32 current_VAO = 0;
   glGetIntegerv(GL_VERTEX_ARRAY_BINDING, (i32*)(&current_VAO));
+  const bool is_any_vao_bound = current_VAO != 0;
+  Assert(is_any_vao_bound, "No VAO bound");
 
-  bool is_any_vao_bound = current_VAO != 0;
-  if (!is_any_vao_bound)
-    return false;
-
-  bool is_vao_bound = current_VAO == vaoID;
-  if (!is_vao_bound)
-    return false;
+  const bool is_vao_bound = current_VAO == vaoID;
+  Assert(is_vao_bound, "The bound VAO differs from given VAO");
 
   return true;
 }

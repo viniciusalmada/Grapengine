@@ -83,8 +83,7 @@ void VertexArray::Bind() const
 
 void VertexArray::SetVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer)
 {
-  if (!GL::CheckValidVAO(id))
-    return;
+  Assert(GL::CheckValidVAO(id), "The associated VAO lacks a binding");
 
   const auto& layout = vertexBuffer->GetLayout();
 

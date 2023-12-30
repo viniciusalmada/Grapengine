@@ -6,8 +6,7 @@
 
 void IndexBuffer::Bind() const
 {
-  if (!GL::CheckValidVAO(parent))
-    return;
+  Assert(GL::CheckValidVAO(parent), "The associated VAO lacks a binding");
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
 }
@@ -15,13 +14,9 @@ void IndexBuffer::Bind() const
 IndexBuffer::IndexBuffer(const u32* indices, u32 count, u32 parent) :
     id(0), count(count), parent(parent)
 {
-  if (!GL::CheckValidVAO(parent))
-    return;
+  Assert(GL::CheckValidVAO(parent), "The associated VAO lacks a binding");
 
   glGenBuffers(1, &id);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-               (u32)(count * sizeof(u32)),
-               indices,
-               GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, (u32)(count * sizeof(u32)), indices, GL_STATIC_DRAW);
 }

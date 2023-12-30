@@ -4,7 +4,6 @@
 
 #define GLAD_GL_IMPLEMENTATION
 #include <ge_canvas.hpp>
-#include <utility>
 #include <glad/glad.h>
 
 static bool glfw_initialized = false;
@@ -45,7 +44,9 @@ struct Window::Impl
 
   static void ErrorCB(i32 error_code, const char* description)
   {
-    std::cerr << "Code:" << error_code << "\"" << description << "\"" << std::endl;
+    std::stringstream ss;
+    ss << "Code:" << error_code << "\"" << description << "\"" << std::endl;
+    Assert(false, ss.str().c_str());
   }
 
   void Destroy() const

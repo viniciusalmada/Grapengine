@@ -16,9 +16,11 @@ void OpenGLDebuggerFunc(GLenum /* source */,
   if (id == 131169 || id == 131185 || id == 131218 || id == 131204)
     return;
 
-  std::cerr << "OpenGL Error:" << std::endl;
-  std::cerr << "  (0x" << std::setfill('0') << std::setw(4) << std::hex << id << "): " << message
-            << std::endl;
+  std::stringstream ss;
+  ss << "OpenGL Error:" << std::endl;
+  ss << "  (0x" << std::setfill('0') << std::setw(4) << std::hex << id << "): " << message
+     << std::endl;
+  Assert(false, ss.str().c_str());
 }
 
 void Renderer::Init()

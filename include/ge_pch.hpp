@@ -1,6 +1,7 @@
 #ifndef GRAPHIC_ENGINE3D_GE_PCH_HPP
 #define GRAPHIC_ENGINE3D_GE_PCH_HPP
 
+#include "ge_assert.hpp"
 #include "ge_config.hpp"
 #include "ge_using.hpp"
 

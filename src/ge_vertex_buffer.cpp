@@ -6,18 +6,13 @@
 
 VertexBuffer::VertexBuffer(float* ptr, u64 verticesSize, u32 parent)
 {
-  if (!GL::CheckValidVAO(parent))
-    return;
+  Assert(GL::CheckValidVAO(parent), "The associated VAO lacks a binding");
 
   {
     layout = BufferLayout{};
     layout.elements = std::vector<BufferElem>{
       BufferElem{ "in_position", ShaderDataType::Float3, sizeof(float) * 3, 0, false },
-      BufferElem{ "in_color",
-                  ShaderDataType::Float4,
-                  sizeof(float) * 4,
-                  sizeof(float) * 3,
-                  false }
+      BufferElem{ "in_color", ShaderDataType::Float4, sizeof(float) * 4, sizeof(float) * 3, false }
     };
 
     u32 offset = 0;
@@ -38,8 +33,7 @@ VertexBuffer::VertexBuffer(float* ptr, u64 verticesSize, u32 parent)
 
 void VertexBuffer::Bind() const
 {
-  if (!GL::CheckValidVAO(parent))
-    return;
+  Assert(GL::CheckValidVAO(parent), "The associated VAO lacks a binding");
 
   glBindBuffer(GL_ARRAY_BUFFER, id);
 }

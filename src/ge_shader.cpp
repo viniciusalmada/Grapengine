@@ -59,8 +59,10 @@ namespace
       glGetShaderInfoLog(shader, max_length, &max_length, info_log.data());
 
       std::string shader_name = GetGLShaderName(type);
-      printf("Failure at compiling the %s shader\n", shader_name.c_str());
-      fprintf(stderr, "%s\n", info_log.data());
+      std::stringstream ss;
+      ss << "Failure at compiling the" << shader_name << " shader\n";
+      ss << info_log.data();
+      Assert(false, ss.str().c_str());
 
       glDeleteShader(shader);
     }
@@ -98,8 +100,10 @@ namespace
       info_log.reserve(max_length);
       glGetProgramInfoLog(renderer_id, max_length, &max_length, info_log.data());
 
-      printf("Failure at linking program!\n");
-      fprintf(stderr, "%s", info_log.data());
+      std::stringstream ss;
+      ss << "Failure at linking program!\n";
+      ss << info_log.data();
+      Assert(false, ss.str().c_str());
 
       glDeleteProgram(renderer_id);
 
@@ -132,18 +136,14 @@ struct ShaderProgram::Impl
 
   i32 RetrieveUniform(const std::string& name)
   {
-    if (!IsBound())
-    {
-      std::cerr << "Shader not bound!!" << std::endl;
-      return -1;
-    }
+    Assert(IsBound(), "Shader not bound");
+
   check:
     if (uniforms.contains(name))
       return uniforms[name];
 
     i32 location = glGetUniformLocation(renderer_id, name.c_str());
-    if (location == -1)
-      std::cerr << "Invalid uniform name!!" << std::endl;
+    Assert(location == -1, "Invalid uniform name");
 
     uniforms[name] = location;
     goto check;

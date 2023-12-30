@@ -22,7 +22,7 @@ std::string IO::ReadFileToString(const std::filesystem::path& path)
   }
   catch (const std::exception& ex)
   {
-    std::cerr << "Error: " << ex.what() << std::endl;
+    Assert(false, ex.what());
     return {};
   }
 }
