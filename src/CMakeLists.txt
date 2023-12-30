@@ -18,6 +18,7 @@ add_library(${ENGINE_NAME} SHARED
   ge_canvas.cpp
   ge_drawable.cpp
   ge_assert.cpp
+  ge_rect_shape.cpp
   ge_draw_primitive.cpp
 )
 target_precompile_headers(${ENGINE_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/include/ge_pch.hpp)
