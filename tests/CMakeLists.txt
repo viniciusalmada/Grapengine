@@ -32,3 +32,6 @@ target_link_libraries(EngineTests
   PRIVATE GTest::GTest
   PRIVATE ${ENGINE_NAME}
 )
+
+find_package(glfw3 CONFIG REQUIRED)
+target_link_libraries(EngineTests PRIVATE glfw)
