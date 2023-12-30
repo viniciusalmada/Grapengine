@@ -8,21 +8,9 @@
 class Drawable
 {
 public:
-//  GE3D Drawable(float x, float y, float w, float h);
-  GE3D Drawable(float x, float y, float radius);
-  virtual ~Drawable();
+  virtual ~Drawable() = default;
 
-  void Draw() const;
-
-private:
-  float position_x;
-  float position_y;
-  float radius;
-//  float width;
-//  float height;
-  Ref<VertexArray> vao;
-  Ref<VertexBuffer> vbo;
-  Ref<IndexBuffer> ibo;
+  virtual void Draw() const = 0;
 };
 
 #endif // GRAPHICENGINE3D_GE_DRAWABLE_HPP

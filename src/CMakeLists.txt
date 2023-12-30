@@ -16,7 +16,6 @@ add_library(${ENGINE_NAME} SHARED
   ge_vertex_buffer.cpp
   ge_window.cpp
   ge_canvas.cpp
-  ge_drawable.cpp
   ge_assert.cpp
   ge_rect_shape.cpp
   ge_draw_primitive.cpp
