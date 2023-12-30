@@ -41,9 +41,7 @@ namespace
 
   std::tuple<u32, bool> Compile(const std::string& src, ShaderType type)
   {
-    u32 shader_type = GetGLShaderType(type);
-
-    u32 shader = glCreateShader(shader_type);
+    u32 shader = glCreateShader(GetGLShaderType(type));
     const char* chars = src.c_str();
     glShaderSource(shader, 1, &chars, nullptr);
 
