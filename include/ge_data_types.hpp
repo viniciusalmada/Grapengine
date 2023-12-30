@@ -25,5 +25,4 @@ enum class ShaderDataType
   Bool
 };
 
-
 #endif

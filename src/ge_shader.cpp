@@ -158,7 +158,8 @@ ShaderProgram::ShaderProgram(std::string&& vertexSrc, std::string&& fragmentSrc)
   m_pimpl->renderer_id = CreateProgram(vertexSrc, fragmentSrc);
 }
 
-ShaderProgram::ShaderProgram(const std::filesystem::path& vertexPath, const std::filesystem::path& fragPath) :
+ShaderProgram::ShaderProgram(const std::filesystem::path& vertexPath,
+                             const std::filesystem::path& fragPath) :
     m_pimpl(std::make_unique<Impl>())
 {
   auto vertex_src = IO::ReadFileToString(vertexPath);
