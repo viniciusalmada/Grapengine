@@ -1,11 +1,15 @@
 #include "ge_application.hpp"
 
-#include "ge_entities.hpp"
+#include "ge_data_types.hpp"
+#include "ge_index_buffer.hpp"
 #include "ge_renderer.hpp"
 #include "ge_shader.hpp"
+#include "ge_vertex_array.hpp"
+#include "ge_vertex_buffer.hpp"
 #include "ge_window.hpp"
 
 #include <ge_event_type.hpp>
+#include <ge_texture_2d.hpp>
 #include <ge_transformations.hpp>
 
 constexpr auto VERTEX_PER_QUAD = 6;

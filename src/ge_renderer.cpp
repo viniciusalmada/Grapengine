@@ -1,6 +1,6 @@
 #include "ge_renderer.hpp"
 
-#include "ge_entities.hpp"
+#include "ge_vertex_array.hpp"
 
 #include <glad/glad.h>
 
