@@ -1,6 +1,8 @@
 #ifndef GRAPHIC_ENGINE3D_GE_APPLICATION_HPP
 #define GRAPHIC_ENGINE3D_GE_APPLICATION_HPP
 
+class Window;
+
 class Application
 {
 public:
