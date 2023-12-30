@@ -6,7 +6,7 @@
 class VertexBuffer
 {
 public:
-  VertexBuffer(float* ptr, u32 verticesSize, u32 parent);
+  VertexBuffer(float* ptr, u64 verticesSize, u32 parent);
 
   [[nodiscard]] const BufferLayout& GetLayout() const { return layout; };
 

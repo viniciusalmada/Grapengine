@@ -4,7 +4,7 @@
 #include <ge_gl_checkers.hpp>
 #include <glad/glad.h>
 
-VertexBuffer::VertexBuffer(float* ptr, u32 verticesSize, u32 parent)
+VertexBuffer::VertexBuffer(float* ptr, u64 verticesSize, u32 parent)
 {
   if (!GL::CheckValidVAO(parent))
     return;
@@ -13,9 +13,9 @@ VertexBuffer::VertexBuffer(float* ptr, u32 verticesSize, u32 parent)
     layout = BufferLayout{};
     layout.elements = std::vector<BufferElem>{
       BufferElem{ "in_position", ShaderDataType::Float3, sizeof(float) * 3, 0, false },
-      BufferElem{ "in_texture",
-                  ShaderDataType::Float2,
-                  sizeof(float) * 2,
+      BufferElem{ "in_color",
+                  ShaderDataType::Float4,
+                  sizeof(float) * 4,
                   sizeof(float) * 3,
                   false }
     };
