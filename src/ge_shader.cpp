@@ -60,7 +60,7 @@ namespace
 
       std::string shader_name = GetGLShaderName(type);
       std::stringstream ss;
-      ss << "Failure at compiling the" << shader_name << " shader\n";
+      ss << "Failure at compiling the " << shader_name << " shader\n";
       ss << info_log.data();
       Assert(false, ss.str().c_str());
 
@@ -97,7 +97,7 @@ namespace
       glGetProgramiv(renderer_id, GL_INFO_LOG_LENGTH, &max_length);
 
       std::vector<char> info_log;
-      info_log.reserve(max_length);
+      info_log.resize(max_length);
       glGetProgramInfoLog(renderer_id, max_length, &max_length, info_log.data());
 
       std::stringstream ss;
@@ -150,7 +150,7 @@ struct ShaderProgram::Impl
   }
 };
 
-ShaderProgram::ShaderProgram(std::string&& vertexSrc, std::string&& fragmentSrc) :
+ShaderProgram::ShaderProgram(const std::string& vertexSrc, const std::string& fragmentSrc) :
     m_pimpl(MakeScope<Impl>())
 {
   m_pimpl->renderer_id = CreateProgram(vertexSrc, fragmentSrc);
@@ -189,7 +189,23 @@ void ShaderProgram::UploadInt(const std::string& name, i32 i)
   glUniform1i(location, i);
 }
 
-void ShaderProgram::UploadFloat(const std::string& name, float i) {
+void ShaderProgram::UploadFloat(const std::string& name, float i)
+{
   auto location = m_pimpl->RetrieveUniform(name);
   glUniform1f(location, i);
+}
+
+[[maybe_unused]] bool ShaderProgram::IsValid() const
+{
+  return glIsProgram(m_pimpl->renderer_id);
+}
+
+bool ShaderProgram::IsBound() const
+{
+  return m_pimpl->IsBound();
+}
+
+void ShaderProgram::Unbind()
+{
+  glUseProgram(0);
 }
