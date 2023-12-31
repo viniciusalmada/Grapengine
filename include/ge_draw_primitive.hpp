@@ -2,17 +2,17 @@
 #define GRAPHICENGINE3D_GE_DRAW_PRIMITIVE_HPP
 
 #include "ge_memory.hpp"
-struct SimpleVertexData;
+class VerticesData;
 
 class DrawPrimitive
 {
 public:
-  DrawPrimitive(const Ref<std::vector<SimpleVertexData>>& vertices, const Ref<std::vector<u32>>& indices);
+  DrawPrimitive(Ref<VerticesData> vertices, const Ref<std::vector<u32>>& indices);
   ~DrawPrimitive();
 
   void Draw() const;
 
-  void UpdateVerticesData(Ref<std::vector<SimpleVertexData>>);
+  void UpdateVerticesData(Ref<VerticesData>);
 
 private:
   POINTER_TO_IMPLEMENTATION_IDIOM

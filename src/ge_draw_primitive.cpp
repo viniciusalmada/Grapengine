@@ -5,6 +5,7 @@
 #include "ge_renderer.hpp"
 #include "ge_vertex_array.hpp"
 #include "ge_vertex_buffer.hpp"
+#include "ge_vertices_data.hpp"
 
 struct DrawPrimitive::Impl
 {
@@ -14,24 +15,19 @@ struct DrawPrimitive::Impl
   u64 triangles_count = 0;
 };
 
-DrawPrimitive::DrawPrimitive(const Ref<std::vector<SimpleVertexData>>& vertices,
-                             const Ref<std::vector<u32>>& indices) :
+DrawPrimitive::DrawPrimitive(Ref<VerticesData> vertices, const Ref<std::vector<u32>>& indices) :
     m_pimpl(MakeScope<Impl>())
 {
   m_pimpl->vao = MakeRef<VertexArray>();
   m_pimpl->triangles_count = indices->size() / 3ul;
   m_pimpl->vao->Bind();
 
-  u32 vertices_count = static_cast<u32>(vertices->size());
-
-  float* v_data = reinterpret_cast<float*>(vertices->data());
-
   m_pimpl->vbo =
-    MakeRef<VertexBuffer>(v_data, sizeof(SimpleVertexData) * vertices_count, m_pimpl->vao->GetID());
+    MakeRef<VertexBuffer>(vertices->GetPtr(), vertices->GetSize(), m_pimpl->vao->GetID());
   m_pimpl->ibo =
     MakeRef<IndexBuffer>(indices->data(), static_cast<u32>(indices->size()), m_pimpl->vao->GetID());
 
-  m_pimpl->vao->SetVertexBuffer(m_pimpl->vbo);
+  m_pimpl->vao->SetVertexBuffer(m_pimpl->vbo, vertices->GetLayout());
   m_pimpl->vao->SetIndexBuffer(m_pimpl->ibo);
 }
 
@@ -42,10 +38,8 @@ void DrawPrimitive::Draw() const
   Renderer::DrawIndexed(m_pimpl->vao, static_cast<i32>(m_pimpl->triangles_count * 3));
 }
 
-void DrawPrimitive::UpdateVerticesData(Ref<std::vector<SimpleVertexData>> data)
+void DrawPrimitive::UpdateVerticesData(Ref<VerticesData> data)
 {
   m_pimpl->vao->Bind();
-
-  float* v_data = reinterpret_cast<float*>(data->data());
-  m_pimpl->vbo->UpdateData(v_data, static_cast<u32>(sizeof(SimpleVertexData) * data->size()));
+  m_pimpl->vbo->UpdateData(data->GetPtr(), data->GetSize());
 }
