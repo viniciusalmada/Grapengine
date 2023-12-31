@@ -28,6 +28,7 @@ add_executable(EngineTests
   test_vector.cpp
   test_transformations.cpp
   test_shader.cpp
+  test_vertex_array.cpp
 )
 target_include_directories(EngineTests PRIVATE ${CMAKE_SOURCE_DIR}/include)
 target_precompile_headers(EngineTests PRIVATE ${CMAKE_SOURCE_DIR}/include/ge_pch.hpp)
