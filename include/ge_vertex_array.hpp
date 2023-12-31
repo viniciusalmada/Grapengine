@@ -1,20 +1,21 @@
 #ifndef GRAPHICENGINE3D_GE_VERTEXARRAY_HPP
 #define GRAPHICENGINE3D_GE_VERTEXARRAY_HPP
 
-#include <memory>
-
 class VertexBuffer;
 class IndexBuffer;
+class BufferLayout;
 
 class VertexArray
 {
 public:
-  VertexArray();
-  ~VertexArray();
+  GE3D VertexArray();
+  GE3D ~VertexArray();
 
+  [[nodiscard]] GE3D bool IsValid() const;
   void Bind() const;
+  GE3D void Unbind() const;
 
-  void SetVertexBuffer(const Ref<VertexBuffer>& vertexBuffer);
+  void SetVertexBuffer(const Ref<VertexBuffer>& vertexBuffer, Ref<BufferLayout> layout);
   void SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer);
 
   [[nodiscard]] u32 GetID() const { return id; }

@@ -3,6 +3,7 @@
 #include "ge_index_buffer.hpp"
 #include "ge_vertex_buffer.hpp"
 
+#include <ge_buffer_layout.hpp>
 #include <ge_gl_checkers.hpp>
 #include <glad/glad.h>
 
@@ -81,27 +82,38 @@ void VertexArray::Bind() const
     index_buffer->Bind();
 }
 
-void VertexArray::SetVertexBuffer(const Ref<VertexBuffer>& vertexBuffer)
+void VertexArray::SetVertexBuffer(const Ref<VertexBuffer>& vertexBuffer, Ref<BufferLayout> layout)
 {
   Assert(GL::IsVAOBound(id), "The associated VAO lacks a binding");
 
   u32 attrib_index = 0;
-  for (const auto& elem : layout.elements)
-  {
-    glEnableVertexAttribArray(attrib_index);
-    std::size_t offset = elem.offset;
-    glVertexAttribPointer(attrib_index,
-                          GetComponentCount(elem),
-                          ShaderDataTypeToOpenGLBaseType(elem.type),
-                          elem.normalized,
-                          layout.stride,
-                          (void*)offset);
-    attrib_index++;
-  }
+  layout->ForEachElement(
+    [&](auto&& elem)
+    {
+      glEnableVertexAttribArray(attrib_index);
+      std::size_t offset = elem.offset;
+      glVertexAttribPointer(attrib_index,
+                            GetComponentCount(elem),
+                            ShaderDataTypeToOpenGLBaseType(elem.type),
+                            elem.normalized,
+                            layout->GetStride(),
+                            (void*)offset);
+      attrib_index++;
+    });
   this->vertex_buffer = vertexBuffer;
 }
 
 void VertexArray::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer)
 {
   this->index_buffer = indexBuffer;
+}
+
+bool VertexArray::IsValid() const
+{
+  return glIsVertexArray(this->id);
+}
+
+void VertexArray::Unbind() const
+{
+  glBindVertexArray(0);
 }
