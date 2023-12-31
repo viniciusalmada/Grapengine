@@ -5,12 +5,6 @@ struct GE3D Vec2
 {
   float x;
   float y;
-
-//  Vec2 operator-(const Vec2& other) const;
-//  Vec2& operator-();
-//  [[nodiscard]] Vec2 Normalize() const;
-//  [[nodiscard]] Vec2 Cross(const Vec2& other) const;
-//  [[nodiscard]] float Dot(const Vec2& other) const;
 };
 
 struct GE3D Vec3

@@ -57,8 +57,7 @@ struct Window::Impl
 };
 
 //--PIMPL idiom
-Window::Window(const WindowProps& props, const EventCallbackFn& cb) :
-    m_pimpl(MakeScope<Impl>())
+Window::Window(const WindowProps& props, const EventCallbackFn& cb) : m_pimpl(MakeScope<Impl>())
 {
   m_pimpl->window_props = props;
   if (!glfw_initialized)

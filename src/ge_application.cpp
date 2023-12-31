@@ -49,14 +49,14 @@ Application::Application(std::string&& title, u32 width, u32 height)
   m_pimpl->instance = this;
 
   m_pimpl->window = MakeScope<Window>(WindowProps{ title, width, height },
-                                             [this](Event& e) { m_pimpl->OnEvent(e); });
+                                      [this](Event& e) { m_pimpl->OnEvent(e); });
 
   Renderer::Init();
   Renderer::SetViewport(0, 0, width, height);
 
-  m_pimpl->shader = MakeRef<ShaderProgram>(
-    std::filesystem::path{ "assets/shaders/PositionAndColor.vshader.glsl" },
-    std::filesystem::path{ "assets/shaders/PositionAndColor.fshader.glsl" });
+  m_pimpl->shader =
+    MakeRef<ShaderProgram>(std::filesystem::path{ "assets/shaders/PositionAndColor.vshader.glsl" },
+                           std::filesystem::path{ "assets/shaders/PositionAndColor.fshader.glsl" });
 
   m_pimpl->shader->Bind();
   m_pimpl->shader->UploadFloat("width", (float)m_pimpl->window->GetWidth());
