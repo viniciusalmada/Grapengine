@@ -83,9 +83,7 @@ void VertexArray::Bind() const
 
 void VertexArray::SetVertexBuffer(const Ref<VertexBuffer>& vertexBuffer)
 {
-  Assert(GL::CheckValidVAO(id), "The associated VAO lacks a binding");
-
-  const auto& layout = vertexBuffer->GetLayout();
+  Assert(GL::IsVAOBound(id), "The associated VAO lacks a binding");
 
   u32 attrib_index = 0;
   for (const auto& elem : layout.elements)
