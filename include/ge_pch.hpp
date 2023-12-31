@@ -8,7 +8,9 @@
 
 #include <any>
 #include <array>
+#include <bit>
 #include <chrono>
+#include <cstddef>
 #include <filesystem>
 #include <fstream>
 #include <functional>
