@@ -12,10 +12,20 @@ struct BufferElem
   bool normalized;
 };
 
-struct BufferLayout
+class BufferLayout
 {
-  std::vector<BufferElem> elements;
-  i32 stride;
+public:
+  BufferLayout(std::initializer_list<BufferElem> list = {});
+  ~BufferLayout();
+
+  [[nodiscard]] std::vector<ShaderDataType> GetTypesSortedList() const;
+
+  void ForEachElement(std::function<void(BufferElem)> action) const;
+
+  i32 GetStride() const;
+
+private:
+  POINTER_TO_IMPLEMENTATION_IDIOM
 };
 
 #endif // GRAPHICENGINE3D_GE_BUFFER_LAYOUT_HPP
