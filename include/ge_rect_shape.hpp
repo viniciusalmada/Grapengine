@@ -2,6 +2,7 @@
 #define GRAPHICENGINE3D_GE_RECT_SHAPE_HPP
 
 #include "ge_drawable.hpp"
+#include "ge_vector.hpp"
 
 class RectShape : public Drawable
 {
