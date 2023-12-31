@@ -143,7 +143,7 @@ struct ShaderProgram::Impl
       return uniforms[name];
 
     i32 location = glGetUniformLocation(renderer_id, name.c_str());
-    Assert(location == -1, "Invalid uniform name");
+    Assert(location != -1, "Invalid uniform name");
 
     uniforms[name] = location;
     goto check;
@@ -187,4 +187,9 @@ void ShaderProgram::UploadInt(const std::string& name, i32 i)
 {
   auto location = m_pimpl->RetrieveUniform(name);
   glUniform1i(location, i);
+}
+
+void ShaderProgram::UploadFloat(const std::string& name, float i) {
+  auto location = m_pimpl->RetrieveUniform(name);
+  glUniform1f(location, i);
 }

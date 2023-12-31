@@ -18,6 +18,8 @@ public:
 
   void UploadInt(const std::string& name, i32 i);
 
+  void UploadFloat(const std::string& name, float i);
+
 private:
   POINTER_TO_IMPLEMENTATION_IDIOM
 };
