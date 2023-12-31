@@ -59,6 +59,8 @@ Application::Application(std::string&& title, u32 width, u32 height)
     std::filesystem::path{ "assets/shaders/PositionAndColor.fshader.glsl" });
 
   m_pimpl->shader->Bind();
+  m_pimpl->shader->UploadFloat("width", (float)m_pimpl->window->GetWidth());
+  m_pimpl->shader->UploadFloat("height", (float)m_pimpl->window->GetHeight());
 }
 
 Application::~Application() = default;
