@@ -30,9 +30,6 @@ add_executable(EngineTests
   test_shader.cpp
 )
 target_include_directories(EngineTests PRIVATE ${CMAKE_SOURCE_DIR}/include)
-target_include_directories(EngineTests SYSTEM PUBLIC
-  ${CMAKE_SOURCE_DIR}/vendor/glfw/include
-)
 target_precompile_headers(EngineTests PRIVATE ${CMAKE_SOURCE_DIR}/include/ge_pch.hpp)
 target_link_libraries(EngineTests
   PRIVATE GTest::GTest
