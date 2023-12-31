@@ -3,7 +3,6 @@
 #include "ge_event_type.hpp"
 #include "ge_renderer.hpp"
 #include "ge_shader.hpp"
-#include "ge_vertex_array.hpp"
 #include "ge_window.hpp"
 
 struct Application::Impl

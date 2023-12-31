@@ -7,12 +7,12 @@ class VerticesData;
 class DrawPrimitive
 {
 public:
-  DrawPrimitive(Ref<VerticesData> vertices, const Ref<std::vector<u32>>& indices);
+  DrawPrimitive(const Ref<VerticesData>& vertices, const Ref<std::vector<u32>>& indices);
   ~DrawPrimitive();
 
   void Draw() const;
 
-  void UpdateVerticesData(Ref<VerticesData>);
+  void UpdateVerticesData(const Ref<VerticesData>&);
 
 private:
   POINTER_TO_IMPLEMENTATION_IDIOM

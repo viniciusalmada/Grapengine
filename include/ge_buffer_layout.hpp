@@ -20,9 +20,9 @@ public:
 
   [[nodiscard]] std::vector<ShaderDataType> GetTypesSortedList() const;
 
-  void ForEachElement(std::function<void(BufferElem)> action) const;
+  void ForEachElement(const std::function<void(BufferElem)>& action) const;
 
-  i32 GetStride() const;
+  [[nodiscard]] u32 GetStride() const;
 
 private:
   POINTER_TO_IMPLEMENTATION_IDIOM

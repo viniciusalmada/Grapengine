@@ -1,9 +1,7 @@
 #include "ge_application.hpp"
-#include "ge_drawable.hpp"
 #include "ge_window.hpp"
 
 #include <ge_circle_shape.hpp>
-#include <ge_rect_shape.hpp>
 #include <iostream>
 #include <chrono>
 

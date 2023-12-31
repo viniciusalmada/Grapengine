@@ -11,7 +11,7 @@ static bool glfw_initialized = false;
 class Context
 {
 public:
-  Context(GLFWwindow* glfWwindow) : m_window(glfWwindow) {}
+  explicit Context(GLFWwindow* glfWwindow) : m_window(glfWwindow) {}
 
   void Init()
   {
@@ -37,7 +37,7 @@ struct Window::Impl
 {
   WindowProps window_props{};
   bool vsync = true;
-  GLFWwindow* window;
+  GLFWwindow* window = nullptr;
   Scope<Context> context;
   EventCallbackFn event_callback;
   Ref<Canvas> canvas;
@@ -73,7 +73,7 @@ Window::Window(const WindowProps& props, const EventCallbackFn& cb) : m_pimpl(Ma
 
   glfwWindowHint(GLFW_SAMPLES, 4);
   m_pimpl->window =
-    glfwCreateWindow(props.width, props.height, props.title.c_str(), nullptr, nullptr);
+    glfwCreateWindow((i32)props.width, (i32)props.height, props.title.c_str(), nullptr, nullptr);
 
   glfwSetWindowUserPointer(m_pimpl->window, this);
 

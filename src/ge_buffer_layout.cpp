@@ -3,7 +3,7 @@
 struct BufferLayout::Impl
 {
   std::vector<BufferElem> elements;
-  i32 stride;
+  u32 stride = 0;
 };
 
 BufferLayout::BufferLayout(std::initializer_list<BufferElem> list) : m_pimpl(MakeScope<Impl>())
@@ -30,13 +30,13 @@ std::vector<ShaderDataType> BufferLayout::GetTypesSortedList() const
   return sorted_list;
 }
 
-void BufferLayout::ForEachElement(std::function<void(BufferElem)> action) const
+void BufferLayout::ForEachElement(const std::function<void(BufferElem)>& action) const
 {
   for (auto& e : m_pimpl->elements)
     action(e);
 }
 
-i32 BufferLayout::GetStride() const
+u32 BufferLayout::GetStride() const
 {
   return m_pimpl->stride;
 }

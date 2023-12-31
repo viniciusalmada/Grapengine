@@ -6,10 +6,10 @@
 
 struct RectShape::Impl
 {
-  float position_x;
-  float position_y;
-  float width;
-  float height;
+  float position_x = 0;
+  float position_y = 0;
+  float width = 0;
+  float height = 0;
   Ref<DrawPrimitive> draw_primitive;
 };
 

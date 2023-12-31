@@ -115,5 +115,6 @@ bool VertexArray::IsValid() const
 
 void VertexArray::Unbind() const
 {
-  glBindVertexArray(0);
+  if (GL::IsVAOBound(id))
+    glBindVertexArray(0);
 }

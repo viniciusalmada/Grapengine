@@ -15,7 +15,7 @@ public:
 
   static void Clear();
 
-  static void DrawIndexed(Ref<VertexArray> vao, i32 count);
+  static void DrawIndexed(const Ref<VertexArray>& vao, i32 count);
 };
 
 #endif

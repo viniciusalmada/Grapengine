@@ -12,8 +12,8 @@ public:
   Canvas(u32 width, u32 height);
   ~Canvas();
 
-  void Clear(const Vec4& color) const;
-  void Draw(Ref<Drawable> drawable) const;
+  static void Clear(const Vec4& color) ;
+  static void Draw(const Ref<Drawable>& drawable) ;
 
 private:
   POINTER_TO_IMPLEMENTATION_IDIOM;

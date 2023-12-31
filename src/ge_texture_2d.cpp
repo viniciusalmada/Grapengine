@@ -7,9 +7,9 @@
 struct Texture2D::Impl
 {
   std::filesystem::path path;
-  u32 width;
-  u32 height;
-  u32 renderer_ID;
+  u32 width = 0;
+  u32 height = 0;
+  u32 renderer_ID = 0;
 };
 
 Texture2D::Texture2D(const std::filesystem::path& path) : m_pimpl(MakeScope<Impl>())

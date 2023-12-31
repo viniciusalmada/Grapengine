@@ -46,7 +46,7 @@ void Renderer::Init()
 
 void Renderer::SetViewport(u32 x, u32 y, u32 width, u32 height)
 {
-  glViewport(x, y, width, height);
+  glViewport((i32)x, (i32)y, (i32)width, (i32)height);
 }
 
 void Renderer::SetClearColor(const Vec4& color)
@@ -60,7 +60,7 @@ void Renderer::Clear()
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Renderer::DrawIndexed(Ref<VertexArray> vao, i32 count)
+void Renderer::DrawIndexed(const Ref<VertexArray>& vao, i32 count)
 {
   vao->Bind();
   glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);

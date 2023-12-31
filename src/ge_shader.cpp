@@ -207,5 +207,6 @@ bool ShaderProgram::IsBound() const
 
 void ShaderProgram::Unbind()
 {
-  glUseProgram(0);
+  if (IsBound())
+    glUseProgram(0);
 }

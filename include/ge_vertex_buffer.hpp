@@ -9,7 +9,7 @@ public:
 
   void Bind() const;
 
-  void UpdateData(const void* data, u64 size);
+  void UpdateData(const void* data, u64 size) const;
 
 private:
   POINTER_TO_IMPLEMENTATION_IDIOM

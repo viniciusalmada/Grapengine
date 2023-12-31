@@ -1,6 +1,5 @@
 #include "ge_draw_primitive.hpp"
 
-#include "ge_data_types.hpp"
 #include "ge_index_buffer.hpp"
 #include "ge_renderer.hpp"
 #include "ge_vertex_array.hpp"
@@ -15,7 +14,7 @@ struct DrawPrimitive::Impl
   u64 triangles_count = 0;
 };
 
-DrawPrimitive::DrawPrimitive(Ref<VerticesData> vertices, const Ref<std::vector<u32>>& indices) :
+DrawPrimitive::DrawPrimitive(const Ref<VerticesData>& vertices, const Ref<std::vector<u32>>& indices) :
     m_pimpl(MakeScope<Impl>())
 {
   m_pimpl->vao = MakeRef<VertexArray>();
@@ -38,7 +37,7 @@ void DrawPrimitive::Draw() const
   Renderer::DrawIndexed(m_pimpl->vao, static_cast<i32>(m_pimpl->triangles_count * 3));
 }
 
-void DrawPrimitive::UpdateVerticesData(Ref<VerticesData> data)
+void DrawPrimitive::UpdateVerticesData(const Ref<VerticesData>& data)
 {
   m_pimpl->vao->Bind();
   m_pimpl->vbo->UpdateData(data->GetPtr(), data->GetSize());

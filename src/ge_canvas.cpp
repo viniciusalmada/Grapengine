@@ -17,13 +17,13 @@ Canvas::Canvas(u32 width, u32 height) : m_pimpl(MakeScope<Impl>())
 
 Canvas::~Canvas() = default;
 
-void Canvas::Clear(const Vec4& color) const
+void Canvas::Clear(const Vec4& color)
 {
   Renderer::SetClearColor(color);
   Renderer::Clear();
 }
 
-void Canvas::Draw(Ref<Drawable> drawable) const
+void Canvas::Draw(const Ref<Drawable>& drawable)
 {
   drawable->Draw();
 }

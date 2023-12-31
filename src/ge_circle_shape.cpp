@@ -8,9 +8,9 @@ constexpr auto CIRCLE_POINTS = 30;
 
 struct CircleShape::Impl
 {
-  float position_x;
-  float position_y;
-  float radius;
+  float position_x = 0;
+  float position_y = 0;
+  float radius = 0;
   Ref<DrawPrimitive> draw_primitive;
 };
 
@@ -39,7 +39,7 @@ CircleShape::CircleShape(float x, float y, float radius) : m_pimpl(MakeScope<Imp
   const float total = CIRCLE_POINTS;
   for (u32 i = 0; i < CIRCLE_POINTS; ++i)
   {
-    const float angle = i / total * 2 * std::numbers::pi_v<float>;
+    const float angle = (float)i / total * 2 * std::numbers::pi_v<float>;
     const float circle_x = cos(angle) * radius + x;
     const float circle_y = sin(angle) * radius + y;
     auto pos = Vec3(circle_x, circle_y, 0.0f);

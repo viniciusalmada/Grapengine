@@ -10,7 +10,7 @@
 #if defined(_MSC_VER)
   #define DISABLE_WARNING_PUSH __pragma(warning(push))
   #define DISABLE_WARNING_POP __pragma(warning(pop))
-  #define DISABLE_WARNING(number) __pragma(warning(disable : number))
+  #define DISABLE_WARNING(number) __pragma(warning(disable : number)) // NOLINT(*-macro-parentheses)
 
   #define DISABLE_UNREACHABLE_CODE DISABLE_WARNING(4715)
 #elif defined(__GNUC__) || defined(__clang__)
