@@ -3,6 +3,7 @@
 
 #include "ge_canvas.hpp"
 #include "ge_event.hpp"
+#include "ge_vector.hpp"
 
 struct WindowProps
 {
