@@ -3,12 +3,6 @@
 
 #include "ge_vector.hpp"
 
-struct SimpleVertexData
-{
-  Vec3 position;
-  Vec4 color;
-};
-
 enum class ShaderDataType
 {
   None,
