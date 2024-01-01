@@ -1,16 +1,18 @@
 #include "ge_application.hpp"
+#include "ge_color.hpp"
 #include "ge_window.hpp"
 
-#include <ge_circle_shape.hpp>
-#include <iostream>
 #include <chrono>
+#include <ge_circle_shape.hpp>
+#include <ge_random.hpp>
+#include <iostream>
 
 int main()
 {
   u32 dim = 800;
   Application application{ "Graphic Engine", dim, dim };
 
-  constexpr u32 side_circles = 10;
+  constexpr u32 side_circles = 500;
   float x = dim / (float)side_circles * 0.1f;
   float y = dim / (float)side_circles * 0.1f;
   float radius = (dim / (float)side_circles * 0.8f) / 2.0f;
@@ -21,7 +23,16 @@ int main()
   {
     for (u32 j = 0; j < side_circles; ++j)
     {
-      auto c = MakeRef<CircleShape>(x + radius, y + radius, radius);
+      u8 red = static_cast<u8>(x / dim * 255);
+      u8 blue = static_cast<u8>(y / dim * 255);
+      auto c = MakeRef<CircleShape>(x + radius,
+                                    y + radius,
+                                    radius,
+                                    Color{
+                                      red,
+                                      static_cast<u8>(Random::GenInt(0x00, 0xFF)),
+                                      blue,
+                                    });
       rects.push_back(c);
       x += dim / (float)side_circles;
     }

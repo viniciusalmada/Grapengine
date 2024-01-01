@@ -10,15 +10,18 @@ struct RectShape::Impl
   float position_y = 0;
   float width = 0;
   float height = 0;
+  Color color{};
   Ref<DrawPrimitive> draw_primitive;
 };
 
-RectShape::RectShape(float x, float y, float width, float height) : m_pimpl(MakeScope<Impl>())
+RectShape::RectShape(float x, float y, float width, float height, Color color) :
+    m_pimpl(MakeScope<Impl>())
 {
   m_pimpl->position_x = (x);
   m_pimpl->position_y = (y);
   m_pimpl->width = (width);
   m_pimpl->height = (height);
+  m_pimpl->color = color;
 
   auto layout = MakeRef<BufferLayout>(std::initializer_list<BufferElem>{
     BufferElem{ "in_position", ShaderDataType::Float3, sizeof(float) * 3, 0, false },
@@ -29,12 +32,10 @@ RectShape::RectShape(float x, float y, float width, float height) : m_pimpl(Make
                 false } });
 
   auto positions = MakeRef<VerticesData>(layout);
-  //  positions->reserve(4);
-  positions->PushData(Vec3{ x, y, 0.0f }, Vec4{ 0.f, 0.f, 1.0f, 1.0f });
-  positions->PushData(Vec3{ x + m_pimpl->width, y, 0.0f }, Vec4{ 0.f, 0.f, 1.0f, 1.0f });
-  positions->PushData(Vec3{ x + m_pimpl->width, y + m_pimpl->height, 0.0f },
-                      Vec4{ 0.f, 0.f, 1.0f, 1.0f });
-  positions->PushData(Vec3{ x, y + m_pimpl->height, 0.0f }, Vec4{ 0.f, 0.f, 1.0f, 1.0f });
+  positions->PushData(Vec3{ x, y, 0.0f }, m_pimpl->color);
+  positions->PushData(Vec3{ x + m_pimpl->width, y, 0.0f }, m_pimpl->color);
+  positions->PushData(Vec3{ x + m_pimpl->width, y + m_pimpl->height, 0.0f }, m_pimpl->color);
+  positions->PushData(Vec3{ x, y + m_pimpl->height, 0.0f }, m_pimpl->color);
 
   Ref<std::vector<u32>> indices =
     MakeRef<std::vector<u32>>(std::initializer_list<u32>{ 0, 1, 2, 2, 3, 0 });

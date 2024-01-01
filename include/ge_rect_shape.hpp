@@ -1,13 +1,14 @@
 #ifndef GRAPHICENGINE3D_GE_RECT_SHAPE_HPP
 #define GRAPHICENGINE3D_GE_RECT_SHAPE_HPP
 
+#include "ge_color.hpp"
 #include "ge_drawable.hpp"
 #include "ge_vector.hpp"
 
 class RectShape : public Drawable
 {
 public:
-  GE3D RectShape(float x, float y, float w, float h);
+  GE3D RectShape(float x, float y, float w, float h, Color color);
   ~RectShape() override;
 
   void Draw() const override;
