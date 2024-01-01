@@ -1,5 +1,7 @@
 #include "ge_io.hpp"
 
+#include "ge_system.hpp"
+
 std::string IO::ReadFileToString(const std::filesystem::path& path)
 {
   try

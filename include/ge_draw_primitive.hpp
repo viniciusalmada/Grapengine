@@ -1,7 +1,8 @@
 #ifndef GRAPHICENGINE3D_GE_DRAW_PRIMITIVE_HPP
 #define GRAPHICENGINE3D_GE_DRAW_PRIMITIVE_HPP
 
-#include "ge_memory.hpp"
+#include "ge_system.hpp"
+
 class VerticesData;
 
 class DrawPrimitive

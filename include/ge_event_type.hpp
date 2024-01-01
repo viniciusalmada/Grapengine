@@ -1,6 +1,8 @@
 #ifndef GRAPHIC_ENGINE3D_GE_EVENT_TYPE_HPP
 #define GRAPHIC_ENGINE3D_GE_EVENT_TYPE_HPP
 
+#include "ge_system.hpp"
+
 enum class EvType
 {
   NONE,

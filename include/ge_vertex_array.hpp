@@ -1,6 +1,8 @@
 #ifndef GRAPHICENGINE3D_GE_VERTEXARRAY_HPP
 #define GRAPHICENGINE3D_GE_VERTEXARRAY_HPP
 
+#include "ge_system.hpp"
+
 class VertexBuffer;
 class IndexBuffer;
 class BufferLayout;

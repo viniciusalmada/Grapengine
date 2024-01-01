@@ -1,6 +1,8 @@
 #ifndef GRAPHIC_ENGINE3D_GE_TEXTURE_2D_HPP
 #define GRAPHIC_ENGINE3D_GE_TEXTURE_2D_HPP
 
+#include "ge_system.hpp"
+
 class Texture2D
 {
 public:
