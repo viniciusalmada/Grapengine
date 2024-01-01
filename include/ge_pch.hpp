@@ -18,6 +18,8 @@
 #include <iostream>
 #include <memory>
 #include <numbers>
+#include <random>
+#include <ranges>
 #include <sstream>
 #include <stdexcept>
 #include <string>
