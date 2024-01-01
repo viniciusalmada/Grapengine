@@ -1,6 +1,7 @@
 #ifndef GRAPHIC_ENGINE3D_GE_PCH_HPP
 #define GRAPHIC_ENGINE3D_GE_PCH_HPP
 
+#include <algorithm>
 #include <any>
 #include <array>
 #include <bit>
@@ -11,8 +12,10 @@
 #include <functional>
 #include <iomanip>
 #include <iostream>
+#include <map>
 #include <memory>
 #include <numbers>
+#include <numeric>
 #include <random>
 #include <ranges>
 #include <sstream>
