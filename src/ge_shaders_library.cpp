@@ -1,6 +1,6 @@
-#include "ge_shaders_library.hpp"
+#include "renderer/ge_shaders_library.hpp"
 
-#include "ge_shader.hpp"
+#include "renderer/ge_shader.hpp"
 
 struct ShadersLibrary::Impl
 {

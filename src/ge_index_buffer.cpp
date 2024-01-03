@@ -1,7 +1,7 @@
-#include "ge_index_buffer.hpp"
+#include "renderer/ge_index_buffer.hpp"
 
-#include "ge_gl_checkers.hpp"
 #include "core/ge_assert.hpp"
+#include "renderer/ge_gl_checkers.hpp"
 
 #include <glad/glad.h>
 

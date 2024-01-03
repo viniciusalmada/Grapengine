@@ -1,10 +1,10 @@
 #include "ge_draw_primitive.hpp"
 
-#include "ge_index_buffer.hpp"
-#include "ge_renderer.hpp"
-#include "ge_vertex_array.hpp"
-#include "ge_vertex_buffer.hpp"
-#include "ge_vertices_data.hpp"
+#include "renderer/ge_index_buffer.hpp"
+#include "renderer/ge_renderer.hpp"
+#include "renderer/ge_vertex_array.hpp"
+#include "renderer/ge_vertex_buffer.hpp"
+#include "renderer/ge_vertices_data.hpp"
 
 struct DrawPrimitive::Impl
 {

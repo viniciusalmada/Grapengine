@@ -1,7 +1,7 @@
-#include "ge_vertex_buffer.hpp"
+#include "renderer/ge_vertex_buffer.hpp"
 
 #include "core/ge_assert.hpp"
-#include "ge_gl_checkers.hpp"
+#include "renderer/ge_gl_checkers.hpp"
 
 #include <glad/glad.h>
 

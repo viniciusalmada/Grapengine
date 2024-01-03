@@ -1,5 +1,5 @@
-#include "ge_shader.hpp"
 #include "ge_window.hpp"
+#include "renderer/ge_shader.hpp"
 
 #include <exception>
 #include <gtest/gtest.h>

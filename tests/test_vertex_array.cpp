@@ -1,6 +1,6 @@
-#include "ge_vertex_array.hpp"
-#include "ge_vertex_buffer.hpp"
 #include "ge_window.hpp"
+#include "renderer/ge_vertex_array.hpp"
+#include "renderer/ge_vertex_buffer.hpp"
 
 #include <exception>
 #include <gtest/gtest.h>

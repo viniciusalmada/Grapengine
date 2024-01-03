@@ -1,8 +1,8 @@
 #include "ge_rect_shape.hpp"
 
 #include <ge_draw_primitive.hpp>
-#include <ge_renderer.hpp>
-#include <ge_vertices_data.hpp>
+#include <renderer/ge_renderer.hpp>
+#include <renderer/ge_vertices_data.hpp>
 
 struct RectShape::Impl
 {

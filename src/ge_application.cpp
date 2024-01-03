@@ -2,8 +2,8 @@
 
 #include "core/ge_window.hpp"
 #include "ge_event_type.hpp"
-#include "ge_renderer.hpp"
-#include "ge_shader.hpp"
+#include "renderer/ge_renderer.hpp"
+#include "renderer/ge_shader.hpp"
 
 struct Application::Impl
 {

@@ -1,7 +1,7 @@
 #include "ge_canvas.hpp"
 
-#include <ge_renderer.hpp>
 #include <ge_vector.hpp>
+#include <renderer/ge_renderer.hpp>
 
 struct Canvas::Impl
 {

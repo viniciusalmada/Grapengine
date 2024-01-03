@@ -1,4 +1,4 @@
-#include "ge_shader.hpp"
+#include "renderer/ge_shader.hpp"
 
 #include "core/ge_assert.hpp"
 #include "ge_io.hpp"

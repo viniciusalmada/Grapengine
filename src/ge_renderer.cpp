@@ -1,7 +1,7 @@
-#include "ge_renderer.hpp"
+#include "renderer/ge_renderer.hpp"
 
 #include "core/ge_assert.hpp"
-#include "ge_vertex_array.hpp"
+#include "renderer/ge_vertex_array.hpp"
 
 #include <glad/glad.h>
 

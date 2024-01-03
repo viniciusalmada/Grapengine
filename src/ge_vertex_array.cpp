@@ -1,10 +1,10 @@
-#include "ge_vertex_array.hpp"
+#include "renderer/ge_vertex_array.hpp"
 
 #include "core/ge_assert.hpp"
-#include "ge_buffer_layout.hpp"
-#include "ge_gl_checkers.hpp"
-#include "ge_index_buffer.hpp"
-#include "ge_vertex_buffer.hpp"
+#include "renderer/ge_buffer_layout.hpp"
+#include "renderer/ge_gl_checkers.hpp"
+#include "renderer/ge_index_buffer.hpp"
+#include "renderer/ge_vertex_buffer.hpp"
 
 #include <glad/glad.h>
 
