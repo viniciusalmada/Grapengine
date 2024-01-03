@@ -1,4 +1,4 @@
-#include "ge_canvas.hpp"
+#include "drawables/ge_canvas.hpp"
 
 #include <ge_vector.hpp>
 #include <renderer/ge_renderer.hpp>

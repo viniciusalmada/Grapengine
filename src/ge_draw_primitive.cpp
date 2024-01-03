@@ -1,4 +1,4 @@
-#include "ge_draw_primitive.hpp"
+#include "drawables/ge_draw_primitive.hpp"
 
 #include "renderer/ge_index_buffer.hpp"
 #include "renderer/ge_renderer.hpp"

@@ -1,9 +1,9 @@
 #include "core/ge_application.hpp"
 #include "core/ge_window.hpp"
-#include "ge_color.hpp"
+#include "drawables/ge_color.hpp"
 
 #include <chrono>
-#include <ge_circle_shape.hpp>
+#include <drawables/ge_circle_shape.hpp>
 #include <ge_random.hpp>
 #include <iostream>
 
