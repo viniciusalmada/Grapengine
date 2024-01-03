@@ -1,7 +1,7 @@
 #ifndef GRAPHICENGINE3D_GE_BUFFER_LAYOUT_HPP
 #define GRAPHICENGINE3D_GE_BUFFER_LAYOUT_HPP
 
-#include "ge_data_types.hpp"
+#include "ge_shader_data_types.hpp"
 
 struct BufferElem
 {
