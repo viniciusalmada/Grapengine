@@ -1,4 +1,4 @@
-#include "ge_vector.hpp"
+#include "math/ge_vector.hpp"
 
 #include <gtest/gtest.h>
 

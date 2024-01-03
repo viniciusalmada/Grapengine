@@ -2,9 +2,9 @@
 // Created by vinic on 11-Aug-23.
 //
 
-#include "ge_transformations.hpp"
+#include "math/ge_transformations.hpp"
 
-#include <ge_vector.hpp>
+#include <math/ge_vector.hpp>
 
 inline float Transform::Deg2Rad(float deg)
 {

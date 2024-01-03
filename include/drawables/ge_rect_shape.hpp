@@ -3,7 +3,7 @@
 
 #include "ge_color.hpp"
 #include "ge_drawable.hpp"
-#include "ge_vector.hpp"
+#include "math/ge_vector.hpp"
 
 class RectShape : public Drawable
 {

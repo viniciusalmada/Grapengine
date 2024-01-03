@@ -1,4 +1,4 @@
-#include "ge_vector.hpp"
+#include "math/ge_vector.hpp"
 
 Vec3 Vec3::operator-(const Vec3& other) const
 {

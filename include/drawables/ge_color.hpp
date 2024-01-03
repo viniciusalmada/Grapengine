@@ -1,7 +1,7 @@
 #ifndef GRAPHICENGINE3D_GE_COLOR_HPP
 #define GRAPHICENGINE3D_GE_COLOR_HPP
 
-#include "ge_vector.hpp"
+#include "math/ge_vector.hpp"
 
 struct Color
 {

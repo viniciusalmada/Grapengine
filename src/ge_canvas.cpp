@@ -1,6 +1,6 @@
 #include "drawables/ge_canvas.hpp"
 
-#include <ge_vector.hpp>
+#include <math/ge_vector.hpp>
 #include <renderer/ge_renderer.hpp>
 
 struct Canvas::Impl

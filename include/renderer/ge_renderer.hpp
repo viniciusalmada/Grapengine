@@ -1,7 +1,7 @@
 #ifndef GRAPHIC_ENGINE3D_GE_RENDERER_HPP
 #define GRAPHIC_ENGINE3D_GE_RENDERER_HPP
 
-#include "ge_vector.hpp"
+#include "math/ge_vector.hpp"
 class VertexArray;
 
 class Renderer
