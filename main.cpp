@@ -1,6 +1,6 @@
-#include "ge_application.hpp"
+#include "core/ge_application.hpp"
+#include "core/ge_window.hpp"
 #include "ge_color.hpp"
-#include "ge_window.hpp"
 
 #include <chrono>
 #include <ge_circle_shape.hpp>
@@ -12,7 +12,7 @@ int main()
   u32 dim = 800;
   Application application{ "Graphic Engine", dim, dim };
 
-  constexpr u32 side_circles = 500;
+  constexpr u32 side_circles = 100;
   float x = dim / (float)side_circles * 0.1f;
   float y = dim / (float)side_circles * 0.1f;
   float radius = (dim / (float)side_circles * 0.8f) / 2.0f;

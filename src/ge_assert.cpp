@@ -1,4 +1,4 @@
-#include "ge_assert.hpp"
+#include "core/ge_assert.hpp"
 
 void Assert(bool condition, const char* message)
 {

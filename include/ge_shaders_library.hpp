@@ -1,8 +1,6 @@
 #ifndef GRAPHIC_ENGINE3D_GE_SHADERS_LIBRARY_HPP
 #define GRAPHIC_ENGINE3D_GE_SHADERS_LIBRARY_HPP
 
-#include "ge_system.hpp"
-
 class ShadersLibrary
 {
 public:

@@ -1,6 +1,8 @@
 #include "ge_shader.hpp"
 
-#include <ge_io.hpp>
+#include "core/ge_assert.hpp"
+#include "ge_io.hpp"
+
 #include <glad/glad.h>
 
 namespace

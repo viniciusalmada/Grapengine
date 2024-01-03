@@ -1,6 +1,7 @@
 #ifndef GRAPHICENGINE3D_GE_VERTICES_DATA_HPP
 #define GRAPHICENGINE3D_GE_VERTICES_DATA_HPP
 
+#include "core/ge_assert.hpp"
 #include "ge_buffer_layout.hpp"
 
 struct ObjEvaluator

@@ -1,8 +1,6 @@
 #ifndef GRAPHICENGINE3D_GE_RANDOM_HPP
 #define GRAPHICENGINE3D_GE_RANDOM_HPP
 
-#include "ge_system.hpp"
-
 namespace Random
 {
   GE3D u32 GenInt(u32 min = std::numeric_limits<u32>::min(),

@@ -1,8 +1,6 @@
 #ifndef GRAPHIC_ENGINE3D_GE_VECTOR_HPP
 #define GRAPHIC_ENGINE3D_GE_VECTOR_HPP
 
-#include "ge_system.hpp"
-
 struct GE3D Vec2
 {
   float x;

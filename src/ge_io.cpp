@@ -1,6 +1,5 @@
 #include "ge_io.hpp"
-
-#include "ge_system.hpp"
+#include "core/ge_assert.hpp"
 
 std::string IO::ReadFileToString(const std::filesystem::path& path)
 {

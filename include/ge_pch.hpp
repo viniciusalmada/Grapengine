@@ -23,4 +23,10 @@
 #include <variant>
 #include <vector>
 
+//clang-format off
+#include "core/ge_config.hpp"
+#include "core/ge_using.hpp"
+#include "core/ge_memory.hpp"
+//clang-format on
+
 #endif

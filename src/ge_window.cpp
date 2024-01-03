@@ -1,9 +1,9 @@
-#include "ge_window.hpp"
+#include "core/ge_window.hpp"
+
+#include "core/ge_assert.hpp"
+#include "ge_canvas.hpp"
 
 #include <GLFW/glfw3.h>
-
-#define GLAD_GL_IMPLEMENTATION
-#include <ge_canvas.hpp>
 #include <glad/glad.h>
 
 static bool glfw_initialized = false;

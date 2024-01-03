@@ -1,8 +1,6 @@
 #ifndef GRAPHICENGINE3D_GE_MEMORY_HPP
 #define GRAPHICENGINE3D_GE_MEMORY_HPP
 
-#include "ge_using.hpp"
-
 template <class T, class... Args>
 Ref<T> MakeRef(Args... args)
 {

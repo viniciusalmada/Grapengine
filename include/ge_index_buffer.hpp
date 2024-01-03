@@ -1,8 +1,6 @@
 #ifndef GRAPHICENGINE3D_GE_INDEX_BUFFER_HPP
 #define GRAPHICENGINE3D_GE_INDEX_BUFFER_HPP
 
-#include "ge_system.hpp"
-
 class IndexBuffer
 {
 public:

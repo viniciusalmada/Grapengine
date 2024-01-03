@@ -1,9 +1,9 @@
-#include "ge_application.hpp"
+#include "core/ge_application.hpp"
 
+#include "core/ge_window.hpp"
 #include "ge_event_type.hpp"
 #include "ge_renderer.hpp"
 #include "ge_shader.hpp"
-#include "ge_window.hpp"
 
 struct Application::Impl
 {
