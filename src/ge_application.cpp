@@ -1,7 +1,7 @@
 #include "core/ge_application.hpp"
 
 #include "core/ge_window.hpp"
-#include "ge_event_type.hpp"
+#include "events/ge_event_type.hpp"
 #include "renderer/ge_renderer.hpp"
 #include "renderer/ge_shader.hpp"
 

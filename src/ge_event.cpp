@@ -1,4 +1,4 @@
-#include "ge_event.hpp"
+#include "events/ge_event.hpp"
 
 struct Event::Impl
 {

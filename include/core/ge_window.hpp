@@ -1,8 +1,8 @@
 #ifndef GRAPHIC_ENGINE3D_GE_WINDOW_HPP
 #define GRAPHIC_ENGINE3D_GE_WINDOW_HPP
 
+#include "events/ge_event.hpp"
 #include "ge_canvas.hpp"
-#include "ge_event.hpp"
 #include "ge_vector.hpp"
 
 struct WindowProps
