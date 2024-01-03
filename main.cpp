@@ -4,8 +4,8 @@
 
 #include <chrono>
 #include <drawables/ge_circle_shape.hpp>
-#include <ge_random.hpp>
 #include <iostream>
+#include <utils/ge_random.hpp>
 
 int main()
 {

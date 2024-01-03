@@ -1,7 +1,7 @@
 #include "renderer/ge_shader.hpp"
 
 #include "core/ge_assert.hpp"
-#include "ge_io.hpp"
+#include "utils/ge_io.hpp"
 
 #include <glad/glad.h>
 
