@@ -1,11 +1,7 @@
-#include "core/ge_application.hpp"
-#include "core/ge_window.hpp"
-#include "drawables/ge_color.hpp"
+#include "ge.hpp"
 
 #include <chrono>
-#include <drawables/ge_circle_shape.hpp>
 #include <iostream>
-#include <utils/ge_random.hpp>
 
 int main()
 {
