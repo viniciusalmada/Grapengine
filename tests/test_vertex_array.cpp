@@ -1,4 +1,4 @@
-#include "ge_window.hpp"
+#include "core/ge_window.hpp"
 #include "renderer/ge_vertex_array.hpp"
 #include "renderer/ge_vertex_buffer.hpp"
 

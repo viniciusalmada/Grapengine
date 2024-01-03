@@ -1,4 +1,4 @@
-#include "ge_window.hpp"
+#include "core/ge_window.hpp"
 #include "renderer/ge_shader.hpp"
 
 #include <exception>
