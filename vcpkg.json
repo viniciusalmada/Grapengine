@@ -2,7 +2,8 @@
   "dependencies": [
     "glad",
     "glfw3",
-    "stb"
+    "stb",
+    "gtest"
   ],
   "name": "graphic-engine-3d",
   "version": "0.0.1"

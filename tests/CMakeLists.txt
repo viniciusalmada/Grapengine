@@ -1,25 +1,22 @@
 enable_testing()
 
-# Avoid warning about DOWNLOAD_EXTRACT_TIMESTAMP in CMake 3.24:
-if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
-  cmake_policy(SET CMP0135 NEW)
-endif ()
-
-include(FetchContent)
-FetchContent_Declare(
-  googletest
-  GIT_REPOSITORY https://github.com/google/googletest.git
-  GIT_TAG v1.13.0
-)
-
-# For Windows: Prevent overriding the parent project's compiler/linker settings
-if (WIN32)
-  set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-  FetchContent_MakeAvailable(googletest)
-endif (WIN32)
-
-add_library(GTest::GTest INTERFACE IMPORTED)
-target_link_libraries(GTest::GTest INTERFACE gtest_main)
+## Avoid warning about DOWNLOAD_EXTRACT_TIMESTAMP in CMake 3.24:
+#if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
+#  cmake_policy(SET CMP0135 NEW)
+#endif ()
+#
+#include(FetchContent)
+#FetchContent_Declare(
+#  googletest
+#  GIT_REPOSITORY https://github.com/google/googletest.git
+#  GIT_TAG v1.13.0
+#)
+#
+## For Windows: Prevent overriding the parent project's compiler/linker settings
+#if (WIN32)
+#  set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+#  FetchContent_MakeAvailable(googletest)
+#endif (WIN32)
 
 add_executable(EngineTests
   test_main.cpp
@@ -31,10 +28,12 @@ add_executable(EngineTests
   test_vertex_array.cpp
   test_random.cpp
 )
+find_package(GTest CONFIG REQUIRED)
+target_link_libraries(EngineTests PRIVATE GTest::gtest GTest::gtest_main GTest::gmock GTest::gmock_main)
+
 target_include_directories(EngineTests PRIVATE ${CMAKE_SOURCE_DIR}/include)
 target_precompile_headers(EngineTests PRIVATE ${CMAKE_SOURCE_DIR}/include/ge_pch.hpp)
 target_link_libraries(EngineTests
-  PRIVATE GTest::GTest
   PRIVATE ${ENGINE_NAME}
 )
 
