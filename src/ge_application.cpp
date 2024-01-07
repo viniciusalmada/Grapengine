@@ -55,11 +55,11 @@ struct Application::Impl
                       resize_change_pub.Publish({ (float)w, (float)h });
                       return true;
                     });
-    Event::Dispatch(EvType::KEY_TYPED,
+    Event::Dispatch(EvType::KEY_PRESS,
                     event,
                     [&](const EvData& ev)
                     {
-                      const auto& [_, k] = *std::get_if<KeyTypedData>(&ev);
+                      const auto& [_, k] = *std::get_if<KeyPressData>(&ev);
                       if (k == GLFW_KEY_UP)
                         y += 1;
                       if (k == GLFW_KEY_DOWN)
