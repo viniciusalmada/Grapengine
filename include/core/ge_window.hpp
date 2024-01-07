@@ -5,6 +5,8 @@
 #include "events/ge_event.hpp"
 #include "math/ge_vector.hpp"
 
+#include <drawables/ge_color.hpp>
+
 struct WindowProps
 {
   std::string title;
@@ -32,7 +34,7 @@ public:
 
   void OnUpdate();
 
-  GE3D void Clear(const Vec4& color = Vec4(0.0, 0.0, 0.0, 1.0f)) const;
+  GE3D void Clear(Color color) const;
   GE3D void Draw(Ref<Drawable> drawable) const;
 
 private:

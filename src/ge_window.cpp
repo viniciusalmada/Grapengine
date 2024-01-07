@@ -185,9 +185,9 @@ void Window::OnUpdate()
   m_pimpl->context->SwapBuffers();
 }
 
-void Window::Clear(const Vec4& color) const
+void Window::Clear(Color color) const
 {
-  m_pimpl->canvas->Clear(color);
+  m_pimpl->canvas->Clear(color.ToVec4());
 }
 
 void Window::Draw(Ref<Drawable> drawable) const
