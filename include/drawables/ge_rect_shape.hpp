@@ -8,7 +8,13 @@
 class RectShape : public Drawable
 {
 public:
-  GE3D RectShape(float x, float y, float w, float h, Color color);
+  GE3D RectShape(float x, float y, float w, float h, Color color, Shaders shader);
+  GE3D RectShape(Vec3 botLeft,
+                 Vec3 botRight,
+                 Vec3 topRight,
+                 Vec3 topLeft,
+                 Color color,
+                 Shaders shader);
   ~RectShape() override;
 
   void Draw() const override;

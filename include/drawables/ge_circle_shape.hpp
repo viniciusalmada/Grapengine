@@ -7,7 +7,7 @@
 class CircleShape : public Drawable
 {
 public:
-  GE3D CircleShape(float x, float y, float radius, Color color);
+  GE3D CircleShape(float x, float y, float radius, Color color, Shaders shader);
   ~CircleShape() override;
 
   void Draw() const override;
