@@ -121,7 +121,7 @@ namespace
   }
 }
 
-struct ShaderProgram::Impl
+struct Shader::Impl
 {
   u32 renderer_id{ 0 };
   std::unordered_map<std::string, i32> uniforms;
@@ -152,13 +152,13 @@ struct ShaderProgram::Impl
   }
 };
 
-ShaderProgram::ShaderProgram(const std::string& vertexSrc, const std::string& fragmentSrc) :
+Shader::Shader(const std::string& vertexSrc, const std::string& fragmentSrc) :
     m_pimpl(MakeScope<Impl>())
 {
   m_pimpl->renderer_id = CreateProgram(vertexSrc, fragmentSrc);
 }
 
-ShaderProgram::ShaderProgram(const std::filesystem::path& vertexPath,
+Shader::Shader(const std::filesystem::path& vertexPath,
                              const std::filesystem::path& fragPath) :
     m_pimpl(MakeScope<Impl>())
 {
@@ -167,47 +167,47 @@ ShaderProgram::ShaderProgram(const std::filesystem::path& vertexPath,
   m_pimpl->renderer_id = CreateProgram(vertex_src, frag_src);
 }
 
-void ShaderProgram::Bind()
+void Shader::Bind()
 {
   glUseProgram(m_pimpl->renderer_id);
 }
 
-ShaderProgram::~ShaderProgram() = default;
+Shader::~Shader() = default;
 
-void ShaderProgram::UploadMat4F(const std::string& name, const Mat4& mat)
+void Shader::UploadMat4F(const std::string& name, const Mat4& mat)
 {
   UploadMat4F(name, mat.ValuePtr());
 }
 
-void ShaderProgram::UploadMat4F(const std::string& name, const float* data)
+void Shader::UploadMat4F(const std::string& name, const float* data)
 {
   auto location = m_pimpl->RetrieveUniform(name);
   glUniformMatrix4fv(location, 1, GL_FALSE, data);
 }
 
-void ShaderProgram::UploadInt(const std::string& name, i32 i)
+void Shader::UploadInt(const std::string& name, i32 i)
 {
   auto location = m_pimpl->RetrieveUniform(name);
   glUniform1i(location, i);
 }
 
-void ShaderProgram::UploadFloat(const std::string& name, float i)
+void Shader::UploadFloat(const std::string& name, float i)
 {
   auto location = m_pimpl->RetrieveUniform(name);
   glUniform1f(location, i);
 }
 
-[[maybe_unused]] bool ShaderProgram::IsValid() const
+[[maybe_unused]] bool Shader::IsValid() const
 {
   return glIsProgram(m_pimpl->renderer_id);
 }
 
-bool ShaderProgram::IsBound() const
+bool Shader::IsBound() const
 {
   return m_pimpl->IsBound();
 }
 
-void ShaderProgram::Unbind()
+void Shader::Unbind()
 {
   if (IsBound())
     glUseProgram(0);

@@ -3,12 +3,12 @@
 
 #include "math/ge_vector.hpp"
 
-class ShaderProgram
+class Shader
 {
 public:
-  ShaderProgram(const std::filesystem::path& vertexPath, const std::filesystem::path& fragPath);
-  GE3D ShaderProgram(const std::string& vertexSrc, const std::string& fragmentSrc);
-  GE3D ~ShaderProgram();
+  Shader(const std::filesystem::path& vertexPath, const std::filesystem::path& fragPath);
+  GE3D Shader(const std::string& vertexSrc, const std::string& fragmentSrc);
+  GE3D ~Shader();
 
   [[maybe_unused]] GE3D bool IsValid() const;
   [[maybe_unused]] GE3D bool IsBound() const;
