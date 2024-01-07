@@ -13,6 +13,7 @@ struct GE3D Vec3
   float y;
   float z;
 
+  Vec3 operator+(const Vec3& other) const;
   Vec3 operator-(const Vec3& other) const;
   Vec3& operator-();
   [[nodiscard]] Vec3 Normalize() const;
