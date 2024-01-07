@@ -22,6 +22,10 @@ add_library(${ENGINE_NAME} SHARED
   ge_window.cpp
   ge_buffer_layout.cpp
   ge_random.cpp
+  ge_camera.cpp
+  ge_cube.cpp
+  ge_pos_color_shader.cpp
+  ge_pos_tex_shader.cpp
 )
 target_precompile_headers(${ENGINE_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/include/ge_pch.hpp)
 target_include_directories(${ENGINE_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include)
