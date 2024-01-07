@@ -4,7 +4,8 @@
 class Texture2D
 {
 public:
-  explicit Texture2D(const std::filesystem::path& path);
+  explicit Texture2D();
+  Texture2D(const std::filesystem::path& path);
   ~Texture2D();
 
   void Bind(u32 slot) const;
