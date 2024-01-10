@@ -27,6 +27,7 @@ add_executable(EngineTests
   test_shader.cpp
   test_vertex_array.cpp
   test_random.cpp
+  test_camera.cpp
 )
 find_package(GTest CONFIG REQUIRED)
 target_link_libraries(EngineTests PRIVATE GTest::gtest GTest::gtest_main GTest::gmock GTest::gmock_main)
