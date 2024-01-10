@@ -39,6 +39,7 @@ public:
        const std::array<float, 4>& row2,
        const std::array<float, 4>& row3);
 
+  bool operator==(const Mat4& other) const;
   Mat4 operator*(const Mat4& other) const;
 
   float& operator()(u32 row, u32 col);

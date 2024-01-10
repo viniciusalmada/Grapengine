@@ -99,3 +99,16 @@ const float* Mat4::ValuePtr() const
 {
   return data.data()->data();
 }
+
+bool Mat4::operator==(const Mat4& other) const
+{
+  for (int i = 0; i < 4; ++i)
+  {
+    for (int j = 0; j < 4; ++j)
+    {
+      if (other(i, j) != this->operator()(i, j))
+        return false;
+    }
+  }
+  return true;
+}
