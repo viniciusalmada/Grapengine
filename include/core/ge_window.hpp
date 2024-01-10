@@ -37,6 +37,8 @@ public:
   GE3D void Clear(Color color) const;
   GE3D void Draw(Ref<Drawable> drawable) const;
 
+  Vec2 GetCursorPos() const;
+
 private:
   POINTER_TO_IMPLEMENTATION_IDIOM
 };

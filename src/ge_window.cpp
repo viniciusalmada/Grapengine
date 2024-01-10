@@ -194,3 +194,10 @@ void Window::Draw(Ref<Drawable> drawable) const
 {
   m_pimpl->canvas->Draw(std::move(drawable));
 }
+
+Vec2 Window::GetCursorPos() const
+{
+  double x{}, y{};
+  glfwGetCursorPos(m_pimpl->window, &x, &y);
+  return Vec2((float)x, (float)y);
+}
