@@ -20,17 +20,21 @@ class CameraChangePub : public IPublisher<Mat4>
 {
 };
 
-static float y = 0;
+static float pitch = 180;
+static float yaw = 0;
+static Vec3 cam_pos{ 0, 0, 5 };
 
 struct Application::Impl
 {
   Scope<Window> window;
   bool running = true;
   bool minimized = false;
-  Camera camera{ { 0.0f, 5.0f, 5.0f }, { 0, y, 0 } };
+  Camera camera{ cam_pos, pitch, yaw, 0 };
   Ref<Texture2D> tex;
   ResizeChangePub resize_change_pub{};
   CameraChangePub camera_change_pub{};
+  bool is_mouse_pressed = false;
+  Vec2 mouse_press_pos{ 0, 0 };
 
   static Application* instance;
 
@@ -55,18 +59,100 @@ struct Application::Impl
                       resize_change_pub.Publish({ (float)w, (float)h });
                       return true;
                     });
+
     Event::Dispatch(EvType::KEY_PRESS,
                     event,
                     [&](const EvData& ev)
                     {
                       const auto& [_, k] = *std::get_if<KeyPressData>(&ev);
-                      if (k == GLFW_KEY_UP)
-                        y += 1;
-                      if (k == GLFW_KEY_DOWN)
-                        y -= 1;
-                      std::cout << "Pitch = " << y << std::endl;
+                      const float step = 0.25f;
+                      if (k == GLFW_KEY_W)
+                        cam_pos.z -= step;
+                      if (k == GLFW_KEY_S)
+                        cam_pos.z += step;
+                      if (k == GLFW_KEY_A)
+                        cam_pos.x -= step;
+                      if (k == GLFW_KEY_D)
+                        cam_pos.x += step;
 
-                      camera = Camera{ { 0.0f, 5.0f, 5.0f }, { 0, y, 0 }};
+                      camera = Camera{ cam_pos, pitch, yaw, 0 };
+                      camera_change_pub.Publish(camera.GetViewProjection());
+                      return true;
+                    });
+
+    Event::Dispatch(EvType::MOUSE_BUTTON_PRESSED,
+                    event,
+                    [&](const EvData& ev)
+                    {
+                      const auto& [_, bt] = *std::get_if<MouseButtonPressData>(&ev);
+                      if (bt == GLFW_MOUSE_BUTTON_1)
+                      {
+                        is_mouse_pressed = true;
+                        mouse_press_pos = window->GetCursorPos();
+                      }
+                      return true;
+                    });
+
+    Event::Dispatch(EvType::MOUSE_BUTTON_RELEASE,
+                    event,
+                    [&](const EvData& ev)
+                    {
+                      const auto& [_, bt] = *std::get_if<MouseButtonReleaseData>(&ev);
+                      if (bt == GLFW_MOUSE_BUTTON_1)
+                      {
+                        is_mouse_pressed = false;
+
+                        const float diff_x = mouse_press_pos.x - window->GetCursorPos().x;
+                        const float diff_y = mouse_press_pos.y - window->GetCursorPos().y;
+
+                        const float diff_x_limited =
+                          std::clamp(diff_x,
+                                     (float)(window->GetWidth() / -2.0f),
+                                     (float)(window->GetWidth() / 2.0f)) /
+                          400.0f;
+                        const float diff_y_limited =
+                          std::clamp(diff_y,
+                                     (float)(window->GetHeight() / -2.0f),
+                                     (float)(window->GetHeight() / 2.0f)) /
+                          400.0f;
+
+                        const float diff_pitch = +diff_y_limited * 50;
+                        const float diff_yaw = -diff_x_limited * 50;
+
+                        pitch += diff_pitch;
+                        yaw += diff_yaw;
+
+                        printf("%1.3f, %1.3f\n", pitch, yaw);
+                      }
+                      return true;
+                    });
+
+    Event::Dispatch(EvType::MOUSE_MOVE,
+                    event,
+                    [&](const EvData& ev)
+                    {
+                      if (!is_mouse_pressed)
+                        return false;
+                      const auto& [_, x, y] = *std::get_if<MouseMoveData>(&ev);
+
+                      const float diff_x = mouse_press_pos.x - x;
+                      const float diff_y = mouse_press_pos.y - y;
+
+                      const float diff_x_limited = std::clamp(diff_x,
+                                                              (float)(window->GetWidth() / -2.0f),
+                                                              (float)(window->GetWidth() / 2.0f)) /
+                                                   400.0f;
+                      const float diff_y_limited = std::clamp(diff_y,
+                                                              (float)(window->GetHeight() / -2.0f),
+                                                              (float)(window->GetHeight() / 2.0f)) /
+                                                   400.0f;
+
+                      const float diff_pitch = +diff_y_limited * 50;
+                      const float diff_yaw = -diff_x_limited * 50;
+
+                      printf("%1.3f, %1.3f\n", diff_pitch, diff_yaw);
+
+                      camera = Camera{ cam_pos, pitch + diff_pitch, yaw + diff_yaw, 0 };
                       camera_change_pub.Publish(camera.GetViewProjection());
 
                       return true;

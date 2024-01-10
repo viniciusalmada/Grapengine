@@ -9,15 +9,15 @@
 const Vec3 cubePositions[] = {
   Vec3(0.0f, 0.0f, 0.f),  //
   Vec3(0.0f, 1.0f, 0.f), //
-  Vec3(0.0f, 2.0f, 0.f), //
-  Vec3(0.0f, 3.0f, 0.f), //
-  Vec3(0.0f, 4.0f, 0.f), //
-  Vec3(0.0f, 5.0f, 0.f), //
-  Vec3(0.0f, 6.0f, 0.f), //
-  Vec3(0.0f, 7.0f, 0.f), //
-  Vec3(0.0f, 8.0f, 0.f), //
-  Vec3(0.0f, 9.0f, 0.f), //
-  Vec3(0.0f, 10.0f, 0.f), //
+  Vec3(1.0f, 2.0f, 0.f), //
+  Vec3(2.0f, 3.0f, 0.f), //
+  Vec3(3.0f, 4.0f, 0.f), //
+  Vec3(4.0f, 5.0f, 0.f), //
+  Vec3(5.0f, 6.0f, 0.f), //
+  Vec3(6.0f, 7.0f, 0.f), //
+  Vec3(7.0f, 8.0f, 0.f), //
+  Vec3(8.0f, 9.0f, 0.f), //
+  Vec3(9.0f, 10.0f, 0.f), //
   //  Vec3(2.0f, 5.0f, -5.f),   //
   //  Vec3(-1.5f, -2.2f, -1.f), //
   //  Vec3(-3.8f, -2.0f, -6.f), //
@@ -91,9 +91,6 @@ int main()
     [&](Window& window)
     {
       window.Clear(Colors::WHITE);
-
-      for (const auto& item : rects)
-        window.Draw(item);
 
       for (const auto& cube : cubes)
         window.Draw(cube);
