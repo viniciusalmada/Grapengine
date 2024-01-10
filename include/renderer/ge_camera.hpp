@@ -6,12 +6,12 @@
 class Camera
 {
 public:
-  Camera(const Vec3& eye, float pitch, float yaw, float roll);
-  Camera(const Vec3& eye, const Vec3& dir);
-  ~Camera();
+  GE3D Camera(const Vec3& eye, float pitch, float yaw, float roll);
+  GE3D Camera(const Vec3& eye, const Vec3& dir);
+  GE3D ~Camera();
   Camera& operator=(const Camera&);
 
-  Mat4 GetViewProjection() const;
+  GE3D Mat4 GetViewProjection() const;
 
 private:
   POINTER_TO_IMPLEMENTATION_IDIOM
