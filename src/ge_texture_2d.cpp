@@ -56,8 +56,8 @@ Texture2D::Texture2D() : m_pimpl(MakeScope<Impl>())
   uint32_t format = GL_RGBA;
 
   constexpr auto size = sizeof(u32);
-  constexpr auto width = 4;
-  constexpr auto height = 4;
+  constexpr auto width = 1;
+  constexpr auto height = 1;
   bool size_check = size == width * height * 4;
   Assert(size_check, "Error at texture size!");
 
