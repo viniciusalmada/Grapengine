@@ -17,6 +17,10 @@ Vec3& Vec3::operator-()
   z = -z;
   return *this;
 }
+Vec3 Vec3::operator*(const float fac) const
+{
+  return { x * fac, y * fac, z * fac };
+}
 
 Vec3 Vec3::Normalize() const
 {
