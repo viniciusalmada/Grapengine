@@ -6,7 +6,7 @@
 class Camera
 {
 public:
-  GE3D Camera(const Vec3& eye, float pitch, float yaw, float roll);
+  GE3D Camera(const Vec3& eye, float pitch, float yaw);
   GE3D Camera(const Vec3& eye, const Vec3& dir);
   GE3D ~Camera();
   Camera& operator=(const Camera&);

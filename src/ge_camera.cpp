@@ -19,7 +19,7 @@ Camera::Camera(const Vec3& eye, const Vec3& dir) : m_pimpl(MakeScope<Impl>())
   m_pimpl->front = dir;
 }
 
-Camera::Camera(const Vec3& eye, float pitch, float yaw, float /*roll*/) : m_pimpl(MakeScope<Impl>())
+Camera::Camera(const Vec3& eye, float pitch, float yaw) : m_pimpl(MakeScope<Impl>())
 {
   // Pitch – plane YZ – 0 degree (camera back)
   const float coord_z_pitch = std::cosf(Transform::Deg2Rad(pitch));
