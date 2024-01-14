@@ -40,10 +40,11 @@ Camera::Camera(const Vec3& eye, float pitch, float yaw, float /*roll*/) : m_pimp
 
 Camera::~Camera() = default;
 
-Mat4 Camera::GetViewProjection() const
+Mat4 Camera::GetViewProjection(const u32 width, const u32 height) const
 {
   const auto view = Transform::LookAt(m_pimpl->eye, m_pimpl->front, UP_DIR);
-  const auto projection = Transform::Perspective(80, 1.0f, 0.1f, 100.0f);
+  const auto projection =
+    Transform::Perspective(45, width / static_cast<float>(height), 0.1f, 100.0f);
   return projection * view;
 }
 

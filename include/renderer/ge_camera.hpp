@@ -11,7 +11,7 @@ public:
   GE3D ~Camera();
   Camera& operator=(const Camera&);
 
-  GE3D Mat4 GetViewProjection() const;
+  GE3D Mat4 GetViewProjection(u32 width, u32 height) const;
 
 private:
   POINTER_TO_IMPLEMENTATION_IDIOM
