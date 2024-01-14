@@ -1,5 +1,10 @@
 #include "math/ge_vector.hpp"
 
+Vec2 Vec2::operator-(const Vec2& other) const
+{
+  return { this->x - other.x, this->y - other.y };
+}
+
 Vec3 Vec3::operator+(const Vec3& other) const
 {
   return { x + other.x, y + other.y, z + other.z };
