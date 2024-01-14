@@ -2,7 +2,6 @@
 
 #include <core/ge_assert.hpp>
 #include <renderer/ge_ishader_program.hpp>
-#include <renderer/shader_programs/ge_pos_color_shader.hpp>
 #include <renderer/shader_programs/ge_pos_tex_shader.hpp>
 
 struct ShadersLibrary::Impl
@@ -18,7 +17,6 @@ ShadersLibrary& ShadersLibrary::Get()
 
 ShadersLibrary::ShadersLibrary() : m_pimpl(MakeScope<Impl>())
 {
-  m_pimpl->shaders[Shaders::POSITION_AND_COLOR] = MakeRef<PosAndColorShader>();
   m_pimpl->shaders[Shaders::POSITION_AND_TEXTURE2D] = MakeRef<PosAndTex2DShader>();
 }
 
@@ -37,7 +35,7 @@ void ShadersLibrary::Activate(Shaders shader)
 void ShadersLibrary::SubToResizePub(IPublisher<Vec2>& pub) const
 {
   pub.Subscribe(
-    std::static_pointer_cast<PosAndColorShader>(m_pimpl->shaders[Shaders::POSITION_AND_COLOR]));
+   std::static_pointer_cast<PosAndTex2DShader>(m_pimpl->shaders[Shaders::POSITION_AND_TEXTURE2D]));
 }
 
 void ShadersLibrary::SubToCameraPub(IPublisher<Mat4>& pub) const

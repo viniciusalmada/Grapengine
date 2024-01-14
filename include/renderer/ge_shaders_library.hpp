@@ -8,7 +8,6 @@ class IShaderProgram;
 
 enum class Shaders
 {
-  POSITION_AND_COLOR,
   POSITION_AND_TEXTURE2D,
 };
 
