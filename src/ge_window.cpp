@@ -74,6 +74,7 @@ Window::Window(const WindowProps& props, const EventCallbackFn& cb) : m_pimpl(Ma
   glfwWindowHint(GLFW_SAMPLES, 4);
   m_pimpl->window =
     glfwCreateWindow((i32)props.width, (i32)props.height, props.title.c_str(), nullptr, nullptr);
+  glfwSetWindowAspectRatio(m_pimpl->window, props.width, props.height);
 
   glfwSetWindowUserPointer(m_pimpl->window, this);
 
@@ -103,6 +104,8 @@ Window::Window(const WindowProps& props, const EventCallbackFn& cb) : m_pimpl(Ma
       Event event{ std::make_tuple(EvType::WINDOW_RESIZE, width, height) };
       auto* data = (Window*)glfwGetWindowUserPointer(win);
       data->m_pimpl->event_callback(event);
+      data->m_pimpl->window_props.width = width;
+      data->m_pimpl->window_props.height = height;
     };
     glfwSetWindowSizeCallback(m_pimpl->window, resize_callback);
 
