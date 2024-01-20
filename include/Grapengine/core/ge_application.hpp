@@ -1,6 +1,13 @@
 #ifndef GRAPENGINE_APPLICATION_HPP
 #define GRAPENGINE_APPLICATION_HPP
 
+#include "ge_config.hpp"
+#include "ge_macros.hpp"
+#include "ge_type_aliases.hpp"
+
+#include <string>
+#include <functional>
+
 class Window;
 
 class Application

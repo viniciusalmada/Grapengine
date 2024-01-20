@@ -1,6 +1,8 @@
 #ifndef GRAPENGINE_MEMORY_HPP
 #define GRAPENGINE_MEMORY_HPP
 
+#include "ge_type_aliases.hpp"
+
 template <class T, class... Args>
 Ref<T> MakeRef(Args... args)
 {

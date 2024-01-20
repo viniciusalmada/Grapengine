@@ -1,6 +1,8 @@
 #ifndef GRAPENGINE_EVENT_TYPE_HPP
 #define GRAPENGINE_EVENT_TYPE_HPP
 
+#include <variant>
+
 enum class EvType
 {
   NONE,

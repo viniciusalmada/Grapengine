@@ -1,6 +1,8 @@
 #ifndef GRAPENGINE_VECTOR_HPP
 #define GRAPENGINE_VECTOR_HPP
 
+#include <array>
+
 struct GE3D Vec2
 {
   float x;
