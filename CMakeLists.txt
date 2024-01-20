@@ -17,7 +17,7 @@ add_subdirectory(src)
 # App
 add_executable(App main.cpp)
 target_link_libraries(App PRIVATE ${ENGINE_NAME})
-target_precompile_headers(App PRIVATE include/ge_pch.hpp)
+target_precompile_headers(App PRIVATE include/Grapengine/ge_pch.hpp)
 target_compile_options(App PRIVATE /WX /W4)
 
 # #############################################################################
