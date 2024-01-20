@@ -32,12 +32,6 @@ void ShadersLibrary::Activate(Shaders shader)
   m_pimpl->shaders[shader]->Activate();
 }
 
-void ShadersLibrary::SubToResizePub(IPublisher<Vec2>& pub) const
-{
-  pub.Subscribe(
-   std::static_pointer_cast<PosAndTex2DShader>(m_pimpl->shaders[Shaders::POSITION_AND_TEXTURE2D]));
-}
-
 void ShadersLibrary::SubToCameraPub(IPublisher<Mat4>& pub) const
 {
   pub.Subscribe(

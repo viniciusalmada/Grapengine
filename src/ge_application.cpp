@@ -8,13 +8,7 @@
 #include <renderer/ge_camera.hpp>
 #include <renderer/ge_shaders_library.hpp>
 #include <renderer/ge_texture_2d.hpp>
-#include <renderer/shader_programs/ge_pos_color_shader.hpp>
-#include <renderer/shader_programs/ge_pos_tex_shader.hpp>
 #include <utils/ge_ipubsub.hpp>
-
-class ResizeChangePub : public IPublisher<Vec2>
-{
-};
 
 class CameraChangePub : public IPublisher<Mat4>
 {
@@ -175,8 +169,6 @@ Application::Application(std::string&& title, u32 width, u32 height)
 
   Renderer::Init();
   Renderer::SetViewport(0, 0, width, height);
-
-  //  m_pimpl->shader->Bind();
 
   ShadersLibrary::Get().SubToCameraPub(m_pimpl->camera_change_pub);
   ShadersLibrary::Get().SubToResizePub(m_pimpl->resize_change_pub);

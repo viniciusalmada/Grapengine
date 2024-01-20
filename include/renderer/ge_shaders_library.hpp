@@ -16,7 +16,6 @@ class ShadersLibrary
 public:
   GE3D static ShadersLibrary& Get();
 
-  void SubToResizePub(IPublisher<Vec2>& pub) const;
   void SubToCameraPub(IPublisher<Mat4>& pub) const;
 
   ShadersLibrary(const ShadersLibrary&) = delete;
