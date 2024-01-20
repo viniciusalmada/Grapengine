@@ -1,5 +1,5 @@
-#ifndef GRAPHICENGINE3D_GE_VERTEXARRAY_HPP
-#define GRAPHICENGINE3D_GE_VERTEXARRAY_HPP
+#ifndef GRAPENGINE_VERTEXARRAY_HPP
+#define GRAPENGINE_VERTEXARRAY_HPP
 
 class VertexBuffer;
 class IndexBuffer;
@@ -26,4 +26,4 @@ private:
   Ref<IndexBuffer> index_buffer;
 };
 
-#endif // GRAPHICENGINE3D_GE_VERTEXARRAY_HPP
+#endif // GRAPENGINE_VERTEXARRAY_HPP

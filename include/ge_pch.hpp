@@ -1,5 +1,5 @@
-#ifndef GRAPHIC_ENGINE3D_GE_PCH_HPP
-#define GRAPHIC_ENGINE3D_GE_PCH_HPP
+#ifndef GRAPENGINE_PCH_HPP
+#define GRAPENGINE_PCH_HPP
 
 #include <any>
 #include <array>

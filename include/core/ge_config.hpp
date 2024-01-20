@@ -1,7 +1,7 @@
-#ifndef GRAPHIC_ENGINE3D_GE_CONFIG_HPP
-#define GRAPHIC_ENGINE3D_GE_CONFIG_HPP
+#ifndef GRAPENGINE_CONFIG_HPP
+#define GRAPENGINE_CONFIG_HPP
 
-#if defined(GraphicEngine3D_EXPORTS)
+#if defined(GRAPENGINE_EXPORTS)
   #define GE3D __declspec(dllexport)
 #else
   #define GE3D __declspec(dllimport)
@@ -24,4 +24,4 @@
   struct Impl;                                                                                     \
   Scope<Impl> m_pimpl;
 
-#endif // GRAPHICENGINE3D_GE_CONFIG_HPP
+#endif // GRAPENGINE_CONFIG_HPP

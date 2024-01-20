@@ -1,5 +1,5 @@
-#ifndef GRAPHICENGINE3D_GE_IPUBSUB_HPP
-#define GRAPHICENGINE3D_GE_IPUBSUB_HPP
+#ifndef GRAPENGINE_IPUBSUB_HPP
+#define GRAPENGINE_IPUBSUB_HPP
 
 template <typename Msg>
 class ISubscriber;
@@ -27,4 +27,4 @@ public:
   virtual void OnUpdate(Msg data) = 0;
 };
 
-#endif // GRAPHICENGINE3D_GE_IPUBSUB_HPP
+#endif // GRAPENGINE_IPUBSUB_HPP

@@ -35,7 +35,7 @@ int main()
 
   constexpr u32 width = 1280;
   constexpr u32 height = 720;
-  Application application{ "Graphic Engine", width, height };
+  Application application{ "Grapengine", width, height };
 
   //  Ref<RectShape> rect_shape =
   //    MakeRef<RectShape>(Vec3{ -5.0f, 0.0f, +5.0f },

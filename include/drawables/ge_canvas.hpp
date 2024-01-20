@@ -1,5 +1,5 @@
-#ifndef GRAPHICENGINE3D_GE_CANVAS_HPP
-#define GRAPHICENGINE3D_GE_CANVAS_HPP
+#ifndef GRAPENGINE_CANVAS_HPP
+#define GRAPENGINE_CANVAS_HPP
 
 #include "ge_drawable.hpp"
 #include "ge_pch.hpp"
@@ -19,4 +19,4 @@ private:
   POINTER_TO_IMPLEMENTATION_IDIOM;
 };
 
-#endif // GRAPHICENGINE3D_GE_CANVAS_HPP
+#endif // GRAPENGINE_CANVAS_HPP

@@ -5,6 +5,6 @@
     "stb",
     "gtest"
   ],
-  "name": "graphic-engine-3d",
+  "name": "grapengine",
   "version": "0.0.1"
 }

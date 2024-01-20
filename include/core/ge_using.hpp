@@ -1,5 +1,5 @@
-#ifndef GRAPHICENGINE3D_GE_USING_HPP
-#define GRAPHICENGINE3D_GE_USING_HPP
+#ifndef GRAPENGINE_USING_HPP
+#define GRAPENGINE_USING_HPP
 
 #include <cstdint>
 #include <memory>
@@ -25,4 +25,4 @@ using Ref = std::shared_ptr<T>;
 template <class T>
 using Scope = std::unique_ptr<T>;
 
-#endif // GRAPHICENGINE3D_GE_USING_HPP
+#endif // GRAPENGINE_USING_HPP

@@ -1,5 +1,5 @@
-#ifndef GRAPHICENGINE3D_GE_RANDOM_HPP
-#define GRAPHICENGINE3D_GE_RANDOM_HPP
+#ifndef GRAPENGINE_RANDOM_HPP
+#define GRAPENGINE_RANDOM_HPP
 
 namespace Random
 {
@@ -10,4 +10,4 @@ namespace Random
                       float max = std::numeric_limits<float>::max());
 }
 
-#endif // GRAPHICENGINE3D_GE_RANDOM_HPP
+#endif // GRAPENGINE_RANDOM_HPP

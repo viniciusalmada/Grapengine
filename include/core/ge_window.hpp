@@ -1,5 +1,5 @@
-#ifndef GRAPHIC_ENGINE3D_GE_WINDOW_HPP
-#define GRAPHIC_ENGINE3D_GE_WINDOW_HPP
+#ifndef GRAPENGINE_WINDOW_HPP
+#define GRAPENGINE_WINDOW_HPP
 
 #include "drawables/ge_canvas.hpp"
 #include "events/ge_event.hpp"
@@ -13,7 +13,7 @@ struct WindowProps
   u32 width;
   u32 height;
 
-  explicit WindowProps(std::string title = "Graphic Engine", u32 w = 1280, u32 h = 720) :
+  explicit WindowProps(std::string title = "Grapengine", u32 w = 1280, u32 h = 720) :
       title(std::move(title)), width(w), height(h)
   {
   }

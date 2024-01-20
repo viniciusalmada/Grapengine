@@ -1,5 +1,5 @@
-#ifndef GRAPHICENGINE3D_GE_VERTICES_DATA_HPP
-#define GRAPHICENGINE3D_GE_VERTICES_DATA_HPP
+#ifndef GRAPENGINE_VERTICES_DATA_HPP
+#define GRAPENGINE_VERTICES_DATA_HPP
 
 #include "core/ge_assert.hpp"
 #include "ge_buffer_layout.hpp"
@@ -87,4 +87,4 @@ void VerticesData::PushData(T... args)
   (..., PushBytes(args));
 }
 
-#endif // GRAPHICENGINE3D_GE_VERTICES_DATA_HPP
+#endif // GRAPENGINE_VERTICES_DATA_HPP

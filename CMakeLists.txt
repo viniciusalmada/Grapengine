@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project(GraphicEngine3D)
+project(Grapengine CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
-set(ENGINE_NAME GraphicEngine3D)
+set(ENGINE_NAME Grapengine)
 
 # #############################################################################
 # Engine

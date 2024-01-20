@@ -1,5 +1,5 @@
-#ifndef GRAPHICENGINE3D_GE_CUBE_HPP
-#define GRAPHICENGINE3D_GE_CUBE_HPP
+#ifndef GRAPENGINE_CUBE_HPP
+#define GRAPENGINE_CUBE_HPP
 
 #include "ge_color.hpp"
 #include "ge_drawable.hpp"
@@ -17,4 +17,4 @@ private:
   POINTER_TO_IMPLEMENTATION_IDIOM
 };
 
-#endif // GRAPHICENGINE3D_GE_CUBE_HPP
+#endif // GRAPENGINE_CUBE_HPP

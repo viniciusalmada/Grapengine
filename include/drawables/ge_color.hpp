@@ -1,5 +1,5 @@
-#ifndef GRAPHICENGINE3D_GE_COLOR_HPP
-#define GRAPHICENGINE3D_GE_COLOR_HPP
+#ifndef GRAPENGINE_COLOR_HPP
+#define GRAPENGINE_COLOR_HPP
 
 #include "math/ge_vector.hpp"
 
@@ -31,4 +31,4 @@ namespace Colors
   constexpr Color MAGENTA{ 0xFF, 0x33, 0xFF, 0xFF };
 }
 
-#endif // GRAPHICENGINE3D_GE_COLOR_HPP
+#endif // GRAPENGINE_COLOR_HPP

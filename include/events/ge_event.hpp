@@ -1,5 +1,5 @@
-#ifndef GRAPHIC_ENGINE3D_GE_EVENT_HPP
-#define GRAPHIC_ENGINE3D_GE_EVENT_HPP
+#ifndef GRAPENGINE_EVENT_HPP
+#define GRAPENGINE_EVENT_HPP
 
 #include "ge_event_type.hpp"
 

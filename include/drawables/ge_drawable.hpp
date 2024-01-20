@@ -1,5 +1,5 @@
-#ifndef GRAPHICENGINE3D_GE_DRAWABLE_HPP
-#define GRAPHICENGINE3D_GE_DRAWABLE_HPP
+#ifndef GRAPENGINE_DRAWABLE_HPP
+#define GRAPENGINE_DRAWABLE_HPP
 
 enum class Shaders;
 
@@ -13,4 +13,4 @@ public:
   virtual void Draw() const = 0;
 };
 
-#endif // GRAPHICENGINE3D_GE_DRAWABLE_HPP
+#endif // GRAPENGINE_DRAWABLE_HPP

@@ -1,5 +1,5 @@
-#ifndef GRAPHIC_ENGINE3D_GE_SHADER_HPP
-#define GRAPHIC_ENGINE3D_GE_SHADER_HPP
+#ifndef GRAPENGINE_SHADER_HPP
+#define GRAPENGINE_SHADER_HPP
 
 #include "math/ge_vector.hpp"
 
