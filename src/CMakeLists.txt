@@ -29,7 +29,10 @@ add_library(${ENGINE_NAME} SHARED
 )
 target_precompile_headers(${ENGINE_NAME} PRIVATE ${ENGINE_INCLUDE}/grapengine_pch.hpp)
 target_include_directories(${ENGINE_NAME} PUBLIC ${ENGINE_INCLUDE})
-target_compile_definitions(${ENGINE_NAME} PRIVATE GLFW_INCLUDE_NONE GRAPENGINE_EXPORTS)
+target_compile_definitions(${ENGINE_NAME} PRIVATE
+  GLFW_INCLUDE_NONE
+  GRAPENGINE_EXPORTS
+)
 
 target_compile_options(${ENGINE_NAME} PRIVATE /W4)
 
