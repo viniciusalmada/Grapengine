@@ -9,33 +9,42 @@ namespace
     
     layout (location = 0) in vec3 in_position;
     layout (location = 1) in vec2 in_texture_coord;
-    
+    layout (location = 2) in float in_use_color;
+    layout (location = 3) in vec4 in_color;
+
     out vec2 out_texture_coords;
-    
-    uniform mat4 u_model;
-    //uniform mat4 u_view;
-    //uniform mat4 u_proj;
+    out float out_use_color;
+    out vec4 out_color;
+
     uniform mat4 u_VP;
-    
+
     void main()
     {
-        gl_Position = (u_VP) * vec4(in_position, 1.0);
-        out_texture_coords = in_texture_coord;
+      gl_Position = (u_VP) * vec4(in_position, 1.0);
+      out_texture_coords = in_texture_coord;
+      out_use_color = in_use_color;
+      out_color = in_color;
     }
 )glsl";
 
   const std::string F_SHADER = R"glsl(
     #version 330 core
-    
+
     in vec2 out_texture_coords;
-    
+    in float out_use_color;
+    in vec4 out_color;
+
     out vec4 fragColor;
-    
-    uniform sampler2D dice_texture;
-    
+
+    uniform sampler2D img_texture;
+    uniform sampler2D color_texture;
+
     void main()
     {
-        fragColor = texture2D(dice_texture, out_texture_coords);
+      if (out_use_color > 0.5)
+        fragColor = texture2D(color_texture, vec2(0,0)) * out_color;
+      else
+        fragColor = texture2D(img_texture, out_texture_coords);
     }
 )glsl";
 }
@@ -51,7 +60,7 @@ PosAndTex2DShader::PosAndTex2DShader() : m_pimpl(MakeScope<Impl>())
   // TODO: TEMP
   {
     Activate();
-    m_pimpl->shader->UploadInt("dice_texture", 0);
+    m_pimpl->shader->UploadInt("color_texture", 1);
   }
 }
 
@@ -60,6 +69,8 @@ PosAndTex2DShader::~PosAndTex2DShader() = default;
 void PosAndTex2DShader::Activate()
 {
   m_pimpl->shader->Bind();
+  m_pimpl->shader->UploadInt("img_texture", 0);
+
 }
 
 void PosAndTex2DShader::Deactivate()
@@ -72,8 +83,3 @@ void PosAndTex2DShader::OnUpdate(Mat4 data)
   Activate();
   m_pimpl->shader->UploadMat4F("u_VP", data);
 }
-
-// void PosAndTex2DShader::OnUpdate(i32 data)
-//{
-//   m_pimpl->shader->UploadInt("dice_texture", data);
-// }
