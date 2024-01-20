@@ -5,6 +5,8 @@
 
 #include <glad/glad.h>
 
+using namespace GE;
+
 void OpenGLDebuggerFunc(GLenum /* source */,
                         GLenum /* type */,
                         u32 id,

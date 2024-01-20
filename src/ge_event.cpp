@@ -1,5 +1,7 @@
 #include "events/ge_event.hpp"
 
+using namespace GE;
+
 struct Event::Impl
 {
   EvData data;

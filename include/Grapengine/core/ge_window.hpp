@@ -10,40 +10,43 @@
 #include <functional>
 #include <string>
 
-struct WindowProps
+namespace GE
 {
-  std::string title;
-  u32 width;
-  u32 height;
+  using EventCallbackFn = std::function<void(Event&)>;
 
-  explicit WindowProps(std::string title = "Grapengine", u32 w = 1280, u32 h = 720) :
-      title(std::move(title)), width(w), height(h)
+  struct WindowProps
   {
-  }
-};
+    std::string title;
+    u32 width;
+    u32 height;
 
-using EventCallbackFn = std::function<void(Event&)>;
+    explicit WindowProps(std::string title = "Grapengine", u32 w = 1280, u32 h = 720) :
+        title(std::move(title)), width(w), height(h)
+    {
+    }
+  };
 
-class Window
-{
-public:
-  GE3D explicit Window(const WindowProps& props, const EventCallbackFn& cb);
-  GE3D ~Window();
+  class Window
+  {
+  public:
+    GE3D explicit Window(const WindowProps& props, const EventCallbackFn& cb);
+    GE3D ~Window();
 
-  [[nodiscard]] GE3D u32 GetWidth() const;
-  [[nodiscard]] GE3D u32 GetHeight() const;
+    [[nodiscard]] GE3D u32 GetWidth() const;
+    [[nodiscard]] GE3D u32 GetHeight() const;
 
-  void SetVsync(bool enabled);
+    void SetVsync(bool enabled);
 
-  void OnUpdate();
+    void OnUpdate();
 
-  GE3D void Clear(Color color) const;
-  GE3D void Draw(Ref<Drawable> drawable) const;
+    GE3D void Clear(Color color) const;
+    GE3D void Draw(Ref<Drawable> drawable) const;
 
-  Vec2 GetCursorPos() const;
+    Vec2 GetCursorPos() const;
 
-private:
-  POINTER_TO_IMPLEMENTATION_IDIOM
-};
+  private:
+    POINTER_TO_IMPLEMENTATION_IDIOM
+  };
+}
 
 #endif

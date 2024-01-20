@@ -7,6 +7,8 @@
 #include <renderer/ge_texture_2d.hpp>
 #include <renderer/ge_vertices_data.hpp>
 
+using namespace GE;
+
 struct RectShape::Impl
 {
   //  float position_x = 0;

@@ -6,6 +6,8 @@
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 
+using namespace GE;
+
 static bool glfw_initialized = false;
 
 class Context

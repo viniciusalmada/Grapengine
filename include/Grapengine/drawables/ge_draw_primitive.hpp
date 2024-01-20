@@ -1,20 +1,22 @@
 #ifndef GRAPENGINE_DRAW_PRIMITIVE_HPP
 #define GRAPENGINE_DRAW_PRIMITIVE_HPP
-
-class VerticesData;
-
-class DrawPrimitive
+namespace GE
 {
-public:
-  DrawPrimitive(const Ref<VerticesData>& vertices, const Ref<std::vector<u32>>& indices);
-  ~DrawPrimitive();
+  class VerticesData;
 
-  void Draw() const;
+  class DrawPrimitive
+  {
+  public:
+    DrawPrimitive(const Ref<VerticesData>& vertices, const Ref<std::vector<u32>>& indices);
+    ~DrawPrimitive();
 
-  void UpdateVerticesData(const Ref<VerticesData>&);
+    void Draw() const;
 
-private:
-  POINTER_TO_IMPLEMENTATION_IDIOM
-};
+    void UpdateVerticesData(const Ref<VerticesData>&);
+
+  private:
+    POINTER_TO_IMPLEMENTATION_IDIOM
+  };
+}
 
 #endif // GRAPENGINE_DRAW_PRIMITIVE_HPP

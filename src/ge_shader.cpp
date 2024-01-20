@@ -5,6 +5,8 @@
 
 #include <glad/glad.h>
 
+using namespace GE;
+
 namespace
 {
   enum class ShaderType
@@ -158,8 +160,7 @@ Shader::Shader(const std::string& vertexSrc, const std::string& fragmentSrc) :
   m_pimpl->renderer_id = CreateProgram(vertexSrc, fragmentSrc);
 }
 
-Shader::Shader(const std::filesystem::path& vertexPath,
-                             const std::filesystem::path& fragPath) :
+Shader::Shader(const std::filesystem::path& vertexPath, const std::filesystem::path& fragPath) :
     m_pimpl(MakeScope<Impl>())
 {
   auto vertex_src = IO::ReadFileToString(vertexPath);

@@ -5,7 +5,8 @@
 
 #include <math/ge_vector.hpp>
 #include <utils/ge_ipubsub.hpp>
-
+namespace GE
+{
 class PosAndTex2DShader : public IShaderProgram, public ISubscriber<Mat4>
 {
 public:
@@ -21,5 +22,5 @@ public:
 private:
   POINTER_TO_IMPLEMENTATION_IDIOM
 };
-
+}
 #endif // GRAPENGINE_POS_TEX_SHADER_HPP

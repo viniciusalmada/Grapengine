@@ -6,7 +6,7 @@
 
 #include <limits>
 
-namespace Random
+namespace GE::Random
 {
   GE3D u32 GenInt(u32 min = std::numeric_limits<u32>::min(),
                   u32 max = std::numeric_limits<u32>::max());

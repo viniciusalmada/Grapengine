@@ -6,6 +6,8 @@
 #include <renderer/ge_shaders_library.hpp>
 #include <renderer/ge_vertices_data.hpp>
 
+using namespace GE;
+
 // clang-format off
   // X - left to right axis
   // Y - bottom to top axis

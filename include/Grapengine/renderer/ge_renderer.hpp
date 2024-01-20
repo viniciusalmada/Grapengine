@@ -2,20 +2,23 @@
 #define GRAPENGINE_RENDERER_HPP
 
 #include "math/ge_vector.hpp"
-class VertexArray;
-
-class Renderer
+namespace GE
 {
-public:
-  static void Init();
+  class VertexArray;
 
-  static void SetViewport(u32 x, u32 y, u32 width, u32 height);
+  class Renderer
+  {
+  public:
+    static void Init();
 
-  static void SetClearColor(const Vec4& color);
+    static void SetViewport(u32 x, u32 y, u32 width, u32 height);
 
-  static void Clear();
+    static void SetClearColor(const Vec4& color);
 
-  static void DrawIndexed(const Ref<VertexArray>& vao, i32 count);
-};
+    static void Clear();
+
+    static void DrawIndexed(const Ref<VertexArray>& vao, i32 count);
+  };
+}
 
 #endif

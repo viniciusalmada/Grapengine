@@ -1,16 +1,18 @@
 #ifndef GRAPENGINE_DRAWABLE_HPP
 #define GRAPENGINE_DRAWABLE_HPP
-
-enum class Shaders;
-
-class Drawable
+namespace GE
 {
-public:
-  Drawable(Shaders){};
+  enum class Shaders;
 
-  virtual ~Drawable() = default;
+  class Drawable
+  {
+  public:
+    Drawable(Shaders){};
 
-  virtual void Draw() const = 0;
-};
+    virtual ~Drawable() = default;
+
+    virtual void Draw() const = 0;
+  };
+}
 
 #endif // GRAPENGINE_DRAWABLE_HPP

@@ -13,16 +13,19 @@ using u16 = std::uint16_t;
 using u32 = std::uint32_t;
 using u64 = std::uint64_t;
 
-/**
- * Pointer that acts as reference
- */
-template <class T>
-using Ref = std::shared_ptr<T>;
+namespace GE
+{
+  /**
+   * Pointer that acts as reference
+   */
+  template <class T>
+  using Ref = std::shared_ptr<T>;
 
-/**
- * Pointer that lives only inside a defined scope
- */
-template <class T>
-using Scope = std::unique_ptr<T>;
+  /**
+   * Pointer that lives only inside a defined scope
+   */
+  template <class T>
+  using Scope = std::unique_ptr<T>;
+}
 
 #endif // GRAPENGINE_USING_HPP

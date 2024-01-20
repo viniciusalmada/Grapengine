@@ -10,6 +10,8 @@
 #include <renderer/ge_texture_2d.hpp>
 #include <utils/ge_ipubsub.hpp>
 
+using namespace GE;
+
 class CameraChangePub : public IPublisher<Mat4>
 {
 };

@@ -8,6 +8,8 @@
 
 #include <glad/glad.h>
 
+using namespace GE;
+
 namespace
 {
   i32 GetComponentCount(const BufferElem& e)
@@ -85,7 +87,7 @@ void VertexArray::Bind() const
 
 void VertexArray::SetVertexBuffer(const Ref<VertexBuffer>& vertexBuffer, Ref<BufferLayout> layout)
 {
-  Assert(GL::IsVAOBound(id), "The associated VAO lacks a binding");
+  Assert(IsVAOBound(id), "The associated VAO lacks a binding");
 
   u32 attrib_index = 0;
   layout->ForEachElement(
@@ -116,6 +118,6 @@ bool VertexArray::IsValid() const
 
 void VertexArray::Unbind() const
 {
-  if (GL::IsVAOBound(id))
+  if (IsVAOBound(id))
     glBindVertexArray(0);
 }

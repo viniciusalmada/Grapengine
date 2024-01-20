@@ -4,6 +4,8 @@
 #include <renderer/ge_ishader_program.hpp>
 #include <renderer/shader_programs/ge_pos_tex_shader.hpp>
 
+using namespace GE;
+
 struct ShadersLibrary::Impl
 {
   std::unordered_map<Shaders, Ref<IShaderProgram>> shaders;

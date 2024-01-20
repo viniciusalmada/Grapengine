@@ -3,6 +3,8 @@
 #include <math/ge_vector.hpp>
 #include <renderer/ge_renderer.hpp>
 
+using namespace GE;
+
 struct Canvas::Impl
 {
   u32 width;

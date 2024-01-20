@@ -5,19 +5,22 @@
 #include "core/ge_type_aliases.hpp"
 #include "ge_drawable.hpp"
 
-struct Vec4;
-
-class Canvas
+namespace GE
 {
-public:
-  Canvas(u32 width, u32 height);
-  ~Canvas();
+  struct Vec4;
 
-  static void Clear(const Vec4& color);
-  static void Draw(const Ref<Drawable>& drawable);
+  class Canvas
+  {
+  public:
+    Canvas(u32 width, u32 height);
+    ~Canvas();
 
-private:
-  POINTER_TO_IMPLEMENTATION_IDIOM;
-};
+    static void Clear(const Vec4& color);
+    static void Draw(const Ref<Drawable>& drawable);
+
+  private:
+    POINTER_TO_IMPLEMENTATION_IDIOM;
+  };
+}
 
 #endif // GRAPENGINE_CANVAS_HPP

@@ -6,6 +6,8 @@
 
 #include <math/ge_vector.hpp>
 
+using namespace GE;
+
 inline float Transform::Deg2Rad(float deg)
 {
   return deg * (std::numbers::pi_v<decltype(deg)> / 180.0f);

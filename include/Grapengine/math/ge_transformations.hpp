@@ -5,7 +5,7 @@
 
 #include <string>
 
-namespace Transform
+namespace GE::Transform
 {
   float GE3D Deg2Rad(float degree);
 

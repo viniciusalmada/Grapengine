@@ -4,23 +4,25 @@
 #include "ge_drawable.hpp"
 
 #include <math/ge_vector.hpp>
-
-struct Color;
-class Cylinder : public Drawable
+namespace GE
 {
-public:
-  GE3D Cylinder(Shaders shader,
-                float radius,
-                const Vec3& basePoint,
-                const Vec3& direction,
-                float height,
-                Color color);
-  ~Cylinder() override;
+  struct Color;
+  class Cylinder : public Drawable
+  {
+  public:
+    GE3D Cylinder(Shaders shader,
+                  float radius,
+                  const Vec3& basePoint,
+                  const Vec3& direction,
+                  float height,
+                  Color color);
+    ~Cylinder() override;
 
-  void Draw() const override;
+    void Draw() const override;
 
-private:
-  POINTER_TO_IMPLEMENTATION_IDIOM
-};
+  private:
+    POINTER_TO_IMPLEMENTATION_IDIOM
+  };
+}
 
 #endif // GRAPENGINE_CYLINDER_HPP

@@ -1,10 +1,13 @@
 #ifndef GRAPENGINE_IO_HPP
 #define GRAPENGINE_IO_HPP
 
-class IO
+namespace GE
 {
-public:
-  static std::string ReadFileToString(const std::filesystem::path& path);
-};
+  class IO
+  {
+  public:
+    static std::string ReadFileToString(const std::filesystem::path& path);
+  };
+}
 
 #endif // GRAPENGINE_IO_HPP

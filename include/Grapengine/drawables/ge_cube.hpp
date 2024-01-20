@@ -5,16 +5,19 @@
 #include "ge_drawable.hpp"
 #include "math/ge_vector.hpp"
 
-class Cube : public Drawable
+namespace GE
 {
-public:
-  GE3D Cube(float x, float y, float z, Shaders shader);
-  ~Cube() override;
+  class Cube : public Drawable
+  {
+  public:
+    GE3D Cube(float x, float y, float z, Shaders shader);
+    ~Cube() override;
 
-  void Draw() const override;
+    void Draw() const override;
 
-private:
-  POINTER_TO_IMPLEMENTATION_IDIOM
-};
+  private:
+    POINTER_TO_IMPLEMENTATION_IDIOM
+  };
+}
 
 #endif // GRAPENGINE_CUBE_HPP

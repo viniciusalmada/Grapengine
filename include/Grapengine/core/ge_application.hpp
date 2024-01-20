@@ -5,21 +5,24 @@
 #include "ge_macros.hpp"
 #include "ge_type_aliases.hpp"
 
-#include <string>
 #include <functional>
+#include <string>
 
-class Window;
-
-class Application
+namespace GE
 {
-public:
-  GE3D Application(std::string&& title, u32 width, u32 height);
-  GE3D virtual ~Application();
+  class Window;
 
-  GE3D void Run(const std::function<void(Window&)>& onLoop) const;
+  class Application
+  {
+  public:
+    GE3D Application(std::string&& title, u32 width, u32 height);
+    GE3D virtual ~Application();
 
-private:
-  POINTER_TO_IMPLEMENTATION_IDIOM
-};
+    GE3D void Run(const std::function<void(Window&)>& onLoop) const;
+
+  private:
+    POINTER_TO_IMPLEMENTATION_IDIOM
+  };
+}
 
 #endif

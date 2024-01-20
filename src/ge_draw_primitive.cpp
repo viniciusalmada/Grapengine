@@ -6,6 +6,8 @@
 #include "renderer/ge_vertex_buffer.hpp"
 #include "renderer/ge_vertices_data.hpp"
 
+using namespace GE;
+
 struct DrawPrimitive::Impl
 {
   Ref<VertexArray> vao = nullptr;

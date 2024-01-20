@@ -2,6 +2,8 @@
 
 #include <renderer/ge_shader.hpp>
 
+using namespace GE;
+
 namespace
 {
   const std::string V_SHADER = R"glsl(

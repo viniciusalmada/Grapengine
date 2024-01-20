@@ -1,5 +1,7 @@
 #include "utils/ge_random.hpp"
 
+using namespace GE;
+
 namespace
 {
   std::random_device rd{};

@@ -3,32 +3,33 @@
 
 #include <math/ge_vector.hpp>
 #include <utils/ge_ipubsub.hpp>
-
-class IShaderProgram;
-
-enum class Shaders
+namespace GE
 {
-  POSITION_AND_TEXTURE2D,
-};
+  class IShaderProgram;
 
-class ShadersLibrary
-{
-public:
-  GE3D static ShadersLibrary& Get();
+  enum class Shaders
+  {
+    POSITION_AND_TEXTURE2D,
+  };
 
-  void SubToCameraPub(IPublisher<Mat4>& pub) const;
+  class ShadersLibrary
+  {
+  public:
+    GE3D static ShadersLibrary& Get();
 
-  ShadersLibrary(const ShadersLibrary&) = delete;
-  ShadersLibrary operator=(const ShadersLibrary&) = delete;
+    void SubToCameraPub(IPublisher<Mat4>& pub) const;
 
-  [[nodiscard]] GE3D Ref<IShaderProgram> GetShader(Shaders) const;
+    ShadersLibrary(const ShadersLibrary&) = delete;
+    ShadersLibrary operator=(const ShadersLibrary&) = delete;
 
-  void Activate(Shaders shader);
+    [[nodiscard]] GE3D Ref<IShaderProgram> GetShader(Shaders) const;
 
-private:
-  ShadersLibrary();
+    void Activate(Shaders shader);
 
-  POINTER_TO_IMPLEMENTATION_IDIOM
-};
+  private:
+    ShadersLibrary();
 
+    POINTER_TO_IMPLEMENTATION_IDIOM
+  };
+}
 #endif // GRAPENGINE_SHADERS_LIBRARY_HPP

@@ -5,6 +5,8 @@
 #include <core/ge_assert.hpp>
 #include <stb_image.h>
 
+using namespace GE;
+
 struct Texture2D::Impl
 {
   std::filesystem::path path;
