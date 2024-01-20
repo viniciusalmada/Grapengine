@@ -14,7 +14,8 @@ public:
                  Vec3 topRight,
                  Vec3 topLeft,
                  Color color,
-                 Shaders shader);
+                 Shaders shader,
+                 std::string path = "");
   ~RectShape() override;
 
   void Draw() const override;
