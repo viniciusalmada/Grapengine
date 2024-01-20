@@ -1,3 +1,4 @@
+#include "core/ge_memory.hpp"
 #include "core/ge_window.hpp"
 
 #include <gtest/gtest.h>

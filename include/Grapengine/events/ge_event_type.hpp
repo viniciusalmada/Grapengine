@@ -1,6 +1,8 @@
 #ifndef GRAPENGINE_EVENT_TYPE_HPP
 #define GRAPENGINE_EVENT_TYPE_HPP
 
+#include "core/ge_type_aliases.hpp"
+
 #include <variant>
 
 enum class EvType

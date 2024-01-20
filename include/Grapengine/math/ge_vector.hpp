@@ -1,6 +1,9 @@
 #ifndef GRAPENGINE_VECTOR_HPP
 #define GRAPENGINE_VECTOR_HPP
 
+#include "core/ge_config.hpp"
+#include "core/ge_type_aliases.hpp"
+
 #include <array>
 
 struct GE3D Vec2

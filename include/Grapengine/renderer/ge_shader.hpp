@@ -3,6 +3,8 @@
 
 #include "math/ge_vector.hpp"
 
+#include <filesystem>
+
 class Shader
 {
 public:

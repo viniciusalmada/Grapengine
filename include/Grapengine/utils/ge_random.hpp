@@ -1,6 +1,11 @@
 #ifndef GRAPENGINE_RANDOM_HPP
 #define GRAPENGINE_RANDOM_HPP
 
+#include "core/ge_config.hpp"
+#include "core/ge_type_aliases.hpp"
+
+#include <limits>
+
 namespace Random
 {
   GE3D u32 GenInt(u32 min = std::numeric_limits<u32>::min(),

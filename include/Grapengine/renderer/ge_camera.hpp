@@ -1,6 +1,7 @@
 #ifndef GRAPENGINE_CAMERA_HPP
 #define GRAPENGINE_CAMERA_HPP
 
+#include "core/ge_macros.hpp"
 #include "math/ge_vector.hpp"
 
 class Camera

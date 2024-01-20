@@ -1,11 +1,14 @@
 #ifndef GRAPENGINE_WINDOW_HPP
 #define GRAPENGINE_WINDOW_HPP
 
+#include "core/ge_macros.hpp"
 #include "drawables/ge_canvas.hpp"
+#include "drawables/ge_color.hpp"
 #include "events/ge_event.hpp"
 #include "math/ge_vector.hpp"
 
-#include <drawables/ge_color.hpp>
+#include <functional>
+#include <string>
 
 struct WindowProps
 {

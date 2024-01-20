@@ -3,6 +3,8 @@
 
 #include "ge_vector.hpp"
 
+#include <string>
+
 namespace Transform
 {
   float GE3D Deg2Rad(float degree);
