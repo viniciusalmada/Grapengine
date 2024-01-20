@@ -20,6 +20,7 @@ struct Application::Impl
   bool running = true;
   bool minimized = false;
   Scope<Camera> camera;
+  Ref<Texture2D> color_tex;
   CameraChangePub camera_change_pub{};
   Vec2 mouse_press_pos{ 0, 0 };
 
@@ -136,17 +137,8 @@ Application::Application(std::string&& title, u32 width, u32 height)
 
   ShadersLibrary::Get().SubToCameraPub(m_pimpl->camera_change_pub);
 
-  //  {
-  ////    Vec3 eye{ 0.0f, 4.0f, 4.0f };
-  ////    //    Vec3 target{ 0, 0, 0 };
-  ////    //    Vec3 dir = (target - eye).Normalize();
-  //    m_pimpl->camera = Camera{
-  //      eye,
-  //      90.0f,
-  //      0.0,
-  //      0,
-  //    };
-  //  }
+  m_pimpl->color_tex = MakeScope<Texture2D>();
+  m_pimpl->color_tex->Bind(1);
 
   m_pimpl->camera_change_pub.Publish(m_pimpl->camera->GetViewProjection());
 }
