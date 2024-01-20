@@ -14,8 +14,8 @@ add_executable(EngineTests
 find_package(GTest CONFIG REQUIRED)
 target_link_libraries(EngineTests PRIVATE GTest::gtest GTest::gtest_main GTest::gmock GTest::gmock_main)
 
-target_include_directories(EngineTests PRIVATE ${CMAKE_SOURCE_DIR}/include)
-target_precompile_headers(EngineTests PRIVATE ${CMAKE_SOURCE_DIR}/include/Grapegine/ge_pch.hpp)
+target_include_directories(EngineTests PRIVATE ${ENGINE_INCLUDE})
+
 target_link_libraries(EngineTests
   PRIVATE ${ENGINE_NAME}
 )

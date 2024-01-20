@@ -2,7 +2,6 @@
 #define GRAPENGINE_CANVAS_HPP
 
 #include "ge_drawable.hpp"
-#include "ge_pch.hpp"
 
 struct Vec4;
 

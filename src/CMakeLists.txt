@@ -27,11 +27,14 @@ add_library(${ENGINE_NAME} SHARED
   ge_pos_tex_shader.cpp
   ge_cylinder.cpp
 )
-target_precompile_headers(${ENGINE_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/include/Grapengine/ge_pch.hpp)
-target_include_directories(${ENGINE_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_precompile_headers(${ENGINE_NAME} PRIVATE ${ENGINE_INCLUDE}/grapengine_pch.hpp)
+target_include_directories(${ENGINE_NAME} PUBLIC ${ENGINE_INCLUDE})
 target_compile_definitions(${ENGINE_NAME} PRIVATE GLFW_INCLUDE_NONE GRAPENGINE_EXPORTS)
+
 target_compile_options(${ENGINE_NAME} PRIVATE /W4)
 
+# #############################################################################
+# Dependencies from VCPKG
 find_package(glfw3 CONFIG REQUIRED)
 target_link_libraries(${ENGINE_NAME} PRIVATE glfw)
 
