@@ -153,7 +153,7 @@ Application::Application(std::string&& title, u32 width, u32 height)
 
 Application::~Application() = default;
 
-void Application::Run(const std::function<void(Window&)>& onLoop)
+void Application::Run(const std::function<void(Window&)>& onLoop) const
 {
   while (m_pimpl->running)
   {
