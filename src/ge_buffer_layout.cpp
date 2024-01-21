@@ -1,5 +1,7 @@
 #include "renderer/ge_buffer_layout.hpp"
 
+using namespace GE;
+
 struct BufferLayout::Impl
 {
   std::vector<BufferElem> elements;

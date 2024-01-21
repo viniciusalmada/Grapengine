@@ -2,6 +2,8 @@
 
 #include "math/ge_transformations.hpp"
 
+using namespace GE;
+
 namespace
 {
   constexpr Vec3 UP_DIR = { 0.0f, 1.0f, 0.0f };

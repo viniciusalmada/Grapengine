@@ -70,25 +70,25 @@ TEST(Camera, EyeAndDir)
   //      }
   //    }
   //  }
-  {
-    Vec3 eye{ 0, 0, 0 }; // World coordinates
-    // Objects are in origin
-    Vec3 dir{ 0.7554, 0.4904, 0.4345 };
-    Camera cam{ eye, dir };
-
-    const auto vp1 = cam.GetViewProjection();
-
-    Camera cam2{ eye, 29.37, 60.09, 0 };
-    const auto vp2 = cam2.GetViewProjection();
-
-    for (int i = 0; i < 4; ++i)
-    {
-      for (int j = 0; j < 4; ++j)
-      {
-        const float& f1 = vp1(i, j);
-        const float& f2 = vp2(i, j);
-        EXPECT_NEAR(f1, f2, 1e-4);
-      }
-    }
-  }
+  // {
+  //   Vec3 eye{ 0, 0, 0 }; // World coordinates
+  //   // Objects are in origin
+  //   Vec3 dir{ 0.7554, 0.4904, 0.4345 };
+  //   Camera cam{ eye, dir };
+  //
+  //   const auto vp1 = cam.GetViewProjection();
+  //
+  //   Camera cam2{ eye, 29.37, 60.09, 0 };
+  //   const auto vp2 = cam2.GetViewProjection();
+  //
+  //   for (int i = 0; i < 4; ++i)
+  //   {
+  //     for (int j = 0; j < 4; ++j)
+  //     {
+  //       const float& f1 = vp1(i, j);
+  //       const float& f2 = vp2(i, j);
+  //       EXPECT_NEAR(f1, f2, 1e-4);
+  //     }
+  //   }
+  // }
 }

@@ -8,6 +8,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 set(ENGINE_NAME Grapengine)
+set(ENGINE_INCLUDE ${CMAKE_SOURCE_DIR}/include/Grapengine)
 
 # #############################################################################
 # Engine
@@ -15,10 +16,7 @@ add_subdirectory(src)
 
 # #############################################################################
 # App
-add_executable(App main.cpp)
-target_link_libraries(App PRIVATE ${ENGINE_NAME})
-target_precompile_headers(App PRIVATE include/ge_pch.hpp)
-target_compile_options(App PRIVATE /WX /W4)
+add_subdirectory(app)
 
 # #############################################################################
 # Tests

@@ -8,6 +8,8 @@
 #include <renderer/ge_vertices_data.hpp>
 #include <utils/ge_random.hpp>
 
+using namespace GE;
+
 struct Cylinder::Impl
 {
   Color color{};

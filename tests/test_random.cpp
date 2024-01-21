@@ -1,5 +1,6 @@
 #include "utils/ge_random.hpp"
 
+#include <array>
 #include <gtest/gtest.h>
 
 TEST(Random, Int)

@@ -1,3 +1,4 @@
+#include "core/ge_memory.hpp"
 #include "core/ge_window.hpp"
 #include "renderer/ge_shader.hpp"
 
@@ -55,6 +56,4 @@ TEST(ShaderProgram, Shader)
 
   shader_program.Unbind();
   EXPECT_FALSE(shader_program.IsBound());
-
-
 }

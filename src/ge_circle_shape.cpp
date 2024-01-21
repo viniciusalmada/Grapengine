@@ -6,6 +6,8 @@
 #include <renderer/ge_shaders_library.hpp>
 #include <renderer/ge_vertices_data.hpp>
 
+using namespace GE;
+
 constexpr auto CIRCLE_POINTS = 30;
 
 struct CircleShape::Impl

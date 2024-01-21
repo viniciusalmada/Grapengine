@@ -1,3 +1,4 @@
+#include "core/ge_memory.hpp"
 #include "core/ge_window.hpp"
 #include "renderer/ge_vertex_array.hpp"
 #include "renderer/ge_vertex_buffer.hpp"
@@ -27,5 +28,4 @@ TEST(VertexArray, VertexBuffer)
   EXPECT_DEATH(
     { Ref<VertexBuffer> vbo = MakeRef<VertexBuffer>(vertices, sizeof(float) * 6, vao->GetID()); },
     "binding");
-
 }

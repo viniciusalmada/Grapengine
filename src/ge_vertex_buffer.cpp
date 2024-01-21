@@ -5,6 +5,8 @@
 
 #include <glad/glad.h>
 
+using namespace GE;
+
 struct VertexBuffer::Impl
 {
   u32 id = 0;
@@ -14,7 +16,7 @@ struct VertexBuffer::Impl
 VertexBuffer::VertexBuffer(const void* ptr, u64 verticesSize, u32 parent) :
     m_pimpl(MakeScope<Impl>())
 {
-  Assert(GL::IsVAOBound(parent), "The associated VAO lacks a binding");
+  Assert(IsVAOBound(parent), "The associated VAO lacks a binding");
 
   m_pimpl->parent = parent;
 
@@ -27,7 +29,7 @@ VertexBuffer::~VertexBuffer() = default;
 
 void VertexBuffer::Bind() const
 {
-  Assert(GL::IsVAOBound(m_pimpl->parent), "The associated VAO lacks a binding");
+  Assert(IsVAOBound(m_pimpl->parent), "The associated VAO lacks a binding");
 
   glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->id);
 }

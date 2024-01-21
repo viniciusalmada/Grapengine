@@ -1,6 +1,6 @@
 #include "core/ge_assert.hpp"
 
-void Assert(bool condition, const char* message)
+void GE::Assert(bool condition, const char* message)
 {
   if (condition)
     return;

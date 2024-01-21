@@ -1,9 +1,0 @@
-#ifndef GRAPENGINE_GL_CHECKERS_HPP
-#define GRAPENGINE_GL_CHECKERS_HPP
-
-namespace GL
-{
-  bool IsVAOBound(u32 vaoID);
-}
-
-#endif // GRAPENGINE_GL_CHECKERS_HPP

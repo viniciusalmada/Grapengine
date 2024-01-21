@@ -2,6 +2,8 @@
 
 #include "core/ge_assert.hpp"
 
+using namespace GE;
+
 std::string IO::ReadFileToString(const std::filesystem::path& path)
 {
   try

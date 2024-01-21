@@ -2,7 +2,7 @@
 
 #include <glad/glad.h>
 
-bool GL::IsVAOBound(u32 vaoID)
+bool GE::IsVAOBound(u32 vaoID)
 {
   u32 current_VAO = 0;
   glGetIntegerv(GL_VERTEX_ARRAY_BINDING, (i32*)(&current_VAO));

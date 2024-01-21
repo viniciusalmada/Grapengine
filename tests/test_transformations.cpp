@@ -1,6 +1,7 @@
 #include "math/ge_transformations.hpp"
 
 #include <gtest/gtest.h>
+#include <numbers>
 
 TEST(Transform, Deg2Rad)
 {

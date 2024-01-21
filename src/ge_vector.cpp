@@ -1,5 +1,7 @@
 #include "math/ge_vector.hpp"
 
+using namespace GE;
+
 Vec2 Vec2::operator-(const Vec2& other) const
 {
   return { this->x - other.x, this->y - other.y };
