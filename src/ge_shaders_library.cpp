@@ -1,5 +1,7 @@
 #include "renderer/ge_shaders_library.hpp"
 
+#include "renderer/ge_buffer_layout.hpp"
+
 #include <core/ge_assert.hpp>
 #include <renderer/ge_ishader_program.hpp>
 #include <renderer/shader_programs/ge_pos_tex_shader.hpp>
@@ -34,8 +36,15 @@ void ShadersLibrary::Activate(Shaders shader)
   m_pimpl->shaders[shader]->Activate();
 }
 
-void ShadersLibrary::SubToCameraPub(IPublisher<Mat4>& pub) const
+GE::Ref<BufferLayout> GE::ShadersLibrary::GetLayout(Shaders shader) const
 {
-  pub.Subscribe(
-    std::static_pointer_cast<PosAndTex2DShader>(m_pimpl->shaders[Shaders::POSITION_AND_TEXTURE2D]));
+  switch (shader)
+  {
+  case Shaders::POSITION_AND_TEXTURE2D:
+    return MakeRef<BufferLayout>(BufferLayout::BuildElementsList({ //
+                                                                   ShaderDataType::Float3,
+                                                                   ShaderDataType::Float2,
+                                                                   ShaderDataType::Float4 }));
+  }
+  return nullptr;
 }

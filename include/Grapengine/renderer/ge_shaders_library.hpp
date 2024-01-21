@@ -6,6 +6,7 @@
 namespace GE
 {
   class IShaderProgram;
+  class BufferLayout;
 
   enum class Shaders
   {
@@ -17,12 +18,12 @@ namespace GE
   public:
     GE3D static ShadersLibrary& Get();
 
-    void SubToCameraPub(IPublisher<Mat4>& pub) const;
-
     ShadersLibrary(const ShadersLibrary&) = delete;
     ShadersLibrary operator=(const ShadersLibrary&) = delete;
 
     [[nodiscard]] GE3D Ref<IShaderProgram> GetShader(Shaders) const;
+
+    [[nodiscard]] GE3D Ref<BufferLayout> GetLayout(Shaders) const;
 
     void Activate(Shaders shader);
 
