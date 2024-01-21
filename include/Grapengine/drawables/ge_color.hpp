@@ -12,25 +12,33 @@ namespace GE
     u8 B = 0x00;
     u8 A = 0xFF;
 
-    Vec4 ToVec4()
+    constexpr explicit Color(u32 rgba)
+    {
+      R = (rgba >> 8 * 3) & 0xFF;
+      G = (rgba >> 8 * 2) & 0xFF;
+      B = (rgba >> 8 * 1) & 0xFF;
+      A = (rgba >> 8 * 0) & 0xFF;
+    }
+
+    Vec4 ToVec4() const
     {
       return {
-        R / 255.0f,
-        G / 255.0f,
-        B / 255.0f,
-        A / 255.0f,
+        (float)R / 255.0f,
+        (float)G / 255.0f,
+        (float)B / 255.0f,
+        (float)A / 255.0f,
       };
     }
   };
 
   namespace Colors
   {
-    constexpr Color BLACK{};
-    constexpr Color WHITE{ 0xFF, 0xFF, 0xFF, 0xFF };
-    constexpr Color RED{ 0xFF, 0x33, 0x33, 0xFF };
-    constexpr Color BLUE{ 0x33, 0x33, 0xFF, 0xFF };
-    constexpr Color GREEN{ 0x33, 0xFF, 0x33, 0xFF };
-    constexpr Color MAGENTA{ 0xFF, 0x33, 0xFF, 0xFF };
+    constexpr Color BLACK{ 0x000000FF };
+    constexpr Color WHITE{ 0xFFFFFFFF };
+    constexpr Color RED{ 0xFF3333FF };
+    constexpr Color BLUE{ 0x3333FFFF };
+    constexpr Color GREEN{ 0x33FF33FF };
+    constexpr Color MAGENTA{ 0xFF33FFFF };
   }
 }
 
