@@ -153,8 +153,8 @@ void Application::Run(const std::function<void(Window&)>& onLoop) const
   {
     if (!m_pimpl->minimized)
     {
-
-      onLoop(std::ref(*m_pimpl->window));
+      if (onLoop)
+        onLoop(std::ref(*m_pimpl->window));
 
       m_pimpl->window->OnUpdate();
     }
