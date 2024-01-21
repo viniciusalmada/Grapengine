@@ -12,8 +12,12 @@
 
 // Drawables
 #include "drawables/ge_circle_shape.hpp"
+#include "drawables/ge_world_reference.hpp"
 
 // Utilities
 #include "utils/ge_random.hpp"
+
+// Renderer
+#include "renderer/ge_renderer.hpp"
 
 #endif // GRAPENGINE_HPP
