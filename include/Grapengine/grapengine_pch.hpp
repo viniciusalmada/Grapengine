@@ -26,6 +26,15 @@
 #include <variant>
 #include <vector>
 
+#ifdef WIN32
+  #ifndef NOMINMAX
+    #define NOMINMAX
+  #endif
+  #include <Windows.h>
+  #undef far
+  #undef near
+#endif
+
 // clang-format off
 #include "core/ge_config.hpp"
 #include "core/ge_type_aliases.hpp"
