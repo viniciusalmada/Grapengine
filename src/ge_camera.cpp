@@ -47,8 +47,8 @@ struct Camera::Impl
   Vec3 front{};
   float pitch_angle = 0;
   float yaw_angle = 0;
-  bool in_movement = false;
-  Vec2 movement_reference_pt{};
+  bool in_aiming = false;
+  Vec2 aiming_reference_pt{};
 
   void CalculateEyeFront()
   {
@@ -58,7 +58,7 @@ struct Camera::Impl
 
   void UpdatePitchYaw(float diffPitch, float diffYaw)
   {
-    if (in_movement)
+    if (in_aiming)
     {
       const auto pitch = pitch_angle + diffPitch * sensibility;
       const auto yaw = yaw_angle + diffYaw * sensibility;
@@ -112,24 +112,24 @@ Camera& Camera::operator=(const Camera& other)
   return *this;
 }
 
-void Camera::StartMovement(Vec2 referencePoint) const
+void Camera::StartAiming(Vec2 referencePoint) const
 {
-  m_pimpl->in_movement = true;
-  m_pimpl->movement_reference_pt = referencePoint;
+  m_pimpl->in_aiming = true;
+  m_pimpl->aiming_reference_pt = referencePoint;
 }
 
-bool Camera::IsMoving() const
+bool Camera::IsAiming() const
 {
-  return m_pimpl->in_movement;
+  return m_pimpl->in_aiming;
 }
 
-void Camera::StopMovement() const
+void Camera::StopAiming() const
 {
-  m_pimpl->in_movement = false;
+  m_pimpl->in_aiming = false;
 }
 
-void Camera::MeasureMovement(const Vec2 currentPoint) const
+void Camera::ChangeAimPoint(Vec2 currentPoint) const
 {
-  const auto [x, y] = m_pimpl->movement_reference_pt - currentPoint;
+  const auto [x, y] = m_pimpl->aiming_reference_pt - currentPoint;
   m_pimpl->UpdatePitchYaw(y, -x);
 }
