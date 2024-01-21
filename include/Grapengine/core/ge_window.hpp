@@ -17,11 +17,12 @@ namespace GE
   struct WindowProps
   {
     std::string title;
+    std::string icon_path;
     u32 width;
     u32 height;
 
-    explicit WindowProps(std::string title = "Grapengine", u32 w = 1280, u32 h = 720) :
-        title(std::move(title)), width(w), height(h)
+    explicit WindowProps(const std::string& title, u32 w, u32 h, const std::string& icon) :
+        title(title), width(w), height(h), icon_path(icon)
     {
     }
   };

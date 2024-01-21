@@ -15,7 +15,7 @@ namespace GE
   class Application
   {
   public:
-    GE3D Application(std::string&& title, u32 width, u32 height);
+    GE3D Application(std::string&& title, u32 width, u32 height, std::string&& icon);
     GE3D virtual ~Application();
 
     GE3D void Run(const std::function<void(Window&)>& onLoop) const;

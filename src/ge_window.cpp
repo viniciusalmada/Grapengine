@@ -5,6 +5,7 @@
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
+#include <stb_image.h>
 
 using namespace GE;
 
@@ -37,7 +38,7 @@ private:
 //--PIMPL idiom
 struct Window::Impl
 {
-  WindowProps window_props{};
+  Scope<WindowProps> window_props;
   bool vsync = true;
   GLFWwindow* window = nullptr;
   Scope<Context> context;
@@ -61,7 +62,8 @@ struct Window::Impl
 //--PIMPL idiom
 Window::Window(const WindowProps& props, const EventCallbackFn& cb) : m_pimpl(MakeScope<Impl>())
 {
-  m_pimpl->window_props = props;
+  m_pimpl->window_props =
+    MakeScope<WindowProps>(props.title, props.width, props.height, props.icon_path);
   if (!glfw_initialized)
   {
     auto success = glfwInit();
@@ -77,6 +79,11 @@ Window::Window(const WindowProps& props, const EventCallbackFn& cb) : m_pimpl(Ma
   m_pimpl->window =
     glfwCreateWindow((i32)props.width, (i32)props.height, props.title.c_str(), nullptr, nullptr);
   glfwSetWindowAspectRatio(m_pimpl->window, props.width, props.height);
+
+  GLFWimage image;
+  image.pixels = stbi_load(props.icon_path.c_str(), &image.width, &image.height, nullptr, 4);
+  glfwSetWindowIcon(m_pimpl->window, 1, &image);
+  stbi_image_free(image.pixels);
 
   glfwSetWindowUserPointer(m_pimpl->window, this);
 
@@ -106,8 +113,8 @@ Window::Window(const WindowProps& props, const EventCallbackFn& cb) : m_pimpl(Ma
       Event event{ std::make_tuple(EvType::WINDOW_RESIZE, width, height) };
       auto* data = (Window*)glfwGetWindowUserPointer(win);
       data->m_pimpl->event_callback(event);
-      data->m_pimpl->window_props.width = width;
-      data->m_pimpl->window_props.height = height;
+      data->m_pimpl->window_props->width = width;
+      data->m_pimpl->window_props->height = height;
     };
     glfwSetWindowSizeCallback(m_pimpl->window, resize_callback);
 
@@ -169,12 +176,12 @@ Window::~Window()
 
 u32 Window::GetWidth() const
 {
-  return m_pimpl->window_props.width;
+  return m_pimpl->window_props->width;
 }
 
 u32 Window::GetHeight() const
 {
-  return m_pimpl->window_props.height;
+  return m_pimpl->window_props->height;
 }
 
 void Window::SetVsync(bool enabled)
