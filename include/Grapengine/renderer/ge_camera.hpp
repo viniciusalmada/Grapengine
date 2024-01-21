@@ -13,10 +13,15 @@ namespace GE
     GE3D ~Camera();
     Camera& operator=(const Camera&);
 
-    [[nodiscard]] bool IsMoving() const;
-    void StartMovement(Vec2 referencePoint) const;
-    void StopMovement() const;
-    void MeasureMovement(Vec2 currentPoint) const;
+    [[nodiscard]] bool IsAiming() const;
+    void StartAiming(Vec2 referencePoint) const;
+    void StopAiming() const;
+    void ChangeAimPoint(Vec2 currentPoint) const;
+
+    bool IsMoving() const;
+    void StartMoving(Vec2 referencePoint) const;
+    void StopMoving() const;
+    void ChangeLocation(Vec2 currentPoint) const;
 
     GE3D Mat4 GetViewProjection() const;
     void SetAspectRatio(float ratio) const;
