@@ -6,17 +6,16 @@ namespace GE
 {
   struct BufferElem
   {
-    std::string name;
     ShaderDataType type;
-    u32 size;
-    u32 offset;
+    u64 size;
+    u64 offset;
     bool normalized;
   };
 
   class BufferLayout
   {
   public:
-    BufferLayout(std::initializer_list<BufferElem> list = {});
+    explicit BufferLayout(std::list<BufferElem> list = {});
     ~BufferLayout();
 
     [[nodiscard]] std::vector<ShaderDataType> GetTypesSortedList() const;
@@ -24,6 +23,8 @@ namespace GE
     void ForEachElement(const std::function<void(BufferElem)>& action) const;
 
     [[nodiscard]] u32 GetStride() const;
+
+    static std::list<BufferElem> BuildElementsList(std::initializer_list<ShaderDataType> types);
 
   private:
     POINTER_TO_IMPLEMENTATION_IDIOM
