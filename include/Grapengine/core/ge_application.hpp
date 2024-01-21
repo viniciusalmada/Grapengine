@@ -20,7 +20,7 @@ namespace GE
     GE3D Application(std::string&& title, u32 width, u32 height, std::string&& icon);
     GE3D virtual ~Application();
 
-    void AddLayer(const Ref<Layer>& layer) const;
+    GE3D void AddLayer(const Ref<Layer>& layer) const;
 
     GE3D void Run() const;
 
