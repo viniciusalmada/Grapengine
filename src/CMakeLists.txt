@@ -27,6 +27,7 @@ add_library(${ENGINE_NAME} SHARED
   ge_vertex_array.cpp
   ge_vertex_buffer.cpp
   ge_window.cpp
+  ge_platform.cpp
 )
 target_precompile_headers(${ENGINE_NAME} PRIVATE ${ENGINE_INCLUDE}/grapengine_pch.hpp)
 target_include_directories(${ENGINE_NAME} PUBLIC ${ENGINE_INCLUDE})
