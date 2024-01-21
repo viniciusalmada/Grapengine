@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
 {
   {
     auto app = CreateApplication();
-    app->Run({});
+    app->Run();
   }
 }
 
