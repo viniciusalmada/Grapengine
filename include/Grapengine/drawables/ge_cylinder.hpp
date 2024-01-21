@@ -7,6 +7,7 @@
 namespace GE
 {
   struct Color;
+  class Texture2D;
   class Cylinder : public Drawable
   {
   public:
@@ -15,7 +16,8 @@ namespace GE
                   const Vec3& basePoint,
                   const Vec3& direction,
                   float height,
-                  Color color);
+                  Color color,
+                  Ref<Texture2D> texture2D);
     ~Cylinder() override;
 
     void Draw() const override;
