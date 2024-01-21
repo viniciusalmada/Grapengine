@@ -11,6 +11,7 @@
 #include <renderer/ge_camera.hpp>
 #include <renderer/ge_shaders_library.hpp>
 #include <renderer/ge_texture_2d.hpp>
+#include <renderer/shader_programs/ge_pos_tex_shader.hpp>
 #include <utils/ge_ipubsub.hpp>
 
 using namespace GE;
@@ -22,6 +23,7 @@ struct Application::Impl
   bool minimized = false;
   u64 last_frame_time{ 0 };
   std::vector<Ref<Layer>> layers;
+  Scope<Camera> camera;
 
   void Finish() { running = false; }
 };
@@ -32,6 +34,12 @@ Application::Application(std::string&& title, u32 width, u32 height, std::string
 
   m_pimpl->window =
     MakeScope<Window>(WindowProps{ title, width, height, icon }, [this](Event& e) { OnEvent(e); });
+
+  const float aspectRatio = width / (float)height;
+  m_pimpl->camera = MakeScope<Camera>(aspectRatio, Vec3{ 0, 5, 5 }, Vec3{ 2.5, 0, 2.5 });
+  auto shader = std::static_pointer_cast<PosAndTex2DShader>(
+    ShadersLibrary::Get().GetShader(Shaders::POSITION_AND_TEXTURE2D));
+  shader->UpdateViewProjectionMatrix(m_pimpl->camera->GetViewProjection());
 
   Renderer::Init();
   Renderer::SetViewport(0, 0, width, height);
