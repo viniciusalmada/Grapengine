@@ -6,7 +6,7 @@ add_library(${ENGINE_NAME} SHARED
   ge_buffer_layout.cpp
   ge_camera.cpp
   ge_canvas.cpp
-  ge_circle_shape.cpp
+  #  ge_circle_shape.cpp
   ge_cube.cpp
   ge_cylinder.cpp
   ge_draw_primitive.cpp
@@ -37,7 +37,13 @@ target_compile_definitions(${ENGINE_NAME} PRIVATE
   GRAPENGINE_EXPORTS
 )
 
-target_compile_options(${ENGINE_NAME} PRIVATE /W4)
+if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
+  target_compile_options(${ENGINE_NAME} PRIVATE /W4)
+elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)
+  target_compile_options(${ENGINE_NAME} PRIVATE -Wall)
+else ()
+  message(FATAL_ERROR "No supported compiler! ${CMAKE_CXX_COMPILER_ID}")
+endif ()
 
 # #############################################################################
 # Dependencies from VCPKG
