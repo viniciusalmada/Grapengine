@@ -2,8 +2,10 @@
 #define GRAPENGINE_EVENT_TYPE_HPP
 
 #include "core/ge_type_aliases.hpp"
+#include "input/ge_key_codes.hpp"
 
 #include <variant>
+
 namespace GE
 {
   enum class EvType
@@ -28,7 +30,7 @@ namespace GE
 
   using WindowCloseData = std::tuple<EvType>;
   using WindowResizeData = std::tuple<EvType, i32, i32>;
-  using KeyPressData = std::tuple<EvType, i32>;
+  using KeyPressData = std::tuple<EvType, KeyCode>;
   using KeyReleaseData = KeyPressData;
   using MouseButtonPressData = KeyPressData;
   using MouseButtonReleaseData = KeyPressData;
