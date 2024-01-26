@@ -11,17 +11,23 @@ namespace GE
     GE3D Camera(float aspectRatio, const Vec3& eye, float pitch, float yaw);
     GE3D Camera(float aspectRatio, const Vec3& eye, const Vec3& dir);
     GE3D ~Camera();
-    Camera& operator=(const Camera&);
 
     [[nodiscard]] bool IsAiming() const;
     void StartAiming(Vec2 referencePoint) const;
     void StopAiming() const;
     void ChangeAimPoint(Vec2 currentPoint) const;
 
-    bool IsMoving() const;
+    [[nodiscard]] bool IsMoving() const;
     void StartMoving(Vec2 referencePoint) const;
     void StopMoving() const;
     void ChangeLocation(Vec2 currentPoint) const;
+
+    bool IsRotating() const;
+    void StartRotating(Vec2 referencePoint) const;
+    void StopRotating() const;
+    void ChangeAngle(Vec2 currentPoint) const;
+
+    void SetZoom(float diffY) const;
 
     GE3D Mat4 GetViewProjection() const;
     void SetAspectRatio(float ratio) const;

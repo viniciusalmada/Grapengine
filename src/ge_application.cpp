@@ -26,6 +26,39 @@ struct Application::Impl
   Scope<Camera> camera;
 
   void Finish() { running = false; }
+
+  void OnMousePress(KeyCode bt) const
+  {
+    if (!camera->IsAiming() && bt == KeyCode::MOUSE_BT_LEFT)
+      camera->StartAiming(window->GetCursorPos());
+
+    if (!camera->IsAiming() && bt == KeyCode::MOUSE_BT_MIDDLE)
+      camera->StartMoving(window->GetCursorPos());
+  }
+
+  void OnMouseMove(float x, float y) const
+  {
+    if (camera->IsAiming())
+      camera->ChangeAimPoint({ x, y });
+    if (camera->IsMoving())
+      camera->ChangeLocation({ x, y });
+  }
+
+  void OnMouseRelease(KeyCode bt) const
+  {
+    if (camera->IsAiming() && bt == KeyCode::MOUSE_BT_LEFT)
+    {
+      camera->StopAiming();
+      camera->ChangeAimPoint(window->GetCursorPos());
+    }
+    if (camera->IsMoving() && bt == KeyCode::MOUSE_BT_MIDDLE)
+    {
+      camera->StopMoving();
+      camera->ChangeLocation(window->GetCursorPos());
+    }
+  }
+
+  void OnMouseScroll(float diffY) const { camera->SetZoom(-diffY); }
 };
 
 Application::Application(std::string&& title, u32 width, u32 height, std::string&& icon)
@@ -36,7 +69,7 @@ Application::Application(std::string&& title, u32 width, u32 height, std::string
     MakeScope<Window>(WindowProps{ title, width, height, icon }, [this](Event& e) { OnEvent(e); });
 
   const float aspectRatio = width / (float)height;
-  m_pimpl->camera = MakeScope<Camera>(aspectRatio, Vec3{ 0, 5, 5 }, Vec3{ 2.5, 0, 2.5 });
+  m_pimpl->camera = MakeScope<Camera>(aspectRatio, Vec3{ 0, 5, 5 }, 223.0f, -40);
   auto shader = std::static_pointer_cast<PosAndTex2DShader>(
     ShadersLibrary::Get().GetShader(Shaders::POSITION_AND_TEXTURE2D));
   shader->UpdateViewProjectionMatrix(m_pimpl->camera->GetViewProjection());
@@ -57,12 +90,22 @@ void Application::Run() const
 
     if (!m_pimpl->minimized)
     {
+      if (m_pimpl->camera->IsAiming() || m_pimpl->camera->IsMoving())
+      {
+        auto shader = std::static_pointer_cast<PosAndTex2DShader>(
+          ShadersLibrary::Get().GetShader(Shaders::POSITION_AND_TEXTURE2D));
+        shader->UpdateViewProjectionMatrix(m_pimpl->camera->GetViewProjection());
+      }
+
       std::ranges::for_each(m_pimpl->layers, [&](auto&& l) { l->OnUpdate(step); });
     }
 
     m_pimpl->window->OnUpdate();
   }
 }
+
+float x = -1;
+float y = -1;
 
 void GE::Application::OnEvent(Event& ev)
 {
@@ -76,10 +119,82 @@ void GE::Application::OnEvent(Event& ev)
 
   Event::Dispatch(EvType::WINDOW_RESIZE,
                   ev,
-                  [this](const EvData& ev)
+                  [](const EvData& ev)
                   {
                     const auto& [_, w, h] = *std::get_if<WindowResizeData>(&ev);
                     Renderer::SetViewport(0, 0, w, h);
+                    return true;
+                  });
+  Event::Dispatch(EvType::MOUSE_BUTTON_PRESSED,
+                  ev,
+                  [this](const EvData& ev)
+                  {
+                    const auto& [_, bt] = *std::get_if<MouseButtonPressData>(&ev);
+                    m_pimpl->OnMousePress(bt);
+                    return true;
+                  });
+
+  Event::Dispatch(EvType::MOUSE_BUTTON_RELEASE,
+                  ev,
+                  [this](const EvData& ev)
+                  {
+                    const auto& [_, bt] = *std::get_if<MouseButtonReleaseData>(&ev);
+                    m_pimpl->OnMouseRelease(bt);
+                    return true;
+                  });
+
+  Event::Dispatch(EvType::MOUSE_MOVE,
+                  ev,
+                  [this](const EvData& ev)
+                  {
+                    const auto& [_, x, y] = *std::get_if<MouseMoveData>(&ev);
+                    m_pimpl->OnMouseMove(x, y);
+                    return true;
+                  });
+
+  Event::Dispatch(EvType::MOUSE_SCROLL,
+                  ev,
+                  [this](const EvData& ev)
+                  {
+                    const auto& [_, x, y] = *std::get_if<MouseScrollData>(&ev);
+                    m_pimpl->OnMouseScroll(y);
+                    auto shader = std::static_pointer_cast<PosAndTex2DShader>(
+                      ShadersLibrary::Get().GetShader(Shaders::POSITION_AND_TEXTURE2D));
+                    shader->UpdateViewProjectionMatrix(m_pimpl->camera->GetViewProjection());
+                    return true;
+                  });
+
+  Event::Dispatch(EvType::KEY_PRESS,
+                  ev,
+                  [this](const EvData& ev)
+                  {
+                    if (x == -1)
+                      x = m_pimpl->window->GetCursorPos().x;
+                    if (y == -1)
+                      y = m_pimpl->window->GetCursorPos().y;
+                    const auto& [_, key] = *std::get_if<KeyPressData>(&ev);
+                    if (key == KeyCode::K_E)
+                    {
+                      m_pimpl->camera->StartMoving({ x, y });
+                      x -= 1;
+                      m_pimpl->camera->ChangeLocation({ x, y });
+                      m_pimpl->camera->StopMoving();
+                      m_pimpl->camera->ChangeLocation({ x, y });
+                      auto shader = std::static_pointer_cast<PosAndTex2DShader>(
+                        ShadersLibrary::Get().GetShader(Shaders::POSITION_AND_TEXTURE2D));
+                      shader->UpdateViewProjectionMatrix(m_pimpl->camera->GetViewProjection());
+                    }
+                    else if (key == KeyCode::K_Q)
+                    {
+                      m_pimpl->camera->StartMoving({ x, y });
+                      x += 1;
+                      m_pimpl->camera->ChangeLocation({ x, y });
+                      m_pimpl->camera->StopMoving();
+                      m_pimpl->camera->ChangeLocation({ x, y });
+                      auto shader = std::static_pointer_cast<PosAndTex2DShader>(
+                        ShadersLibrary::Get().GetShader(Shaders::POSITION_AND_TEXTURE2D));
+                      shader->UpdateViewProjectionMatrix(m_pimpl->camera->GetViewProjection());
+                    }
                     return true;
                   });
 }
