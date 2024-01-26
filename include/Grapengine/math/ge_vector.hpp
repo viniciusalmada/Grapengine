@@ -12,6 +12,7 @@ namespace GE
     float x;
     float y;
     Vec2 operator-(const Vec2& other) const;
+    Vec2 operator+(const Vec2& other) const;
   };
 
   struct GE3D Vec3

@@ -6,6 +6,10 @@ Vec2 Vec2::operator-(const Vec2& other) const
 {
   return { this->x - other.x, this->y - other.y };
 }
+Vec2 Vec2::operator+(const Vec2& other) const
+{
+  return { this->x + other.x, this->y + other.y };
+}
 
 Vec3 Vec3::operator+(const Vec3& other) const
 {
