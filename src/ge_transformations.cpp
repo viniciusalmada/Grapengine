@@ -89,12 +89,19 @@ Mat4 Transform::Scale(float xFac, float yFac, float zFac)
   };
 }
 
-Mat4 Transform::LookAt(const Vec3& eye, const Vec3& target, const Vec3& up)
+std::tuple<Vec3, Vec3, Vec3>
+Transform::LookAtVector(const Vec3& eye, const Vec3& target, const Vec3& up)
 {
   Vec3 view = (target - eye).Normalize();
   Vec3 z_eye = -view;
   Vec3 x_eye = (up.Cross(z_eye)).Normalize();
   Vec3 y_eye = z_eye.Cross(x_eye);
+  return { x_eye, y_eye, z_eye };
+}
+
+Mat4 Transform::LookAt(const Vec3& eye, const Vec3& target, const Vec3& up)
+{
+  const auto& [x_eye, y_eye, z_eye] = LookAtVector(eye, target, up);
 
   const auto& [Rx, Ry, Rz] = x_eye;
   const auto& [Ux, Uy, Uz] = y_eye;
@@ -114,7 +121,9 @@ Mat4 Transform::LookAt(const Vec3& eye, const Vec3& target, const Vec3& up)
     { 0, 0, 0, 1 },
   };
 
-  return m1 * m2;
+  auto res = m1 * m2;
+
+  return res;
 }
 
 Mat4 Transform::Identity()

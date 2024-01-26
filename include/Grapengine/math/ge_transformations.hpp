@@ -23,6 +23,8 @@ namespace GE::Transform
 
   Mat4 GE3D LookAt(const Vec3& eye, const Vec3& dir, const Vec3& up);
 
+  std::tuple<Vec3, Vec3, Vec3> LookAtVector(const Vec3& eye, const Vec3& dir, const Vec3& up);
+
   Mat4 GE3D Perspective(float fovDegrees, float aspectRatio, float near, float far);
 
   Mat4 GE3D Identity();
