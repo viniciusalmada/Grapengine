@@ -60,6 +60,12 @@ float Vec3::Dot(const Vec3& other) const
   return x1 * x2 + y1 * y2 + z1 * z2;
 }
 
+std::ostream& GE::operator<<(std::ostream& os, const Vec3& v)
+{
+  os << std::format("{:1.2f},{:1.2f},{:1.2f}", v.x, v.y, v.z);
+  return os;
+}
+
 Mat4::Mat4() : Mat4({ 1, 0, 0, 0 }, { 0, 1, 0, 0 }, { 0, 0, 1, 0 }, { 0, 0, 0, 1 }) {}
 
 Mat4::Mat4(const std::array<float, 4>& row0,
