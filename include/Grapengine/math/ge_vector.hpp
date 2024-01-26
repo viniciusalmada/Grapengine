@@ -28,6 +28,8 @@ namespace GE
     [[nodiscard]] Vec3 Normalize() const;
     [[nodiscard]] Vec3 Cross(const Vec3& other) const;
     [[nodiscard]] float Dot(const Vec3& other) const;
+
+    friend std::ostream& operator<<(std::ostream& os, const Vec3& vec3);
   };
 
   struct Vec4
