@@ -6,17 +6,18 @@
 #include "math/ge_vector.hpp"
 namespace GE
 {
+  class Texture2D;
+
   class RectShape : public Drawable
   {
   public:
-    GE3D RectShape(float x, float y, float w, float h, Color color, Shaders shader);
     GE3D RectShape(Vec3 botLeft,
                    Vec3 botRight,
                    Vec3 topRight,
                    Vec3 topLeft,
                    Color color,
                    Shaders shader,
-                   std::string path = "");
+                   Ref<Texture2D> tex);
     ~RectShape() override;
 
     void Draw() const override;
