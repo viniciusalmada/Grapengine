@@ -12,7 +12,7 @@ namespace GE
   class Cube : public Drawable
   {
   public:
-    GE3D Cube(float x, float y, float z, Color color, Shaders shader, Ref<Texture2D> texture);
+    GE3D Cube(Color color, Shaders shader, Ref<Texture2D> texture);
     ~Cube() override;
 
     void Draw() const override;

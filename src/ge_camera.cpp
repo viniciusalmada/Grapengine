@@ -215,7 +215,7 @@ void Camera::StopRotating() const
 
 void Camera::ChangeAngle(Vec2 currentPoint) const
 {
-  const auto [diff_x, diff_y] = m_pimpl->rotating_reference_pt - currentPoint;
+  [[maybe_unused]] const auto [diff_x, diff_y] = m_pimpl->rotating_reference_pt - currentPoint;
 }
 
 void GE::Camera::SetZoom(float diffY) const

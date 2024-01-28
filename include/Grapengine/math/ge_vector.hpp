@@ -59,7 +59,7 @@ namespace GE
     [[nodiscard]] const float* ValuePtr() const;
 
   private:
-    std::array<std::array<float, 4>, 4> data{ 0.0f };
+    std::array<std::array<float, 4>, 4> data{ { { 0.0f } } };
   };
 }
 #endif
