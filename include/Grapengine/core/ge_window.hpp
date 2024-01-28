@@ -7,6 +7,7 @@
 #include "events/ge_event.hpp"
 #include "math/ge_vector.hpp"
 
+#include <any>
 #include <functional>
 #include <string>
 
@@ -43,7 +44,7 @@ namespace GE
     GE3D void Clear(Color color) const;
     GE3D void Draw(Ref<Drawable> drawable) const;
 
-    Vec2 GetCursorPos() const;
+    std::any GetNativeHandler() const;
 
   private:
     POINTER_TO_IMPLEMENTATION_IDIOM

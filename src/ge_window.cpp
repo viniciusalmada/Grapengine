@@ -207,9 +207,7 @@ void Window::Draw(Ref<Drawable> drawable) const
   m_pimpl->canvas->Draw(std::move(drawable));
 }
 
-Vec2 Window::GetCursorPos() const
+std::any GE::Window::GetNativeHandler() const
 {
-  double x{}, y{};
-  glfwGetCursorPos(m_pimpl->window, &x, &y);
-  return Vec2((float)x, (float)y);
+  return std::make_any<GLFWwindow*>(m_pimpl->window);
 }
