@@ -2,6 +2,7 @@
 
 #include "core/ge_window.hpp"
 #include "events/ge_event_type.hpp"
+#include "input/ge_input.hpp"
 #include "layer/ge_layer.hpp"
 #include "renderer/ge_renderer.hpp"
 
@@ -18,7 +19,8 @@ using namespace GE;
 
 struct Application::Impl
 {
-  Scope<Window> window;
+  Ref<Window> window;
+  Scope<Input> input;
   bool running = true;
   bool minimized = false;
   u64 last_frame_time{ 0 };
@@ -30,10 +32,10 @@ struct Application::Impl
   void OnMousePress(KeyCode bt) const
   {
     if (!camera->IsAiming() && bt == KeyCode::MOUSE_BT_LEFT)
-      camera->StartAiming(window->GetCursorPos());
+      camera->StartAiming(input->GetMouseXY());
 
     if (!camera->IsAiming() && bt == KeyCode::MOUSE_BT_MIDDLE)
-      camera->StartMoving(window->GetCursorPos());
+      camera->StartMoving(input->GetMouseXY());
   }
 
   void OnMouseMove(float x, float y) const
@@ -49,12 +51,12 @@ struct Application::Impl
     if (camera->IsAiming() && bt == KeyCode::MOUSE_BT_LEFT)
     {
       camera->StopAiming();
-      camera->ChangeAimPoint(window->GetCursorPos());
+      camera->ChangeAimPoint(input->GetMouseXY());
     }
     if (camera->IsMoving() && bt == KeyCode::MOUSE_BT_MIDDLE)
     {
       camera->StopMoving();
-      camera->ChangeLocation(window->GetCursorPos());
+      camera->ChangeLocation(input->GetMouseXY());
     }
   }
 
@@ -67,6 +69,7 @@ Application::Application(std::string&& title, u32 width, u32 height, std::string
 
   m_pimpl->window =
     MakeScope<Window>(WindowProps{ title, width, height, icon }, [this](Event& e) { OnEvent(e); });
+  m_pimpl->input = MakeScope<Input>(m_pimpl->window);
 
   const float aspectRatio = width / (float)height;
   m_pimpl->camera = MakeScope<Camera>(aspectRatio, Vec3{ 0, 5, 5 }, 223.0f, -40);
@@ -169,9 +172,9 @@ void GE::Application::OnEvent(Event& ev)
                   [this](const EvData& ev)
                   {
                     if (x == -1)
-                      x = m_pimpl->window->GetCursorPos().x;
+                      x = m_pimpl->input->GetMouseXY().x;
                     if (y == -1)
-                      y = m_pimpl->window->GetCursorPos().y;
+                      y = m_pimpl->input->GetMouseXY().y;
                     const auto& [_, key] = *std::get_if<KeyPressData>(&ev);
                     if (key == KeyCode::K_E)
                     {
