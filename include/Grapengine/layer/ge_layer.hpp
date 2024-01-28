@@ -9,7 +9,7 @@ namespace GE
   class Layer
   {
   public:
-    GE3D explicit Layer(const std::string& name);
+    GE3D explicit Layer(std::string_view name);
 
     GE3D virtual ~Layer();
 

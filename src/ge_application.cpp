@@ -63,7 +63,7 @@ struct Application::Impl
   void OnMouseScroll(float diffY) const { camera->SetZoom(-diffY); }
 };
 
-Application::Application(std::string&& title, u32 width, u32 height, std::string&& icon)
+Application::Application(std::string_view title, u32 width, u32 height, std::string_view icon)
 {
   m_pimpl = MakeScope<Impl>();
 

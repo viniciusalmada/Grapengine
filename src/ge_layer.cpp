@@ -9,7 +9,7 @@ struct Layer::Impl
   std::string name;
 };
 
-GE::Layer::Layer(const std::string& name) : m_pimpl(MakeScope<Impl>())
+GE::Layer::Layer(std::string_view name) : m_pimpl(MakeScope<Impl>())
 {
   m_pimpl->name = name;
 }

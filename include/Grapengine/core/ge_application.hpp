@@ -17,7 +17,7 @@ namespace GE
   class Application
   {
   public:
-    GE3D Application(std::string&& title, u32 width, u32 height, std::string&& icon);
+    GE3D Application(std::string_view title, u32 width, u32 height, std::string_view icon);
     GE3D virtual ~Application();
 
     GE3D void AddLayer(const Ref<Layer>& layer) const;

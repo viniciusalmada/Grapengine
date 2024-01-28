@@ -22,8 +22,8 @@ namespace GE
     u32 width;
     u32 height;
 
-    explicit WindowProps(const std::string& title, u32 w, u32 h, const std::string& icon) :
-        title(title), width(w), height(h), icon_path(icon)
+    explicit WindowProps(std::string_view title, u32 w, u32 h, std::string_view icon) :
+        title(title), icon_path(icon), width(w), height(h)
     {
     }
   };
