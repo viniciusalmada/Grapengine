@@ -40,9 +40,9 @@ target_compile_definitions(${ENGINE_NAME} PRIVATE
 )
 
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
-  target_compile_options(${ENGINE_NAME} PRIVATE /W4)
+  target_compile_options(${ENGINE_NAME} PRIVATE $<$<CONFIG:Release>:/WX> /W4)
 elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)
-  target_compile_options(${ENGINE_NAME} PRIVATE -Wall)
+  target_compile_options(${ENGINE_NAME} PRIVATE $<$<CONFIG:Release>:-Werror> -Wall -Wextra)
 else ()
   message(FATAL_ERROR "No supported compiler! ${CMAKE_CXX_COMPILER_ID}")
 endif ()
