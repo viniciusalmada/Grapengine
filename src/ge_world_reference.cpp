@@ -29,12 +29,8 @@ struct WorldReference::Impl
 GE::WorldReference::WorldReference() : m_pimpl(MakeScope<Impl>())
 {
   m_pimpl->blank_texture = MakeRef<Texture2D>();
-  m_pimpl->platform = MakeRef<Cube>(0,
-                                    0,
-                                    0,
-                                    Color{ 0xAAAAAAFF },
-                                    Shaders::POSITION_AND_TEXTURE2D,
-                                    m_pimpl->blank_texture);
+  m_pimpl->platform =
+    MakeRef<Cube>(Color{ 0xAAAAAAFF }, Shaders::POSITION_AND_TEXTURE2D, m_pimpl->blank_texture);
   m_pimpl->platform->SetScale(SIDE_SIZE, AXIS_RADIUS, SIDE_SIZE);
   m_pimpl->platform->SetTranslate(SIDE_SIZE / 2, 0, SIDE_SIZE / 2);
 

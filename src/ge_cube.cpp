@@ -69,7 +69,7 @@ struct Cube::Impl
   Ref<Texture2D> texture;
 };
 
-Cube::Cube(float x, float y, float z, Color color, Shaders shader, Ref<Texture2D> texture) :
+Cube::Cube(Color color, Shaders shader, Ref<Texture2D> texture) :
     Drawable(shader), m_pimpl(MakeScope<Impl>())
 {
   m_pimpl->shader = shader;
