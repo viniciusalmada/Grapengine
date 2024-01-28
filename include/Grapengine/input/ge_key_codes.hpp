@@ -129,6 +129,10 @@ namespace GE
     K_MENU,
     K_NONE,
   };
+
+  KeyCode ConvertGLFWtoGE(i32 code);
+
+  i32 ConvertGEtoGFLW(KeyCode code);
 }
 
 #endif // GRAPENGINE_GE_KEY_CODES_HPP
