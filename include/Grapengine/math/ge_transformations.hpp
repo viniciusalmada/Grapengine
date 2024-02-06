@@ -8,6 +8,7 @@
 namespace GE::Transform
 {
   float GE3D Deg2Rad(float degree);
+  float GE3D Rad2Deg(float rad);
 
   Mat4 GE3D Translate(float xFac, float yFac, float zFac);
 
