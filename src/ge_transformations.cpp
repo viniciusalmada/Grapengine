@@ -13,6 +13,11 @@ inline float Transform::Deg2Rad(float deg)
   return deg * (std::numbers::pi_v<decltype(deg)> / 180.0f);
 }
 
+inline float Transform::Rad2Deg(float rad)
+{
+  return rad * (180.0f / std::numbers::pi_v<decltype(rad)>);
+}
+
 Mat4 Transform::Translate(float xFac, float yFac, float zFac)
 {
   return Mat4{
