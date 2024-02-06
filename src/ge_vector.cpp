@@ -2,13 +2,25 @@
 
 using namespace GE;
 
-Vec2 Vec2::operator-(const Vec2& other) const
+Vec2 Vec2::operator-(const Vec2& other) const noexcept
 {
   return { this->x - other.x, this->y - other.y };
 }
-Vec2 Vec2::operator+(const Vec2& other) const
+Vec2 Vec2::operator+(const Vec2& other) const noexcept
 {
   return { this->x + other.x, this->y + other.y };
+}
+
+float Vec2::Length() const noexcept
+{
+  return std::sqrtf(x * x + y * y);
+}
+
+float Vec2::Dot(Vec2 other) const noexcept
+{
+  const auto& [x1, y1] = *this;
+  const auto& [x2, y2] = other;
+  return x1 * x2 + y1 * y2;
 }
 
 Vec3 Vec3::operator+(const Vec3& other) const
@@ -64,6 +76,17 @@ std::ostream& GE::operator<<(std::ostream& os, const Vec3& v)
 {
   os << std::format("{:1.2f},{:1.2f},{:1.2f}", v.x, v.y, v.z);
   return os;
+}
+
+float Vec3::Distance(const Vec3& other) const
+{
+  Vec3 diff = *this - other;
+  return diff.Length();
+}
+
+float Vec3::Length() const
+{
+  return std::sqrtf(x * x + y * y + z * z);
 }
 
 Mat4::Mat4() : Mat4({ 1, 0, 0, 0 }, { 0, 1, 0, 0 }, { 0, 0, 1, 0 }, { 0, 0, 0, 1 }) {}
