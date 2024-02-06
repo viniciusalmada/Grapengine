@@ -11,8 +11,10 @@ namespace GE
   {
     float x;
     float y;
-    Vec2 operator-(const Vec2& other) const;
-    Vec2 operator+(const Vec2& other) const;
+    Vec2 operator-(const Vec2& other) const noexcept;
+    Vec2 operator+(const Vec2& other) const noexcept;
+    float Length() const noexcept;
+    float Dot(Vec2 vec2) const noexcept;
   };
 
   struct GE3D Vec3
@@ -28,8 +30,10 @@ namespace GE
     [[nodiscard]] Vec3 Normalize() const;
     [[nodiscard]] Vec3 Cross(const Vec3& other) const;
     [[nodiscard]] float Dot(const Vec3& other) const;
+    [[nodiscard]] float Distance(const Vec3& other) const;
 
     friend std::ostream& operator<<(std::ostream& os, const Vec3& vec3);
+    float Length() const;
   };
 
   struct Vec4
