@@ -38,22 +38,22 @@ GE::WorldReference::WorldReference() : m_pimpl(MakeScope<Impl>())
                                       AXIS_RADIUS,
                                       ORIGIN,
                                       Vec3{ 1, 0, 0 },
-                                      SIDE_SIZE,
-                                      Color{ 0xFF3333AA },
+                                      SIDE_SIZE * 10,
+                                      Colors::RED,
                                       m_pimpl->blank_texture);
   m_pimpl->y_axis = MakeRef<Cylinder>(Shaders::POSITION_AND_TEXTURE2D,
                                       AXIS_RADIUS,
                                       ORIGIN,
                                       Vec3{ 0, 1, 0 },
-                                      SIDE_SIZE,
-                                      Color{ 0x33FF33AA },
+                                      SIDE_SIZE * 10,
+                                      Colors::GREEN,
                                       m_pimpl->blank_texture);
   m_pimpl->z_axis = MakeRef<Cylinder>(Shaders::POSITION_AND_TEXTURE2D,
                                       AXIS_RADIUS,
                                       ORIGIN,
                                       Vec3{ 0, 0, 1 },
-                                      SIDE_SIZE,
-                                      Color{ 0x3333FFAA },
+                                      SIDE_SIZE * 10,
+                                      Colors::BLUE,
                                       m_pimpl->blank_texture);
 
   m_pimpl->xy_plane = MakeRef<RectShape>(Vec3{ 0, 0, 0 },
