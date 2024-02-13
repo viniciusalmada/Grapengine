@@ -5,12 +5,15 @@
 #include <array>
 #include <bit>
 #include <chrono>
+#include <cmath>
 #include <cstddef>
+#include <exception>
 #include <filesystem>
 #include <fstream>
 #include <functional>
 #include <iomanip>
 #include <iostream>
+#include <list>
 #include <memory>
 #include <numbers>
 #include <random>
