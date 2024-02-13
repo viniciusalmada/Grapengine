@@ -6,9 +6,11 @@ void GE::Assert(bool condition, const char* message)
     return;
 
   std::cerr << "ASSERTION FAILED: " << message << std::endl;
-#ifdef WIN32
+#ifdef GE_PLATFORM_WINDOWS
   __debugbreak();
-#elif LINUX
-  asm {int3;}
+#elif GE_PLATFORM_LINUX
+  __asm__("int3");
+#else
+  #error "Unsupported platform"
 #endif
 }
