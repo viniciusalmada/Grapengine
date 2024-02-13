@@ -1,6 +1,7 @@
 #ifndef GRAPENGINE_PCH_HPP
 #define GRAPENGINE_PCH_HPP
 
+#include <algorithm>
 #include <any>
 #include <array>
 #include <bit>
