@@ -22,7 +22,7 @@ public:
 
     i32 version = gladLoadGL();
     if (version == 0)
-      throw std::exception("Error with GLAD");
+      throw std::runtime_error("Error with GLAD");
 
     std::cout << "OpenGL Vendor: " << (char*)glGetString(GL_VENDOR) << std::endl;
     std::cout << "OpenGL Renderer: " << (char*)glGetString(GL_RENDERER) << std::endl;
@@ -68,7 +68,7 @@ Window::Window(const WindowProps& props, const EventCallbackFn& cb) : m_pimpl(Ma
   {
     auto success = glfwInit();
     if (!success)
-      throw std::exception("Error GLFW");
+      throw std::runtime_error("Error GLFW");
 
     glfwSetErrorCallback(Impl::ErrorCB);
 

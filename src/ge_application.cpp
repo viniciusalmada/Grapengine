@@ -123,7 +123,7 @@ Application::Application(std::string&& title, u32 width, u32 height, std::string
 {
   m_pimpl = MakeScope<Impl>();
   if (m_pimpl->instance != nullptr)
-    throw std::exception("App already instantiated!");
+    throw std::runtime_error("App already instantiated!");
 
   m_pimpl->instance = this;
 
