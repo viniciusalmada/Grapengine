@@ -46,6 +46,21 @@
           "toolchain": "CLANG"
         }
       }
+    },
+    {
+      "name": "linux-clang-debug",
+      "inherits": [
+        "default"
+      ],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_COMPILER": "clang"
+      },
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "CLANG"
+        }
+      }
     }
   ]
 }
