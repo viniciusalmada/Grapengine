@@ -25,16 +25,16 @@ namespace
     const auto yaw_rad = Transform::Deg2Rad(yaw);
 
     // Pitch – plane YZ – 0 degree (camera back)
-    const float coord_z_pitch = std::cosf(pitch_rad);
-    const float coord_y_dir = std::sinf(pitch_rad);
+    const float coord_z_pitch = std::cos(pitch_rad);
+    const float coord_y_dir = std::sin(pitch_rad);
 
     const float& hypotenuse = coord_z_pitch;
 
     // cosine of yaw = Z / Hypotenuse
-    const float coord_z_dir = std::cosf(yaw_rad) * hypotenuse;
+    const float coord_z_dir = std::cos(yaw_rad) * hypotenuse;
 
     // sine of yaw = X / Hypotenuse
-    const float coord_x_dir = std::sinf(yaw_rad) * hypotenuse;
+    const float coord_x_dir = std::sin(yaw_rad) * hypotenuse;
 
     return Vec3{ coord_x_dir, coord_y_dir, coord_z_dir };
   }

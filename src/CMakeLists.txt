@@ -39,12 +39,22 @@ target_compile_definitions(${ENGINE_NAME} PRIVATE
   GRAPENGINE_EXPORTS
 )
 
-if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
-  target_compile_options(${ENGINE_NAME} PRIVATE $<$<CONFIG:Release>:/WX> /W4)
-elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)
-  target_compile_options(${ENGINE_NAME} PRIVATE $<$<CONFIG:Release>:-Werror> -Wall -Wextra)
+if (CMAKE_SYSTEM_NAME STREQUAL Windows)
+  target_compile_definitions(${ENGINE_NAME} PUBLIC GE_PLATFORM_WINDOWS)
+elseif (CMAKE_SYSTEM_NAME STREQUAL Linux)
+  target_compile_definitions(${ENGINE_NAME} PUBLIC GE_PLATFORM_LINUX)
 else ()
-  message(FATAL_ERROR "No supported compiler! ${CMAKE_CXX_COMPILER_ID}")
+  message(FATAL_ERROR "Unsupported platform")
+endif ()
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL MSVC)
+  target_compile_options(${ENGINE_NAME} PRIVATE /W4)
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL GNU)
+  target_compile_options(${ENGINE_NAME} PRIVATE -Wall -Wextra)
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL Clang)
+  target_compile_options(${ENGINE_NAME} PRIVATE -Wall -Wextra)
+else ()
+  message(FATAL_ERROR "Unsupported compiler")
 endif ()
 
 # #############################################################################

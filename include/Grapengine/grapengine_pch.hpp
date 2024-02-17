@@ -1,16 +1,20 @@
 #ifndef GRAPENGINE_PCH_HPP
 #define GRAPENGINE_PCH_HPP
 
+#include <algorithm>
 #include <any>
 #include <array>
 #include <bit>
 #include <chrono>
+#include <cmath>
 #include <cstddef>
+#include <exception>
 #include <filesystem>
 #include <fstream>
 #include <functional>
 #include <iomanip>
 #include <iostream>
+#include <list>
 #include <map>
 #include <memory>
 #include <numbers>

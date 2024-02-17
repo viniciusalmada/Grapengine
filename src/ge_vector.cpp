@@ -13,7 +13,7 @@ Vec2 Vec2::operator+(const Vec2& other) const noexcept
 
 float Vec2::Length() const noexcept
 {
-  return std::sqrtf(x * x + y * y);
+  return std::sqrt(x * x + y * y);
 }
 
 float Vec2::Dot(Vec2 other) const noexcept
@@ -86,7 +86,7 @@ float Vec3::Distance(const Vec3& other) const
 
 float Vec3::Length() const
 {
-  return std::sqrtf(x * x + y * y + z * z);
+  return std::sqrt(x * x + y * y + z * z);
 }
 
 Mat4::Mat4() : Mat4({ 1, 0, 0, 0 }, { 0, 1, 0, 0 }, { 0, 0, 1, 0 }, { 0, 0, 0, 1 }) {}

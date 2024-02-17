@@ -30,8 +30,8 @@ Mat4 Transform::Translate(float xFac, float yFac, float zFac)
 
 Mat4 Transform::RotateX(float degrees)
 {
-  auto c = std::cosf(Deg2Rad(degrees));
-  auto s = std::sinf(Deg2Rad(degrees));
+  auto c = std::cos(Deg2Rad(degrees));
+  auto s = std::sin(Deg2Rad(degrees));
   return Mat4{
     { 1, 0, 0, 0 },
     { 0, c, -s, 0 },
@@ -42,15 +42,15 @@ Mat4 Transform::RotateX(float degrees)
 
 Mat4 Transform::RotateY(float degrees)
 {
-  auto c = std::cosf(Deg2Rad(degrees));
-  auto s = std::sinf(Deg2Rad(degrees));
+  auto c = std::cos(Deg2Rad(degrees));
+  auto s = std::sin(Deg2Rad(degrees));
   return Mat4{ { c, 0, s, 0 }, { 0, 1, 0, 0 }, { -s, 0, c, 0 }, { 0, 0, 0, 1 } };
 }
 
 Mat4 Transform::RotateZ(float degrees)
 {
-  auto c = std::cosf(Deg2Rad(degrees));
-  auto s = std::sinf(Deg2Rad(degrees));
+  auto c = std::cos(Deg2Rad(degrees));
+  auto s = std::sin(Deg2Rad(degrees));
   return Mat4{
     { c, -s, 0, 0 },
     { s, c, 0, 0 },
@@ -66,8 +66,8 @@ Mat4 Transform::Rotate(float degrees, const Vec3& vector)
   const auto& vx = norm.x;
   const auto& vy = norm.y;
   const auto& vz = norm.z;
-  const auto& ct = std::cosf(Deg2Rad(degrees));
-  const auto& st = std::sinf(Deg2Rad(degrees));
+  const auto& ct = std::cos(Deg2Rad(degrees));
+  const auto& st = std::sin(Deg2Rad(degrees));
 
   res(0, 0) = vx * vx + ct * (1 - vx * vx);
   res(0, 1) = vx * vy * (1 - ct) - vz * st;
@@ -143,7 +143,7 @@ Mat4 Transform::Identity()
 
 Mat4 Transform::Perspective(float fovDegrees, float aspectRatio, float near, float far)
 {
-  auto tan_half_fov = std::tanf(Deg2Rad(fovDegrees) / 2.0f);
+  auto tan_half_fov = std::tan(Deg2Rad(fovDegrees) / 2.0f);
 
   Mat4 res{
     { 1 / (aspectRatio * tan_half_fov), 0, 0, 0 },
