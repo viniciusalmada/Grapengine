@@ -39,6 +39,7 @@ target_compile_definitions(${ENGINE_NAME} PRIVATE
   GRAPENGINE_EXPORTS
 )
 
+message("Setting up platform = ${CMAKE_SYSTEM_NAME}")
 if (CMAKE_SYSTEM_NAME STREQUAL Windows)
   target_compile_definitions(${ENGINE_NAME} PUBLIC GE_PLATFORM_WINDOWS)
 elseif (CMAKE_SYSTEM_NAME STREQUAL Linux)
@@ -47,14 +48,21 @@ else ()
   message(FATAL_ERROR "Unsupported platform")
 endif ()
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL MSVC)
+message("Setting up compiler flags = ${CMAKE_CXX_COMPILER_ID}:${CMAKE_CXX_COMPILER_FRONTEND_VARIANT}")
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   target_compile_options(${ENGINE_NAME} PRIVATE /W4)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL GNU)
   target_compile_options(${ENGINE_NAME} PRIVATE -Wall -Wextra)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL Clang)
-  target_compile_options(${ENGINE_NAME} PRIVATE -Wall -Wextra)
+  if (CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "MSVC")
+    target_compile_options(${ENGINE_NAME} PRIVATE -Wall -Wextra)
+  elseif (CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "GNU")
+    target_compile_options(${ENGINE_NAME} PRIVATE -Wall -Wextra)
+  else ()
+    message(FATAL_ERROR "Unsupported CLANG frontend (CMAKE_CXX_COMPILER_FRONTEND_VARIANT = ${CMAKE_CXX_COMPILER_FRONTEND_VARIANT})")
+  endif ()
 else ()
-  message(FATAL_ERROR "Unsupported compiler")
+  message(FATAL_ERROR "Unsupported compiler (CMAKE_CXX_COMPILER_ID = ${CMAKE_CXX_COMPILER_ID})")
 endif ()
 
 # #############################################################################
