@@ -44,7 +44,8 @@ void main()
 
 TEST(ShaderProgram, Shader)
 {
-  Scope<Window> window = MakeScope<Window>(WindowProps{ "Test", 1, 1 }, nullptr);
+  using namespace GE;
+  Scope<Window> window = MakeScope<Window>(WindowProps{ "Test", 1, 1, {}}, nullptr);
   EXPECT_NE(window, nullptr);
 
   ASSERT_DEATH({ Shader shader_program(std::string{ "" }, std::string{ "" }); }, "linking");

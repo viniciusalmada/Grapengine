@@ -1,7 +1,10 @@
 #include "math/ge_transformations.hpp"
 
+#include <cmath>
 #include <gtest/gtest.h>
 #include <numbers>
+
+using namespace GE;
 
 TEST(Transform, Deg2Rad)
 {
@@ -39,10 +42,10 @@ TEST(Transform, Translate)
 
 TEST(Transform, RotateX)
 {
-  auto angle = 30.0f;
+  float angle = 30.0f;
   Mat4 tra = Transform::RotateX(angle);
-  auto co = std::cosf(Transform::Deg2Rad(angle));
-  auto si = std::sinf(Transform::Deg2Rad(angle));
+  float co = std::cos(Transform::Deg2Rad(angle));
+  float si = std::sin(Transform::Deg2Rad(angle));
 
   ASSERT_FLOAT_EQ(tra(0, 0), 1);
   ASSERT_FLOAT_EQ(tra(0, 1), 0);
@@ -64,10 +67,10 @@ TEST(Transform, RotateX)
 
 TEST(Transform, RotateY)
 {
-  auto angle = 30.0f;
+  float angle = 30.0f;
   Mat4 tra = Transform::RotateY(angle);
-  auto co = std::cosf(Transform::Deg2Rad(angle));
-  auto si = std::sinf(Transform::Deg2Rad(angle));
+  float co = std::cos(Transform::Deg2Rad(angle));
+  float si = std::sin(Transform::Deg2Rad(angle));
 
   ASSERT_FLOAT_EQ(tra(0, 0), co);
   ASSERT_FLOAT_EQ(tra(0, 1), 0);
@@ -89,10 +92,10 @@ TEST(Transform, RotateY)
 
 TEST(Transform, RotateZ)
 {
-  auto angle = 30.0f;
+  float angle = 30.0f;
   Mat4 tra = Transform::RotateZ(angle);
-  auto co = std::cosf(Transform::Deg2Rad(angle));
-  auto si = std::sinf(Transform::Deg2Rad(angle));
+  float co = std::cos(Transform::Deg2Rad(angle));
+  float si = std::sin(Transform::Deg2Rad(angle));
 
   ASSERT_FLOAT_EQ(tra(0, 0), co);
   ASSERT_FLOAT_EQ(tra(0, 1), -si);

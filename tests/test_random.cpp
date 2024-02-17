@@ -1,7 +1,10 @@
 #include "utils/ge_random.hpp"
 
 #include <array>
+#include <cmath>
 #include <gtest/gtest.h>
+
+using namespace GE;
 
 TEST(Random, Int)
 {

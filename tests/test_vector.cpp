@@ -2,6 +2,8 @@
 
 #include <gtest/gtest.h>
 
+using namespace GE;
+
 TEST(Vec3, MinusOperator)
 {
   Vec3 v1{ 1, 2, 3 };

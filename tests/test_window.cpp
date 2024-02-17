@@ -7,7 +7,7 @@ using namespace GE;
 
 TEST(Window, Initialization)
 {
-  auto window = MakeScope<Window>(WindowProps{ "Test", 100, 200, nullptr }, nullptr);
+  auto window = MakeScope<Window>(WindowProps{ "Test", 100, 200, {} }, nullptr);
   EXPECT_NE(window, nullptr);
 
   EXPECT_EQ(window->GetWidth(), 100);
