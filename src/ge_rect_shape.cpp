@@ -12,10 +12,10 @@ using namespace GE;
 
 struct RectShape::Impl
 {
-  //  float position_x = 0;
-  //  float position_y = 0;
-  //  float width = 0;
-  //  float height = 0;
+  //  f32 position_x = 0;
+  //  f32 position_y = 0;
+  //  f32 width = 0;
+  //  f32 height = 0;
   Color color{ 0 };
   Ref<DrawPrimitive> draw_primitive;
   Shaders shader;
@@ -66,7 +66,7 @@ void RectShape::Draw() const
 //   return Vec2{ m_pimpl->position_x, m_pimpl->position_y };
 // }
 //
-// void RectShape::SetPosition(float x, float y) const
+// void RectShape::SetPosition(f32 x, f32 y) const
 //{
 //   m_pimpl->position_x = x;
 //   m_pimpl->position_y = y;

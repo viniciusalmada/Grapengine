@@ -34,8 +34,8 @@ bool GE::Input::IsMouseButtonPressed(KeyCode keyCode) const
 
 Vec2 GE::Input::GetMouseXY() const
 {
-  double x{}, y{};
+  f64 x{}, y{};
   auto native_win = std::any_cast<GLFWwindow*>(m_pimpl->window->GetNativeHandler());
   glfwGetCursorPos(native_win, &x, &y);
-  return Vec2((float)x, (float)y);
+  return Vec2((f32)x, (f32)y);
 }

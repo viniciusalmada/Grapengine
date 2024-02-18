@@ -9,37 +9,37 @@ using namespace GE;
 namespace
 {
   constexpr Vec3 UP_DIR = { 0.0f, 1.0f, 0.0f };
-  constexpr float FOV = 45;
-  constexpr float NEAR_FRUSTUM = 0.1f;
-  constexpr float FAR_FRUSTUM = 100;
+  constexpr f32 FOV = 45;
+  constexpr f32 NEAR_FRUSTUM = 0.1f;
+  constexpr f32 FAR_FRUSTUM = 100;
 
-  float ClampPitch(const float pitch)
+  f32 ClampPitch(const f32 pitch)
   {
     return std::clamp(pitch, 91.0f, 269.0f);
   }
 
-  Vec3 CalculateDirection(float pitch, const float yaw)
+  Vec3 CalculateDirection(f32 pitch, const f32 yaw)
   {
-    // float yaw = 0;
+    // f32 yaw = 0;
     const auto pitch_rad = Transform::Deg2Rad(pitch);
     const auto yaw_rad = Transform::Deg2Rad(yaw);
 
     // Pitch – plane YZ – 0 degree (camera back)
-    const float coord_z_pitch = std::cos(pitch_rad);
-    const float coord_y_dir = std::sin(pitch_rad);
+    const f32 coord_z_pitch = std::cos(pitch_rad);
+    const f32 coord_y_dir = std::sin(pitch_rad);
 
-    const float& hypotenuse = coord_z_pitch;
+    const f32& hypotenuse = coord_z_pitch;
 
     // cosine of yaw = Z / Hypotenuse
-    const float coord_z_dir = std::cos(yaw_rad) * hypotenuse;
+    const f32 coord_z_dir = std::cos(yaw_rad) * hypotenuse;
 
     // sine of yaw = X / Hypotenuse
-    const float coord_x_dir = std::sin(yaw_rad) * hypotenuse;
+    const f32 coord_x_dir = std::sin(yaw_rad) * hypotenuse;
 
     return Vec3{ coord_x_dir, coord_y_dir, coord_z_dir };
   }
 
-  Vec3 CalculateLocation(const Vec3& center, const Vec3& target, float diffX, float diffY)
+  Vec3 CalculateLocation(const Vec3& center, const Vec3& target, f32 diffX, f32 diffY)
   {
     const auto& [x_eye, y_eye, z_eye] = Transform::LookAtVector(center, target, UP_DIR);
 
@@ -51,15 +51,15 @@ namespace
 
 struct Camera::Impl
 {
-  float aspect_ratio = 1;
-  float aim_sensibility = 0.05f;
-  float pan_sensibility = 0.05f;
+  f32 aspect_ratio = 1;
+  f32 aim_sensibility = 0.05f;
+  f32 pan_sensibility = 0.05f;
   Vec3 eye{};
   Vec3 front{};
   Vec3 temp_eye{};
   Vec3 temp_front{};
-  float pitch_angle = 0;
-  float yaw_angle = 0;
+  f32 pitch_angle = 0;
+  f32 yaw_angle = 0;
   bool in_aiming = false;
   Vec2 aiming_reference_pt{};
   bool in_movement = false;
@@ -80,7 +80,7 @@ struct Camera::Impl
     }
   }
 
-  void UpdatePitchYaw(float diffPitch, float diffYaw)
+  void UpdatePitchYaw(f32 diffPitch, f32 diffYaw)
   {
     if (in_aiming)
     {
@@ -96,7 +96,7 @@ struct Camera::Impl
     CalculateEyeFront();
   }
 
-  void UpdateLocation(float diffX, float diffY)
+  void UpdateLocation(f32 diffX, f32 diffY)
   {
     if (in_movement)
     {
@@ -110,7 +110,7 @@ struct Camera::Impl
     CalculateEyeFront();
   }
 
-  void UpdateZ(float diffY)
+  void UpdateZ(f32 diffY)
   {
     const auto& [x_eye, y_eye, z_eye] = Transform::LookAtVector(eye, front, UP_DIR);
     eye = eye + z_eye * diffY;
@@ -118,7 +118,7 @@ struct Camera::Impl
   }
 };
 
-Camera::Camera(const float aspectRatio, const Vec3& eye, const Vec3& dir) :
+Camera::Camera(const f32 aspectRatio, const Vec3& eye, const Vec3& dir) :
     m_pimpl(MakeScope<Impl>())
 {
   m_pimpl->aspect_ratio = aspectRatio;
@@ -126,7 +126,7 @@ Camera::Camera(const float aspectRatio, const Vec3& eye, const Vec3& dir) :
   m_pimpl->front = dir;
 }
 
-Camera::Camera(const float aspectRatio, const Vec3& eye, const float pitch, const float yaw) :
+Camera::Camera(const f32 aspectRatio, const Vec3& eye, const f32 pitch, const f32 yaw) :
     m_pimpl(MakeScope<Impl>())
 {
   m_pimpl->aspect_ratio = aspectRatio;
@@ -148,7 +148,7 @@ Mat4 Camera::GetViewProjection() const
   return proj * view;
 }
 
-void Camera::SetAspectRatio(const float ratio) const
+void Camera::SetAspectRatio(const f32 ratio) const
 {
   m_pimpl->aspect_ratio = ratio;
 }
@@ -218,7 +218,7 @@ void Camera::ChangeAngle(Vec2 currentPoint) const
   [[maybe_unused]] const auto [diff_x, diff_y] = m_pimpl->rotating_reference_pt - currentPoint;
 }
 
-void GE::Camera::SetZoom(float diffY) const
+void GE::Camera::SetZoom(f32 diffY) const
 {
   m_pimpl->UpdateZ(diffY);
 }

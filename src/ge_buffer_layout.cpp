@@ -11,17 +11,17 @@ namespace
     case ShaderDataType::None:
       return 0;
     case ShaderDataType::Float:
-      return sizeof(float);
+      return sizeof(f32);
     case ShaderDataType::Float2:
-      return sizeof(float) * 2;
+      return sizeof(f32) * 2;
     case ShaderDataType::Float3:
-      return sizeof(float) * 3;
+      return sizeof(f32) * 3;
     case ShaderDataType::Float4:
-      return sizeof(float) * 4;
+      return sizeof(f32) * 4;
     case ShaderDataType::Mat3:
-      return sizeof(float) * 3 * 3;
+      return sizeof(f32) * 3 * 3;
     case ShaderDataType::Mat4:
-      return sizeof(float) * 4 * 4;
+      return sizeof(f32) * 4 * 4;
     case ShaderDataType::Int:
       return sizeof(int);
     case ShaderDataType::Int2:

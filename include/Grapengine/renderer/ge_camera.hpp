@@ -8,8 +8,8 @@ namespace GE
   class Camera
   {
   public:
-    GE3D Camera(float aspectRatio, const Vec3& eye, float pitch, float yaw);
-    GE3D Camera(float aspectRatio, const Vec3& eye, const Vec3& dir);
+    GE3D Camera(f32 aspectRatio, const Vec3& eye, f32 pitch, f32 yaw);
+    GE3D Camera(f32 aspectRatio, const Vec3& eye, const Vec3& dir);
     GE3D ~Camera();
 
     [[nodiscard]] bool IsAiming() const;
@@ -27,10 +27,10 @@ namespace GE
     void StopRotating() const;
     void ChangeAngle(Vec2 currentPoint) const;
 
-    void SetZoom(float diffY) const;
+    void SetZoom(f32 diffY) const;
 
     GE3D Mat4 GetViewProjection() const;
-    void SetAspectRatio(float ratio) const;
+    void SetAspectRatio(f32 ratio) const;
 
   private:
     POINTER_TO_IMPLEMENTATION_IDIOM

@@ -8,17 +8,17 @@
 
 using namespace GE;
 
-inline float Transform::Deg2Rad(float deg)
+inline f32 Transform::Deg2Rad(f32 deg)
 {
   return deg * (std::numbers::pi_v<decltype(deg)> / 180.0f);
 }
 
-inline float Transform::Rad2Deg(float rad)
+inline f32 Transform::Rad2Deg(f32 rad)
 {
   return rad * (180.0f / std::numbers::pi_v<decltype(rad)>);
 }
 
-Mat4 Transform::Translate(float xFac, float yFac, float zFac)
+Mat4 Transform::Translate(f32 xFac, f32 yFac, f32 zFac)
 {
   return Mat4{
     { 1, 0, 0, xFac },
@@ -28,7 +28,7 @@ Mat4 Transform::Translate(float xFac, float yFac, float zFac)
   };
 }
 
-Mat4 Transform::RotateX(float degrees)
+Mat4 Transform::RotateX(f32 degrees)
 {
   auto c = std::cos(Deg2Rad(degrees));
   auto s = std::sin(Deg2Rad(degrees));
@@ -40,14 +40,14 @@ Mat4 Transform::RotateX(float degrees)
   };
 }
 
-Mat4 Transform::RotateY(float degrees)
+Mat4 Transform::RotateY(f32 degrees)
 {
   auto c = std::cos(Deg2Rad(degrees));
   auto s = std::sin(Deg2Rad(degrees));
   return Mat4{ { c, 0, s, 0 }, { 0, 1, 0, 0 }, { -s, 0, c, 0 }, { 0, 0, 0, 1 } };
 }
 
-Mat4 Transform::RotateZ(float degrees)
+Mat4 Transform::RotateZ(f32 degrees)
 {
   auto c = std::cos(Deg2Rad(degrees));
   auto s = std::sin(Deg2Rad(degrees));
@@ -59,7 +59,7 @@ Mat4 Transform::RotateZ(float degrees)
   };
 }
 
-Mat4 Transform::Rotate(float degrees, const Vec3& vector)
+Mat4 Transform::Rotate(f32 degrees, const Vec3& vector)
 {
   Mat4 res = Identity();
   Vec3 norm = vector.Normalize();
@@ -84,7 +84,7 @@ Mat4 Transform::Rotate(float degrees, const Vec3& vector)
   return res;
 }
 
-Mat4 Transform::Scale(float xFac, float yFac, float zFac)
+Mat4 Transform::Scale(f32 xFac, f32 yFac, f32 zFac)
 {
   return Mat4{
     { xFac, 0, 0, 0 },
@@ -141,7 +141,7 @@ Mat4 Transform::Identity()
   };
 }
 
-Mat4 Transform::Perspective(float fovDegrees, float aspectRatio, float near, float far)
+Mat4 Transform::Perspective(f32 fovDegrees, f32 aspectRatio, f32 near, f32 far)
 {
   auto tan_half_fov = std::tan(Deg2Rad(fovDegrees) / 2.0f);
 

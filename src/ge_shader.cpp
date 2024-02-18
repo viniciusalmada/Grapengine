@@ -176,7 +176,7 @@ void Shader::UploadMat4F(const std::string& name, const Mat4& mat)
   UploadMat4F(name, mat.ValuePtr());
 }
 
-void Shader::UploadMat4F(const std::string& name, const float* data)
+void Shader::UploadMat4F(const std::string& name, const f32* data)
 {
   auto location = m_pimpl->RetrieveUniform(name);
   glUniformMatrix4fv(location, 1, GL_FALSE, data);
@@ -188,7 +188,7 @@ void Shader::UploadInt(const std::string& name, i32 i)
   glUniform1i(location, i);
 }
 
-void Shader::UploadFloat(const std::string& name, float i)
+void Shader::UploadFloat(const std::string& name, f32 i)
 {
   auto location = m_pimpl->RetrieveUniform(name);
   glUniform1f(location, i);

@@ -38,7 +38,7 @@ struct Application::Impl
       camera->StartMoving(input->GetMouseXY());
   }
 
-  void OnMouseMove(float x, float y) const
+  void OnMouseMove(f32 x, f32 y) const
   {
     if (camera->IsAiming())
       camera->ChangeAimPoint({ x, y });
@@ -60,7 +60,7 @@ struct Application::Impl
     }
   }
 
-  void OnMouseScroll(float diffY) const { camera->SetZoom(-diffY); }
+  void OnMouseScroll(f32 diffY) const { camera->SetZoom(-diffY); }
 };
 
 Application::Application(std::string_view title, u32 width, u32 height, std::string_view icon)
@@ -71,7 +71,7 @@ Application::Application(std::string_view title, u32 width, u32 height, std::str
     MakeScope<Window>(WindowProps{ title, width, height, icon }, [this](Event& e) { OnEvent(e); });
   m_pimpl->input = MakeScope<Input>(m_pimpl->window);
 
-  const float aspectRatio = float(width) / (float)height;
+  const f32 aspectRatio = f32(width) / (f32)height;
   m_pimpl->camera = MakeScope<Camera>(aspectRatio, Vec3{ 0, 5, 5 }, 223.0f, -40);
   auto shader = std::static_pointer_cast<PosAndTex2DShader>(
     ShadersLibrary::Get().GetShader(Shaders::POSITION_AND_TEXTURE2D));
@@ -107,8 +107,8 @@ void Application::Run() const
   }
 }
 
-// float x = -1;
-// float y = -1;
+// f32 x = -1;
+// f32 y = -1;
 
 void GE::Application::OnEvent(Event& event)
 {

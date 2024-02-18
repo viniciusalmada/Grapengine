@@ -21,11 +21,11 @@ namespace GE
 
     void UploadMat4F(const std::string& name, const Mat4& mat);
 
-    void UploadMat4F(const std::string& name, const float* mat);
+    void UploadMat4F(const std::string& name, const f32* mat);
 
     void UploadInt(const std::string& name, i32 i);
 
-    void UploadFloat(const std::string& name, float i);
+    void UploadFloat(const std::string& name, f32 i);
 
   private:
     POINTER_TO_IMPLEMENTATION_IDIOM

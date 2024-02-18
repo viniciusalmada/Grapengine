@@ -34,7 +34,7 @@ namespace GE
   using KeyReleaseData = KeyPressData;
   using MouseButtonPressData = KeyPressData;
   using MouseButtonReleaseData = KeyPressData;
-  using MouseMoveData = std::tuple<EvType, float, float>;
+  using MouseMoveData = std::tuple<EvType, f32, f32>;
   using MouseScrollData = MouseMoveData;
 
   using EvData = std::variant<WindowCloseData, WindowResizeData, KeyPressData, MouseMoveData>;

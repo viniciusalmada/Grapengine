@@ -4,7 +4,7 @@
 class Arithmetic
 {
 public:
-  [[nodiscard]] static bool IsEqual(float a, float b);
+  [[nodiscard]] static bool IsEqual(f32 a, f32 b);
 };
 
 #endif // GE_ARITHMETIC_HPP

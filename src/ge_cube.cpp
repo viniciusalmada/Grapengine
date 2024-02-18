@@ -16,7 +16,7 @@ using namespace GE;
   // X - left to right axis
   // Y - bottom to top axis
   // Z - near to far axis
-  float vertices[] = {
+  f32 vertices[] = {
     -0.5f, -0.5f,  +0.5f, 0.00f + 0 * 0.33f, 0.00f + 0 * 0.33f, // Front face - 2
     +0.5f, -0.5f,  +0.5f, 0.34f + 0 * 0.33f, 0.00f + 0 * 0.33f,
     +0.5f, +0.5f,  +0.5f, 0.34f + 0 * 0.33f, 0.34f + 0 * 0.33f,
@@ -46,10 +46,10 @@ using namespace GE;
 
 struct Cube::Impl
 {
-  float position_x = 0;
-  float position_y = 0;
-  float position_z = 0;
-  float height = 0;
+  f32 position_x = 0;
+  f32 position_y = 0;
+  f32 position_z = 0;
+  f32 height = 0;
   Color color{ 0 };
   Ref<DrawPrimitive> draw_primitive;
   Shaders shader;
@@ -118,12 +118,12 @@ void Cube::Draw() const
   m_pimpl->draw_primitive->Draw();
 }
 
-void GE::Cube::SetScale(float x, float y, float z) const
+void GE::Cube::SetScale(f32 x, f32 y, f32 z) const
 {
   m_pimpl->scale_mat = Transform::Scale(x, y, z);
 }
 
-void GE::Cube::SetTranslate(float x, float y, float z) const
+void GE::Cube::SetTranslate(f32 x, f32 y, f32 z) const
 {
   m_pimpl->translate_mat = Transform::Translate(x, y, z);
 }

@@ -17,8 +17,8 @@ namespace GE
 
     void Draw() const override;
 
-    void SetScale(float x, float y, float z) const;
-    void SetTranslate(float x, float y, float z) const;
+    void SetScale(f32 x, f32 y, f32 z) const;
+    void SetTranslate(f32 x, f32 y, f32 z) const;
 
   private:
     POINTER_TO_IMPLEMENTATION_IDIOM

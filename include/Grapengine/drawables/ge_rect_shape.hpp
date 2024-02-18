@@ -23,7 +23,7 @@ namespace GE
     void Draw() const override;
 
     [[nodiscard]] GE3D Vec2 GetPosition() const;
-    GE3D void SetPosition(float x, float y) const;
+    GE3D void SetPosition(f32 x, f32 y) const;
 
   private:
     POINTER_TO_IMPLEMENTATION_IDIOM

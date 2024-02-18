@@ -11,8 +11,8 @@ using namespace GE;
 namespace
 {
   constexpr Vec3 ORIGIN{ 0, 0, 0 };
-  constexpr float AXIS_RADIUS = 0.02f;
-  constexpr float SIDE_SIZE = 5.0f;
+  constexpr f32 AXIS_RADIUS = 0.02f;
+  constexpr f32 SIDE_SIZE = 5.0f;
 }
 
 struct WorldReference::Impl

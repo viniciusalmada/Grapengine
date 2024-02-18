@@ -153,18 +153,18 @@ Window::Window(const WindowProps& props, const EventCallbackFn& cb) : m_pimpl(Ma
     glfwSetMouseButtonCallback(m_pimpl->window, mouse_bt_callback);
 
     //-----------------------------
-    auto mouse_move = [](GLFWwindow* win, double xpos, double ypos)
+    auto mouse_move = [](GLFWwindow* win, f64 xpos, f64 ypos)
     {
-      Event event{ std::make_tuple(EvType::MOUSE_MOVE, (float)xpos, (float)ypos) };
+      Event event{ std::make_tuple(EvType::MOUSE_MOVE, (f32)xpos, (f32)ypos) };
       auto* data = (Window*)glfwGetWindowUserPointer(win);
       data->m_pimpl->event_callback(event);
     };
     glfwSetCursorPosCallback(m_pimpl->window, mouse_move);
 
     //-----------------------------
-    auto mouse_scroll = [](GLFWwindow* win, double xoffset, double yoffset)
+    auto mouse_scroll = [](GLFWwindow* win, f64 xoffset, f64 yoffset)
     {
-      Event event{ std::make_tuple(EvType::MOUSE_SCROLL, (float)xoffset, (float)yoffset) };
+      Event event{ std::make_tuple(EvType::MOUSE_SCROLL, (f32)xoffset, (f32)yoffset) };
       auto* data = (Window*)glfwGetWindowUserPointer(win);
       data->m_pimpl->event_callback(event);
     };

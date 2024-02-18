@@ -12,10 +12,10 @@ namespace GE
   {
   public:
     GE3D Cylinder(Shaders shader,
-                  float radius,
+                  f32 radius,
                   const Vec3& basePoint,
                   const Vec3& direction,
-                  float height,
+                  f32 height,
                   Color color,
                   Ref<Texture2D> texture2D);
     ~Cylinder() override;

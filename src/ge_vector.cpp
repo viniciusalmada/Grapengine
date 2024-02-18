@@ -13,12 +13,12 @@ Vec2 Vec2::operator+(const Vec2& other) const noexcept
   return { this->x + other.x, this->y + other.y };
 }
 
-float Vec2::Length() const noexcept
+f32 Vec2::Length() const noexcept
 {
   return std::sqrt(x * x + y * y);
 }
 
-float Vec2::Dot(Vec2 other) const noexcept
+f32 Vec2::Dot(Vec2 other) const noexcept
 {
   const auto& [x1, y1] = *this;
   const auto& [x2, y2] = other;
@@ -42,7 +42,7 @@ Vec3& Vec3::operator-()
   z = -z;
   return *this;
 }
-Vec3 Vec3::operator*(const float fac) const
+Vec3 Vec3::operator*(const f32 fac) const
 {
   return { x * fac, y * fac, z * fac };
 }
@@ -67,30 +67,30 @@ Vec3 Vec3::Cross(const Vec3& other) const
   // clang-format on
 }
 
-float Vec3::Dot(const Vec3& other) const
+f32 Vec3::Dot(const Vec3& other) const
 {
   const auto& [x1, y1, z1] = *this;
   const auto& [x2, y2, z2] = other;
   return x1 * x2 + y1 * y2 + z1 * z2;
 }
 
-float Vec3::Distance(const Vec3& other) const
+f32 Vec3::Distance(const Vec3& other) const
 {
   Vec3 diff = *this - other;
   return diff.Length();
 }
 
-float Vec3::Length() const
+f32 Vec3::Length() const
 {
   return std::sqrt(x * x + y * y + z * z);
 }
 
 Mat4::Mat4() : Mat4({ 1, 0, 0, 0 }, { 0, 1, 0, 0 }, { 0, 0, 1, 0 }, { 0, 0, 0, 1 }) {}
 
-Mat4::Mat4(const std::array<float, 4>& row0,
-           const std::array<float, 4>& row1,
-           const std::array<float, 4>& row2,
-           const std::array<float, 4>& row3)
+Mat4::Mat4(const std::array<f32, 4>& row0,
+           const std::array<f32, 4>& row1,
+           const std::array<f32, 4>& row2,
+           const std::array<f32, 4>& row3)
 {
   for (u32 i = 0; i < 4; ++i)
   {
@@ -125,17 +125,17 @@ Mat4 Mat4::operator*(const Mat4& other) const
   return res;
 }
 
-float& Mat4::operator()(u32 row, u32 col)
+f32& Mat4::operator()(u32 row, u32 col)
 {
   return data[col][row];
 }
 
-const float& Mat4::operator()(u32 row, u32 col) const
+const f32& Mat4::operator()(u32 row, u32 col) const
 {
   return data[col][row];
 }
 
-const float* Mat4::ValuePtr() const
+const f32* Mat4::ValuePtr() const
 {
   return data.data()->data();
 }

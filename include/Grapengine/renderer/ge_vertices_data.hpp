@@ -56,7 +56,7 @@ namespace GE
         value = true;
       break;
     case ShaderDataType::Float:
-      if constexpr (std::is_same_v<T, float>)
+      if constexpr (std::is_same_v<T, f32>)
         value = true;
       break;
     case ShaderDataType::Float2:

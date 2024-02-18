@@ -23,10 +23,10 @@ namespace GE
     Vec4 ToVec4() const
     {
       return {
-        (float)R / 255.0f,
-        (float)G / 255.0f,
-        (float)B / 255.0f,
-        (float)A / 255.0f,
+        (f32)R / 255.0f,
+        (f32)G / 255.0f,
+        (f32)B / 255.0f,
+        (f32)A / 255.0f,
       };
     }
   };
