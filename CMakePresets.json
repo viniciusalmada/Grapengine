@@ -54,11 +54,26 @@
       ],
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_CXX_COMPILER": "clang"
+        "CMAKE_CXX_COMPILER": "clang++"
       },
       "vendor": {
         "jetbrains.com/clion": {
           "toolchain": "CLANG"
+        }
+      }
+    },
+    {
+      "name": "linux-gcc-debug",
+      "inherits": [
+        "default"
+      ],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_COMPILER": "g++"
+      },
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "GCC"
         }
       }
     }
