@@ -31,6 +31,7 @@ add_library(${ENGINE_NAME} SHARED
   ge_world_reference.cpp
   ge_input.cpp
   ge_key_codes.cpp
+  ge_arithmetic.cpp
 )
 target_precompile_headers(${ENGINE_NAME} PRIVATE ${ENGINE_INCLUDE}/grapengine_pch.hpp)
 target_include_directories(${ENGINE_NAME} PUBLIC ${ENGINE_INCLUDE})
