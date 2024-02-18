@@ -2,6 +2,7 @@
 # Engine
 add_library(${ENGINE_NAME} SHARED
   ge_application.cpp
+  ge_arithmetic.cpp
   ge_assert.cpp
   ge_buffer_layout.cpp
   ge_camera.cpp
@@ -10,11 +11,15 @@ add_library(${ENGINE_NAME} SHARED
   ge_cube.cpp
   ge_cylinder.cpp
   ge_draw_primitive.cpp
+  ge_editor_camera.cpp
   ge_event.cpp
   ge_gl_checkers.cpp
   ge_index_buffer.cpp
+  ge_input.cpp
   ge_io.cpp
+  ge_key_codes.cpp
   ge_layer.cpp
+  ge_platform.cpp
   ge_pos_tex_shader.cpp
   ge_random.cpp
   ge_rect_shape.cpp
@@ -27,11 +32,7 @@ add_library(${ENGINE_NAME} SHARED
   ge_vertex_array.cpp
   ge_vertex_buffer.cpp
   ge_window.cpp
-  ge_platform.cpp
   ge_world_reference.cpp
-  ge_input.cpp
-  ge_key_codes.cpp
-  ge_arithmetic.cpp
 )
 target_precompile_headers(${ENGINE_NAME} PRIVATE ${ENGINE_INCLUDE}/grapengine_pch.hpp)
 target_include_directories(${ENGINE_NAME} PUBLIC ${ENGINE_INCLUDE})
