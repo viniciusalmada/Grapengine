@@ -99,7 +99,7 @@ void VertexArray::SetVertexBuffer(const Ref<VertexBuffer>& vertexBuffer, Ref<Buf
                             GetComponentCount(elem),
                             ShaderDataTypeToOpenGLBaseType(elem.type),
                             elem.normalized,
-                            layout->GetStride(),
+                            static_cast<i32>(layout->GetStride()),
                             (void*)offset);
       attrib_index++;
     });

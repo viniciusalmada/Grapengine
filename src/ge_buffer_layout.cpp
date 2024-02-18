@@ -33,19 +33,20 @@ namespace
     case ShaderDataType::Bool:
       return 1;
     }
+    __builtin_unreachable();
   }
 }
 
 struct BufferLayout::Impl
 {
   std::vector<BufferElem> elements;
-  u32 stride = 0;
+  u64 stride = 0;
 };
 
 BufferLayout::BufferLayout(std::list<BufferElem> list) : m_pimpl(MakeScope<Impl>())
 {
   m_pimpl->elements = { list.begin(), list.end() };
-  u32 offset = 0;
+  u64 offset = 0;
   m_pimpl->stride = 0;
 
   for (auto& elem : m_pimpl->elements)
@@ -72,7 +73,7 @@ void BufferLayout::ForEachElement(const std::function<void(BufferElem)>& action)
     action(e);
 }
 
-u32 BufferLayout::GetStride() const
+u64 BufferLayout::GetStride() const
 {
   return m_pimpl->stride;
 }

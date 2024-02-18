@@ -6,7 +6,7 @@
 
 extern GE::Scope<GE::Application> CreateApplication();
 
-int main(int argc, char* argv[])
+int main()
 {
   {
     auto app = CreateApplication();

@@ -22,10 +22,10 @@ Texture2D::Texture2D(const std::filesystem::path& path) : m_pimpl(MakeScope<Impl
   i32 w{}, h{}, channels{};
   data = stbi_load(path.string().c_str(), &w, &h, &channels, 0);
 
-  m_pimpl->width = w;
-  m_pimpl->height = h;
+  m_pimpl->width = static_cast<decltype(Impl::width)>(w);
+  m_pimpl->height = static_cast<decltype(Impl::width)>(h);
 
-  i32 internal_format = 0;
+  u32 internal_format = 0;
   u32 format = 0;
   if (channels == 4)
   {

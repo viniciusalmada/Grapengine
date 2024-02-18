@@ -17,41 +17,30 @@ using namespace GE;
   // Y - bottom to top axis
   // Z - near to far axis
   float vertices[] = {
-    // Front face - 2
-    -0.5, -0.5,  +0.5, 0.00 + 0 * 0.33, 0.00 + 0 * 0.33,
-    +0.5, -0.5,  +0.5, 0.34 + 0 * 0.33, 0.00 + 0 * 0.33,
-    +0.5, +0.5,  +0.5, 0.34 + 0 * 0.33, 0.34 + 0 * 0.33,
-    -0.5, +0.5,  +0.5, 0.00 + 0 * 0.33, 0.34 + 0 * 0.33,
-
-    // Right face - 1
-    +0.5, -0.5,  +0.5, 0.00 + 2 * 0.33, 0.00 + 1 * 0.33,
-    +0.5, -0.5,  -0.5, 0.34 + 2 * 0.33, 0.00 + 1 * 0.33,
-    +0.5, +0.5,  -0.5, 0.34 + 2 * 0.33, 0.34 + 1 * 0.33,
-    +0.5, +0.5,  +0.5, 0.00 + 2 * 0.33, 0.34 + 1 * 0.33,
-
-    // Back face - 5
-    +0.5, -0.5,  -0.5, 0.00 + 2 * 0.33, 0.00 + 0 * 0.33,
-    -0.5, -0.5,  -0.5, 0.34 + 2 * 0.33, 0.00 + 0 * 0.33,
-    -0.5, +0.5,  -0.5, 0.34 + 2 * 0.33, 0.34 + 0 * 0.33,
-    +0.5, +0.5,  -0.5, 0.00 + 2 * 0.33, 0.34 + 0 * 0.33,
-
-    // Left face - 6
-    -0.5, -0.5,  -0.5, 0.00 + 1 * 0.33, 0.00 + 1 * 0.33,
-    -0.5, -0.5,  +0.5, 0.34 + 1 * 0.33, 0.00 + 1 * 0.33,
-    -0.5, +0.5,  +0.5, 0.34 + 1 * 0.33, 0.34 + 1 * 0.33,
-    -0.5, +0.5,  -0.5, 0.00 + 1 * 0.33, 0.34 + 1 * 0.33,
-
-    // Top face - 3
-    -0.5, +0.5,  +0.5, 0.00 + 0 * 0.33, 0.00 + 1 * 0.33,
-    +0.5, +0.5,  +0.5, 0.34 + 0 * 0.33, 0.00 + 1 * 0.33,
-    +0.5, +0.5,  -0.5, 0.34 + 0 * 0.33, 0.34 + 1 * 0.33,
-    -0.5, +0.5,  -0.5, 0.00 + 0 * 0.33, 0.34 + 1 * 0.33,
-
-    // Bottom face - 4
-    -0.5, -0.5,  -0.5, 0.00 + 0 * 0.33, 0.00 + 1 * 0.33,
-    +0.5, -0.5,  -0.5, 0.34 + 0 * 0.33, 0.00 + 1 * 0.33,
-    +0.5, -0.5,  +0.5, 0.34 + 0 * 0.33, 0.34 + 1 * 0.33,
-    -0.5, -0.5,  +0.5, 0.00 + 0 * 0.33, 0.34 + 1 * 0.33,
+    -0.5f, -0.5f,  +0.5f, 0.00f + 0 * 0.33f, 0.00f + 0 * 0.33f, // Front face - 2
+    +0.5f, -0.5f,  +0.5f, 0.34f + 0 * 0.33f, 0.00f + 0 * 0.33f,
+    +0.5f, +0.5f,  +0.5f, 0.34f + 0 * 0.33f, 0.34f + 0 * 0.33f,
+    -0.5f, +0.5f,  +0.5f, 0.00f + 0 * 0.33f, 0.34f + 0 * 0.33f,
+    +0.5f, -0.5f,  +0.5f, 0.00f + 2 * 0.33f, 0.00f + 1 * 0.33f, // Right face - 1
+    +0.5f, -0.5f,  -0.5f, 0.34f + 2 * 0.33f, 0.00f + 1 * 0.33f,
+    +0.5f, +0.5f,  -0.5f, 0.34f + 2 * 0.33f, 0.34f + 1 * 0.33f,
+    +0.5f, +0.5f,  +0.5f, 0.00f + 2 * 0.33f, 0.34f + 1 * 0.33f,
+    +0.5f, -0.5f,  -0.5f, 0.00f + 2 * 0.33f, 0.00f + 0 * 0.33f, // Back face - 5
+    -0.5f, -0.5f,  -0.5f, 0.34f + 2 * 0.33f, 0.00f + 0 * 0.33f,
+    -0.5f, +0.5f,  -0.5f, 0.34f + 2 * 0.33f, 0.34f + 0 * 0.33f,
+    +0.5f, +0.5f,  -0.5f, 0.00f + 2 * 0.33f, 0.34f + 0 * 0.33f,
+    -0.5f, -0.5f,  -0.5f, 0.00f + 1 * 0.33f, 0.00f + 1 * 0.33f, // Left face - 6
+    -0.5f, -0.5f,  +0.5f, 0.34f + 1 * 0.33f, 0.00f + 1 * 0.33f,
+    -0.5f, +0.5f,  +0.5f, 0.34f + 1 * 0.33f, 0.34f + 1 * 0.33f,
+    -0.5f, +0.5f,  -0.5f, 0.00f + 1 * 0.33f, 0.34f + 1 * 0.33f,
+    -0.5f, +0.5f,  +0.5f, 0.00f + 0 * 0.33f, 0.00f + 1 * 0.33f, // Top face - 3
+    +0.5f, +0.5f,  +0.5f, 0.34f + 0 * 0.33f, 0.00f + 1 * 0.33f,
+    +0.5f, +0.5f,  -0.5f, 0.34f + 0 * 0.33f, 0.34f + 1 * 0.33f,
+    -0.5f, +0.5f,  -0.5f, 0.00f + 0 * 0.33f, 0.34f + 1 * 0.33f,
+    -0.5f, -0.5f,  -0.5f, 0.00f + 0 * 0.33f, 0.00f + 1 * 0.33f, // Bottom face - 4
+    +0.5f, -0.5f,  -0.5f, 0.34f + 0 * 0.33f, 0.00f + 1 * 0.33f,
+    +0.5f, -0.5f,  +0.5f, 0.34f + 0 * 0.33f, 0.34f + 1 * 0.33f,
+    -0.5f, -0.5f,  +0.5f, 0.00f + 0 * 0.33f, 0.34f + 1 * 0.33f,
   };
 // clang-format on
 
@@ -80,30 +69,30 @@ Cube::Cube(Color color, Shaders shader, Ref<Texture2D> texture) :
   auto position = MakeRef<VerticesData>(layout);
   {
     // clang-format off
-    position->PushData(Vec3{ -0.5f, -0.5f, +0.5f  },Vec2{ 0.00 + 0 * 0.33, 0.00 + 0 * 0.33 }, color.ToVec4());// Front face
-    position->PushData(Vec3{ +0.5f, -0.5f, +0.5f  },Vec2{ 0.34 + 0 * 0.33, 0.00 + 0 * 0.33 }, color.ToVec4());
-    position->PushData(Vec3{ +0.5f, +0.5f, +0.5f  },Vec2{ 0.34 + 0 * 0.33, 0.34 + 0 * 0.33 }, color.ToVec4());
-    position->PushData(Vec3{ -0.5f, +0.5f, +0.5f  },Vec2{ 0.00 + 0 * 0.33, 0.34 + 0 * 0.33 }, color.ToVec4());
-    position->PushData(Vec3{ +0.5f, -0.5f, +0.5f  },Vec2{ 0.00 + 2 * 0.33, 0.00 + 1 * 0.33 }, color.ToVec4());// Right face
-    position->PushData(Vec3{ +0.5f, -0.5f, -0.5f  },Vec2{ 0.34 + 2 * 0.33, 0.00 + 1 * 0.33 }, color.ToVec4());
-    position->PushData(Vec3{ +0.5f, +0.5f, -0.5f  },Vec2{ 0.34 + 2 * 0.33, 0.34 + 1 * 0.33 }, color.ToVec4());
-    position->PushData(Vec3{ +0.5f, +0.5f, +0.5f  },Vec2{ 0.00 + 2 * 0.33, 0.34 + 1 * 0.33 }, color.ToVec4());
-    position->PushData(Vec3{ +0.5f, -0.5f, -0.5f  },Vec2{ 0.00 + 2 * 0.33, 0.00 + 0 * 0.33 }, color.ToVec4());// Back face
-    position->PushData(Vec3{ -0.5f, -0.5f, -0.5f  },Vec2{ 0.34 + 2 * 0.33, 0.00 + 0 * 0.33 }, color.ToVec4());
-    position->PushData(Vec3{ -0.5f, +0.5f, -0.5f  },Vec2{ 0.34 + 2 * 0.33, 0.34 + 0 * 0.33 }, color.ToVec4());
-    position->PushData(Vec3{ +0.5f, +0.5f, -0.5f  },Vec2{ 0.00 + 2 * 0.33, 0.34 + 0 * 0.33 }, color.ToVec4());
-    position->PushData(Vec3{ -0.5f, -0.5f, -0.5f  },Vec2{ 0.00 + 1 * 0.33, 0.00 + 1 * 0.33 }, color.ToVec4());// Left face
-    position->PushData(Vec3{ -0.5f, -0.5f, +0.5f  },Vec2{ 0.34 + 1 * 0.33, 0.00 + 1 * 0.33 }, color.ToVec4());
-    position->PushData(Vec3{ -0.5f, +0.5f, +0.5f  },Vec2{ 0.34 + 1 * 0.33, 0.34 + 1 * 0.33 }, color.ToVec4());
-    position->PushData(Vec3{ -0.5f, +0.5f, -0.5f  },Vec2{ 0.00 + 1 * 0.33, 0.34 + 1 * 0.33 }, color.ToVec4());
-    position->PushData(Vec3{ -0.5f, +0.5f, +0.5f  },Vec2{ 0.00 + 0 * 0.33, 0.00 + 1 * 0.33 }, color.ToVec4());// Top face
-    position->PushData(Vec3{ +0.5f, +0.5f, +0.5f  },Vec2{ 0.34 + 0 * 0.33, 0.00 + 1 * 0.33 }, color.ToVec4());
-    position->PushData(Vec3{ +0.5f, +0.5f, -0.5f  },Vec2{ 0.34 + 0 * 0.33, 0.34 + 1 * 0.33 }, color.ToVec4());
-    position->PushData(Vec3{ -0.5f, +0.5f, -0.5f  },Vec2{ 0.00 + 0 * 0.33, 0.34 + 1 * 0.33 }, color.ToVec4());
-    position->PushData(Vec3{ -0.5f, -0.5f, -0.5f  },Vec2{ 0.00 + 0 * 0.33, 0.00 + 1 * 0.33 }, color.ToVec4());// Bottom face
-    position->PushData(Vec3{ +0.5f, -0.5f, -0.5f  },Vec2{ 0.34 + 0 * 0.33, 0.00 + 1 * 0.33 }, color.ToVec4());
-    position->PushData(Vec3{ +0.5f, -0.5f, +0.5f  },Vec2{ 0.34 + 0 * 0.33, 0.34 + 1 * 0.33 }, color.ToVec4());
-    position->PushData(Vec3{ -0.5f, -0.5f, +0.5f  },Vec2{ 0.00 + 0 * 0.33, 0.34 + 1 * 0.33 }, color.ToVec4());
+    position->PushData(Vec3{ -0.5f, -0.5f, +0.5f  },Vec2{ 0.00f + 0 * 0.33f, 0.00f + 0 * 0.33f }, color.ToVec4());// Front face
+    position->PushData(Vec3{ +0.5f, -0.5f, +0.5f  },Vec2{ 0.34f + 0 * 0.33f, 0.00f + 0 * 0.33f }, color.ToVec4());
+    position->PushData(Vec3{ +0.5f, +0.5f, +0.5f  },Vec2{ 0.34f + 0 * 0.33f, 0.34f + 0 * 0.33f }, color.ToVec4());
+    position->PushData(Vec3{ -0.5f, +0.5f, +0.5f  },Vec2{ 0.00f + 0 * 0.33f, 0.34f + 0 * 0.33f }, color.ToVec4());
+    position->PushData(Vec3{ +0.5f, -0.5f, +0.5f  },Vec2{ 0.00f + 2 * 0.33f, 0.00f + 1 * 0.33f }, color.ToVec4());// Right face
+    position->PushData(Vec3{ +0.5f, -0.5f, -0.5f  },Vec2{ 0.34f + 2 * 0.33f, 0.00f + 1 * 0.33f }, color.ToVec4());
+    position->PushData(Vec3{ +0.5f, +0.5f, -0.5f  },Vec2{ 0.34f + 2 * 0.33f, 0.34f + 1 * 0.33f }, color.ToVec4());
+    position->PushData(Vec3{ +0.5f, +0.5f, +0.5f  },Vec2{ 0.00f + 2 * 0.33f, 0.34f + 1 * 0.33f }, color.ToVec4());
+    position->PushData(Vec3{ +0.5f, -0.5f, -0.5f  },Vec2{ 0.00f + 2 * 0.33f, 0.00f + 0 * 0.33f }, color.ToVec4());// Back face
+    position->PushData(Vec3{ -0.5f, -0.5f, -0.5f  },Vec2{ 0.34f + 2 * 0.33f, 0.00f + 0 * 0.33f }, color.ToVec4());
+    position->PushData(Vec3{ -0.5f, +0.5f, -0.5f  },Vec2{ 0.34f + 2 * 0.33f, 0.34f + 0 * 0.33f }, color.ToVec4());
+    position->PushData(Vec3{ +0.5f, +0.5f, -0.5f  },Vec2{ 0.00f + 2 * 0.33f, 0.34f + 0 * 0.33f }, color.ToVec4());
+    position->PushData(Vec3{ -0.5f, -0.5f, -0.5f  },Vec2{ 0.00f + 1 * 0.33f, 0.00f + 1 * 0.33f }, color.ToVec4());// Left face
+    position->PushData(Vec3{ -0.5f, -0.5f, +0.5f  },Vec2{ 0.34f + 1 * 0.33f, 0.00f + 1 * 0.33f }, color.ToVec4());
+    position->PushData(Vec3{ -0.5f, +0.5f, +0.5f  },Vec2{ 0.34f + 1 * 0.33f, 0.34f + 1 * 0.33f }, color.ToVec4());
+    position->PushData(Vec3{ -0.5f, +0.5f, -0.5f  },Vec2{ 0.00f + 1 * 0.33f, 0.34f + 1 * 0.33f }, color.ToVec4());
+    position->PushData(Vec3{ -0.5f, +0.5f, +0.5f  },Vec2{ 0.00f + 0 * 0.33f, 0.00f + 1 * 0.33f }, color.ToVec4());// Top face
+    position->PushData(Vec3{ +0.5f, +0.5f, +0.5f  },Vec2{ 0.34f + 0 * 0.33f, 0.00f + 1 * 0.33f }, color.ToVec4());
+    position->PushData(Vec3{ +0.5f, +0.5f, -0.5f  },Vec2{ 0.34f + 0 * 0.33f, 0.34f + 1 * 0.33f }, color.ToVec4());
+    position->PushData(Vec3{ -0.5f, +0.5f, -0.5f  },Vec2{ 0.00f + 0 * 0.33f, 0.34f + 1 * 0.33f }, color.ToVec4());
+    position->PushData(Vec3{ -0.5f, -0.5f, -0.5f  },Vec2{ 0.00f + 0 * 0.33f, 0.00f + 1 * 0.33f }, color.ToVec4());// Bottom face
+    position->PushData(Vec3{ +0.5f, -0.5f, -0.5f  },Vec2{ 0.34f + 0 * 0.33f, 0.00f + 1 * 0.33f }, color.ToVec4());
+    position->PushData(Vec3{ +0.5f, -0.5f, +0.5f  },Vec2{ 0.34f + 0 * 0.33f, 0.34f + 1 * 0.33f }, color.ToVec4());
+    position->PushData(Vec3{ -0.5f, -0.5f, +0.5f  },Vec2{ 0.00f + 0 * 0.33f, 0.34f + 1 * 0.33f }, color.ToVec4());
     // clang-format on
   }
 

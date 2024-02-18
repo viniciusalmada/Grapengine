@@ -15,8 +15,6 @@ namespace
     FRAGMENT
   };
 
-  DISABLE_WARNING_PUSH
-  DISABLE_UNREACHABLE_CODE
   u32 GetGLShaderType(ShaderType type)
   {
     switch (type)
@@ -26,11 +24,9 @@ namespace
     case ShaderType::FRAGMENT:
       return GL_FRAGMENT_SHADER;
     }
+    __builtin_unreachable();
   }
-  DISABLE_WARNING_POP
 
-  DISABLE_WARNING_PUSH
-  DISABLE_UNREACHABLE_CODE
   std::string GetGLShaderName(ShaderType type)
   {
     switch (type)
@@ -40,8 +36,8 @@ namespace
     case ShaderType::FRAGMENT:
       return "Fragment";
     }
+    __builtin_unreachable();
   }
-  DISABLE_WARNING_POP
 
   std::tuple<u32, bool> Compile(const std::string& src, ShaderType type)
   {
@@ -59,7 +55,7 @@ namespace
       glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &max_length);
 
       std::vector<char> info_log;
-      info_log.reserve(max_length);
+      info_log.reserve(static_cast<u32>(max_length));
       glGetShaderInfoLog(shader, max_length, &max_length, info_log.data());
 
       std::string shader_name = GetGLShaderName(type);
@@ -101,7 +97,7 @@ namespace
       glGetProgramiv(renderer_id, GL_INFO_LOG_LENGTH, &max_length);
 
       std::vector<char> info_log;
-      info_log.resize(max_length);
+      info_log.resize(static_cast<u32>(max_length));
       glGetProgramInfoLog(renderer_id, max_length, &max_length, info_log.data());
 
       std::stringstream ss;

@@ -21,7 +21,7 @@ struct Cylinder::Impl
   Ref<Texture2D> texture;
 };
 
-constexpr auto SLICES = 20.0f;
+constexpr auto SLICES = 20ul;
 // constexpr auto STACKS = 8;
 
 Cylinder::Cylinder(const Shaders shader,
@@ -45,7 +45,8 @@ Cylinder::Cylinder(const Shaders shader,
   std::vector<Vec3> final_pts;
   for (u32 i = 0; i < SLICES; i++)
   {
-    const float theta = 2.0f * std::numbers::pi_v<float> * i / SLICES;
+    const float slice_percent = static_cast<float>(i) / static_cast<float>(SLICES);
+    const float theta = 2.0f * std::numbers::pi_v<float> * slice_percent;
     Vec3 pt = reference * std::cos(theta) + normal.Cross(reference) * std::sin(theta);
     Vec3 pt_base = basePoint + pt * radius;
     Vec3 pt_final = pt_base + normal * height;

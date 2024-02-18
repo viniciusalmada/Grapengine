@@ -14,10 +14,10 @@ namespace GE
 
     constexpr explicit Color(u32 rgba)
     {
-      R = (rgba >> 8 * 3) & 0xFF;
-      G = (rgba >> 8 * 2) & 0xFF;
-      B = (rgba >> 8 * 1) & 0xFF;
-      A = (rgba >> 8 * 0) & 0xFF;
+      R = static_cast<u8>((rgba >> 8 * 3) & 0xFF);
+      G = static_cast<u8>((rgba >> 8 * 2) & 0xFF);
+      B = static_cast<u8>((rgba >> 8 * 1) & 0xFF);
+      A = static_cast<u8>((rgba >> 8 * 0) & 0xFF);
     }
 
     Vec4 ToVec4() const

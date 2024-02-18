@@ -1,5 +1,7 @@
 #include "utils/ge_random.hpp"
 
+#include <math/ge_arithmetic.hpp>
+
 using namespace GE;
 
 namespace
@@ -22,7 +24,7 @@ u32 Random::GenInt(u32 min, u32 max)
 
 float Random::GenFloat(float min, float max)
 {
-  if (real_dist.a() != min || real_dist.b() != max)
+  if (!Arithmetic::IsEqual(real_dist.a(), min) || !Arithmetic::IsEqual(real_dist.b(), max))
   {
     std::uniform_real_distribution<float>::param_type p{ min, max };
     real_dist.param(p);

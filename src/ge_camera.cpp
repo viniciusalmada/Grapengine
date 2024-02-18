@@ -10,7 +10,7 @@ namespace
 {
   constexpr Vec3 UP_DIR = { 0.0f, 1.0f, 0.0f };
   constexpr float FOV = 45;
-  constexpr float NEAR_FRUSTUM = 0.1;
+  constexpr float NEAR_FRUSTUM = 0.1f;
   constexpr float FAR_FRUSTUM = 100;
 
   float ClampPitch(const float pitch)

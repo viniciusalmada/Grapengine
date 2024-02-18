@@ -1,5 +1,7 @@
 #include "math/ge_vector.hpp"
 
+#include <math/ge_arithmetic.hpp>
+
 using namespace GE;
 
 Vec2 Vec2::operator-(const Vec2& other) const noexcept
@@ -72,12 +74,6 @@ float Vec3::Dot(const Vec3& other) const
   return x1 * x2 + y1 * y2 + z1 * z2;
 }
 
-std::ostream& GE::operator<<(std::ostream& os, const Vec3& v)
-{
-  os << std::format("{:1.2f},{:1.2f},{:1.2f}", v.x, v.y, v.z);
-  return os;
-}
-
 float Vec3::Distance(const Vec3& other) const
 {
   Vec3 diff = *this - other;
@@ -96,7 +92,7 @@ Mat4::Mat4(const std::array<float, 4>& row0,
            const std::array<float, 4>& row2,
            const std::array<float, 4>& row3)
 {
-  for (i32 i = 0; i < 4; ++i)
+  for (u32 i = 0; i < 4; ++i)
   {
     data[i][0] = row0[i];
     data[i][1] = row1[i];
@@ -118,9 +114,9 @@ Mat4 Mat4::operator*(const Mat4& other) const
   };
 
   Mat4 res;
-  for (i32 row = 0; row < 4; ++row)
+  for (u32 row = 0; row < 4; ++row)
   {
-    for (i32 col = 0; col < 4; ++col)
+    for (u32 col = 0; col < 4; ++col)
     {
       res(row, col) = prod(row, col);
     }
@@ -146,11 +142,11 @@ const float* Mat4::ValuePtr() const
 
 bool Mat4::operator==(const Mat4& other) const
 {
-  for (int i = 0; i < 4; ++i)
+  for (u32 i = 0; i < 4; ++i)
   {
-    for (int j = 0; j < 4; ++j)
+    for (u32 j = 0; j < 4; ++j)
     {
-      if (other(i, j) != this->operator()(i, j))
+      if (!Arithmetic::IsEqual(other(i, j), this->operator()(i, j)))
         return false;
     }
   }

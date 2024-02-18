@@ -78,7 +78,9 @@ Window::Window(const WindowProps& props, const EventCallbackFn& cb) : m_pimpl(Ma
   glfwWindowHint(GLFW_SAMPLES, 4);
   m_pimpl->window =
     glfwCreateWindow((i32)props.width, (i32)props.height, props.title.c_str(), nullptr, nullptr);
-  glfwSetWindowAspectRatio(m_pimpl->window, props.width, props.height);
+  glfwSetWindowAspectRatio(m_pimpl->window,
+                           static_cast<i32>(props.width),
+                           static_cast<i32>(props.height));
 
   GLFWimage image;
   image.pixels = stbi_load(props.icon_path.c_str(), &image.width, &image.height, nullptr, 4);
@@ -110,11 +112,13 @@ Window::Window(const WindowProps& props, const EventCallbackFn& cb) : m_pimpl(Ma
     //-----------------------------
     auto resize_callback = [](GLFWwindow* win, i32 width, i32 height)
     {
-      Event event{ std::make_tuple(EvType::WINDOW_RESIZE, width, height) };
+      Event event{
+        std::make_tuple(EvType::WINDOW_RESIZE, static_cast<u32>(width), static_cast<u32>(height))
+      };
       auto* data = (Window*)glfwGetWindowUserPointer(win);
       data->m_pimpl->event_callback(event);
-      data->m_pimpl->window_props->width = width;
-      data->m_pimpl->window_props->height = height;
+      data->m_pimpl->window_props->width = static_cast<u32>(width);
+      data->m_pimpl->window_props->height = static_cast<u32>(height);
     };
     glfwSetWindowSizeCallback(m_pimpl->window, resize_callback);
 

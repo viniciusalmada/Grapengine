@@ -5,6 +5,9 @@
 #include "core/ge_type_aliases.hpp"
 
 #include <array>
+#include <format>
+#include <ostream>
+
 namespace GE
 {
   struct GE3D Vec2
@@ -32,7 +35,11 @@ namespace GE
     [[nodiscard]] float Dot(const Vec3& other) const;
     [[nodiscard]] float Distance(const Vec3& other) const;
 
-    friend std::ostream& operator<<(std::ostream& os, const Vec3& vec3);
+    friend std::ostream& operator<<(std::ostream& os, const Vec3& vec3)
+    {
+      os << std::format("{:1.2f},{:1.2f},{:1.2f}", vec3.x, vec3.y, vec3.z);
+      return os;
+    }
     float Length() const;
   };
 

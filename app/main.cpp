@@ -10,7 +10,7 @@ public:
 
   void OnAttach() override { m_world = GE::MakeScope<GE::WorldReference>(); }
 
-  void OnUpdate(GE::TimeStep ts) override
+  void OnUpdate(GE::TimeStep) override
   {
     GE::Renderer::SetClearColor(GE::Color{ 0x222222FF }.ToVec4());
     GE::Renderer::Clear();

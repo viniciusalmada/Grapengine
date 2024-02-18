@@ -19,7 +19,7 @@ namespace GE
     static void Draw(const Ref<Drawable>& drawable);
 
   private:
-    POINTER_TO_IMPLEMENTATION_IDIOM;
+    POINTER_TO_IMPLEMENTATION_IDIOM
   };
 }
 

@@ -29,7 +29,7 @@ namespace GE
   };
 
   using WindowCloseData = std::tuple<EvType>;
-  using WindowResizeData = std::tuple<EvType, i32, i32>;
+  using WindowResizeData = std::tuple<EvType, u32, u32>;
   using KeyPressData = std::tuple<EvType, KeyCode>;
   using KeyReleaseData = KeyPressData;
   using MouseButtonPressData = KeyPressData;

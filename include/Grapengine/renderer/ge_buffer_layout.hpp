@@ -22,7 +22,7 @@ namespace GE
 
     void ForEachElement(const std::function<void(BufferElem)>& action) const;
 
-    [[nodiscard]] u32 GetStride() const;
+    [[nodiscard]] u64 GetStride() const;
 
     static std::list<BufferElem> BuildElementsList(std::initializer_list<ShaderDataType> types);
 
