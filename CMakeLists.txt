@@ -14,7 +14,9 @@ set(ENGINE_NAME Grapengine)
 set(ENGINE_INCLUDE ${CMAKE_SOURCE_DIR}/include/Grapengine)
 
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)
-  add_compile_options(-fdiagnostics-color=always -fansi-escape-codes)
+  if (CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "GNU")
+    add_compile_options(-fdiagnostics-color=always -fansi-escape-codes)
+  endif ()
 endif ()
 
 # #############################################################################
