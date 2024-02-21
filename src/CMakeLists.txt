@@ -55,14 +55,14 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   target_compile_options(${ENGINE_NAME} PUBLIC
     /Wall                       # Enable most common warnings
     /W4                         # Set warning level 4 (highest warning level)
-    /WX                         # Treat warnings as errors
+    $<$<CONFIG:Release>:/WX>     # Treat warnings as errors
   )
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL GNU)
   target_compile_options(${ENGINE_NAME} PUBLIC
     -Wall                       # Enable most common warnings
     -Wextra                     # Enable extra warnings
     -Wpedantic                  # Issue all the warnings demanded by strict ISO C and ISO C++
-    -Werror                     # Treat warnings as errors
+    $<$<CONFIG:Release>:-Werror> # Treat warnings as errors
     -Wconversion                # Warn for implicit conversions that may change the value
     -Wsign-conversion           # Warn for signed-to-unsigned conversion
     -Wunreachable-code          # Warn if the compiler detects code that will never be executed
@@ -80,17 +80,17 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL GNU)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL Clang)
   if (CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "MSVC" OR CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "GNU")
     target_compile_options(${ENGINE_NAME} PUBLIC
-      -Wall                   # Enable most warning messages
-      -Wextra                 # Enable some extra warning messages
-      -Wpedantic              # Warn about non-portable constructs
-      -Werror                 # Treat warnings as errors
-      -Wshadow                # Warn whenever a local variable shadows another local variable
-      -Wconversion            # Warn for implicit conversions that may change the value
-      -Wsign-conversion       # Warn for implicit conversions that may change the sign
-      -Wformat=2              # Check printf/scanf format strings
-      -Wundef                 # Warn if an undefined identifier is evaluated in an #if directive
-      -Wunreachable-code      # Warn if code will never be executed
-      -Wunused                # Warn about unused functions, variables, etc.
+      -Wall                       # Enable most warning messages
+      -Wextra                     # Enable some extra warning messages
+      -Wpedantic                  # Warn about non-portable constructs
+      $<$<CONFIG:Release>:-Werror> # Treat warnings as errors
+      -Wshadow                    # Warn whenever a local variable shadows another local variable
+      -Wconversion                # Warn for implicit conversions that may change the value
+      -Wsign-conversion           # Warn for implicit conversions that may change the sign
+      -Wformat=2                  # Check printf/scanf format strings
+      -Wundef                     # Warn if an undefined identifier is evaluated in an #if directive
+      -Wunreachable-code          # Warn if code will never be executed
+      -Wunused                    # Warn about unused functions, variables, etc.
     )
   else ()
     message(FATAL_ERROR "Unsupported CLANG frontend (CMAKE_CXX_COMPILER_FRONTEND_VARIANT = ${CMAKE_CXX_COMPILER_FRONTEND_VARIANT})")
