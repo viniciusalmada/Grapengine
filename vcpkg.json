@@ -3,7 +3,8 @@
     "glad",
     "glfw3",
     "stb",
-    "gtest"
+    "gtest",
+    "glm"
   ],
   "name": "grapengine",
   "version": "0.0.1"

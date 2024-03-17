@@ -109,3 +109,6 @@ target_link_libraries(${ENGINE_NAME} PRIVATE glad::glad)
 
 find_package(Stb REQUIRED)
 target_include_directories(${ENGINE_NAME} PRIVATE ${Stb_INCLUDE_DIR})
+
+find_package(glm CONFIG REQUIRED)
+target_link_libraries(${ENGINE_NAME} PRIVATE glm::glm)
