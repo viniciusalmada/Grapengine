@@ -1,5 +1,8 @@
 #ifndef GRAPENGINE_TEXTURE_2D_HPP
 #define GRAPENGINE_TEXTURE_2D_HPP
+
+#include <filesystem>
+
 namespace GE
 {
   class Texture2D
