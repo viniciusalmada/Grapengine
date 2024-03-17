@@ -12,13 +12,10 @@
       "description": "Default build using Ninja generator",
       "binaryDir": "${sourceDir}/build-${presetName}",
       "hidden": true,
-      "generator": "Ninja",
-      "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "$penv{VCPKG_TOOLCHAIN}"
-      }
+      "generator": "Ninja"
     },
     {
-      "name": "vs-mscv-debug",
+      "name": "win-deb-cl",
       "inherits": [
         "default"
       ],
@@ -33,7 +30,7 @@
       }
     },
     {
-      "name": "vs-clang-debug",
+      "name": "win-deb-clang",
       "inherits": [
         "default"
       ],
@@ -48,7 +45,7 @@
       }
     },
     {
-      "name": "linux-clang-debug",
+      "name": "linux-deb-clang",
       "inherits": [
         "default"
       ],
@@ -63,7 +60,7 @@
       }
     },
     {
-      "name": "linux-gcc-debug",
+      "name": "linux-deb-gcc",
       "inherits": [
         "default"
       ],
