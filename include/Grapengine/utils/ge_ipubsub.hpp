@@ -1,6 +1,8 @@
 #ifndef GRAPENGINE_IPUBSUB_HPP
 #define GRAPENGINE_IPUBSUB_HPP
 
+#include <list>
+
 namespace GE
 {
   template <typename Msg>
