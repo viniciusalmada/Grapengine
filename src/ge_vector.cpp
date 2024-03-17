@@ -13,6 +13,11 @@ Vec2 Vec2::operator+(const Vec2& other) const noexcept
   return { this->x + other.x, this->y + other.y };
 }
 
+Vec2 Vec2::operator*(f32 fac) const
+{
+  return Vec2{ x * fac, y * fac };
+}
+
 f32 Vec2::Length() const noexcept
 {
   return std::sqrt(x * x + y * y);
@@ -45,6 +50,14 @@ Vec3& Vec3::operator-()
 Vec3 Vec3::operator*(const f32 fac) const
 {
   return { x * fac, y * fac, z * fac };
+}
+
+Vec3& Vec3::operator+=(const Vec3& other)
+{
+  this->x += other.x;
+  this->y += other.y;
+  this->z += other.z;
+  return *this;
 }
 
 Vec3 Vec3::Normalize() const

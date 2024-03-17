@@ -16,6 +16,7 @@ namespace GE
     f32 y;
     Vec2 operator-(const Vec2& other) const noexcept;
     Vec2 operator+(const Vec2& other) const noexcept;
+    Vec2 operator*(f32 fac) const;
     f32 Length() const noexcept;
     f32 Dot(Vec2 vec2) const noexcept;
   };
@@ -30,6 +31,7 @@ namespace GE
     Vec3 operator-(const Vec3& other) const;
     Vec3& operator-();
     Vec3 operator*(f32 fac) const;
+    Vec3& operator+=(const Vec3& other);
     [[nodiscard]] Vec3 Normalize() const;
     [[nodiscard]] Vec3 Cross(const Vec3& other) const;
     [[nodiscard]] f32 Dot(const Vec3& other) const;
