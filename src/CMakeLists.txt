@@ -41,7 +41,7 @@ target_compile_definitions(${ENGINE_NAME} PRIVATE
   GRAPENGINE_EXPORTS
 )
 
-message("Setting up platform = ${CMAKE_SYSTEM_NAME}")
+message(STATUS "Setting up platform = ${CMAKE_SYSTEM_NAME}")
 if (CMAKE_SYSTEM_NAME STREQUAL Windows)
   target_compile_definitions(${ENGINE_NAME} PUBLIC GE_PLATFORM_WINDOWS)
 elseif (CMAKE_SYSTEM_NAME STREQUAL Linux)
@@ -50,7 +50,7 @@ else ()
   message(FATAL_ERROR "Unsupported platform")
 endif ()
 
-message("Setting up compiler flags = ${CMAKE_CXX_COMPILER_ID}:${CMAKE_CXX_COMPILER_FRONTEND_VARIANT}")
+message(STATUS "Setting up compiler flags = ${CMAKE_CXX_COMPILER_ID}:${CMAKE_CXX_COMPILER_FRONTEND_VARIANT}")
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   target_compile_options(${ENGINE_NAME} PUBLIC
     /Wall                       # Enable most common warnings
