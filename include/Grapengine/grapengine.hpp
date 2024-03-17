@@ -19,5 +19,6 @@
 
 // Renderer
 #include "renderer/ge_renderer.hpp"
+#include "renderer/ge_editor_camera.hpp"
 
 #endif // GRAPENGINE_HPP
