@@ -73,7 +73,7 @@ GE::WorldReference::WorldReference() : m_pimpl(MakeScope<Impl>())
                                          m_pimpl->blank_texture);
 }
 
-void GE::WorldReference::DrawBatch()
+void WorldReference::DrawBatch() const
 {
   m_pimpl->platform->Draw();
   m_pimpl->x_axis->Draw();
@@ -83,4 +83,4 @@ void GE::WorldReference::DrawBatch()
   //  m_pimpl->yz_plane->Draw();
 }
 
-GE::WorldReference::~WorldReference() = default;
+WorldReference::~WorldReference() = default;

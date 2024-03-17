@@ -12,7 +12,7 @@ namespace GE
     GE3D WorldReference();
     GE3D ~WorldReference();
 
-    GE3D void DrawBatch();
+    GE3D void DrawBatch() const;
 
   private:
     POINTER_TO_IMPLEMENTATION_IDIOM
