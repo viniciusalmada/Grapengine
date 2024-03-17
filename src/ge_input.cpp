@@ -6,36 +6,42 @@
 
 using namespace GE;
 
-struct Input::Impl
+namespace
 {
-  Ref<Window> window;
-};
+  Ref<Window> input_window = nullptr;
+}
 
-Input::Input(Ref<Window> window) : m_pimpl(std::make_unique<Impl>())
+Input::Input(Ref<Window> window)
 {
-  m_pimpl->window = window;
+  input_window = std::move(window);
 }
 
 Input::~Input() = default;
 
-bool Input::IsKeyPressed(KeyCode keyCode) const
+bool Input::IsKeyPressed(KeyCode keyCode)
 {
-  auto native_win = std::any_cast<GLFWwindow*>(m_pimpl->window->GetNativeHandler());
+  if (input_window == nullptr)
+    return false;
+  auto native_win = std::any_cast<GLFWwindow*>(input_window->GetNativeHandler());
   int state = glfwGetKey(native_win, ConvertGEtoGFLW(keyCode));
   return state == GLFW_PRESS;
 }
 
-bool GE::Input::IsMouseButtonPressed(KeyCode keyCode) const
+bool GE::Input::IsMouseButtonPressed(KeyCode keyCode)
 {
-  auto native_win = std::any_cast<GLFWwindow*>(m_pimpl->window->GetNativeHandler());
+  if (input_window == nullptr)
+    return false;
+  auto native_win = std::any_cast<GLFWwindow*>(input_window->GetNativeHandler());
   int state = glfwGetMouseButton(native_win, ConvertGEtoGFLW(keyCode));
   return state == GLFW_PRESS;
 }
 
-Vec2 GE::Input::GetMouseXY() const
+Vec2 GE::Input::GetMouseXY()
 {
+  if (input_window == nullptr)
+    return {};
   f64 x{}, y{};
-  auto native_win = std::any_cast<GLFWwindow*>(m_pimpl->window->GetNativeHandler());
+  auto native_win = std::any_cast<GLFWwindow*>(input_window->GetNativeHandler());
   glfwGetCursorPos(native_win, &x, &y);
   return Vec2((f32)x, (f32)y);
 }

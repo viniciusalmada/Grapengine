@@ -11,15 +11,12 @@ namespace GE
   class Input
   {
   public:
-    Input(Ref<Window> window);
+    explicit Input(Ref<Window> window);
     ~Input();
 
-    [[nodiscard]] bool IsKeyPressed(KeyCode keyCode) const;
-    [[nodiscard]] bool IsMouseButtonPressed(KeyCode keyCode) const;
-    [[nodiscard]] Vec2 GetMouseXY() const;
-
-  private:
-    POINTER_TO_IMPLEMENTATION_IDIOM
+    [[nodiscard]] static bool IsKeyPressed(KeyCode keyCode);
+    [[nodiscard]] static bool IsMouseButtonPressed(KeyCode keyCode);
+    [[nodiscard]] static Vec2 GetMouseXY();
   };
 }
 
