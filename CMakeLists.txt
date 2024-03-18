@@ -5,6 +5,7 @@ if (NOT DEFINED ${CMAKE_TOOLCHAIN_FILE})
   set(CMAKE_TOOLCHAIN_FILE ${CMAKE_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake)
 endif ()
 
+# Grapengine 3D
 project(Grapengine CXX)
 
 set(CMAKE_CXX_STANDARD 20)
