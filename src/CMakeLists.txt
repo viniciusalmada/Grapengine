@@ -24,7 +24,6 @@ add_library(${ENGINE_NAME} SHARED
   ge_pos_tex_shader.cpp
   ge_quaternions.cpp
   ge_random.cpp
-  ge_rect_shape.cpp
   ge_renderer.cpp
   ge_shader.cpp
   ge_shaders_library.cpp
