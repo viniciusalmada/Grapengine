@@ -13,7 +13,7 @@ inline f32 Transform::Deg2Rad(f32 deg)
   return deg * (std::numbers::pi_v<decltype(deg)> / 180.0f);
 }
 
-inline f32 Transform::Rad2Deg(f32 rad)
+f32 Transform::Rad2Deg(f32 rad)
 {
   return rad * (180.0f / std::numbers::pi_v<decltype(rad)>);
 }
