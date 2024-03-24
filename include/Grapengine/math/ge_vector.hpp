@@ -19,6 +19,12 @@ namespace GE
     Vec2 operator*(f32 fac) const;
     f32 Length() const noexcept;
     f32 Dot(Vec2 vec2) const noexcept;
+
+    friend std::ostream& operator<<(std::ostream& os, const Vec2& vec)
+    {
+      os << std::format("{:1.2f},{:1.2f}", vec.x, vec.y);
+      return os;
+    }
   };
 
   struct GE3D Vec3
