@@ -17,8 +17,6 @@ namespace GE
     EditorCamera(f32 fov, f32 aspectRatio);
     ~EditorCamera();
 
-    EditorCamera& operator=(const GE::EditorCamera&);
-
     void OnUpdate(TimeStep ts) const;
     void OnEvent(Event& event);
 
