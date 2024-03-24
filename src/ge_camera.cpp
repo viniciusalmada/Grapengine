@@ -87,7 +87,6 @@ struct Camera::Impl
       const auto pitch = pitch_angle + diffPitch * aim_sensibility;
       const auto yaw = yaw_angle + diffYaw * aim_sensibility;
       front = eye + CalculateDirection(ClampPitch(pitch), yaw);
-      std::cout << (front - eye).Normalize() << std::endl;
       return;
     }
     pitch_angle += diffPitch * aim_sensibility;
@@ -101,7 +100,6 @@ struct Camera::Impl
     if (in_movement)
     {
       temp_eye = CalculateLocation(eye, front, diffX * pan_sensibility, diffY * pan_sensibility);
-      std::cout << "EYE:" << temp_eye << std::endl;
       CalculateEyeFront();
       return;
     }

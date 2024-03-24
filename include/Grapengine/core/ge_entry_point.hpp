@@ -8,6 +8,7 @@ extern GE::Scope<GE::Application> CreateApplication();
 
 int main()
 {
+  GE::Logger::Init();
   {
     auto app = CreateApplication();
     app->Run();

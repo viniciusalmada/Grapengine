@@ -24,9 +24,9 @@ public:
     if (version == 0)
       throw std::runtime_error("Error with GLAD");
 
-    std::cout << "OpenGL Vendor: " << (char*)glGetString(GL_VENDOR) << std::endl;
-    std::cout << "OpenGL Renderer: " << (char*)glGetString(GL_RENDERER) << std::endl;
-    std::cout << "OpenGL Version: " << (char*)glGetString(GL_VERSION) << std::endl;
+    GE_INFO("OpenGL Vendor: {}", (char*)glGetString(GL_VENDOR));
+    GE_INFO("OpenGL Renderer: {}", (char*)glGetString(GL_RENDERER));
+    GE_INFO("OpenGL Version: {}", (char*)glGetString(GL_VERSION));
   }
 
   void SwapBuffers() { glfwSwapBuffers(m_window); }

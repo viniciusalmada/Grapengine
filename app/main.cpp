@@ -51,6 +51,8 @@ class Client : public GE::Application
 public:
   Client() : Application("Grapengine", 1280, 720, "assets/ic_grapengine.png")
   {
+    GE_INFO("Client application creation");
+
     GE::Ref<SimpleLayer> simple = GE::MakeRef<SimpleLayer>();
     this->AddLayer(simple);
   }

@@ -34,12 +34,16 @@ add_library(${ENGINE_NAME} SHARED
   ge_vertex_buffer.cpp
   ge_window.cpp
   ge_world_reference.cpp
+  ge_scene.cpp
+  ge_logger.cpp
 )
 target_precompile_headers(${ENGINE_NAME} PRIVATE ${ENGINE_INCLUDE}/grapengine_pch.hpp)
 target_include_directories(${ENGINE_NAME} PUBLIC ${ENGINE_INCLUDE})
+
 target_compile_definitions(${ENGINE_NAME} PRIVATE
   GLFW_INCLUDE_NONE
   GRAPENGINE_EXPORTS
+  GRAPENGINE_CORE
 )
 
 message(STATUS "Setting up platform = ${CMAKE_SYSTEM_NAME}")
@@ -110,3 +114,6 @@ target_link_libraries(${ENGINE_NAME} PRIVATE glad::glad)
 
 find_package(Stb REQUIRED)
 target_include_directories(${ENGINE_NAME} PRIVATE ${Stb_INCLUDE_DIR})
+
+find_package(spdlog CONFIG REQUIRED)
+target_link_libraries(${ENGINE_NAME} PUBLIC spdlog::spdlog_header_only)

@@ -65,6 +65,8 @@ struct Application::Impl
 
 Application::Application(std::string_view title, u32 width, u32 height, std::string_view icon)
 {
+  GE_INFO("Application creation")
+
   m_pimpl = MakeScope<Impl>();
 
   m_pimpl->window =

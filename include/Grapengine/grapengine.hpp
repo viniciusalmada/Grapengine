@@ -18,7 +18,10 @@
 #include "utils/ge_random.hpp"
 
 // Renderer
-#include "renderer/ge_renderer.hpp"
 #include "renderer/ge_editor_camera.hpp"
+#include "renderer/ge_renderer.hpp"
+
+// Logger
+#include "log/ge_logger.hpp"
 
 #endif // GRAPENGINE_HPP
