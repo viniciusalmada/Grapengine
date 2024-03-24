@@ -8,11 +8,7 @@ namespace GE
   public:
     explicit TimeStep(const u64 ms) : m_time_ms(ms) {}
 
-    operator u64() const { return m_time_ms; }
-
-    //    [[nodiscard]] u64 GetSeconds() const { return m_time_sec; }
-    //
-    //    [[nodiscard]] u64 GetMilliSeconds() const { return m_time_sec * 1000.0f; }
+    [[nodiscard]] f32 f() const { return static_cast<f32>(m_time_ms); }
 
   private:
     u64 m_time_ms;
