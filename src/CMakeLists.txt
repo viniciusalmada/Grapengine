@@ -13,6 +13,7 @@ add_library(${ENGINE_NAME} SHARED
   ge_draw_primitive.cpp
   ge_editor_camera.cpp
   ge_event.cpp
+  ge_geometry.cpp
   ge_gl_checkers.cpp
   ge_index_buffer.cpp
   ge_input.cpp
