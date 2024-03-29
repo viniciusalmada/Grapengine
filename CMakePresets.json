@@ -20,6 +20,13 @@
       }
     },
     {
+      "name": "h_release",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
       "name": "h_toolchain-msvc",
       "hidden": true,
       "vendor": {
@@ -89,12 +96,29 @@
       "cacheVariables": {
         "CMAKE_CXX_COMPILER": "g++"
       }
+    },
+    {
+      "name": "gcc-release",
+      "hidden": false,
+      "inherits": [
+        "h_default",
+        "h_release",
+        "h_toolchain-gcc"
+      ],
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "g++"
+      }
     }
   ],
   "buildPresets": [
     {
-      "name": "linux-gcc-debug",
+      "name": "GCC Dbg",
       "configurePreset": "gcc-debug",
+      "jobs": 12
+    },
+    {
+      "name": "GCC Rel",
+      "configurePreset": "gcc-release",
       "jobs": 12
     }
   ]
