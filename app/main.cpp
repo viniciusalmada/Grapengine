@@ -1,5 +1,6 @@
 #include "Grapengine/grapengine.hpp"
 #include "core/ge_entry_point.hpp"
+#include "drawables/ge_mesh.hpp"
 
 #include <drawables/ge_cube.hpp>
 #include <iostream>
@@ -17,6 +18,7 @@ public:
     m_shader = GE::MakeScope<GE::PosAndTex2DShader>();
     m_world = GE::MakeScope<GE::WorldReference>(m_shader);
     m_cam.emplace(45.0f, 1280.0f / 720.0f);
+    m_mesh = GE::MakeScope<GE::Mesh>("assets/objs/teapot.obj", m_shader);
   }
 
   void OnUpdate(GE::TimeStep ts) override
@@ -31,6 +33,7 @@ public:
     m_shader->UpdateViewProjectionMatrix(m_cam.value().GetViewProjection());
 
     m_world->DrawBatch();
+    m_mesh->Draw();
   }
 
   void OnEvent(GE::Event& ev) override { m_cam.value().OnEvent(ev); }
@@ -39,6 +42,7 @@ private:
   GE::Ref<GE::IShaderProgram> m_shader = nullptr;
   GE::Scope<GE::WorldReference> m_world = nullptr;
   std::optional<GE::EditorCamera> m_cam{};
+  GE::Scope<GE::Mesh> m_mesh{};
 };
 
 class Client : public GE::Application
