@@ -1,6 +1,7 @@
 #include "Grapengine/grapengine.hpp"
 #include "core/ge_entry_point.hpp"
 #include "drawables/ge_mesh.hpp"
+#include "imgui.h"
 
 #include <drawables/ge_cube.hpp>
 #include <iostream>
@@ -37,6 +38,8 @@ public:
   }
 
   void OnEvent(GE::Event& ev) override { m_cam.value().OnEvent(ev); }
+
+  void OnImGuiUpdate() override { ImGui::ShowDemoWindow(); }
 
 private:
   GE::Ref<GE::IShaderProgram> m_shader = nullptr;

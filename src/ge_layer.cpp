@@ -11,6 +11,8 @@ struct Layer::Impl
 
 GE::Layer::Layer(std::string_view name) : m_pimpl(MakeScope<Impl>())
 {
+  GE_INFO("Create layer \"{}\"", name)
+
   m_pimpl->name = name;
 }
 
@@ -23,3 +25,4 @@ const std::string& Layer::GetName() const
 {
   return m_pimpl->name;
 }
+void Layer::OnImGuiUpdate() {}

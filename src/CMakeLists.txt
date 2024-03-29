@@ -1,3 +1,5 @@
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 # #############################################################################
 # Engine
 add_library(${ENGINE_NAME} SHARED
@@ -34,9 +36,14 @@ add_library(${ENGINE_NAME} SHARED
   ge_vertex_buffer.cpp
   ge_window.cpp
   ge_world_reference.cpp
+  ge_imgui_layer.cpp
 )
 target_precompile_headers(${ENGINE_NAME} PRIVATE ${ENGINE_INCLUDE}/grapengine_pch.hpp)
-target_include_directories(${ENGINE_NAME} PUBLIC ${ENGINE_INCLUDE})
+target_include_directories(${ENGINE_NAME} PUBLIC
+  ${ENGINE_INCLUDE}
+)
+
+target_include_directories(Grapengine PUBLIC SYSTEM "${CMAKE_SOURCE_DIR}/imgui")
 
 target_compile_definitions(${ENGINE_NAME} PRIVATE
   GLFW_INCLUDE_NONE
@@ -101,6 +108,21 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL Clang)
 else ()
   message(FATAL_ERROR "Unsupported compiler (CMAKE_CXX_COMPILER_ID = ${CMAKE_CXX_COMPILER_ID})")
 endif ()
+
+# ############################################################################
+# imgui
+file(GLOB IMGUI_SRC ${CMAKE_SOURCE_DIR}/imgui/*.cpp ${CMAKE_SOURCE_DIR}/imgui/*.h)
+add_library(ImGui STATIC
+  ${IMGUI_SRC}
+  ${CMAKE_SOURCE_DIR}/imgui/backends/imgui_impl_glfw.cpp
+  ${CMAKE_SOURCE_DIR}/imgui/backends/imgui_impl_glfw.h
+  ${CMAKE_SOURCE_DIR}/imgui/backends/imgui_impl_opengl3.cpp
+  ${CMAKE_SOURCE_DIR}/imgui/backends/imgui_impl_opengl3.h
+  ${CMAKE_SOURCE_DIR}/imgui/misc/cpp/imgui_stdlib.h
+  ${CMAKE_SOURCE_DIR}/imgui/misc/cpp/imgui_stdlib.cpp
+)
+target_include_directories(ImGui PUBLIC ${CMAKE_SOURCE_DIR}/imgui)
+target_link_libraries(${ENGINE_NAME} PUBLIC ImGui)
 
 # #############################################################################
 # Dependencies from VCPKG

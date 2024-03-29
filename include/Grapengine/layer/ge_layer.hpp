@@ -19,6 +19,8 @@ namespace GE
 
     virtual void OnUpdate(TimeStep);
 
+    virtual void OnImGuiUpdate();
+
     GE3D virtual void OnEvent(Event&);
 
     [[nodiscard]] const std::string& GetName() const;

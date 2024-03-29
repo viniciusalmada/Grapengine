@@ -1,18 +1,16 @@
 #include "core/ge_application.hpp"
 
+#include "core/ge_platform.hpp"
+#include "core/ge_time_step.hpp"
 #include "core/ge_window.hpp"
 #include "events/ge_event_type.hpp"
 #include "input/ge_input.hpp"
+#include "layer/ge_imgui_layer.hpp"
 #include "layer/ge_layer.hpp"
+#include "renderer/ge_camera.hpp"
 #include "renderer/ge_renderer.hpp"
-
-#include <GLFW/glfw3.h>
-#include <core/ge_platform.hpp>
-#include <core/ge_time_step.hpp>
-#include <renderer/ge_camera.hpp>
-#include <renderer/ge_texture_2d.hpp>
-#include <renderer/shader_programs/ge_pos_tex_shader.hpp>
-#include <utils/ge_ipubsub.hpp>
+#include "renderer/ge_texture_2d.hpp"
+#include "renderer/shader_programs/ge_pos_tex_shader.hpp"
 
 using namespace GE;
 
@@ -24,6 +22,7 @@ struct Application::Impl
   bool minimized = false;
   u64 last_frame_time{ 0 };
   std::vector<Ref<Layer>> layers;
+  Ref<ImGuiLayer> imgui_layer;
 
   void Init(std::string_view title,
             u32 width,
@@ -33,6 +32,8 @@ struct Application::Impl
   {
     window = MakeScope<Window>(WindowProps{ title, width, height, icon }, cb);
     input = MakeScope<Input>(window);
+    imgui_layer = ImGuiLayer::Make(window);
+    imgui_layer->OnAttach();
   }
 
   void OnEvent(Event& event)
@@ -69,6 +70,10 @@ struct Application::Impl
       if (!minimized)
       {
         std::ranges::for_each(layers, [&](auto&& l) { l->OnUpdate(step); });
+
+        imgui_layer->Begin();
+        std::ranges::for_each(layers, [&](auto&& l) { l->OnImGuiUpdate(); });
+        imgui_layer->End();
       }
 
       window->OnUpdate();
