@@ -6,13 +6,16 @@
 
 extern GE::Scope<GE::Application> CreateApplication();
 
-int main()
+int main(int /*argc*/, char* argv[])
 {
   GE::Logger::Init();
-  {
-    auto app = CreateApplication();
-    app->Run();
-  }
+  GE_TRACE("Startup at \"{}\"", argv[0]);
+  auto app = CreateApplication();
+  GE_TRACE("Running")
+  app->Run();
+  GE_TRACE("Shutdown")
+  auto* ptr = app.release();
+  delete ptr;
 }
 
 #endif // GE_ENTRY_POINT_HPP
