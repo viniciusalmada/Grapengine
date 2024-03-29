@@ -19,6 +19,8 @@ add_library(${ENGINE_NAME} SHARED
   ge_io.cpp
   ge_key_codes.cpp
   ge_layer.cpp
+  ge_logger.cpp
+  ge_mesh.cpp
   ge_platform.cpp
   ge_pos_tex_shader.cpp
   ge_quaternions.cpp
@@ -32,8 +34,6 @@ add_library(${ENGINE_NAME} SHARED
   ge_vertex_buffer.cpp
   ge_window.cpp
   ge_world_reference.cpp
-  ge_scene.cpp
-  ge_logger.cpp
 )
 target_precompile_headers(${ENGINE_NAME} PRIVATE ${ENGINE_INCLUDE}/grapengine_pch.hpp)
 target_include_directories(${ENGINE_NAME} PUBLIC ${ENGINE_INCLUDE})
