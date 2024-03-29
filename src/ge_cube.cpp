@@ -124,4 +124,14 @@ void GE::Cube::SetTranslate(f32 x, f32 y, f32 z) const
   m_pimpl->translate_mat = Transform::Translate(x, y, z);
 }
 
+Ref<Cube> GE::Cube::Make(Color color, const Ref<IShaderProgram>& shader, Ref<Texture2D> texture)
+{
+  return MakeRef<Cube>(color, shader, std::move(texture));
+}
+
+void GE::Cube::SetTranslate(Vec3 xyz) const
+{
+  SetTranslate(xyz.x, xyz.y, xyz.z);
+}
+
 Cube::~Cube() = default;
