@@ -8,7 +8,7 @@
 
 using namespace GE;
 
-inline f32 Transform::Deg2Rad(f32 deg)
+f32 Transform::Deg2Rad(f32 deg)
 {
   return deg * (std::numbers::pi_v<decltype(deg)> / 180.0f);
 }
