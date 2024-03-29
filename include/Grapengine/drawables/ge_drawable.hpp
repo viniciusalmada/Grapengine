@@ -1,13 +1,14 @@
 #ifndef GRAPENGINE_DRAWABLE_HPP
 #define GRAPENGINE_DRAWABLE_HPP
+
+#include "renderer/ge_ishader_program.hpp"
+
 namespace GE
 {
-  enum class Shaders;
-
   class Drawable
   {
   public:
-    Drawable(Shaders){};
+    Drawable(const Ref<IShaderProgram>&){};
 
     virtual ~Drawable() = default;
 

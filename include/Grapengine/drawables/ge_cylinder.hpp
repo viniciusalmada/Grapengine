@@ -11,7 +11,7 @@ namespace GE
   class Cylinder : public Drawable
   {
   public:
-    GE3D Cylinder(Shaders shader,
+    GE3D Cylinder(const Ref<IShaderProgram>& shader,
                   f32 radius,
                   const Vec3& basePoint,
                   const Vec3& direction,

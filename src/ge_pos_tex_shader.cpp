@@ -1,5 +1,8 @@
 #include "renderer/shader_programs/ge_pos_tex_shader.hpp"
 
+#include "renderer/ge_buffer_layout.hpp"
+#include "renderer/ge_shader_data_types.hpp"
+
 #include <renderer/ge_shader.hpp>
 
 using namespace GE;
@@ -82,4 +85,11 @@ void PosAndTex2DShader::UpdateTexture(int id)
 {
   Activate();
   m_pimpl->shader->UploadInt("u_texture", id);
+}
+
+Ref<BufferLayout> GE::PosAndTex2DShader::GetLayout() const
+{
+  return MakeRef<BufferLayout>(BufferLayout::BuildElementsList({ ShaderDataType::Float3, //
+                                                                 ShaderDataType::Float2,
+                                                                 ShaderDataType::Float4 }));
 }

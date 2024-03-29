@@ -20,7 +20,7 @@ namespace GE
 
     [[nodiscard]] const void* GetPtr() const { return m_data.data(); }
 
-    [[nodiscard]] auto GetLayout() const { return m_layout; }
+    [[nodiscard]] Ref<BufferLayout> GetLayout() const { return m_layout; }
 
     template <class... T>
     void PushData(T... args);

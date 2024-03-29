@@ -6,6 +6,8 @@
 
 namespace GE
 {
+  class IShaderProgram;
+
   class WorldReference
   {
   public:
@@ -13,6 +15,8 @@ namespace GE
     GE3D ~WorldReference();
 
     GE3D void DrawBatch() const;
+
+    Ref<IShaderProgram> GetShader() const;
 
   private:
     POINTER_TO_IMPLEMENTATION_IDIOM

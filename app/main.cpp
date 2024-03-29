@@ -4,7 +4,6 @@
 #include <drawables/ge_cube.hpp>
 #include <iostream>
 #include <optional>
-#include <renderer/ge_shaders_library.hpp>
 #include <renderer/ge_texture_2d.hpp>
 #include <renderer/shader_programs/ge_pos_tex_shader.hpp>
 
@@ -29,12 +28,11 @@ public:
     if (m_cam.has_value())
       m_cam.value().OnUpdate(ts);
 
-    {
-      auto shader = std::static_pointer_cast<GE::PosAndTex2DShader>(
-        GE::ShadersLibrary::Get().GetShader(GE::Shaders::POSITION_AND_TEXTURE2D));
+
+      auto shader = m_world->GetShader();
       shader->Activate();
       shader->UpdateViewProjectionMatrix(m_cam.value().GetViewProjection());
-    }
+
 
     m_world->DrawBatch();
   }

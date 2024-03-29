@@ -26,7 +26,6 @@ add_library(${ENGINE_NAME} SHARED
   ge_random.cpp
   ge_renderer.cpp
   ge_shader.cpp
-  ge_shaders_library.cpp
   ge_texture_2d.cpp
   ge_transformations.cpp
   ge_vector.cpp

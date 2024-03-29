@@ -4,6 +4,7 @@
 #include "ge_color.hpp"
 #include "ge_drawable.hpp"
 #include "math/ge_vector.hpp"
+#include "renderer/ge_ishader_program.hpp"
 
 namespace GE
 {
@@ -12,7 +13,7 @@ namespace GE
   class Cube : public Drawable
   {
   public:
-    GE3D Cube(Color color, Shaders shader, Ref<Texture2D> texture);
+    GE3D Cube(Color color, const Ref<IShaderProgram>&, Ref<Texture2D> texture);
     ~Cube() override;
 
     void Draw() const override;

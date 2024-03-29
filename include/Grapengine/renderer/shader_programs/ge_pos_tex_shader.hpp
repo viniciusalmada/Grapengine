@@ -5,20 +5,23 @@
 
 #include <math/ge_vector.hpp>
 #include <utils/ge_ipubsub.hpp>
+
 namespace GE
 {
-  class PosAndTex2DShader : public IShaderProgram
+  class PosAndTex2DShader final : public IShaderProgram
   {
   public:
     PosAndTex2DShader();
-    ~PosAndTex2DShader();
+    ~PosAndTex2DShader() override;
 
     void Activate() override;
     void Deactivate() override;
 
-    void UpdateModelMatrix(Mat4 model);
-    void UpdateViewProjectionMatrix(Mat4 viewProj);
-    void UpdateTexture(int id);
+    void UpdateModelMatrix(Mat4 model) override;
+    void UpdateViewProjectionMatrix(Mat4 viewProj) override;
+    void UpdateTexture(int id) override;
+
+    [[nodiscard]] Ref<BufferLayout> GetLayout() const override;
 
   private:
     POINTER_TO_IMPLEMENTATION_IDIOM

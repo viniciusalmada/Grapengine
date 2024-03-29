@@ -4,7 +4,6 @@
 #include <drawables/ge_draw_primitive.hpp>
 #include <renderer/ge_buffer_layout.hpp>
 #include <renderer/ge_shader_data_types.hpp>
-#include <renderer/ge_shaders_library.hpp>
 #include <renderer/ge_texture_2d.hpp>
 #include <renderer/ge_vertices_data.hpp>
 #include <renderer/shader_programs/ge_pos_tex_shader.hpp>
@@ -17,14 +16,14 @@ struct Cylinder::Impl
 {
   Color color{ 0 };
   Ref<DrawPrimitive> draw_primitive;
-  Shaders shader;
+  Ref<IShaderProgram> shader;
   Ref<Texture2D> texture;
 };
 
 constexpr auto SLICES = 20ul;
 // constexpr auto STACKS = 8;
 
-Cylinder::Cylinder(const Shaders shader,
+Cylinder::Cylinder(const Ref<IShaderProgram>& shader,
                    const f32 radius,
                    const Vec3& basePoint,
                    const Vec3& direction,
@@ -36,7 +35,7 @@ Cylinder::Cylinder(const Shaders shader,
   m_pimpl->shader = shader;
   m_pimpl->color = color;
   m_pimpl->texture = std::move(texture2D);
-  auto layout = ShadersLibrary::Get().GetLayout(shader);
+  Ref<BufferLayout> layout = shader->GetLayout();
 
   const Vec3 normal = direction.Normalize();
   const Vec3 ref_random{ Random::GenFloat(0, 1), Random::GenFloat(0, 1), Random::GenFloat(0, 1) };
@@ -87,10 +86,7 @@ Cylinder::~Cylinder() = default;
 void Cylinder::Draw() const
 {
   m_pimpl->texture->Bind(0);
-  ShadersLibrary::Get().Activate(m_pimpl->shader);
-  auto shader =
-    std::static_pointer_cast<PosAndTex2DShader>(ShadersLibrary::Get().GetShader(m_pimpl->shader));
-  shader->UpdateModelMatrix(Mat4{});
-  shader->UpdateTexture(0);
+  m_pimpl->shader->UpdateModelMatrix(Mat4{});
+  m_pimpl->shader->UpdateTexture(0);
   m_pimpl->draw_primitive->Draw();
 }
