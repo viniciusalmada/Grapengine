@@ -7,22 +7,21 @@
   },
   "configurePresets": [
     {
-      "name": "default",
-      "displayName": "Default config",
-      "description": "Default build using Ninja generator",
+      "name": "h_default",
       "binaryDir": "${sourceDir}/build-${presetName}",
       "hidden": true,
       "generator": "Ninja"
     },
     {
-      "name": "win-deb-cl",
-      "inherits": [
-        "default"
-      ],
+      "name": "h_debug",
+      "hidden": true,
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_CXX_COMPILER": "cl"
-      },
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "h_toolchain-msvc",
+      "hidden": true,
       "vendor": {
         "jetbrains.com/clion": {
           "toolchain": "MSVC"
@@ -30,14 +29,8 @@
       }
     },
     {
-      "name": "win-deb-clang",
-      "inherits": [
-        "default"
-      ],
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_CXX_COMPILER": "clang-cl"
-      },
+      "name": "h_toolchain-clang",
+      "hidden": true,
       "vendor": {
         "jetbrains.com/clion": {
           "toolchain": "CLANG"
@@ -45,34 +38,64 @@
       }
     },
     {
-      "name": "linux-deb-clang",
-      "inherits": [
-        "default"
-      ],
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_CXX_COMPILER": "clang++"
-      },
-      "vendor": {
-        "jetbrains.com/clion": {
-          "toolchain": "CLANG"
-        }
-      }
-    },
-    {
-      "name": "linux-deb-gcc",
-      "inherits": [
-        "default"
-      ],
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_CXX_COMPILER": "g++"
-      },
+      "name": "h_toolchain-gcc",
+      "hidden": true,
       "vendor": {
         "jetbrains.com/clion": {
           "toolchain": "GCC"
         }
       }
+    },
+    {
+      "name": "cl-debug",
+      "inherits": [
+        "h_default",
+        "h_debug",
+        "h_toolchain-msvc"
+      ],
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "cl"
+      }
+    },
+    {
+      "name": "clang-cl-debug",
+      "inherits": [
+        "h_default",
+        "h_debug",
+        "h_toolchain-clang"
+      ],
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "clang-cl"
+      }
+    },
+    {
+      "name": "clang-gcc-debug",
+      "inherits": [
+        "h_default",
+        "h_debug",
+        "h_toolchain-clang"
+      ],
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "clang++"
+      }
+    },
+    {
+      "name": "gcc-debug",
+      "inherits": [
+        "h_default",
+        "h_debug",
+        "h_toolchain-gcc"
+      ],
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "g++"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "linux-gcc-debug",
+      "configurePreset": "gcc-debug",
+      "jobs": 12
     }
   ]
 }
