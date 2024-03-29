@@ -41,7 +41,8 @@ public:
     const Vec2 delta = (mouse_pos - mouse_init_pos);
     mouse_init_pos = mouse_pos;
 
-    if (delta.x == 0.0f && delta.y == 0.0f)
+    if (std::abs(delta.x) < std::numeric_limits<f32>::epsilon() &&
+        std::abs(delta.y) < std::numeric_limits<f32>::epsilon())
       return;
 
     auto [x_eye, y_eye, z_eye] = Transform::LookAtVector(eye, focal_point, UP_DIR);
@@ -93,7 +94,6 @@ public:
     eye = focal_point + direction * (distance + -delta * 15);
     UpdateView();
   }
-
 
   void UpdateView()
   {
