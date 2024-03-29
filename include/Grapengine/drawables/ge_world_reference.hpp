@@ -11,13 +11,10 @@ namespace GE
   class WorldReference
   {
   public:
-    GE3D WorldReference();
+    GE3D WorldReference(Ref<IShaderProgram>);
     GE3D ~WorldReference();
 
     GE3D void DrawBatch() const;
-
-    Ref<IShaderProgram> GetShader() const;
-
   private:
     POINTER_TO_IMPLEMENTATION_IDIOM
   };

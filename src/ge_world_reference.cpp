@@ -3,7 +3,6 @@
 #include <drawables/ge_cube.hpp>
 #include <drawables/ge_cylinder.hpp>
 #include <renderer/ge_texture_2d.hpp>
-#include <renderer/shader_programs/ge_pos_tex_shader.hpp>
 
 using namespace GE;
 
@@ -24,9 +23,9 @@ struct WorldReference::Impl
   Ref<Cylinder> z_axis;
 };
 
-GE::WorldReference::WorldReference() : m_pimpl(MakeScope<Impl>())
+GE::WorldReference::WorldReference(Ref<IShaderProgram> shader) : m_pimpl(MakeScope<Impl>())
 {
-  m_pimpl->shader = MakeRef<PosAndTex2DShader>();
+  m_pimpl->shader = std::move(shader);
   m_pimpl->blank_texture = MakeRef<Texture2D>();
   m_pimpl->platform = MakeRef<Cube>(Color{ 0xAAAAAAFF }, m_pimpl->shader, m_pimpl->blank_texture);
   m_pimpl->platform->SetScale(SIDE_SIZE, AXIS_RADIUS, SIDE_SIZE);
@@ -61,11 +60,6 @@ void WorldReference::DrawBatch() const
   m_pimpl->x_axis->Draw();
   m_pimpl->y_axis->Draw();
   m_pimpl->z_axis->Draw();
-}
-
-Ref<IShaderProgram> GE::WorldReference::GetShader() const
-{
-  return m_pimpl->shader;
 }
 
 WorldReference::~WorldReference() = default;

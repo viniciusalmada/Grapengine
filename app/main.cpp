@@ -14,9 +14,8 @@ public:
 
   void OnAttach() override
   {
-    const auto tex = GE::MakeRef<GE::Texture2D>();
-    m_world = GE::MakeScope<GE::WorldReference>(/*GE::Colors::BLUE, GE::Shaders::POSITION_AND_TEXTURE2D, tex*/);
-//    m_world->SetScale(0.5f, 0.5f, 0.5f);
+    m_shader = GE::MakeScope<GE::PosAndTex2DShader>();
+    m_world = GE::MakeScope<GE::WorldReference>(m_shader);
     m_cam.emplace(45.0f, 1280.0f / 720.0f);
   }
 
@@ -28,11 +27,8 @@ public:
     if (m_cam.has_value())
       m_cam.value().OnUpdate(ts);
 
-
-      auto shader = m_world->GetShader();
-      shader->Activate();
-      shader->UpdateViewProjectionMatrix(m_cam.value().GetViewProjection());
-
+    m_shader->Activate();
+    m_shader->UpdateViewProjectionMatrix(m_cam.value().GetViewProjection());
 
     m_world->DrawBatch();
   }
@@ -40,6 +36,7 @@ public:
   void OnEvent(GE::Event& ev) override { m_cam.value().OnEvent(ev); }
 
 private:
+  GE::Ref<GE::IShaderProgram> m_shader = nullptr;
   GE::Scope<GE::WorldReference> m_world = nullptr;
   std::optional<GE::EditorCamera> m_cam{};
 };
