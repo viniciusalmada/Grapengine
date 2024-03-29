@@ -11,7 +11,6 @@
 #include "layer/ge_layer.hpp"
 
 // Drawables
-#include "drawables/ge_circle_shape.hpp"
 #include "drawables/ge_world_reference.hpp"
 
 // Utilities

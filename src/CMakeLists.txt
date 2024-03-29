@@ -7,7 +7,6 @@ add_library(${ENGINE_NAME} SHARED
   ge_buffer_layout.cpp
   ge_camera.cpp
   ge_canvas.cpp
-  ge_circle_shape.cpp
   ge_cube.cpp
   ge_cylinder.cpp
   ge_draw_primitive.cpp
