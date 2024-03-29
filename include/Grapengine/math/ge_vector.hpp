@@ -27,6 +27,13 @@ namespace GE
     }
   };
 
+  struct GE3D IVec3
+  {
+    i32 x;
+    i32 y;
+    i32 z;
+  };
+
   struct GE3D Vec3
   {
     f32 x;
