@@ -13,6 +13,8 @@ namespace GE
 
     static void SetViewport(u32 x, u32 y, u32 width, u32 height);
 
+    static void SetWireframeRenderMode(bool enabled);
+
     GE3D static void SetClearColor(const Vec4& color);
 
     GE3D static void Clear();

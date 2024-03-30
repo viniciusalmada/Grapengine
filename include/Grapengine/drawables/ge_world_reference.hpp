@@ -15,6 +15,9 @@ namespace GE
     GE3D ~WorldReference();
 
     GE3D void DrawBatch() const;
+
+    void ShowPlatform(bool show) const;
+
   private:
     POINTER_TO_IMPLEMENTATION_IDIOM
   };
