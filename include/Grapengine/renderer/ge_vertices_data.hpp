@@ -5,10 +5,28 @@
 #include "ge_buffer_layout.hpp"
 namespace GE
 {
-  struct ObjEvaluator
+  class ObjEvaluator
   {
-    std::vector<bool> m_validator;
-    std::vector<ShaderDataType> m_types;
+  public:
+    explicit ObjEvaluator(const std::vector<ShaderDataType>& types) : m_validator(), m_types(types)
+    {
+    }
+
+    [[nodiscard]] u64 ValidityPositionToFill() const { return m_validator.size(); }
+
+    [[nodiscard]] ShaderDataType Type(u64 pos) { return m_types[pos]; }
+
+    void PushValue(bool value) { m_validator.push_back(value); }
+
+    [[nodiscard]] bool IsValid() const
+    {
+      return m_validator.size() == m_types.size() &&
+             std::ranges::all_of(m_validator, [](auto&& v) { return v; });
+    }
+
+  private:
+    std::vector<bool> m_validator{};
+    std::vector<ShaderDataType> m_types{};
   };
 
   class VerticesData
@@ -47,9 +65,9 @@ namespace GE
   template <class T>
   void VerticesData::EvaluateArgument(T, ObjEvaluator& objEvaluator)
   {
-    auto pos = objEvaluator.m_validator.size();
+    auto pos = objEvaluator.ValidityPositionToFill();
     bool value = false;
-    switch (objEvaluator.m_types[pos])
+    switch (objEvaluator.Type(pos))
     {
     case ShaderDataType::None:
       if constexpr (std::is_same_v<T, void>)
@@ -75,17 +93,15 @@ namespace GE
       value = false;
       break;
     }
-    objEvaluator.m_validator.push_back(value);
+    objEvaluator.PushValue(value);
   }
 
   template <class... T>
   void VerticesData::PushData(T... args)
   {
-    ObjEvaluator obj_evaluator{ {}, m_layout->GetTypesSortedList() };
+    ObjEvaluator obj_evaluator{ m_layout->GetTypesSortedList() };
     (..., EvaluateArgument(args, obj_evaluator));
-    GE_ASSERT(std::ranges::find(obj_evaluator.m_validator, false) ==
-                obj_evaluator.m_validator.end(),
-              "Some types passed to be push are invalids");
+    GE_ASSERT(obj_evaluator.IsValid(), "Some types passed to be push are invalids");
     (..., PushBytes(args));
   }
 }
