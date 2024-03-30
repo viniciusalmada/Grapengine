@@ -5,6 +5,7 @@
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
+#include <imgui.h>
 #include <stb_image.h>
 
 using namespace GE;
@@ -146,6 +147,8 @@ Window::Window(const WindowProps& props, const EventCallbackFn& cb) : m_pimpl(Ma
     //-----------------------------
     auto mouse_bt_callback = [](GLFWwindow* win, i32 button, i32 action, i32 /*mods*/)
     {
+      if (ImGui::GetIO().WantCaptureMouse)
+        return;
       EvType type = EvType::NONE;
       if (action == GLFW_PRESS)
         type = EvType::MOUSE_BUTTON_PRESSED;
@@ -170,6 +173,8 @@ Window::Window(const WindowProps& props, const EventCallbackFn& cb) : m_pimpl(Ma
     //-----------------------------
     auto mouse_scroll = [](GLFWwindow* win, f64 xoffset, f64 yoffset)
     {
+      if (ImGui::GetIO().WantCaptureMouse)
+        return;
       Event event{ std::make_tuple(EvType::MOUSE_SCROLL, (f32)xoffset, (f32)yoffset) };
       auto* data = (Window*)glfwGetWindowUserPointer(win);
       data->m_pimpl->event_callback(event);
