@@ -11,6 +11,14 @@ namespace GE
   class Cylinder : public Drawable
   {
   public:
+    static Ref<Cylinder> Make(const Ref<IShaderProgram>& shader,
+                              f32 radius,
+                              const Vec3& basePoint,
+                              const Vec3& direction,
+                              f32 height,
+                              Color color,
+                              const Ref<Texture2D>& texture2D);
+
     GE3D Cylinder(const Ref<IShaderProgram>& shader,
                   f32 radius,
                   const Vec3& basePoint,

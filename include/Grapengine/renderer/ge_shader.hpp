@@ -30,6 +30,8 @@ namespace GE
 
     void UploadFloat(const std::string& name, f32 i);
 
+    void UploadVec3(const std::string& name, const Vec3& vec3);
+
   private:
     POINTER_TO_IMPLEMENTATION_IDIOM
   };

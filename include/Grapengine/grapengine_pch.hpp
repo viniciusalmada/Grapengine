@@ -22,6 +22,7 @@
 #include <numbers>
 #include <random>
 #include <ranges>
+#include <set>
 #include <sstream>
 #include <stdexcept>
 #include <string>

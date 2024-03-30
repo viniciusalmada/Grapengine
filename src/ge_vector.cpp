@@ -165,3 +165,22 @@ bool Mat4::operator==(const Mat4& other) const
   }
   return true;
 }
+
+bool IVec3::operator<(const IVec3& other) const
+{
+  if (x < other.x)
+    return true;
+
+  if (x == other.x)
+  {
+    if (y < other.y)
+      return true;
+
+    if (y == other.y)
+    {
+      if (z < other.z)
+        return true;
+    }
+  }
+  return false;
+}

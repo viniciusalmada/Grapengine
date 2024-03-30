@@ -56,8 +56,8 @@ Cylinder::Cylinder(const Ref<IShaderProgram>& shader,
   const Ref<VerticesData> positions = MakeRef<VerticesData>(layout);
   for (u32 i = 0; i < base_pts.size(); ++i)
   {
-    positions->PushData(base_pts[i], Vec2{ 1, 1 }, color.ToVec4());
-    positions->PushData(final_pts[i], Vec2{ 1, 1 }, color.ToVec4());
+    positions->PushData(base_pts[i], Vec2{ 1, 1 }, color.ToVec4(), -direction.Normalize());
+    positions->PushData(final_pts[i], Vec2{ 1, 1 }, color.ToVec4(), direction.Normalize());
   }
 
   const auto indices = MakeRef<std::vector<u32>>();
@@ -89,4 +89,14 @@ void Cylinder::Draw() const
   m_pimpl->shader->UpdateModelMatrix(Mat4{});
   m_pimpl->shader->UpdateTexture(0);
   m_pimpl->draw_primitive->Draw();
+}
+Ref<Cylinder> GE::Cylinder::Make(const Ref<IShaderProgram>& shader,
+                                 f32 radius,
+                                 const Vec3& basePoint,
+                                 const Vec3& direction,
+                                 f32 height,
+                                 Color color,
+                                 const Ref<Texture2D>& texture2D)
+{
+  return MakeRef<Cylinder>(shader, radius, basePoint, direction, height, color, texture2D);
 }

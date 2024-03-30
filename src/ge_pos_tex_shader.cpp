@@ -7,54 +7,15 @@
 
 using namespace GE;
 
-namespace
-{
-  const std::string V_SHADER = R"glsl(
-    #version 330 core
-    
-    layout (location = 0) in vec3 in_position;
-    layout (location = 1) in vec2 in_texture_coord;
-    layout (location = 2) in vec4 in_color;
-
-    out vec2 out_texture_coords;
-    out vec4 out_color;
-
-    uniform mat4 u_M;
-    uniform mat4 u_VP;
-
-    void main()
-    {
-      gl_Position = (u_VP) * u_M * vec4(in_position, 1.0);
-      out_texture_coords = in_texture_coord;
-      out_color = in_color;
-    }
-)glsl";
-
-  const std::string F_SHADER = R"glsl(
-    #version 330 core
-
-    in vec2 out_texture_coords;
-    in vec4 out_color;
-
-    out vec4 fragColor;
-
-    uniform sampler2D u_texture;
-
-    void main()
-    {
-      fragColor = texture2D(u_texture, out_texture_coords) * out_color;
-    }
-)glsl";
-}
-
 struct PosAndTex2DShader::Impl
 {
-  Scope<Shader> shader;
+  Ref<Shader> shader;
 };
 
 PosAndTex2DShader::PosAndTex2DShader() : m_pimpl(MakeScope<Impl>())
 {
-  m_pimpl->shader = MakeScope<Shader>(V_SHADER, F_SHADER);
+  m_pimpl->shader = Shader::Make("assets/shaders/PositionAndTex2D.vshader.glsl",
+                                 "assets/shaders/PositionAndTex2D.fshader.glsl");
 }
 
 PosAndTex2DShader::~PosAndTex2DShader() = default;
@@ -89,7 +50,26 @@ void PosAndTex2DShader::UpdateTexture(int id)
 
 Ref<BufferLayout> GE::PosAndTex2DShader::GetLayout() const
 {
-  return MakeRef<BufferLayout>(BufferLayout::BuildElementsList({ ShaderDataType::Float3, //
-                                                                 ShaderDataType::Float2,
-                                                                 ShaderDataType::Float4 }));
+  return MakeRef<BufferLayout>(BufferLayout::BuildElementsList( //
+    {
+      ShaderDataType::Float3, // position
+      ShaderDataType::Float2, // texture
+      ShaderDataType::Float4, // color
+      ShaderDataType::Float3, // normal
+    }));
+}
+
+void GE::PosAndTex2DShader::UpdateAmbientColor(Vec3 color)
+{
+  m_pimpl->shader->UploadVec3("u_ambientColor", color);
+}
+
+void GE::PosAndTex2DShader::UpdateAmbientStrength(f32 strength)
+{
+  m_pimpl->shader->UploadFloat("u_ambientStrength", strength);
+}
+
+void GE::PosAndTex2DShader::UpdateLightPosition(Vec3 pos)
+{
+  m_pimpl->shader->UploadVec3("u_lightPos", pos);
 }

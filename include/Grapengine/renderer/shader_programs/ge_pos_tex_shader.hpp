@@ -21,6 +21,10 @@ namespace GE
     void UpdateViewProjectionMatrix(Mat4 viewProj) override;
     void UpdateTexture(int id) override;
 
+    void UpdateLightPosition(Vec3 pos);
+    void UpdateAmbientColor(Vec3 color);
+    void UpdateAmbientStrength(f32 strength);
+
     [[nodiscard]] Ref<BufferLayout> GetLayout() const override;
 
   private:

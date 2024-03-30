@@ -32,6 +32,8 @@ namespace GE
     i32 x;
     i32 y;
     i32 z;
+
+    bool operator<(const IVec3& other) const;
   };
 
   struct GE3D Vec3

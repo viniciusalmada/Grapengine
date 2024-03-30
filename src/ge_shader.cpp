@@ -194,6 +194,12 @@ void Shader::UploadFloat(const std::string& name, f32 i)
   glUniform1f(location, i);
 }
 
+void Shader::UploadVec3(const std::string& name, const Vec3& vec3)
+{
+  auto location = m_pimpl->RetrieveUniform(name);
+  glUniform3f(location, vec3.x, vec3.y, vec3.z);
+}
+
 [[maybe_unused]] bool Shader::IsValid() const
 {
   return glIsProgram(m_pimpl->renderer_id);
