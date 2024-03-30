@@ -17,7 +17,6 @@ using namespace GE;
 struct Application::Impl
 {
   Ref<Window> window;
-  Scope<Input> input;
   bool running = true;
   bool minimized = false;
   u64 last_frame_time{ 0 };
@@ -31,7 +30,7 @@ struct Application::Impl
             const EventCallbackFn& cb)
   {
     window = MakeScope<Window>(WindowProps{ title, width, height, icon }, cb);
-    input = MakeScope<Input>(window);
+    Input::Initialize(window);
     imgui_layer = ImGuiLayer::Make(window);
     imgui_layer->OnAttach();
   }
