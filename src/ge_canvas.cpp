@@ -13,6 +13,8 @@ struct Canvas::Impl
 
 Canvas::Canvas(u32 width, u32 height) : m_pimpl(MakeScope<Impl>())
 {
+  GE_INFO("Canvas creation")
+
   m_pimpl->width = width;
   m_pimpl->height = height;
 }

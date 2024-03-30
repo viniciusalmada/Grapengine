@@ -14,13 +14,14 @@ static bool glfw_initialized = false;
 class Context
 {
 public:
-  explicit Context(GLFWwindow* glfWwindow) : m_window(glfWwindow) {}
+  explicit Context(GLFWwindow* glfWwindow) : m_window(glfWwindow) { GE_INFO("Context creation") }
 
   void Init()
   {
     glfwMakeContextCurrent(m_window);
 
     i32 version = gladLoadGL();
+    GE_INFO("GLAD initialization: {}", version)
     if (version == 0)
       throw std::runtime_error("Error with GLAD");
 
@@ -62,10 +63,13 @@ struct Window::Impl
 //--PIMPL idiom
 Window::Window(const WindowProps& props, const EventCallbackFn& cb) : m_pimpl(MakeScope<Impl>())
 {
+  GE_INFO("Window creation")
+
   m_pimpl->window_props =
     MakeScope<WindowProps>(props.title, props.width, props.height, props.icon_path);
   if (!glfw_initialized)
   {
+    GE_INFO("GLFW initialization")
     auto success = glfwInit();
     if (!success)
       throw std::runtime_error("Error GLFW");
@@ -98,6 +102,8 @@ Window::Window(const WindowProps& props, const EventCallbackFn& cb) : m_pimpl(Ma
 
   if (cb)
   {
+    GE_INFO("Window callbacks setup")
+
     m_pimpl->event_callback = cb;
 
     //-----------------------------
@@ -174,6 +180,8 @@ Window::Window(const WindowProps& props, const EventCallbackFn& cb) : m_pimpl(Ma
 
 Window::~Window()
 {
+  GE_INFO("Window destroy")
+
   m_pimpl->Destroy();
   glfw_initialized = false;
 }

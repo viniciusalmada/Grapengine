@@ -80,6 +80,13 @@ struct Application::Impl
   }
 
   void Finish() { running = false; }
+
+  void Shutdown()
+  {
+    Input::Shutdown();
+    imgui_layer->OnDetach();
+    std::ranges::for_each(layers, [](auto&& l) { l->OnDetach(); });
+  }
 };
 
 Application::Application(std::string_view title, u32 width, u32 height, std::string_view icon)
@@ -93,7 +100,13 @@ Application::Application(std::string_view title, u32 width, u32 height, std::str
   Renderer::SetViewport(0, 0, width, height);
 }
 
-Application::~Application() = default;
+Application::~Application()
+{
+  m_pimpl->Shutdown();
+  m_pimpl.reset();
+
+  GE_INFO("Application shutdown")
+}
 
 void Application::Run() const
 {

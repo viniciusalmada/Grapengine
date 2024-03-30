@@ -17,19 +17,20 @@ namespace GE
     static Ref<spdlog::logger>& GetLibLogger();
     static Ref<spdlog::logger>& GetClientLogger();
 
+    static void Shutdown();
+
   private:
     POINTER_TO_IMPLEMENTATION_IDIOM
   };
 }
 
 #if defined(GE_DIST)
-
-//  #define GE_TRACE(...)
-//  #define GE_DEBUG(...)
-//  #define GE_INFO(...)
-//  #define GE_WARN(...)
-//  #define GE_ERROR(...)
-//  #define GE_CRITICAL(...)
+  #define GE_TRACE(...)
+  #define GE_DEBUG(...)
+  #define GE_INFO(...)
+  #define GE_WARN(...)
+  #define GE_ERROR(...)
+  #define GE_CRITICAL(...)
 #elif defined(GRAPENGINE_CORE) && !defined(GE_DIST)
   #define GE_TRACE(...) SPDLOG_LOGGER_TRACE(::GE::Logger::GetLibLogger(), __VA_ARGS__);
   #define GE_DEBUG(...) SPDLOG_LOGGER_DEBUG(::GE::Logger::GetLibLogger(), __VA_ARGS__);

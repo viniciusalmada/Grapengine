@@ -27,6 +27,8 @@ ImGuiLayer::~ImGuiLayer() = default;
 
 void ImGuiLayer::OnAttach()
 {
+  GE_INFO("ImGui initialization")
+
   Layer::OnAttach();
 
   IMGUI_CHECKVERSION();
@@ -42,6 +44,8 @@ void ImGuiLayer::OnAttach()
 }
 void ImGuiLayer::OnDetach()
 {
+  GE_INFO("ImGui shutdown")
+
   Layer::OnDetach();
 
   ImGui_ImplOpenGL3_Shutdown();

@@ -22,6 +22,7 @@ void Logger::Init()
    * %v: The actual text to log
    * %$	end color range (can be used only once)
    */
+#define SHOW_FILENAMES
 #if defined(SHOW_FILENAMES)
   std::string_view filename{ "(%s:%#)" };
 #else
@@ -49,4 +50,11 @@ Ref<spdlog::logger>& GE::Logger::GetLibLogger()
 Ref<spdlog::logger>& GE::Logger::GetClientLogger()
 {
   return Impl::client_logger;
+}
+void GE::Logger::Shutdown()
+{
+  GE_INFO("Logger shutdown")
+
+  Impl::client_logger.reset();
+  Impl::library_logger.reset();
 }
