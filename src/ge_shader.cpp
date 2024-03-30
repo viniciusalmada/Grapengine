@@ -209,3 +209,9 @@ void Shader::Unbind()
   if (IsBound())
     glUseProgram(0);
 }
+
+Ref<Shader> GE::Shader::Make(const std::filesystem::path& vertexPath,
+                             const std::filesystem::path& fragPath)
+{
+  return MakeScope<Shader>(vertexPath, fragPath);
+}

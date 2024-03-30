@@ -9,6 +9,9 @@ namespace GE
   class Shader
   {
   public:
+    static Ref<Shader> Make(const std::filesystem::path& vertexPath,
+                            const std::filesystem::path& fragPath);
+
     Shader(const std::filesystem::path& vertexPath, const std::filesystem::path& fragPath);
     GE3D Shader(const std::string& vertexSrc, const std::string& fragmentSrc);
     GE3D ~Shader();
