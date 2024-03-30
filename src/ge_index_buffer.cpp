@@ -19,7 +19,7 @@ IndexBuffer::IndexBuffer(const u32* indices, u32 count, u32 parent) : m_pimpl(Ma
   m_pimpl->id = 0;
   m_pimpl->count = count;
   m_pimpl->parent = parent;
-  Assert(IsVAOBound(parent), "The associated VAO lacks a binding");
+  GE_ASSERT(IsVAOBound(parent), "The associated VAO lacks a binding");
 
   glGenBuffers(1, &m_pimpl->id);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_pimpl->id);
@@ -30,7 +30,7 @@ IndexBuffer::~IndexBuffer() = default;
 
 void IndexBuffer::Bind() const
 {
-  Assert(IsVAOBound(m_pimpl->parent), "The associated VAO lacks a binding");
+  GE_ASSERT(IsVAOBound(m_pimpl->parent), "The associated VAO lacks a binding");
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_pimpl->id);
 }

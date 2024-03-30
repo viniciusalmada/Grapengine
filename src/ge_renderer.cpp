@@ -23,7 +23,7 @@ void OpenGLDebuggerFunc(GLenum /* source */,
   ss << "OpenGL Error:" << std::endl;
   ss << "  (0x" << std::setfill('0') << std::setw(4) << std::hex << id << "): " << message
      << std::endl;
-  Assert(false, ss.str().c_str());
+  GE_ASSERT(false, ss.str().c_str());
 }
 
 void Renderer::Init()
@@ -43,9 +43,6 @@ void Renderer::Init()
 
   glEnable(GL_LINE_SMOOTH);
   glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-
-  // Enable wireframe mode
-  //  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
 void Renderer::SetViewport(u32 x, u32 y, u32 width, u32 height)
@@ -68,4 +65,9 @@ void Renderer::DrawIndexed(const Ref<VertexArray>& vao, i32 count)
 {
   vao->Bind();
   glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+}
+
+void Renderer::SetWireframeRenderMode(bool enabled)
+{
+  glPolygonMode(GL_FRONT_AND_BACK, enabled ? GL_LINE : GL_FILL);
 }

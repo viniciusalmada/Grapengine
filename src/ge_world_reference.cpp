@@ -21,6 +21,7 @@ struct WorldReference::Impl
   Ref<Cylinder> x_axis;
   Ref<Cylinder> y_axis;
   Ref<Cylinder> z_axis;
+  bool show_platform = true;
 };
 
 GE::WorldReference::WorldReference(Ref<IShaderProgram> shader) : m_pimpl(MakeScope<Impl>())
@@ -56,10 +57,16 @@ GE::WorldReference::WorldReference(Ref<IShaderProgram> shader) : m_pimpl(MakeSco
 
 void WorldReference::DrawBatch() const
 {
-  m_pimpl->platform->Draw();
+  if (m_pimpl->show_platform)
+    m_pimpl->platform->Draw();
   m_pimpl->x_axis->Draw();
   m_pimpl->y_axis->Draw();
   m_pimpl->z_axis->Draw();
+}
+
+void GE::WorldReference::ShowPlatform(bool show) const
+{
+  m_pimpl->show_platform = show;
 }
 
 WorldReference::~WorldReference() = default;

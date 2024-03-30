@@ -37,7 +37,7 @@ public:
 
   void ProcessMouseAction(f32 timestep)
   {
-    const Vec2 mouse_pos = Input::GetMouseXY();
+    const Vec2 mouse_pos = Input::Get().GetMouseXY();
     const Vec2 delta = (mouse_pos - mouse_init_pos);
     mouse_init_pos = mouse_pos;
 
@@ -114,14 +114,14 @@ public:
     const auto& [_, bt] = data;
     if (bt == KeyCode::MOUSE_BT_LEFT)
     {
-      mouse_init_pos = Input::GetMouseXY();
+      mouse_init_pos = Input::Get().GetMouseXY();
       can_rotate = true;
       return true;
     }
 
     if (bt == KeyCode::MOUSE_BT_MIDDLE)
     {
-      mouse_init_pos = Input::GetMouseXY();
+      mouse_init_pos = Input::Get().GetMouseXY();
       can_pan = true;
       return true;
     }
@@ -154,7 +154,7 @@ EditorCamera::~EditorCamera() = default;
 
 void EditorCamera::OnUpdate(TimeStep ts) const
 {
-  if (Input::IsKeyPressed(KeyCode::K_LEFT_CONTROL))
+  if (Input::Get().IsKeyPressed(KeyCode::K_LEFT_CONTROL))
     m_pimpl->ProcessMouseAction(ts.f());
 
   m_pimpl->UpdateView();
