@@ -5,7 +5,6 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 add_library(${ENGINE_NAME} SHARED
   ge_application.cpp
   ge_arithmetic.cpp
-  ge_assert.cpp
   ge_buffer_layout.cpp
   ge_camera.cpp
   ge_canvas.cpp

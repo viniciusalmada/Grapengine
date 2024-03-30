@@ -49,7 +49,7 @@ struct Window::Impl
   {
     std::stringstream ss;
     ss << "Code:" << error_code << "\"" << description << "\"" << std::endl;
-    Assert(false, ss.str().c_str());
+    GE_ASSERT(false, ss.str().c_str());
   }
 
   void Destroy() const

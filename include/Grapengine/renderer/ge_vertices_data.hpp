@@ -83,8 +83,9 @@ namespace GE
   {
     ObjEvaluator obj_evaluator{ {}, m_layout->GetTypesSortedList() };
     (..., EvaluateArgument(args, obj_evaluator));
-    Assert(std::ranges::find(obj_evaluator.m_validator, false) == obj_evaluator.m_validator.end(),
-           "Some types passed to be push are invalids");
+    GE_ASSERT(std::ranges::find(obj_evaluator.m_validator, false) ==
+                obj_evaluator.m_validator.end(),
+              "Some types passed to be push are invalids");
     (..., PushBytes(args));
   }
 }
