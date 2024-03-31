@@ -54,6 +54,87 @@ struct Window::Impl
     GE_ASSERT(false, ss.str().c_str());
   }
 
+  void SetupCallbacks(const EventCallbackFn& cb)
+  {
+    GE_INFO("Window callbacks setup")
+
+    event_callback = cb;
+
+    //-----------------------------
+    auto close_callback = [](GLFWwindow* win)
+    {
+      Event event{ std::make_tuple(EvType::WINDOW_CLOSE) };
+      auto* data = (Window*)glfwGetWindowUserPointer(win);
+      data->m_pimpl->event_callback(event);
+    };
+    glfwSetWindowCloseCallback(window, close_callback);
+
+    //-----------------------------
+    auto resize_callback = [](GLFWwindow* win, i32 width, i32 height)
+    {
+      Event event{
+        std::make_tuple(EvType::WINDOW_RESIZE, static_cast<u32>(width), static_cast<u32>(height))
+      };
+      auto* data = (Window*)glfwGetWindowUserPointer(win);
+      data->m_pimpl->event_callback(event);
+      data->m_pimpl->window_props->width = static_cast<u32>(width);
+      data->m_pimpl->window_props->height = static_cast<u32>(height);
+    };
+    glfwSetWindowSizeCallback(window, resize_callback);
+
+    //-----------------------------
+    auto key_callback = [](GLFWwindow* win, i32 key, i32 /*scancode*/, i32 action, i32 /*mods*/)
+    {
+      EvType type = EvType::NONE;
+      if (action == GLFW_PRESS)
+        type = EvType::KEY_PRESS;
+      else if (action == GLFW_RELEASE)
+        type = EvType::KEY_RELEASE;
+
+      Event event{ std::make_tuple(type, ConvertGLFWtoGE(key)) };
+      auto* data = (Window*)glfwGetWindowUserPointer(win);
+      data->m_pimpl->event_callback(event);
+    };
+    glfwSetKeyCallback(window, key_callback);
+
+    //-----------------------------
+    auto mouse_bt_callback = [](GLFWwindow* win, i32 button, i32 action, i32 /*mods*/)
+    {
+      if (ImGui::GetIO().WantCaptureMouse)
+        return;
+      EvType type = EvType::NONE;
+      if (action == GLFW_PRESS)
+        type = EvType::MOUSE_BUTTON_PRESSED;
+      else if (action == GLFW_RELEASE)
+        type = EvType::MOUSE_BUTTON_RELEASE;
+
+      Event event{ std::make_tuple(type, ConvertGLFWtoGE(button)) };
+      auto* data = (Window*)glfwGetWindowUserPointer(win);
+      data->m_pimpl->event_callback(event);
+    };
+    glfwSetMouseButtonCallback(window, mouse_bt_callback);
+
+    //-----------------------------
+    auto mouse_move = [](GLFWwindow* win, f64 xpos, f64 ypos)
+    {
+      Event event{ std::make_tuple(EvType::MOUSE_MOVE, (f32)xpos, (f32)ypos) };
+      auto* data = (Window*)glfwGetWindowUserPointer(win);
+      data->m_pimpl->event_callback(event);
+    };
+    glfwSetCursorPosCallback(window, mouse_move);
+
+    //-----------------------------
+    auto mouse_scroll = [](GLFWwindow* win, f64 xoffset, f64 yoffset)
+    {
+      if (ImGui::GetIO().WantCaptureMouse)
+        return;
+      Event event{ std::make_tuple(EvType::MOUSE_SCROLL, (f32)xoffset, (f32)yoffset) };
+      auto* data = (Window*)glfwGetWindowUserPointer(win);
+      data->m_pimpl->event_callback(event);
+    };
+    glfwSetScrollCallback(window, mouse_scroll);
+  }
+
   void Destroy() const
   {
     glfwDestroyWindow(window);
@@ -83,9 +164,9 @@ Window::Window(const WindowProps& props, const EventCallbackFn& cb) : m_pimpl(Ma
   glfwWindowHint(GLFW_SAMPLES, 4);
   m_pimpl->window =
     glfwCreateWindow((i32)props.width, (i32)props.height, props.title.c_str(), nullptr, nullptr);
-  glfwSetWindowAspectRatio(m_pimpl->window,
-                           static_cast<i32>(props.width),
-                           static_cast<i32>(props.height));
+  //  glfwSetWindowAspectRatio(m_pimpl->window,
+  //                           static_cast<i32>(props.width),
+  //                           static_cast<i32>(props.height));
 
   GLFWimage image;
   image.pixels = stbi_load(props.icon_path.c_str(), &image.width, &image.height, nullptr, 4);
@@ -102,85 +183,7 @@ Window::Window(const WindowProps& props, const EventCallbackFn& cb) : m_pimpl(Ma
   SetVsync(m_pimpl->vsync);
 
   if (cb)
-  {
-    GE_INFO("Window callbacks setup")
-
-    m_pimpl->event_callback = cb;
-
-    //-----------------------------
-    auto close_callback = [](GLFWwindow* win)
-    {
-      Event event{ std::make_tuple(EvType::WINDOW_CLOSE) };
-      auto* data = (Window*)glfwGetWindowUserPointer(win);
-      data->m_pimpl->event_callback(event);
-    };
-    glfwSetWindowCloseCallback(m_pimpl->window, close_callback);
-
-    //-----------------------------
-    auto resize_callback = [](GLFWwindow* win, i32 width, i32 height)
-    {
-      Event event{
-        std::make_tuple(EvType::WINDOW_RESIZE, static_cast<u32>(width), static_cast<u32>(height))
-      };
-      auto* data = (Window*)glfwGetWindowUserPointer(win);
-      data->m_pimpl->event_callback(event);
-      data->m_pimpl->window_props->width = static_cast<u32>(width);
-      data->m_pimpl->window_props->height = static_cast<u32>(height);
-    };
-    glfwSetWindowSizeCallback(m_pimpl->window, resize_callback);
-
-    //-----------------------------
-    auto key_callback = [](GLFWwindow* win, i32 key, i32 /*scancode*/, i32 action, i32 /*mods*/)
-    {
-      EvType type = EvType::NONE;
-      if (action == GLFW_PRESS)
-        type = EvType::KEY_PRESS;
-      else if (action == GLFW_RELEASE)
-        type = EvType::KEY_RELEASE;
-
-      Event event{ std::make_tuple(type, ConvertGLFWtoGE(key)) };
-      auto* data = (Window*)glfwGetWindowUserPointer(win);
-      data->m_pimpl->event_callback(event);
-    };
-    glfwSetKeyCallback(m_pimpl->window, key_callback);
-
-    //-----------------------------
-    auto mouse_bt_callback = [](GLFWwindow* win, i32 button, i32 action, i32 /*mods*/)
-    {
-      if (ImGui::GetIO().WantCaptureMouse)
-        return;
-      EvType type = EvType::NONE;
-      if (action == GLFW_PRESS)
-        type = EvType::MOUSE_BUTTON_PRESSED;
-      else if (action == GLFW_RELEASE)
-        type = EvType::MOUSE_BUTTON_RELEASE;
-
-      Event event{ std::make_tuple(type, ConvertGLFWtoGE(button)) };
-      auto* data = (Window*)glfwGetWindowUserPointer(win);
-      data->m_pimpl->event_callback(event);
-    };
-    glfwSetMouseButtonCallback(m_pimpl->window, mouse_bt_callback);
-
-    //-----------------------------
-    auto mouse_move = [](GLFWwindow* win, f64 xpos, f64 ypos)
-    {
-      Event event{ std::make_tuple(EvType::MOUSE_MOVE, (f32)xpos, (f32)ypos) };
-      auto* data = (Window*)glfwGetWindowUserPointer(win);
-      data->m_pimpl->event_callback(event);
-    };
-    glfwSetCursorPosCallback(m_pimpl->window, mouse_move);
-
-    //-----------------------------
-    auto mouse_scroll = [](GLFWwindow* win, f64 xoffset, f64 yoffset)
-    {
-      if (ImGui::GetIO().WantCaptureMouse)
-        return;
-      Event event{ std::make_tuple(EvType::MOUSE_SCROLL, (f32)xoffset, (f32)yoffset) };
-      auto* data = (Window*)glfwGetWindowUserPointer(win);
-      data->m_pimpl->event_callback(event);
-    };
-    glfwSetScrollCallback(m_pimpl->window, mouse_scroll);
-  }
+    m_pimpl->SetupCallbacks(cb);
 }
 
 Window::~Window()
