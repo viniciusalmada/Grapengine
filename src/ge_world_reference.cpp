@@ -10,7 +10,6 @@ namespace
 {
   constexpr Vec3 ORIGIN{ 0, 0, 0 };
   constexpr f32 AXIS_RADIUS = 0.02f;
-  constexpr f32 SIDE_SIZE = 5.0f;
 }
 
 struct WorldReference::Impl
@@ -22,11 +21,15 @@ struct WorldReference::Impl
   Ref<Cylinder> y_axis;
   Ref<Cylinder> z_axis;
   bool show_platform = true;
+  u64 platform_side_size;
 };
 
-GE::WorldReference::WorldReference(Ref<IShaderProgram> shader) : m_pimpl(MakeScope<Impl>())
+GE::WorldReference::WorldReference(const Ref<IShaderProgram>& shader, u64 platformSize) :
+    m_pimpl(MakeScope<Impl>())
 {
   m_pimpl->shader = std::move(shader);
+  m_pimpl->platform_side_size = platformSize;
+  const f32 SIDE_SIZE = static_cast<const f32>(m_pimpl->platform_side_size);
   m_pimpl->blank_texture = MakeRef<Texture2D>();
   m_pimpl->platform = MakeRef<Cube>(Color{ 0xAAAAAAFF }, m_pimpl->shader, m_pimpl->blank_texture);
   m_pimpl->platform->SetScale(SIDE_SIZE, AXIS_RADIUS, SIDE_SIZE);

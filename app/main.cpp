@@ -19,8 +19,7 @@ public:
     m_shader = GE::MakeScope<GE::PosAndTex2DShader>();
     m_light = GE::Cube::Make(GE::Colors::WHITE, m_shader, GE::Texture2D::Make());
     m_light->SetScale(0.5f, 0.5f, 0.5f);
-    m_world = GE::MakeScope<GE::WorldReference>(m_shader);
-    m_cam.emplace(45.0f, 1280.0f / 720.0f);
+    m_world = GE::MakeScope<GE::WorldReference>(m_shader, 10);
     m_mesh = GE::MakeScope<GE::Mesh>("assets/objs/teapot.obj", m_shader);
   }
 
