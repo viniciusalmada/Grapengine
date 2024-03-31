@@ -21,6 +21,8 @@ namespace
 struct EditorCamera::Impl
 {
 private:
+  f32 fov;
+  f32 aspect_ratio;
   Mat4 projection_mat{};
   Mat4 view_mat{};
   Vec3 eye{ 2.5f, 2.5f, 12.0f };
@@ -33,6 +35,8 @@ public:
   Impl(f32 fov, f32 aspectRatio)
   {
     projection_mat = Transform::Perspective(fov, aspectRatio, NEAR, FAR);
+    this->aspect_ratio = aspectRatio;
+    this->fov = fov;
   }
 
   void ProcessMouseAction(f32 timestep)
@@ -144,6 +148,14 @@ public:
     }
     return false;
   }
+
+  bool UpdateAspectRatio(WindowResizeData data)
+  {
+    auto& [_, width, height] = data;
+    aspect_ratio = (f32)width / (f32)height;
+    projection_mat = Transform::Perspective(fov, aspect_ratio, NEAR, FAR);
+    return false;
+  }
 };
 
 EditorCamera::EditorCamera() : m_pimpl(MakeScope<Impl>(0, 0)) {}
@@ -177,6 +189,10 @@ void EditorCamera::OnEvent(Event& event)
                   [this](const EvData& data) {
                     return m_pimpl->OnMouseReleased(*std::get_if<MouseButtonReleaseData>(&data));
                   });
+  Event::Dispatch(EvType::WINDOW_RESIZE,
+                  event,
+                  [this](const EvData& data) -> bool
+                  { return m_pimpl->UpdateAspectRatio(*std::get_if<WindowResizeData>(&data)); });
 }
 
 Mat4 EditorCamera::GetViewProjection() const
