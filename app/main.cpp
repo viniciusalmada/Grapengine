@@ -12,7 +12,7 @@
 class SimpleLayer : public GE::Layer
 {
 public:
-  SimpleLayer() : GE::Layer("Simple") {}
+  SimpleLayer() : GE::Layer("Simple"), m_cam(45.0f, 1280.0f / 720.0f) {}
 
   void OnAttach() override
   {
@@ -28,16 +28,14 @@ public:
     GE::Renderer::SetClearColor(GE::Color{ 0x222222FF }.ToVec4());
     GE::Renderer::Clear();
 
-    if (m_cam.has_value())
-      m_cam.value().OnUpdate(ts);
+    m_cam.OnUpdate(ts);
 
     m_shader->Activate();
-    m_shader->UpdateViewProjectionMatrix(m_cam.value().GetViewProjection());
+    m_shader->UpdateViewProjectionMatrix(m_cam.GetViewProjection());
     m_shader->UpdateAmbientColor(GE::Vec3{ 1, 1, 1 });
     m_shader->UpdateAmbientStrength(1.0f);
 
     m_light->SetTranslate(m_light_pos);
-    m_light->Draw();
     m_shader->UpdateLightPosition(m_light_pos);
 
     m_world->ShowPlatform(m_show_platform);
@@ -46,10 +44,11 @@ public:
     GE::Renderer::SetWireframeRenderMode(m_show_mesh_wired);
     m_shader->UpdateAmbientStrength(0.1f);
     m_mesh->Draw();
+    m_light->Draw();
     GE::Renderer::SetWireframeRenderMode(false);
   }
 
-  void OnEvent(GE::Event& ev) override { m_cam.value().OnEvent(ev); }
+  void OnEvent(GE::Event& ev) override { m_cam.OnEvent(ev); }
 
   void OnImGuiUpdate() override
   {
@@ -64,7 +63,7 @@ private:
   GE::Ref<GE::Cube> m_light = nullptr;
   GE::Scope<GE::WorldReference> m_world = nullptr;
   bool m_show_platform = false;
-  std::optional<GE::EditorCamera> m_cam{};
+  GE::EditorCamera m_cam{};
   GE::Scope<GE::Mesh> m_mesh{};
   bool m_show_mesh_wired = false;
 };
