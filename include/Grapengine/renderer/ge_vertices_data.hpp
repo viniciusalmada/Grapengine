@@ -32,6 +32,11 @@ namespace GE
   class VerticesData
   {
   public:
+    static Ref<VerticesData> Make(const Ref<BufferLayout>& layout)
+    {
+      return MakeRef<VerticesData>(layout);
+    }
+
     explicit VerticesData(Ref<BufferLayout> layout) : m_layout(std::move(layout)) {}
 
     [[nodiscard]] u64 GetSize() const { return m_data.size(); }
