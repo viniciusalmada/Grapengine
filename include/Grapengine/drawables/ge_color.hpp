@@ -20,6 +20,13 @@ namespace GE
       A = static_cast<u8>((rgba >> 8 * 0) & 0xFF);
     }
 
+    explicit Color(Vec3 rgb)
+    {
+      R = static_cast<u8>(rgb.x * 255.0f);
+      G = static_cast<u8>(rgb.y * 255.0f);
+      B = static_cast<u8>(rgb.z * 255.0f);
+    }
+
     Vec4 ToVec4() const
     {
       return {
@@ -27,6 +34,15 @@ namespace GE
         (f32)G / 255.0f,
         (f32)B / 255.0f,
         (f32)A / 255.0f,
+      };
+    }
+
+    Vec3 ToVec3() const
+    {
+      return {
+        (f32)R / 255.0f,
+        (f32)G / 255.0f,
+        (f32)B / 255.0f,
       };
     }
   };
