@@ -200,6 +200,18 @@ void Shader::UploadVec3(const std::string& name, const Vec3& vec3)
   glUniform3f(location, vec3.x, vec3.y, vec3.z);
 }
 
+void GE::Shader::UploadVec3Array(const std::string& name, const std::vector<Vec3>& vec3)
+{
+  auto location = m_pimpl->RetrieveUniform(name);
+  glUniform3fv(location, vec3.size(), &vec3.data()->x);
+}
+
+void GE::Shader::UploadFloatArray(const std::string& name, const std::vector<f32>& vec3)
+{
+  auto location = m_pimpl->RetrieveUniform(name);
+  glUniform1fv(location, vec3.size(), vec3.data());
+}
+
 [[maybe_unused]] bool Shader::IsValid() const
 {
   return glIsProgram(m_pimpl->renderer_id);
@@ -215,7 +227,6 @@ void Shader::Unbind()
   if (IsBound())
     glUseProgram(0);
 }
-
 Ref<Shader> GE::Shader::Make(const std::filesystem::path& vertexPath,
                              const std::filesystem::path& fragPath)
 {

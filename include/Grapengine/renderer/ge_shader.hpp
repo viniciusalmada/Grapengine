@@ -32,6 +32,9 @@ namespace GE
 
     void UploadVec3(const std::string& name, const Vec3& vec3);
 
+    void UploadVec3Array(const std::string& name, const std::vector<Vec3>& vec3);
+    void UploadFloatArray(const std::string& name, const std::vector<f32>& vec3);
+
   private:
     POINTER_TO_IMPLEMENTATION_IDIOM
   };
