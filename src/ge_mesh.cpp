@@ -19,7 +19,7 @@ struct Face
 
 struct Mesh::Impl
 {
-  Color color = Colors::BLUE;
+  Color color = Colors::MAGENTA;
   Ref<DrawPrimitive> draw_primitive;
   Ref<Cube> bbox;
   Ref<IShaderProgram> shader;
@@ -166,6 +166,7 @@ void GE::Mesh::Draw() const
 {
   m_pimpl->texture->Bind(0);
   m_pimpl->shader->UpdateTexture(0);
+  m_pimpl->shader->UpdateModelMatrix(Mat4{});
   m_pimpl->draw_primitive->Draw();
 
   //  Renderer::SetWireframeRenderMode(false);

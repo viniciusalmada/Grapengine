@@ -60,6 +60,8 @@ GE::WorldReference::WorldReference(const Ref<IShaderProgram>& shader, u64 platfo
 
 void WorldReference::DrawBatch() const
 {
+  m_pimpl->shader->Activate();
+
   if (m_pimpl->show_platform)
     m_pimpl->platform->Draw();
   m_pimpl->x_axis->Draw();

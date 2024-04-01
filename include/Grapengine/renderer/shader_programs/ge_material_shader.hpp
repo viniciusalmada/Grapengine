@@ -1,5 +1,5 @@
-#ifndef GRAPENGINE_POS_TEX_SHADER_HPP
-#define GRAPENGINE_POS_TEX_SHADER_HPP
+#ifndef GRAPENGINE_MATERIAL_SHADER_HPP
+#define GRAPENGINE_MATERIAL_SHADER_HPP
 
 #include "drawables/ge_color.hpp"
 #include "renderer/ge_ishader_program.hpp"
@@ -9,11 +9,11 @@
 
 namespace GE
 {
-  class PosAndTex2DShader final : public IShaderProgram
+  class MaterialShader final : public IShaderProgram
   {
   public:
-    PosAndTex2DShader();
-    ~PosAndTex2DShader() override;
+    MaterialShader();
+    ~MaterialShader() override;
 
     void Activate() override;
     void Deactivate() override;
@@ -22,10 +22,17 @@ namespace GE
     void UpdateViewProjectionMatrix(Mat4 viewProj) override;
     void UpdateTexture(int id) override;
 
+    void UpdateAmbientColor(Color color);
+    void UpdateAmbientStrength(f32 strength);
+
+    void UpdateLightPosition(std::vector<Vec3> pos);
+    void UpdateLightColor(std::vector<Color> color);
+    void UpdateLightStrength(std::vector<f32> strength);
+
     [[nodiscard]] Ref<BufferLayout> GetLayout() const override;
 
   private:
     POINTER_TO_IMPLEMENTATION_IDIOM
   };
 }
-#endif // GRAPENGINE_POS_TEX_SHADER_HPP
+#endif // GRAPENGINE_MATERIAL_SHADER_HPP

@@ -19,6 +19,14 @@ namespace GE
     Int4,
     Bool
   };
+
+  enum class DataPurpose
+  {
+    POSITION,
+    COLOR,
+    TEXTURE_COORDINATE,
+    NORMAL
+  };
 }
 
 #endif

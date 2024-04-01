@@ -19,7 +19,7 @@ namespace GE
     virtual void UpdateViewProjectionMatrix(Mat4 viewProj) = 0;
     virtual void UpdateTexture(int id) = 0;
 
-    virtual Ref<BufferLayout> GetLayout() const = 0;
+    [[nodiscard]] virtual Ref<BufferLayout> GetLayout() const = 0;
   };
 }
 

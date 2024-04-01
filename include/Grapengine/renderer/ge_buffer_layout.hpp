@@ -6,6 +6,7 @@ namespace GE
 {
   struct BufferElem
   {
+    DataPurpose purpose;
     ShaderDataType type;
     u64 size;
     u64 offset;
@@ -15,6 +16,8 @@ namespace GE
   class BufferLayout
   {
   public:
+    static Ref<BufferLayout> Make(std::list<BufferElem> list);
+
     explicit BufferLayout(std::list<BufferElem> list = {});
     ~BufferLayout();
 
@@ -24,7 +27,10 @@ namespace GE
 
     [[nodiscard]] u64 GetStride() const;
 
-    static std::list<BufferElem> BuildElementsList(std::initializer_list<ShaderDataType> types);
+    [[nodiscard]] bool HasNormal() const;
+
+    static std::list<BufferElem>
+    BuildElementsList(std::initializer_list<std::pair<DataPurpose, ShaderDataType>> types);
 
   private:
     POINTER_TO_IMPLEMENTATION_IDIOM

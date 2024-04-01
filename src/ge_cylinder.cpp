@@ -56,8 +56,16 @@ Cylinder::Cylinder(const Ref<IShaderProgram>& shader,
   const Ref<VerticesData> positions = MakeRef<VerticesData>(layout);
   for (u32 i = 0; i < base_pts.size(); ++i)
   {
-    positions->PushData(base_pts[i], Vec2{ 1, 1 }, color.ToVec4(), -direction.Normalize());
-    positions->PushData(final_pts[i], Vec2{ 1, 1 }, color.ToVec4(), direction.Normalize());
+    if (layout->HasNormal())
+    {
+      positions->PushData(base_pts[i], Vec2{ 1, 1 }, color.ToVec4(), -direction.Normalize());
+      positions->PushData(final_pts[i], Vec2{ 1, 1 }, color.ToVec4(), direction.Normalize());
+    }
+    else
+    {
+      positions->PushData(base_pts[i], Vec2{ 1, 1 }, color.ToVec4());
+      positions->PushData(final_pts[i], Vec2{ 1, 1 }, color.ToVec4());
+    }
   }
 
   const auto indices = MakeRef<std::vector<u32>>();

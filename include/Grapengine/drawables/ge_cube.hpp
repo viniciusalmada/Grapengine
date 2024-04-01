@@ -18,6 +18,7 @@ namespace GE
 
     ~Cube() override;
 
+    void SetColor(Color color);
     void Draw() const override;
 
     void SetScale(f32 x, f32 y, f32 z) const;

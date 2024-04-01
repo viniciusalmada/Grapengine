@@ -3,6 +3,7 @@
 #include "renderer/ge_buffer_layout.hpp"
 #include "renderer/ge_shader_data_types.hpp"
 
+#include <drawables/ge_color.hpp>
 #include <renderer/ge_shader.hpp>
 
 using namespace GE;
@@ -50,26 +51,11 @@ void PosAndTex2DShader::UpdateTexture(int id)
 
 Ref<BufferLayout> GE::PosAndTex2DShader::GetLayout() const
 {
-  return MakeRef<BufferLayout>(BufferLayout::BuildElementsList( //
+  auto buffer_elements = BufferLayout::BuildElementsList( //
     {
-      ShaderDataType::Float3, // position
-      ShaderDataType::Float2, // texture
-      ShaderDataType::Float4, // color
-      ShaderDataType::Float3, // normal
-    }));
-}
-
-void GE::PosAndTex2DShader::UpdateAmbientColor(Vec3 color)
-{
-  m_pimpl->shader->UploadVec3("u_ambientColor", color);
-}
-
-void GE::PosAndTex2DShader::UpdateAmbientStrength(f32 strength)
-{
-  m_pimpl->shader->UploadFloat("u_ambientStrength", strength);
-}
-
-void GE::PosAndTex2DShader::UpdateLightPosition(Vec3 pos)
-{
-  m_pimpl->shader->UploadVec3("u_lightPos", pos);
+      std::make_pair(DataPurpose::POSITION, ShaderDataType::Float3),           // position
+      std::make_pair(DataPurpose::TEXTURE_COORDINATE, ShaderDataType::Float2), // texture
+      std::make_pair(DataPurpose::COLOR, ShaderDataType::Float4),              // color
+    });
+  return MakeRef<BufferLayout>(buffer_elements);
 }

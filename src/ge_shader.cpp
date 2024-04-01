@@ -203,13 +203,13 @@ void Shader::UploadVec3(const std::string& name, const Vec3& vec3)
 void GE::Shader::UploadVec3Array(const std::string& name, const std::vector<Vec3>& vec3)
 {
   auto location = m_pimpl->RetrieveUniform(name);
-  glUniform3fv(location, vec3.size(), &vec3.data()->x);
+  glUniform3fv(location, static_cast<GLsizei>(vec3.size()), &vec3.data()->x);
 }
 
 void GE::Shader::UploadFloatArray(const std::string& name, const std::vector<f32>& vec3)
 {
   auto location = m_pimpl->RetrieveUniform(name);
-  glUniform1fv(location, vec3.size(), vec3.data());
+  glUniform1fv(location, static_cast<GLsizei>(vec3.size()), vec3.data());
 }
 
 [[maybe_unused]] bool Shader::IsValid() const

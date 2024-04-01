@@ -21,6 +21,7 @@ add_library(${ENGINE_NAME} SHARED
   ge_key_codes.cpp
   ge_layer.cpp
   ge_logger.cpp
+  ge_material_shader.cpp
   ge_mesh.cpp
   ge_platform.cpp
   ge_pos_tex_shader.cpp

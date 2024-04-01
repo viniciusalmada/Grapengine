@@ -78,18 +78,28 @@ u64 BufferLayout::GetStride() const
   return m_pimpl->stride;
 }
 
-std::list<BufferElem>
-GE::BufferLayout::BuildElementsList(std::initializer_list<ShaderDataType> types)
+std::list<BufferElem> GE::BufferLayout::BuildElementsList(
+  std::initializer_list<std::pair<DataPurpose, ShaderDataType>> types)
 {
   std::list<BufferElem> elems{};
   u64 offset = 0;
-  for (ShaderDataType type : types)
+  for (auto& [purpose, type] : types)
   {
     auto size = GetShaderDataTypeSize(type);
-    elems.emplace_back(type, size, offset, false);
+    elems.emplace_back(purpose, type, size, offset, false);
     offset += size;
   }
   return elems;
+}
+Ref<BufferLayout> GE::BufferLayout::Make(std::list<BufferElem> list)
+{
+  return MakeRef<BufferLayout>(std::move(list));
+}
+
+bool GE::BufferLayout::HasNormal() const
+{
+  return std::ranges::any_of(m_pimpl->elements,
+                             [&](const BufferElem& e) { return e.purpose == DataPurpose::NORMAL; });
 }
 
 BufferLayout::~BufferLayout() = default;
