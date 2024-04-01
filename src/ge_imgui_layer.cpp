@@ -6,6 +6,8 @@
 #include <core/ge_time_step.hpp>
 #include <imgui.h>
 
+#undef USE_MULTIPLE_VIEWPORTS
+
 using namespace GE;
 
 namespace
@@ -36,7 +38,9 @@ void ImGuiLayer::OnAttach()
   ImGuiIO& io = ImGui::GetIO();
   io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
   io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+#ifdef USE_MULTIPLE_VIEWPORTS
   io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+#endif
 
   ImGui_ImplGlfw_InitForOpenGL(std::any_cast<GLFWwindow*>(m_pimpl->window->GetNativeHandler()),
                                true);
@@ -73,6 +77,7 @@ void ImGuiLayer::End()
   ImGui::Render();
   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
+#ifdef USE_MULTIPLE_VIEWPORTS
   if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
   {
     GLFWwindow* backup_context = glfwGetCurrentContext();
@@ -80,4 +85,5 @@ void ImGuiLayer::End()
     ImGui::RenderPlatformWindowsDefault();
     glfwMakeContextCurrent(backup_context);
   }
+#endif
 }
