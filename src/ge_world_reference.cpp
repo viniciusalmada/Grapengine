@@ -29,7 +29,7 @@ GE::WorldReference::WorldReference(const Ref<IShaderProgram>& shader, u64 platfo
 {
   m_pimpl->shader = std::move(shader);
   m_pimpl->platform_side_size = platformSize;
-  const f32 SIDE_SIZE = static_cast<const f32>(m_pimpl->platform_side_size);
+  const f32 SIDE_SIZE = static_cast<f32>(m_pimpl->platform_side_size);
   m_pimpl->blank_texture = MakeRef<Texture2D>();
   m_pimpl->platform = MakeRef<Cube>(Color{ 0xAAAAAAFF }, m_pimpl->shader, m_pimpl->blank_texture);
   m_pimpl->platform->SetScale(SIDE_SIZE, AXIS_RADIUS, SIDE_SIZE);
