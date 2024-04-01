@@ -21,7 +21,7 @@ namespace
 struct EditorCamera::Impl
 {
 private:
-  f32 fov;
+  f32 field_of_view;
   f32 aspect_ratio;
   Mat4 projection_mat{};
   Mat4 view_mat{};
@@ -36,7 +36,7 @@ public:
   {
     projection_mat = Transform::Perspective(fov, aspectRatio, NEAR, FAR);
     this->aspect_ratio = aspectRatio;
-    this->fov = fov;
+    this->field_of_view = fov;
   }
 
   void ProcessMouseAction(f32 timestep)
@@ -153,7 +153,7 @@ public:
   {
     auto& [_, width, height] = data;
     aspect_ratio = (f32)width / (f32)height;
-    projection_mat = Transform::Perspective(fov, aspect_ratio, NEAR, FAR);
+    projection_mat = Transform::Perspective(field_of_view, aspect_ratio, NEAR, FAR);
     return false;
   }
 };
