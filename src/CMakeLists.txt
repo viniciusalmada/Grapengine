@@ -37,6 +37,8 @@ add_library(${ENGINE_NAME} STATIC
   ge_window.cpp
   ge_world_reference.cpp
   ge_imgui_layer.cpp
+  ../include/Grapengine/controllers/ge_app_controller.cpp
+  ../include/Grapengine/controllers/ge_app_controller.hpp
 )
 target_precompile_headers(${ENGINE_NAME} PRIVATE ${ENGINE_INCLUDE}/grapengine_pch.hpp)
 target_include_directories(${ENGINE_NAME} PUBLIC

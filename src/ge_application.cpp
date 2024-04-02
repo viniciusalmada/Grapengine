@@ -72,6 +72,7 @@ struct Application::Impl
 
         imgui_layer->Begin();
         std::ranges::for_each(layers, [&](auto&& l) { l->OnImGuiUpdate(); });
+        imgui_layer->OnUpdate(step);
         imgui_layer->End();
       }
 
@@ -81,7 +82,7 @@ struct Application::Impl
 
   void Finish() { running = false; }
 
-  void Shutdown()
+  void OnDestroy()
   {
     Input::Shutdown();
     imgui_layer->OnDetach();
@@ -102,7 +103,7 @@ Application::Application(std::string_view title, u32 width, u32 height, std::str
 
 Application::~Application()
 {
-  m_pimpl->Shutdown();
+  m_pimpl->OnDestroy();
   m_pimpl.reset();
 
   GE_INFO("Application shutdown")
@@ -122,4 +123,9 @@ void GE::Application::AddLayer(const Ref<Layer>& layer) const
 {
   m_pimpl->layers.push_back(layer);
   layer->OnAttach();
+}
+
+void GE::Application::Close() const
+{
+  m_pimpl->Finish();
 }

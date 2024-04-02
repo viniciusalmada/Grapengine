@@ -120,7 +120,7 @@ public:
   }
 };
 
-GE::Scope<GE::Application> CreateApplication()
+GE::Ref<GE::Application> CreateApplication()
 {
-  return GE::MakeScope<Client>();
+  return GE::MakeRef<Client>();
 }

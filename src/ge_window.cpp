@@ -100,8 +100,8 @@ struct Window::Impl
     //-----------------------------
     auto mouse_bt_callback = [](GLFWwindow* win, i32 button, i32 action, i32 /*mods*/)
     {
-      if (ImGui::GetIO().WantCaptureMouse)
-        return;
+      //      if (ImGui::GetIO().WantCaptureMouse)
+      //        return;
       EvType type = EvType::NONE;
       if (action == GLFW_PRESS)
         type = EvType::MOUSE_BUTTON_PRESSED;
@@ -126,8 +126,8 @@ struct Window::Impl
     //-----------------------------
     auto mouse_scroll = [](GLFWwindow* win, f64 xoffset, f64 yoffset)
     {
-      if (ImGui::GetIO().WantCaptureMouse)
-        return;
+      //      if (ImGui::GetIO().WantCaptureMouse)
+      //        return;
       Event event{ std::make_tuple(EvType::MOUSE_SCROLL, (f32)xoffset, (f32)yoffset) };
       auto* data = (Window*)glfwGetWindowUserPointer(win);
       data->m_pimpl->event_callback(event);

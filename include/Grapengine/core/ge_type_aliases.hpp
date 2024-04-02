@@ -24,6 +24,12 @@ namespace GE
   using Ref = std::shared_ptr<T>;
 
   /**
+   *
+   */
+  template <class T>
+  using Weak = std::weak_ptr<T>;
+
+  /**
    * Pointer that lives only inside a defined scope
    */
   template <class T>

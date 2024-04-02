@@ -24,6 +24,8 @@ namespace GE
 
     GE3D void Run() const;
 
+    void Close() const;
+
     void OnEvent(Event& e);
 
   private:

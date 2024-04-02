@@ -11,6 +11,12 @@ namespace GE
     return std::make_shared<T>(std::forward<Args>(args)...);
   }
 
+  template <class T>
+  Weak<T> MakeWeak(Ref<T> ref)
+  {
+    return std::weak_ptr<T>(ref);
+  }
+
   template <class T, class... Args>
   Scope<T> MakeScope(Args... args)
   {
