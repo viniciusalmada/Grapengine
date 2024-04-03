@@ -127,6 +127,7 @@ void ImGuiLayer::End()
 }
 void GE::ImGuiLayer::OnUpdate(GE::TimeStep)
 {
+#if 1
   static ImGuiDockNodeFlags dock_node_flags = ImGuiDockNodeFlags_None;
 
   ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
@@ -154,6 +155,7 @@ void GE::ImGuiLayer::OnUpdate(GE::TimeStep)
   ImGui::PopStyleVar(2);
 
   ImGuiIO& io = ImGui::GetIO();
+  io.IniFilename = nullptr;
   if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
   {
     ImGuiID dock_id = ImGui::GetID("MyDock");
@@ -178,4 +180,7 @@ void GE::ImGuiLayer::OnUpdate(GE::TimeStep)
   ImGui::End();
 
   ImGui::End();
+#else
+  ImGui::ShowDemoWindow(nullptr);
+#endif
 }

@@ -2,6 +2,7 @@
 #include "core/ge_entry_point.hpp"
 #include "drawables/ge_mesh.hpp"
 #include "imgui.h"
+#include "renderer/ge_framebuffer.hpp"
 #include "renderer/shader_programs/ge_material_shader.hpp"
 
 #include <drawables/ge_cube.hpp>
@@ -25,10 +26,13 @@ public:
     m_light_2->SetScale(0.5f, 0.5f, 0.5f);
     m_world = GE::MakeScope<GE::WorldReference>(m_simple_shader, 10);
     m_mesh = GE::MakeScope<GE::Mesh>("assets/objs/teapot.obj", m_material_shader);
+
+    m_framebuffer = GE::Framebuffer::Make(GE::FBSpecs{ 1280, 720, 1, true });
   }
 
   void OnUpdate(GE::TimeStep ts) override
   {
+    m_framebuffer->Bind();
     GE::Renderer::SetClearColor(GE::Color{ 0x222222FF }.ToVec4());
     GE::Renderer::Clear();
 
@@ -62,6 +66,7 @@ public:
     GE::Renderer::SetWireframeRenderMode(m_show_mesh_wired);
     m_mesh->Draw();
     GE::Renderer::SetWireframeRenderMode(false);
+    m_framebuffer->Unbind();
   }
 
   void OnEvent(GE::Event& ev) override { m_cam.OnEvent(ev); }
@@ -84,6 +89,9 @@ public:
       m_light_color_2 = GE::Color(light_color);
     }
     ImGui::SliderFloat("LightStrength", &m_light_strength, 0, 10);
+
+    u32 tex = m_framebuffer->GetColorAttachmentID();
+    ImGui::Image(reinterpret_cast<void*>(tex), ImVec2{ 128, 72 }, { 0, 1 }, { 1, 0 });
   }
 
 private:
@@ -106,6 +114,8 @@ private:
   GE::EditorCamera m_cam{};
   GE::Scope<GE::Mesh> m_mesh{};
   bool m_show_mesh_wired = false;
+
+  GE::Ref<GE::Framebuffer> m_framebuffer;
 };
 
 class Client : public GE::Application
