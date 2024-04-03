@@ -3,43 +3,44 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 # #############################################################################
 # Engine
 add_library(${ENGINE_NAME} STATIC
-  ge_application.cpp
-  ge_arithmetic.cpp
-  ge_buffer_layout.cpp
-  ge_camera.cpp
-  ge_canvas.cpp
-  ge_cube.cpp
-  ge_cylinder.cpp
-  ge_draw_primitive.cpp
-  ge_editor_camera.cpp
-  ge_event.cpp
-  ge_geometry.cpp
-  ge_gl_checkers.cpp
-  ge_index_buffer.cpp
-  ge_input.cpp
-  ge_io.cpp
-  ge_key_codes.cpp
-  ge_layer.cpp
-  ge_logger.cpp
-  ge_material_shader.cpp
-  ge_mesh.cpp
-  ge_platform.cpp
-  ge_pos_tex_shader.cpp
-  ge_quaternions.cpp
-  ge_random.cpp
-  ge_renderer.cpp
-  ge_shader.cpp
-  ge_texture_2d.cpp
-  ge_transformations.cpp
-  ge_vector.cpp
-  ge_vertex_array.cpp
-  ge_vertex_buffer.cpp
-  ge_window.cpp
-  ge_world_reference.cpp
-  ge_imgui_layer.cpp
-  ../include/Grapengine/controllers/ge_app_controller.cpp
-  ../include/Grapengine/controllers/ge_app_controller.hpp
-  ge_framebuffer.cpp
+  controllers/ge_app_controller.cpp
+  core/ge_application.cpp
+  core/ge_platform.cpp
+  core/ge_window.cpp
+  drawables/ge_canvas.cpp
+  drawables/ge_cube.cpp
+  drawables/ge_cylinder.cpp
+  drawables/ge_draw_primitive.cpp
+  drawables/ge_mesh.cpp
+  drawables/ge_world_reference.cpp
+  events/ge_event.cpp
+  input/ge_input.cpp
+  input/ge_key_codes.cpp
+  layer/ge_imgui_layer.cpp
+  layer/ge_layer.cpp
+  log/ge_logger.cpp
+  math/ge_arithmetic.cpp
+  math/ge_geometry.cpp
+  math/ge_quaternions.cpp
+  math/ge_transformations.cpp
+  math/ge_vector.cpp
+  profiling/ge_time.cpp
+  renderer/ge_buffer_layout.cpp
+  renderer/ge_camera.cpp
+  renderer/ge_editor_camera.cpp
+  renderer/ge_framebuffer.cpp
+  renderer/ge_gl_checkers.cpp
+  renderer/ge_index_buffer.cpp
+  renderer/ge_ishader_program.hpp
+  renderer/ge_renderer.cpp
+  renderer/ge_shader.cpp
+  renderer/ge_texture_2d.cpp
+  renderer/ge_vertex_array.cpp
+  renderer/ge_vertex_buffer.cpp
+  renderer/shader_programs/ge_material_shader.cpp
+  renderer/shader_programs/ge_pos_tex_shader.cpp
+  utils/ge_io.cpp
+  utils/ge_random.cpp
 )
 target_precompile_headers(${ENGINE_NAME} PRIVATE ${ENGINE_INCLUDE}/grapengine_pch.hpp)
 target_include_directories(${ENGINE_NAME} PUBLIC
@@ -114,17 +115,17 @@ endif ()
 
 # ############################################################################
 # imgui
-file(GLOB IMGUI_SRC ${CMAKE_SOURCE_DIR}/imgui/*.cpp ${CMAKE_SOURCE_DIR}/imgui/*.h)
+file(GLOB IMGUI_SRC ${CMAKE_SOURCE_DIR}/vendor/imgui/*.cpp ${CMAKE_SOURCE_DIR}/imgui/*.h)
 add_library(ImGui STATIC
   ${IMGUI_SRC}
-  ${CMAKE_SOURCE_DIR}/imgui/backends/imgui_impl_glfw.cpp
-  ${CMAKE_SOURCE_DIR}/imgui/backends/imgui_impl_glfw.h
-  ${CMAKE_SOURCE_DIR}/imgui/backends/imgui_impl_opengl3.cpp
-  ${CMAKE_SOURCE_DIR}/imgui/backends/imgui_impl_opengl3.h
-  ${CMAKE_SOURCE_DIR}/imgui/misc/cpp/imgui_stdlib.h
-  ${CMAKE_SOURCE_DIR}/imgui/misc/cpp/imgui_stdlib.cpp
+  ${CMAKE_SOURCE_DIR}/vendor/imgui/backends/imgui_impl_glfw.cpp
+  ${CMAKE_SOURCE_DIR}/vendor/imgui/backends/imgui_impl_glfw.h
+  ${CMAKE_SOURCE_DIR}/vendor/imgui/backends/imgui_impl_opengl3.cpp
+  ${CMAKE_SOURCE_DIR}/vendor/imgui/backends/imgui_impl_opengl3.h
+  ${CMAKE_SOURCE_DIR}/vendor/imgui/misc/cpp/imgui_stdlib.h
+  ${CMAKE_SOURCE_DIR}/vendor/imgui/misc/cpp/imgui_stdlib.cpp
 )
-target_include_directories(ImGui PUBLIC ${CMAKE_SOURCE_DIR}/imgui)
+target_include_directories(ImGui PUBLIC ${CMAKE_SOURCE_DIR}/vendor/imgui)
 target_link_libraries(${ENGINE_NAME} PUBLIC ImGui)
 
 # #############################################################################

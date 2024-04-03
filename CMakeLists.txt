@@ -2,9 +2,8 @@ cmake_minimum_required(VERSION 3.24)
 
 if (NOT DEFINED ${CMAKE_TOOLCHAIN_FILE})
   message(STATUS "Defining vcpkg as toolchain file")
-  set(CMAKE_TOOLCHAIN_FILE ${CMAKE_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake)
-else()
-  message(FATAL_ERROR "VCPKG toolchain must be defined!")
+  set(CMAKE_TOOLCHAIN_FILE ${CMAKE_SOURCE_DIR}/vendor/vcpkg/scripts/buildsystems/vcpkg.cmake)
+  message(STATUS ${CMAKE_TOOLCHAIN_FILE})
 endif ()
 
 project(Grapengine CXX)

@@ -1,6 +1,6 @@
-#include "Grapengine/grapengine.hpp"
 #include "core/ge_entry_point.hpp"
 #include "drawables/ge_mesh.hpp"
+#include "grapengine.hpp"
 #include "imgui.h"
 #include "renderer/ge_framebuffer.hpp"
 #include "renderer/shader_programs/ge_material_shader.hpp"
