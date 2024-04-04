@@ -20,6 +20,8 @@ namespace GE
     void OnUpdate(TimeStep ts) const;
     void OnEvent(Event& event);
 
+    void OnResize(u32 w, u32 h);
+
     [[nodiscard]] Mat4 GetViewProjection() const;
 
   private:

@@ -9,8 +9,15 @@ struct Framebuffer::Impl
 {
   FBSpecs specs;
   u32 id = 0;
-  u32 color_attachment;
-  u32 depth_attachment;
+  u32 color_attachment = 0;
+  u32 depth_attachment = 0;
+
+  void Clear()
+  {
+    glDeleteFramebuffers(1, &id);
+    glDeleteTextures(1, &color_attachment);
+    glDeleteTextures(1, &depth_attachment);
+  }
 };
 
 Ref<Framebuffer> Framebuffer::Make(const FBSpecs& specs)
@@ -21,16 +28,21 @@ Ref<Framebuffer> Framebuffer::Make(const FBSpecs& specs)
 Framebuffer::Framebuffer(const FBSpecs& specs) : m_pimpl(MakeScope<Impl>())
 {
   m_pimpl->specs = specs;
-  Invalidated();
+  Invalidate();
 }
 
 GE::Framebuffer::~Framebuffer()
 {
-  glDeleteFramebuffers(1, &m_pimpl->id);
+  m_pimpl->Clear();
 }
 
-void Framebuffer::Invalidated()
+void Framebuffer::Invalidate()
 {
+  if (!glIsTexture(m_pimpl->id))
+  {
+    m_pimpl->Clear();
+  }
+
   // Create framebuffer
   glCreateFramebuffers(1, &m_pimpl->id);
   glBindFramebuffer(GL_FRAMEBUFFER, m_pimpl->id);
@@ -47,8 +59,8 @@ void Framebuffer::Invalidated()
                GL_RGBA,
                GL_UNSIGNED_BYTE,
                nullptr);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_pimpl->color_attachment, 0);
 
   // Create depth texture
@@ -74,6 +86,7 @@ void Framebuffer::Invalidated()
 void Framebuffer::Bind()
 {
   glBindFramebuffer(GL_FRAMEBUFFER, m_pimpl->id);
+  glViewport(0, 0, m_pimpl->specs.width, m_pimpl->specs.height);
 }
 
 void Framebuffer::Unbind()
@@ -84,4 +97,18 @@ void Framebuffer::Unbind()
 u32 GE::Framebuffer::GetColorAttachmentID() const
 {
   return m_pimpl->color_attachment;
+}
+
+IVec2 GE::Framebuffer::GetSize() const
+{
+  return { m_pimpl->specs.width, m_pimpl->specs.height };
+}
+
+void GE::Framebuffer::Resize(i32 w, i32 h)
+{
+  if (w == 0 || h == 0)
+    return;
+  m_pimpl->specs.width = w;
+  m_pimpl->specs.height = h;
+  Invalidate();
 }

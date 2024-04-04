@@ -149,10 +149,9 @@ public:
     return false;
   }
 
-  bool UpdateAspectRatio(WindowResizeData data)
+  bool UpdateAspectRatio(u32 w, u32 h)
   {
-    auto& [_, width, height] = data;
-    aspect_ratio = (f32)width / (f32)height;
+    aspect_ratio = (f32)w / (f32)h;
     projection_mat = Transform::Perspective(field_of_view, aspect_ratio, NEAR, FAR);
     return false;
   }
@@ -189,13 +188,14 @@ void EditorCamera::OnEvent(Event& event)
                   [this](const EvData& data) {
                     return m_pimpl->OnMouseReleased(*std::get_if<MouseButtonReleaseData>(&data));
                   });
-  Event::Dispatch(EvType::WINDOW_RESIZE,
-                  event,
-                  [this](const EvData& data) -> bool
-                  { return m_pimpl->UpdateAspectRatio(*std::get_if<WindowResizeData>(&data)); });
 }
 
 Mat4 EditorCamera::GetViewProjection() const
 {
   return m_pimpl->ViewProjection();
+}
+
+void GE::EditorCamera::OnResize(u32 w, u32 h)
+{
+  m_pimpl->UpdateAspectRatio(w, h);
 }

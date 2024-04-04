@@ -10,6 +10,12 @@
 
 namespace GE
 {
+  struct GE3D IVec2
+  {
+    i32 x;
+    i32 y;
+  };
+
   struct GE3D Vec2
   {
     f32 x;
@@ -25,6 +31,8 @@ namespace GE
       os << std::format("{:1.2f},{:1.2f}", vec.x, vec.y);
       return os;
     }
+    bool operator==(const Vec2& rhs) const;
+    bool operator!=(const Vec2& rhs) const;
   };
 
   struct GE3D IVec3

@@ -29,6 +29,16 @@ f32 Vec2::Dot(Vec2 other) const noexcept
   const auto& [x2, y2] = other;
   return x1 * x2 + y1 * y2;
 }
+bool Vec2::operator==(const Vec2& rhs) const
+{
+  return std::abs(x - rhs.x) < std::numeric_limits<f32>::epsilon() &&
+         std::abs(y - rhs.y) < std::numeric_limits<f32>::epsilon();
+}
+
+bool Vec2::operator!=(const Vec2& rhs) const
+{
+  return !(rhs == *this);
+}
 
 Vec3 Vec3::operator+(const Vec3& other) const
 {

@@ -16,7 +16,6 @@ namespace GE
     void Begin();
     void End();
     void OnAttach() override;
-    void OnUpdate(TimeStep) override;
     void OnDetach() override;
 
   private:
