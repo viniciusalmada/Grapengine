@@ -24,7 +24,7 @@ namespace
     case ShaderType::FRAGMENT:
       return GL_FRAGMENT_SHADER;
     }
-    __builtin_unreachable();
+    GE_ASSERT(false, "Unreachable code")
   }
 
   std::string GetGLShaderName(ShaderType type)
@@ -36,7 +36,7 @@ namespace
     case ShaderType::FRAGMENT:
       return "Fragment";
     }
-    __builtin_unreachable();
+    GE_ASSERT(false, "Unreachable code")
   }
 
   std::tuple<u32, bool> Compile(const std::string& src, ShaderType type)

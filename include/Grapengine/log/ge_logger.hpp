@@ -3,9 +3,16 @@
 
 #include "core/ge_macros.hpp"
 
+#define NOMINMAX
+#define WIN32_LEAN_AND_MEAN
+#define NOGDI
 #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
 #define SPDLOG_USE_STD_FORMAT
 #include <spdlog/spdlog.h>
+#undef far
+#undef near
+#undef NEAR
+#undef FAR
 
 namespace GE
 {

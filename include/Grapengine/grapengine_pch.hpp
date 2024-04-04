@@ -20,6 +20,7 @@
 #include <map>
 #include <memory>
 #include <numbers>
+#include <numeric>
 #include <random>
 #include <ranges>
 #include <set>

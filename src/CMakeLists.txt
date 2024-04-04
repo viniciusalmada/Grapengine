@@ -2,7 +2,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # #############################################################################
 # Engine
-add_library(${ENGINE_NAME} SHARED
+add_library(${ENGINE_NAME} STATIC
   ge_application.cpp
   ge_arithmetic.cpp
   ge_buffer_layout.cpp
@@ -128,6 +128,7 @@ target_link_libraries(${ENGINE_NAME} PUBLIC ImGui)
 # Dependencies from VCPKG
 find_package(glfw3 CONFIG REQUIRED)
 target_link_libraries(${ENGINE_NAME} PRIVATE glfw)
+target_link_libraries(ImGui PRIVATE glfw)
 
 find_package(glad CONFIG REQUIRED)
 target_link_libraries(${ENGINE_NAME} PRIVATE glad::glad)

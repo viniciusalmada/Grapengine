@@ -21,10 +21,10 @@ f32 Transform::Rad2Deg(f32 rad)
 Mat4 Transform::Translate(f32 xFac, f32 yFac, f32 zFac)
 {
   return Mat4{
-    { 1, 0, 0, xFac },
-    { 0, 1, 0, yFac },
-    { 0, 0, 1, zFac },
-    { 0, 0, 0, 1 },
+    { { 1, 0, 0, xFac } },
+    { { 0, 1, 0, yFac } },
+    { { 0, 0, 1, zFac } },
+    { { 0, 0, 0, 1 } },
   };
 }
 
@@ -33,10 +33,10 @@ Mat4 Transform::RotateX(f32 degrees)
   auto c = std::cos(Deg2Rad(degrees));
   auto s = std::sin(Deg2Rad(degrees));
   return Mat4{
-    { 1, 0, 0, 0 },
-    { 0, c, -s, 0 },
-    { 0, s, c, 0 },
-    { 0, 0, 0, 1 },
+    { { 1, 0, 0, 0 } },
+    { { 0, c, -s, 0 } },
+    { { 0, s, c, 0 } },
+    { { 0, 0, 0, 1 } },
   };
 }
 
@@ -44,7 +44,10 @@ Mat4 Transform::RotateY(f32 degrees)
 {
   auto c = std::cos(Deg2Rad(degrees));
   auto s = std::sin(Deg2Rad(degrees));
-  return Mat4{ { c, 0, s, 0 }, { 0, 1, 0, 0 }, { -s, 0, c, 0 }, { 0, 0, 0, 1 } };
+  return Mat4{ { { c, 0, s, 0 } }, //
+               { { 0, 1, 0, 0 } },
+               { { -s, 0, c, 0 } },
+               { { 0, 0, 0, 1 } } };
 }
 
 Mat4 Transform::RotateZ(f32 degrees)
@@ -52,10 +55,10 @@ Mat4 Transform::RotateZ(f32 degrees)
   auto c = std::cos(Deg2Rad(degrees));
   auto s = std::sin(Deg2Rad(degrees));
   return Mat4{
-    { c, -s, 0, 0 },
-    { s, c, 0, 0 },
-    { 0, 0, 1, 0 },
-    { 0, 0, 0, 1 },
+    { { c, -s, 0, 0 } },
+    { { s, c, 0, 0 } },
+    { { 0, 0, 1, 0 } },
+    { { 0, 0, 0, 1 } },
   };
 }
 
@@ -87,10 +90,10 @@ Mat4 Transform::Rotate(f32 degrees, const Vec3& vector)
 Mat4 Transform::Scale(f32 xFac, f32 yFac, f32 zFac)
 {
   return Mat4{
-    { xFac, 0, 0, 0 },
-    { 0, yFac, 0, 0 },
-    { 0, 0, zFac, 0 },
-    { 0, 0, 0, 1 },
+    { { xFac, 0, 0, 0 } },
+    { { 0, yFac, 0, 0 } },
+    { { 0, 0, zFac, 0 } },
+    { { 0, 0, 0, 1 } },
   };
 }
 
@@ -113,17 +116,17 @@ Mat4 Transform::LookAt(const Vec3& eye, const Vec3& target, const Vec3& up)
   const auto& [Dx, Dy, Dz] = z_eye;
 
   Mat4 m1{
-    { Rx, Ry, Rz, 0 },
-    { Ux, Uy, Uz, 0 },
-    { Dx, Dy, Dz, 0 },
-    { 0, 0, 0, 1 },
+    { { Rx, Ry, Rz, 0 } },
+    { { Ux, Uy, Uz, 0 } },
+    { { Dx, Dy, Dz, 0 } },
+    { { 0, 0, 0, 1 } },
   };
 
   Mat4 m2{
-    { 1, 0, 0, -eye.x },
-    { 0, 1, 0, -eye.y },
-    { 0, 0, 1, -eye.z },
-    { 0, 0, 0, 1 },
+    { { 1, 0, 0, -eye.x } },
+    { { 0, 1, 0, -eye.y } },
+    { { 0, 0, 1, -eye.z } },
+    { { 0, 0, 0, 1 } },
   };
 
   auto res = m1 * m2;
@@ -134,10 +137,10 @@ Mat4 Transform::LookAt(const Vec3& eye, const Vec3& target, const Vec3& up)
 Mat4 Transform::Identity()
 {
   return Mat4{
-    { 1, 0, 0, 0 },
-    { 0, 1, 0, 0 },
-    { 0, 0, 1, 0 },
-    { 0, 0, 0, 1 },
+    { { 1, 0, 0, 0 } },
+    { { 0, 1, 0, 0 } },
+    { { 0, 0, 1, 0 } },
+    { { 0, 0, 0, 1 } },
   };
 }
 
@@ -146,10 +149,10 @@ Mat4 Transform::Perspective(f32 fovDegrees, f32 aspectRatio, f32 near, f32 far)
   auto tan_half_fov = std::tan(Deg2Rad(fovDegrees) / 2.0f);
 
   Mat4 res{
-    { 1 / (aspectRatio * tan_half_fov), 0, 0, 0 },
-    { 0, 1 / (tan_half_fov), 0, 0 },
-    { 0, 0, -(far + near) / (far - near), -(2 * far * near) / (far - near) },
-    { 0, 0, -1, 0 },
+    { { 1 / (aspectRatio * tan_half_fov), 0, 0, 0 } },
+    { { 0, 1 / (tan_half_fov), 0, 0 } },
+    { { 0, 0, -(far + near) / (far - near), -(2 * far * near) / (far - near) } },
+    { { 0, 0, -1, 0 } },
   };
 
   return res;
