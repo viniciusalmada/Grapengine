@@ -2,35 +2,84 @@
 
 using namespace GE;
 
-struct Event::Impl
+namespace
+{
+  EventHandler INVALID_HANDLER;
+}
+
+struct EventHandler::Impl
 {
   EvData data;
   bool handled = false;
 };
 
-Event::Event(EvData data) : m_pimpl(MakeScope<Impl>())
+EventHandler::EventHandler() : m_pimpl(MakeScope<Impl>()) {}
+
+void GE::EventHandler::Then(const std::function<void()>& action)
 {
-  m_pimpl->data = std::move(data);
+  if (this == &INVALID_HANDLER)
+    return;
+
+  action();
+  m_pimpl->handled = true;
+}
+
+void GE::EventHandler::Then(const std::function<void(const EvData&)>& action)
+{
+  if (this == &INVALID_HANDLER)
+    return;
+
+  action(std::ref(m_pimpl->data));
+  m_pimpl->handled = true;
+}
+
+void GE::EventHandler::ThenWithRes(const std::function<bool(const EvData&)>& action)
+{
+  if (this == &INVALID_HANDLER)
+    return;
+
+  m_pimpl->handled = action(std::ref(m_pimpl->data));
+}
+
+GE::EventHandler::operator bool() const
+{
+  return m_pimpl->handled;
+}
+void GE::EventHandler::SetData(EvData data)
+{
+  m_pimpl->data = data;
+}
+
+EventHandler::~EventHandler() = default;
+
+struct Event::Impl
+{
+  EventHandler handler;
+  EvType type;
+};
+
+Event::Event(EvType type, EvData data) : m_pimpl(MakeScope<Impl>())
+{
+  m_pimpl->handler.SetData(std::move(data));
+  m_pimpl->type = type;
 }
 
 Event::~Event() = default;
 
 bool Event::IsHandled() const
 {
-  return m_pimpl->handled;
-}
-
-void Event::SetHandled(bool handled)
-{
-  m_pimpl->handled = handled;
+  return bool(m_pimpl->handler);
 }
 
 EvType Event::GetType() const
 {
-  return std::visit(TypeGetter{ [](auto&& data) { return std::get<0>(data); } }, m_pimpl->data);
+  return m_pimpl->type;
 }
 
-const EvData& Event::GetData() const
+EventHandler& GE::Event::When(EvType t)
 {
-  return m_pimpl->data;
+  if (this->GetType() != t)
+    return INVALID_HANDLER;
+
+  return m_pimpl->handler;
 }

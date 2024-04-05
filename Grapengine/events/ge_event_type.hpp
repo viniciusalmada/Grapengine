@@ -28,16 +28,11 @@ namespace GE
     MOUSE_SCROLL
   };
 
-  using WindowCloseData = std::tuple<EvType>;
-  using WindowResizeData = std::tuple<EvType, u32, u32>;
-  using KeyPressData = std::tuple<EvType, KeyCode>;
-  using KeyReleaseData = KeyPressData;
-  using MouseButtonPressData = KeyPressData;
-  using MouseButtonReleaseData = KeyPressData;
-  using MouseMoveData = std::tuple<EvType, f32, f32>;
-  using MouseScrollData = MouseMoveData;
+  using WindowResizeData = std::pair<u32, u32>;
+  using KeyCodeData = KeyCode;
+  using MousePairData = std::pair<f32, f32>;
 
-  using EvData = std::variant<WindowCloseData, WindowResizeData, KeyPressData, MouseMoveData>;
+  using EvData = std::variant<WindowResizeData, KeyCodeData, MousePairData, std::monostate>;
 
   template <typename... Ts>
   struct TypeGetter : Ts...

@@ -37,25 +37,18 @@ struct Application::Impl
 
   void OnEvent(Event& event)
   {
-    for (const auto& layer : layers)
+    imgui_layer->OnEvent(event);
+
+    for (const auto& layer : layers | std::views::reverse)
+    {
+      if (event.IsHandled())
+        break;
       layer->OnEvent(event);
+    }
 
-    Event::Dispatch(EvType::WINDOW_CLOSE,
-                    event,
-                    [this](auto&&)
-                    {
-                      Finish();
-                      return true;
-                    });
-
-    Event::Dispatch(EvType::WINDOW_RESIZE,
-                    event,
-                    [](const EvData& ev)
-                    {
-                      const auto& [_, w, h] = *std::get_if<WindowResizeData>(&ev);
-                      Renderer::SetViewport(0, 0, w, h);
-                      return true;
-                    });
+    event //
+      .When(EvType::WINDOW_CLOSE)
+      .Then([this] { Finish(); });
   }
 
   void Run()
@@ -72,7 +65,6 @@ struct Application::Impl
 
         imgui_layer->Begin();
         std::ranges::for_each(layers, [&](auto&& l) { l->OnImGuiUpdate(); });
-        imgui_layer->OnUpdate(step);
         imgui_layer->End();
       }
 

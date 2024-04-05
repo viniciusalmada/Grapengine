@@ -105,17 +105,15 @@ public:
     view_mat = Transform::LookAt(eye, focal_point, up);
   }
 
-  bool OnMouseScroll(MouseScrollData data)
+  void OnMouseScroll(MousePairData data)
   {
-    const f32 delta = std::get<2>(data) * 0.01f;
+    const f32 delta = std::get<1>(data) * 0.01f;
     MouseZoom(delta);
     UpdateView();
-    return true;
   }
 
-  bool OnMousePressed(MouseButtonPressData data)
+  bool OnMousePressed(KeyCodeData bt)
   {
-    const auto& [_, bt] = data;
     if (bt == KeyCode::MOUSE_BT_LEFT)
     {
       mouse_init_pos = Input::Get().GetMouseXY();
@@ -133,9 +131,8 @@ public:
     return false;
   }
 
-  bool OnMouseReleased(MouseButtonPressData data)
+  bool OnMouseReleased(KeyCodeData bt)
   {
-    const auto& [_, bt] = data;
     if (bt == KeyCode::MOUSE_BT_LEFT)
     {
       can_rotate = false;
@@ -173,21 +170,20 @@ void EditorCamera::OnUpdate(TimeStep ts) const
 
 void EditorCamera::OnEvent(Event& event)
 {
-  Event::Dispatch(EvType::MOUSE_SCROLL,
-                  event,
-                  [this](const EvData& data)
-                  { return m_pimpl->OnMouseScroll(*std::get_if<MouseScrollData>(&data)); });
+  event //
+    .When(EvType::MOUSE_SCROLL)
+    .Then([this](const EvData& data)
+          { m_pimpl->OnMouseScroll(*std::get_if<MousePairData>(&data)); });
 
-  Event::Dispatch(EvType::MOUSE_BUTTON_PRESSED,
-                  event,
-                  [this](const EvData& data)
-                  { return m_pimpl->OnMousePressed(*std::get_if<MouseButtonPressData>(&data)); });
+  event //
+    .When(EvType::MOUSE_BUTTON_PRESSED)
+    .ThenWithRes([this](const EvData& data) -> bool
+                 { return m_pimpl->OnMousePressed(*std::get_if<KeyCodeData>(&data)); });
 
-  Event::Dispatch(EvType::MOUSE_BUTTON_RELEASE,
-                  event,
-                  [this](const EvData& data) {
-                    return m_pimpl->OnMouseReleased(*std::get_if<MouseButtonReleaseData>(&data));
-                  });
+  event //
+    .When(EvType::MOUSE_BUTTON_RELEASE)
+    .ThenWithRes([this](const EvData& data) -> bool
+                 { return m_pimpl->OnMouseReleased(*std::get_if<KeyCodeData>(&data)); });
 }
 
 Mat4 EditorCamera::GetViewProjection() const

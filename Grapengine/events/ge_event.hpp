@@ -6,28 +6,35 @@
 #include "ge_event_type.hpp"
 namespace GE
 {
+  class EventHandler
+  {
+  public:
+    explicit EventHandler();
+    ~EventHandler();
+
+    void SetData(EvData data);
+
+    void Then(const std::function<void()>& action);
+    void Then(const std::function<void(const EvData&)>& action);
+    void ThenWithRes(const std::function<bool(const EvData&)>& action);
+
+    explicit operator bool() const;
+
+  private:
+    POINTER_TO_IMPLEMENTATION_IDIOM
+  };
+
   class Event
   {
   public:
-    GE3D explicit Event(EvData data);
+    GE3D explicit Event(EvType type, EvData data = std::monostate());
     GE3D ~Event();
 
     [[nodiscard]] GE3D bool IsHandled() const;
-    void GE3D SetHandled(bool handled);
 
     [[nodiscard]] GE3D EvType GetType() const;
-    [[nodiscard]] GE3D const EvData& GetData() const;
 
-    template <typename Fun>
-    static void Dispatch(EvType t, Event& e, Fun fun)
-    {
-      EvType type = e.GetType();
-      if (type != t)
-        return;
-
-      bool handled = fun(std::ref(e.GetData()));
-      e.SetHandled(handled);
-    }
+    EventHandler& When(EvType t);
 
   private:
     POINTER_TO_IMPLEMENTATION_IDIOM

@@ -63,7 +63,7 @@ struct Window::Impl
     //-----------------------------
     auto close_callback = [](GLFWwindow* win)
     {
-      Event event{ std::make_tuple(EvType::WINDOW_CLOSE) };
+      Event event{ EvType::WINDOW_CLOSE };
       auto* data = (Window*)glfwGetWindowUserPointer(win);
       data->m_pimpl->event_callback(event);
     };
@@ -72,9 +72,8 @@ struct Window::Impl
     //-----------------------------
     auto resize_callback = [](GLFWwindow* win, i32 width, i32 height)
     {
-      Event event{
-        std::make_tuple(EvType::WINDOW_RESIZE, static_cast<u32>(width), static_cast<u32>(height))
-      };
+      Event event{ EvType::WINDOW_RESIZE,
+                   std::make_pair(static_cast<u32>(width), static_cast<u32>(height)) };
       auto* data = (Window*)glfwGetWindowUserPointer(win);
       data->m_pimpl->event_callback(event);
       data->m_pimpl->window_props->width = static_cast<u32>(width);
@@ -91,7 +90,7 @@ struct Window::Impl
       else if (action == GLFW_RELEASE)
         type = EvType::KEY_RELEASE;
 
-      Event event{ std::make_tuple(type, ConvertGLFWtoGE(key)) };
+      Event event{ type, ConvertGLFWtoGE(key) };
       auto* data = (Window*)glfwGetWindowUserPointer(win);
       data->m_pimpl->event_callback(event);
     };
@@ -108,7 +107,7 @@ struct Window::Impl
       else if (action == GLFW_RELEASE)
         type = EvType::MOUSE_BUTTON_RELEASE;
 
-      Event event{ std::make_tuple(type, ConvertGLFWtoGE(button)) };
+      Event event{ type, ConvertGLFWtoGE(button) };
       auto* data = (Window*)glfwGetWindowUserPointer(win);
       data->m_pimpl->event_callback(event);
     };
@@ -117,7 +116,7 @@ struct Window::Impl
     //-----------------------------
     auto mouse_move = [](GLFWwindow* win, f64 xpos, f64 ypos)
     {
-      Event event{ std::make_tuple(EvType::MOUSE_MOVE, (f32)xpos, (f32)ypos) };
+      Event event{ EvType::MOUSE_MOVE, std::make_pair((f32)xpos, (f32)ypos) };
       auto* data = (Window*)glfwGetWindowUserPointer(win);
       data->m_pimpl->event_callback(event);
     };
@@ -128,7 +127,7 @@ struct Window::Impl
     {
       //      if (ImGui::GetIO().WantCaptureMouse)
       //        return;
-      Event event{ std::make_tuple(EvType::MOUSE_SCROLL, (f32)xoffset, (f32)yoffset) };
+      Event event{ EvType::MOUSE_SCROLL, std::make_pair((f32)xoffset, (f32)yoffset) };
       auto* data = (Window*)glfwGetWindowUserPointer(win);
       data->m_pimpl->event_callback(event);
     };
