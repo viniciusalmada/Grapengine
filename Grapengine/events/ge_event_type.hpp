@@ -29,10 +29,9 @@ namespace GE
   };
 
   using WindowResizeData = std::pair<u32, u32>;
-  using KeyCodeData = KeyCode;
   using MousePairData = std::pair<f32, f32>;
 
-  using EvData = std::variant<WindowResizeData, KeyCodeData, MousePairData, std::monostate>;
+  using EvData = std::variant<WindowResizeData, KeyCode, MousePairData, std::monostate>;
 
   template <typename... Ts>
   struct TypeGetter : Ts...

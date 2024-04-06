@@ -112,7 +112,7 @@ public:
     UpdateView();
   }
 
-  bool OnMousePressed(KeyCodeData bt)
+  bool OnMousePressed(KeyCode bt)
   {
     if (bt == KeyCode::MOUSE_BT_LEFT)
     {
@@ -131,7 +131,7 @@ public:
     return false;
   }
 
-  bool OnMouseReleased(KeyCodeData bt)
+  bool OnMouseReleased(KeyCode bt)
   {
     if (bt == KeyCode::MOUSE_BT_LEFT)
     {
@@ -178,12 +178,12 @@ void EditorCamera::OnEvent(Event& event)
   event //
     .When(EvType::MOUSE_BUTTON_PRESSED)
     .ThenWithRes([this](const EvData& data) -> bool
-                 { return m_pimpl->OnMousePressed(*std::get_if<KeyCodeData>(&data)); });
+                 { return m_pimpl->OnMousePressed(*std::get_if<KeyCode>(&data)); });
 
   event //
     .When(EvType::MOUSE_BUTTON_RELEASE)
     .ThenWithRes([this](const EvData& data) -> bool
-                 { return m_pimpl->OnMouseReleased(*std::get_if<KeyCodeData>(&data)); });
+                 { return m_pimpl->OnMouseReleased(*std::get_if<KeyCode>(&data)); });
 }
 
 Mat4 EditorCamera::GetViewProjection() const

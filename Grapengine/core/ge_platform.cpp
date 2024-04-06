@@ -11,5 +11,5 @@ u64 Platform::GetCurrentTimeMS()
   auto duration = now.time_since_epoch();
   auto millis = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
 
-  return millis;
+  return static_cast<u64>(millis);
 }

@@ -40,7 +40,7 @@ namespace GE
     [[nodiscard]] GE3D EvType GetType() const;
     [[nodiscard]] GE3D bool IsType(EvType) const;
 
-    EventHandler& When(EvType t);
+    [[nodiscard]] EventHandler& When(EvType t);
 
   private:
     POINTER_TO_IMPLEMENTATION_IDIOM
