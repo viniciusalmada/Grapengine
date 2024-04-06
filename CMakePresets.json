@@ -117,6 +117,11 @@
       "jobs": 12
     },
     {
+      "name": "CLANG Dbg",
+      "configurePreset": "clang-gcc-debug",
+      "jobs": 12
+    },
+    {
       "name": "MSVC Dbg",
       "configurePreset": "cl-debug",
       "jobs": 12
