@@ -17,7 +17,7 @@ target_link_libraries(EngineTests PRIVATE GTest::gtest GTest::gtest_main GTest::
 target_include_directories(EngineTests PRIVATE ${ENGINE_INCLUDE})
 
 target_link_libraries(EngineTests
-  PRIVATE ${ENGINE_NAME}
+  PRIVATE Grapengine
 )
 
 find_package(glfw3 CONFIG REQUIRED)
