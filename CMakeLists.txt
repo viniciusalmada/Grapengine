@@ -26,6 +26,8 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)
   endif ()
 endif ()
 
+include(CompilationOptions.cmake)
+
 # #############################################################################
 # Engine
 add_subdirectory(Grapengine)
