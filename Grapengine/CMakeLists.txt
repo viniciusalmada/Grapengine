@@ -2,7 +2,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # #############################################################################
 # Engine
-add_library(${ENGINE_NAME} STATIC
+add_library(Grapengine STATIC
   controllers/ge_app_controller.cpp
   core/ge_application.cpp
   core/ge_platform.cpp
@@ -42,14 +42,13 @@ add_library(${ENGINE_NAME} STATIC
   utils/ge_io.cpp
   utils/ge_random.cpp
 )
-target_precompile_headers(${ENGINE_NAME} PRIVATE ${ENGINE_INCLUDE}/grapengine_pch.hpp)
-target_include_directories(${ENGINE_NAME} PUBLIC
-  ${ENGINE_INCLUDE}
+target_precompile_headers(Grapengine PRIVATE ${CMAKE_SOURCE_DIR}/Grapengine/grapengine_pch.hpp)
+target_include_directories(Grapengine
+  PUBLIC ${CMAKE_SOURCE_DIR}/Grapengine
+  PUBLIC SYSTEM "${CMAKE_SOURCE_DIR}/imgui"
 )
 
-target_include_directories(Grapengine PUBLIC SYSTEM "${CMAKE_SOURCE_DIR}/imgui")
-
-target_compile_definitions(${ENGINE_NAME} PRIVATE
+target_compile_definitions(Grapengine PRIVATE
   GLFW_INCLUDE_NONE
   GRAPENGINE_EXPORTS
   GRAPENGINE_CORE
@@ -57,14 +56,14 @@ target_compile_definitions(${ENGINE_NAME} PRIVATE
 
 message(STATUS "Setting up platform = ${CMAKE_SYSTEM_NAME}")
 if (CMAKE_SYSTEM_NAME STREQUAL Windows)
-  target_compile_definitions(${ENGINE_NAME} PUBLIC GE_PLATFORM_WINDOWS)
+  target_compile_definitions(Grapengine PUBLIC GE_PLATFORM_WINDOWS)
 elseif (CMAKE_SYSTEM_NAME STREQUAL Linux)
-  target_compile_definitions(${ENGINE_NAME} PUBLIC GE_PLATFORM_LINUX)
+  target_compile_definitions(Grapengine PUBLIC GE_PLATFORM_LINUX)
 else ()
   message(FATAL_ERROR "Unsupported platform")
 endif ()
 
-target_link_libraries(${ENGINE_NAME} PRIVATE GrapengineCompileOptions)
+target_link_libraries(Grapengine PRIVATE GrapengineCompileOptions)
 
 # ############################################################################
 # imgui
@@ -79,19 +78,19 @@ add_library(ImGui STATIC
   ${CMAKE_SOURCE_DIR}/vendor/imgui/misc/cpp/imgui_stdlib.cpp
 )
 target_include_directories(ImGui PUBLIC ${CMAKE_SOURCE_DIR}/vendor/imgui)
-target_link_libraries(${ENGINE_NAME} PUBLIC ImGui)
+target_link_libraries(Grapengine PUBLIC ImGui)
 
 # #############################################################################
 # Dependencies from VCPKG
 find_package(glfw3 CONFIG REQUIRED)
-target_link_libraries(${ENGINE_NAME} PRIVATE glfw)
+target_link_libraries(Grapengine PRIVATE glfw)
 target_link_libraries(ImGui PRIVATE glfw)
 
 find_package(glad CONFIG REQUIRED)
-target_link_libraries(${ENGINE_NAME} PRIVATE glad::glad)
+target_link_libraries(Grapengine PRIVATE glad::glad)
 
 find_package(Stb REQUIRED)
-target_include_directories(${ENGINE_NAME} PRIVATE ${Stb_INCLUDE_DIR})
+target_include_directories(Grapengine PRIVATE ${Stb_INCLUDE_DIR})
 
 find_package(spdlog CONFIG REQUIRED)
-target_link_libraries(${ENGINE_NAME} PUBLIC spdlog::spdlog_header_only)
+target_link_libraries(Grapengine PUBLIC spdlog::spdlog_header_only)
