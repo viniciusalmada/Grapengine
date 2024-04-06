@@ -25,7 +25,6 @@ namespace
     case ShaderType::FRAGMENT:
       return GL_FRAGMENT_SHADER;
     }
-    Platform::Unreachable();
   }
 
   std::string GetGLShaderName(ShaderType type)
@@ -37,7 +36,6 @@ namespace
     case ShaderType::FRAGMENT:
       return "Fragment";
     }
-    Platform::Unreachable();
   }
 
   std::tuple<u32, bool> Compile(const std::string& src, ShaderType type)
