@@ -3,9 +3,11 @@
 
 #include "core/ge_macros.hpp"
 
-#define NOMINMAX
-#define WIN32_LEAN_AND_MEAN
-#define NOGDI
+#if defined(GE_PLATFORM_WINDOWS)
+  #define NOMINMAX
+  #define WIN32_LEAN_AND_MEAN
+  #define NOGDI
+#endif
 #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
 #define SPDLOG_USE_STD_FORMAT
 #include <spdlog/spdlog.h>

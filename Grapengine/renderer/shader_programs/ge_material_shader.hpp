@@ -2,10 +2,8 @@
 #define GRAPENGINE_MATERIAL_SHADER_HPP
 
 #include "drawables/ge_color.hpp"
+#include "math/ge_vector.hpp"
 #include "renderer/ge_ishader_program.hpp"
-
-#include <math/ge_vector.hpp>
-#include <utils/ge_ipubsub.hpp>
 
 namespace GE
 {
@@ -25,9 +23,9 @@ namespace GE
     void UpdateAmbientColor(Color color);
     void UpdateAmbientStrength(f32 strength);
 
-    void UpdateLightPosition(std::vector<Vec3> pos);
+    void UpdateLightPosition(const std::vector<Vec3>& pos);
     void UpdateLightColor(std::vector<Color> color);
-    void UpdateLightStrength(std::vector<f32> strength);
+    void UpdateLightStrength(const std::vector<f32>& strength);
 
     [[nodiscard]] Ref<BufferLayout> GetLayout() const override;
 

@@ -59,7 +59,7 @@ EventHandler::~EventHandler() = default;
 struct Event::Impl
 {
   EventHandler handler;
-  EvType type;
+  EvType type = EvType::NONE;
 };
 
 Event::Event(EvType type, EvData data) : m_pimpl(MakeScope<Impl>())

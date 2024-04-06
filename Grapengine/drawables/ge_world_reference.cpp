@@ -21,13 +21,13 @@ struct WorldReference::Impl
   Ref<Cylinder> y_axis;
   Ref<Cylinder> z_axis;
   bool show_platform = true;
-  u64 platform_side_size;
+  u64 platform_side_size = 10;
 };
 
 GE::WorldReference::WorldReference(const Ref<IShaderProgram>& shader, u64 platformSize) :
     m_pimpl(MakeScope<Impl>())
 {
-  m_pimpl->shader = std::move(shader);
+  m_pimpl->shader = shader;
   m_pimpl->platform_side_size = platformSize;
   const f32 SIDE_SIZE = static_cast<f32>(m_pimpl->platform_side_size);
   m_pimpl->blank_texture = MakeRef<Texture2D>();

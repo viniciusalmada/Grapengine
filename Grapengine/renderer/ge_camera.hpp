@@ -22,14 +22,14 @@ namespace GE
     void StopMoving() const;
     void ChangeLocation(Vec2 currentPoint) const;
 
-    bool IsRotating() const;
+    [[nodiscard]] bool IsRotating() const;
     void StartRotating(Vec2 referencePoint) const;
     void StopRotating() const;
     void ChangeAngle(Vec2 currentPoint) const;
 
     void SetZoom(f32 diffY) const;
 
-    GE3D Mat4 GetViewProjection() const;
+    GE3D [[nodiscard]] Mat4 GetViewProjection() const;
     void SetAspectRatio(f32 ratio) const;
 
   private:

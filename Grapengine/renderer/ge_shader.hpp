@@ -16,11 +16,11 @@ namespace GE
     GE3D Shader(const std::string& vertexSrc, const std::string& fragmentSrc);
     GE3D ~Shader();
 
-    [[maybe_unused]] GE3D bool IsValid() const;
-    [[maybe_unused]] GE3D bool IsBound() const;
+    GE3D [[nodiscard]] bool IsValid() const;
+    GE3D [[nodiscard]] bool IsBound() const;
 
     void Bind();
-    GE3D void Unbind();
+    GE3D void Unbind() const;
 
     void UploadMat4F(const std::string& name, const Mat4& mat);
 

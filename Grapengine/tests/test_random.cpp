@@ -10,7 +10,7 @@ TEST(Random, Int)
 {
   constexpr u32 OPTIONS = 10;
   std::array<u32, OPTIONS> counting{ 0 };
-  for (int i = 0; i < OPTIONS * 100; ++i)
+  for (u32 i = 0; i < OPTIONS * 100; ++i)
   {
     u32 random = Random::GenInt(0, OPTIONS - 1);
     counting[random]++;
@@ -27,10 +27,10 @@ TEST(Random, Float)
 {
   constexpr u32 OPTIONS = 10;
   std::array<u32, OPTIONS> counting{ 0 };
-  for (int i = 0; i < OPTIONS * 100; ++i)
+  for (u32 i = 0; i < OPTIONS * 100; ++i)
   {
     float random = Random::GenFloat(0, OPTIONS);
-    u32 id = std::floor(random);
+    u32 id = static_cast<u32>(std::floor(random));
     counting[id]++;
   }
 

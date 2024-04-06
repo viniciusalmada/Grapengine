@@ -1,6 +1,5 @@
 #include "events/ge_event.hpp"
 
-#include <GLFW/glfw3.h>
 #include <gtest/gtest.h>
 
 using namespace GE;

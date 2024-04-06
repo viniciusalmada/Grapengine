@@ -1,5 +1,3 @@
-#include "renderer/ge_camera.hpp"
-
 #include <gtest/gtest.h>
 #include <math/ge_transformations.hpp>
 

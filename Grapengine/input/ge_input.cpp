@@ -1,10 +1,9 @@
 #include "input/ge_input.hpp"
 
+#include "core/ge_assert.hpp"
 #include "core/ge_window.hpp"
 
 #include <GLFW/glfw3.h>
-#include <core/ge_assert.hpp>
-#include <imgui.h>
 
 using namespace GE;
 
@@ -37,7 +36,7 @@ Vec2 GE::Input::GetMouseXY()
 
 void GE::Input::Initialize(Ref<Window> window)
 {
-  GE_INFO("Input polling creation");
+  GE_INFO("Input polling creation")
 
   GE_ASSERT(input_window == nullptr, "Input already initialized")
   input_window = std::move(window);

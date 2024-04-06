@@ -37,6 +37,7 @@
 #include "core/ge_type_aliases.hpp"
 #include "core/ge_memory.hpp"
 #include "core/ge_macros.hpp"
+
 #include "log/ge_logger.hpp"
 // clang-format on
 

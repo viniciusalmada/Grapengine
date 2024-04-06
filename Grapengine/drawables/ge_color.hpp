@@ -27,7 +27,7 @@ namespace GE
       B = static_cast<u8>(rgb.z * 255.0f);
     }
 
-    Vec4 ToVec4() const
+    [[nodiscard]] Vec4 ToVec4() const
     {
       return {
         (f32)R / 255.0f,
@@ -37,7 +37,7 @@ namespace GE
       };
     }
 
-    Vec3 ToVec3() const
+    [[nodiscard]] Vec3 ToVec3() const
     {
       return {
         (f32)R / 255.0f,
@@ -49,12 +49,12 @@ namespace GE
 
   namespace Colors
   {
-    constexpr Color BLACK{ 0x000000FF };
-    constexpr Color WHITE{ 0xFFFFFFFF };
-    constexpr Color RED{ 0xFF3333FF };
-    constexpr Color BLUE{ 0x3333FFFF };
-    constexpr Color GREEN{ 0x33FF33FF };
-    constexpr Color MAGENTA{ 0xFF33FFFF };
+    [[maybe_unused]] constexpr Color BLACK{ 0x000000FF };
+    [[maybe_unused]] constexpr Color WHITE{ 0xFFFFFFFF };
+    [[maybe_unused]] constexpr Color RED{ 0xFF3333FF };
+    [[maybe_unused]] constexpr Color BLUE{ 0x3333FFFF };
+    [[maybe_unused]] constexpr Color GREEN{ 0x33FF33FF };
+    [[maybe_unused]] constexpr Color MAGENTA{ 0xFF33FFFF };
   }
 }
 

@@ -7,6 +7,8 @@ namespace GE
   {
   public:
     static u64 GetCurrentTimeMS();
+
+    [[noreturn]] static void Unreachable();
   };
 }
 

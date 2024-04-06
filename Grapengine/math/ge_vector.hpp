@@ -23,8 +23,8 @@ namespace GE
     Vec2 operator-(const Vec2& other) const noexcept;
     Vec2 operator+(const Vec2& other) const noexcept;
     Vec2 operator*(f32 fac) const;
-    f32 Length() const noexcept;
-    f32 Dot(Vec2 vec2) const noexcept;
+    [[nodiscard]] f32 Length() const noexcept;
+    [[nodiscard]] f32 Dot(Vec2 vec2) const noexcept;
 
     friend std::ostream& operator<<(std::ostream& os, const Vec2& vec)
     {
@@ -65,7 +65,7 @@ namespace GE
       os << std::format("{:1.2f},{:1.2f},{:1.2f}", vec3.x, vec3.y, vec3.z);
       return os;
     }
-    f32 Length() const;
+    [[nodiscard]] f32 Length() const;
   };
 
   struct Vec4

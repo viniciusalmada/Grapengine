@@ -15,16 +15,16 @@ struct Ctrl::App::Impl
 
   void Close()
   {
-    GE_ASSERT(ctrl_app.has_value(), "Controller not initialized");
-    GE_ASSERT(application != nullptr, "Application destroyed");
+    GE_ASSERT(ctrl_app.has_value(), "Controller not initialized")
+    GE_ASSERT(application != nullptr, "Application destroyed")
 
     application->Close();
   }
 
   void AllowImGuiEvents(bool value)
   {
-    GE_ASSERT(ctrl_app.has_value(), "Controller not initialized");
-    GE_ASSERT(application != nullptr, "Application destroyed");
+    GE_ASSERT(ctrl_app.has_value(), "Controller not initialized")
+    GE_ASSERT(application != nullptr, "Application destroyed")
 
     application->GetImGuiLayer()->AllowMouseAndKeyboardEvents(value);
   }

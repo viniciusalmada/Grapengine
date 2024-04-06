@@ -3,6 +3,7 @@
 #include "core/ge_assert.hpp"
 #include "utils/ge_io.hpp"
 
+#include <core/ge_platform.hpp>
 #include <glad/glad.h>
 
 using namespace GE;
@@ -24,7 +25,7 @@ namespace
     case ShaderType::FRAGMENT:
       return GL_FRAGMENT_SHADER;
     }
-    GE_ASSERT(false, "Unreachable code")
+    Platform::Unreachable();
   }
 
   std::string GetGLShaderName(ShaderType type)
@@ -36,7 +37,7 @@ namespace
     case ShaderType::FRAGMENT:
       return "Fragment";
     }
-    GE_ASSERT(false, "Unreachable code")
+    Platform::Unreachable();
   }
 
   std::tuple<u32, bool> Compile(const std::string& src, ShaderType type)
@@ -62,7 +63,7 @@ namespace
       std::stringstream ss;
       ss << "Failure at compiling the " << shader_name << " shader\n";
       ss << info_log.data();
-      GE_ASSERT(false, ss.str().c_str());
+      GE_ASSERT(false, ss.str().c_str())
 
       glDeleteShader(shader);
     }
@@ -103,7 +104,7 @@ namespace
       std::stringstream ss;
       ss << "Failure at linking program!\n";
       ss << info_log.data();
-      GE_ASSERT(false, ss.str().c_str());
+      GE_ASSERT(false, ss.str().c_str())
 
       glDeleteProgram(renderer_id);
 
@@ -136,14 +137,14 @@ struct Shader::Impl
 
   i32 RetrieveUniform(const std::string& name)
   {
-    GE_ASSERT(IsBound(), "Shader not bound");
+    GE_ASSERT(IsBound(), "Shader not bound")
 
   check:
     if (uniforms.contains(name))
       return uniforms[name];
 
     i32 location = glGetUniformLocation(renderer_id, name.c_str());
-    GE_ASSERT(location != -1, "Invalid uniform name");
+    GE_ASSERT(location != -1, "Invalid uniform name")
 
     uniforms[name] = location;
     goto check;
@@ -222,7 +223,7 @@ bool Shader::IsBound() const
   return m_pimpl->IsBound();
 }
 
-void Shader::Unbind()
+void Shader::Unbind() const
 {
   if (IsBound())
     glUseProgram(0);

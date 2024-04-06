@@ -3,7 +3,6 @@
 #include <GLFW/glfw3.h>
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
-#include <controllers/ge_app_controller.hpp>
 #include <core/ge_time_step.hpp>
 #include <imgui.h>
 
@@ -97,6 +96,8 @@ void ImGuiLayer::OnDetach()
 }
 void ImGuiLayer::Begin()
 {
+  if (m_pimpl->window == nullptr)
+    return;
   ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplGlfw_NewFrame();
   ImGui::NewFrame();

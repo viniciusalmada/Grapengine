@@ -16,7 +16,7 @@ struct VertexBuffer::Impl
 VertexBuffer::VertexBuffer(const void* ptr, u64 verticesSize, u32 parent) :
     m_pimpl(MakeScope<Impl>())
 {
-  GE_ASSERT(IsVAOBound(parent), "The associated VAO lacks a binding");
+  GE_ASSERT(IsVAOBound(parent), "The associated VAO lacks a binding")
 
   m_pimpl->parent = parent;
 
@@ -29,7 +29,7 @@ VertexBuffer::~VertexBuffer() = default;
 
 void VertexBuffer::Bind() const
 {
-  GE_ASSERT(IsVAOBound(m_pimpl->parent), "The associated VAO lacks a binding");
+  GE_ASSERT(IsVAOBound(m_pimpl->parent), "The associated VAO lacks a binding")
 
   glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->id);
 }

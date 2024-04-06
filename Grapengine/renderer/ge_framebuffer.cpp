@@ -5,6 +5,25 @@
 
 using namespace GE;
 
+namespace
+{
+  bool IsFramebufferBound(u32 fb)
+  {
+    u32 current_fb = 0;
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, (i32*)(&current_fb));
+    const bool is_any_fb_bound = current_fb != 0;
+    if (!is_any_fb_bound)
+      return false;
+
+    const bool is_fb_bound = current_fb == fb;
+    if (!is_fb_bound)
+      return false;
+
+    return true;
+  }
+
+}
+
 struct Framebuffer::Impl
 {
   FBSpecs specs;
@@ -78,7 +97,7 @@ void Framebuffer::Invalidate()
                          0);
 
   GE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE,
-            "Framebuffer is incomplete");
+            "Framebuffer is incomplete")
 
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
@@ -91,6 +110,7 @@ void Framebuffer::Bind()
 
 void Framebuffer::Unbind()
 {
+  GE_ASSERT(IsFramebufferBound(m_pimpl->id), "Framebuffer not bound")
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 

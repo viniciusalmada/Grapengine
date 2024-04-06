@@ -7,7 +7,7 @@ namespace GE
 {
   struct FBSpecs
   {
-    i32 width, height;
+    i32 width = 1, height = 1;
     u32 samples = 1;
     bool swap_chain_target = false;
   };

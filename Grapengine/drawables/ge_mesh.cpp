@@ -2,11 +2,9 @@
 
 #include "drawables/ge_color.hpp"
 #include "drawables/ge_cube.hpp"
+#include "drawables/ge_cylinder.hpp"
 #include "drawables/ge_draw_primitive.hpp"
 #include "renderer/ge_vertices_data.hpp"
-
-#include <drawables/ge_cylinder.hpp>
-#include <renderer/ge_renderer.hpp>
 
 using namespace GE;
 
@@ -38,7 +36,7 @@ GE::Mesh::Mesh(std::string_view path, const GE::Ref<GE::IShaderProgram>& shader)
   std::ifstream file{ std::string{ path } };
   if (!file.is_open())
   {
-    GE_ERROR("File do not found!");
+    GE_ERROR("File do not found!")
     return;
   }
   std::string line;
@@ -78,7 +76,7 @@ GE::Mesh::Mesh(std::string_view path, const GE::Ref<GE::IShaderProgram>& shader)
   }
 
   GE_TRACE("Read {} vertices", m_pimpl->vertices.size())
-  GE_TRACE("Read {} faces", m_pimpl->faces.size());
+  GE_TRACE("Read {} faces", m_pimpl->faces.size())
 
   const auto max_x = std::ranges::max(m_pimpl->vertices, {}, &Vec3::x);
   const auto min_x = std::ranges::min(m_pimpl->vertices, {}, &Vec3::x);

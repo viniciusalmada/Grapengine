@@ -1,6 +1,7 @@
 #include "renderer/ge_buffer_layout.hpp"
 
 #include <core/ge_assert.hpp>
+#include <core/ge_platform.hpp>
 
 using namespace GE;
 
@@ -35,7 +36,7 @@ namespace
     case ShaderDataType::Bool:
       return 1;
     }
-    GE_ASSERT(false, "Unreachable code")
+    Platform::Unreachable();
   }
 }
 

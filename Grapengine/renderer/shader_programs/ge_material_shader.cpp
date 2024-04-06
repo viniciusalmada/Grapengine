@@ -72,7 +72,7 @@ void GE::MaterialShader::UpdateAmbientStrength(f32 strength)
   m_pimpl->shader->UploadFloat("u_ambientStrength", strength);
 }
 
-void GE::MaterialShader::UpdateLightPosition(std::vector<Vec3> pos)
+void GE::MaterialShader::UpdateLightPosition(const std::vector<Vec3>& pos)
 {
   m_pimpl->shader->UploadVec3Array("u_lightPos", pos);
 }
@@ -86,7 +86,7 @@ void GE::MaterialShader::UpdateLightColor(std::vector<Color> color)
   m_pimpl->shader->UploadVec3Array("u_lightColor", colors_vec);
 }
 
-void GE::MaterialShader::UpdateLightStrength(std::vector<f32> strength)
+void GE::MaterialShader::UpdateLightStrength(const std::vector<f32>& strength)
 {
   m_pimpl->shader->UploadFloatArray("u_lightStrength", strength);
 }

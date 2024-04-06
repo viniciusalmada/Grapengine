@@ -42,9 +42,9 @@ namespace GE
     void OnUpdate();
 
     GE3D void Clear(Color color) const;
-    GE3D void Draw(Ref<Drawable> drawable) const;
+    GE3D void Draw(const Ref<Drawable>& drawable) const;
 
-    std::any GetNativeHandler() const;
+    [[nodiscard]] std::any GetNativeHandler() const;
 
   private:
     POINTER_TO_IMPLEMENTATION_IDIOM

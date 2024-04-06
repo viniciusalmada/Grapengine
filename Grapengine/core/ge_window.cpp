@@ -5,7 +5,6 @@
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
-#include <imgui.h>
 #include <stb_image.h>
 
 using namespace GE;
@@ -26,7 +25,7 @@ public:
     if (version == 0)
       throw std::runtime_error("Error with GLAD");
 
-    GE_INFO("OpenGL Vendor: {}", (char*)glGetString(GL_VENDOR));
+    GE_INFO("OpenGL Vendor: {}", (char*)glGetString(GL_VENDOR))
     GE_INFO("OpenGL Renderer: {}", (char*)glGetString(GL_RENDERER));
     GE_INFO("OpenGL Version: {}", (char*)glGetString(GL_VERSION));
   }
@@ -221,9 +220,9 @@ void Window::Clear(Color color) const
   m_pimpl->canvas->Clear(color.ToVec4());
 }
 
-void Window::Draw(Ref<Drawable> drawable) const
+void Window::Draw(const Ref<Drawable>& drawable) const
 {
-  m_pimpl->canvas->Draw(std::move(drawable));
+  m_pimpl->canvas->Draw(drawable);
 }
 
 std::any GE::Window::GetNativeHandler() const

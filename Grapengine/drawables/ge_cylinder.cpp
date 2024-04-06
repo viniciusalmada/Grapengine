@@ -1,14 +1,12 @@
 #include "drawables/ge_cylinder.hpp"
 
-#include <drawables/ge_color.hpp>
-#include <drawables/ge_draw_primitive.hpp>
-#include <renderer/ge_buffer_layout.hpp>
-#include <renderer/ge_shader_data_types.hpp>
-#include <renderer/ge_texture_2d.hpp>
-#include <renderer/ge_vertices_data.hpp>
-#include <renderer/shader_programs/ge_pos_tex_shader.hpp>
-#include <utility>
-#include <utils/ge_random.hpp>
+#include "drawables/ge_color.hpp"
+#include "drawables/ge_draw_primitive.hpp"
+#include "renderer/ge_buffer_layout.hpp"
+#include "renderer/ge_texture_2d.hpp"
+#include "renderer/ge_vertices_data.hpp"
+#include "renderer/shader_programs/ge_pos_tex_shader.hpp"
+#include "utils/ge_random.hpp"
 
 using namespace GE;
 

@@ -2,10 +2,8 @@
 #define GRAPENGINE_POS_TEX_SHADER_HPP
 
 #include "drawables/ge_color.hpp"
+#include "math/ge_vector.hpp"
 #include "renderer/ge_ishader_program.hpp"
-
-#include <math/ge_vector.hpp>
-#include <utils/ge_ipubsub.hpp>
 
 namespace GE
 {

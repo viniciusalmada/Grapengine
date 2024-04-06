@@ -156,7 +156,10 @@ public:
 
 EditorCamera::EditorCamera() : m_pimpl(MakeScope<Impl>(0, 0)) {}
 
-EditorCamera::EditorCamera(f32 fov, f32 aspectRatio) : m_pimpl(MakeScope<Impl>(fov, aspectRatio)) {}
+EditorCamera::EditorCamera(f32 fov, f32 aspectRatio)
+{
+  m_pimpl = MakeScope<Impl>(fov, aspectRatio);
+}
 
 EditorCamera::~EditorCamera() = default;
 

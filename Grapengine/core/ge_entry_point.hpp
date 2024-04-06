@@ -11,7 +11,7 @@ extern GE::Ref<GE::Application> CreateApplication();
 int main(int /*argc*/, char* argv[])
 {
   GE::Logger::Init();
-  GE_DEBUG("----------Startup at <{}>----------", argv[0]);
+  GE_DEBUG("----------Startup at <{}>----------", argv[0])
   auto app = CreateApplication();
   GE::Ctrl::App::Init(app);
 

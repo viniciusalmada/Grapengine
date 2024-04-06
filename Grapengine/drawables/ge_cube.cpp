@@ -1,13 +1,11 @@
 #include "drawables/ge_cube.hpp"
 
-#include <drawables/ge_draw_primitive.hpp>
-#include <math/ge_transformations.hpp>
-#include <renderer/ge_ishader_program.hpp>
-#include <renderer/ge_renderer.hpp>
-#include <renderer/ge_texture_2d.hpp>
-#include <renderer/ge_vertices_data.hpp>
-#include <renderer/shader_programs/ge_pos_tex_shader.hpp>
-#include <utility>
+#include "drawables/ge_draw_primitive.hpp"
+#include "math/ge_transformations.hpp"
+#include "renderer/ge_ishader_program.hpp"
+#include "renderer/ge_texture_2d.hpp"
+#include "renderer/ge_vertices_data.hpp"
+#include "renderer/shader_programs/ge_pos_tex_shader.hpp"
 
 using namespace GE;
 

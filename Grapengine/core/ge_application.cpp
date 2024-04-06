@@ -7,10 +7,8 @@
 #include "input/ge_input.hpp"
 #include "layer/ge_imgui_layer.hpp"
 #include "layer/ge_layer.hpp"
-#include "renderer/ge_camera.hpp"
 #include "renderer/ge_renderer.hpp"
 #include "renderer/ge_texture_2d.hpp"
-#include "renderer/shader_programs/ge_pos_tex_shader.hpp"
 
 using namespace GE;
 
