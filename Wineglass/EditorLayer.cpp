@@ -21,7 +21,8 @@ void GE::EditorLayer::OnUpdate(GE::TimeStep ts)
   GE::Renderer::SetClearColor(GE::Color{ 0x222222FF }.ToVec4());
   GE::Renderer::Clear();
 
-  m_cam.OnUpdate(ts);
+  if (/*m_viewport_focused &&*/ m_viewport_hovered)
+    m_cam.OnUpdate(ts);
 
   m_simple_shader->Activate();
   m_simple_shader->UpdateViewProjectionMatrix(m_cam.GetViewProjection());
@@ -118,6 +119,10 @@ void GE::EditorLayer::OnImGuiUpdate()
   ImGui::End();
 
   ImGui::Begin("Viewport");
+
+  //  m_viewport_focused = ImGui::IsWindowFocused();
+  m_viewport_hovered = ImGui::IsWindowHovered();
+  Ctrl::App::AllowImGuiEvents(/*!m_viewport_focused ||*/ !m_viewport_hovered);
   auto vp_size = ImGui::GetContentRegionAvail();
   if (*(Vec2*)&vp_size != m_viewport_size)
   {

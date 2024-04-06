@@ -8,8 +8,11 @@ namespace GE::Ctrl
   {
   public:
     static void Init(const Ref<GE::Application>& app);
+    static void Shutdown();
 
     static void Close();
+
+    static void AllowImGuiEvents(bool value);
 
   private:
     App();

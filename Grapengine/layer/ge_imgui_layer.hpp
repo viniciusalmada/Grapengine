@@ -17,6 +17,9 @@ namespace GE
     void End();
     void OnAttach() override;
     void OnDetach() override;
+    void OnEvent(GE::Event&) override;
+
+    void AllowMouseAndKeyboardEvents(bool allow);
 
   private:
     POINTER_TO_IMPLEMENTATION_IDIOM

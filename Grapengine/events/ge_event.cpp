@@ -49,6 +49,10 @@ void GE::EventHandler::SetData(EvData data)
 {
   m_pimpl->data = data;
 }
+void GE::EventHandler::SetHandled()
+{
+  m_pimpl->handled = true;
+}
 
 EventHandler::~EventHandler() = default;
 
@@ -82,4 +86,14 @@ EventHandler& GE::Event::When(EvType t)
     return INVALID_HANDLER;
 
   return m_pimpl->handler;
+}
+
+void GE::Event::SetHandled()
+{
+  m_pimpl->handler.SetHandled();
+}
+
+bool GE::Event::IsType(EvType t) const
+{
+  return m_pimpl->type == t;
 }

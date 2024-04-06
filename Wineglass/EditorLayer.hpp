@@ -39,6 +39,8 @@ namespace GE
 
     Ref<Framebuffer> m_fb = nullptr;
     Vec2 m_viewport_size{};
+    //    bool m_viewport_focused{};
+    bool m_viewport_hovered{};
   };
 }
 

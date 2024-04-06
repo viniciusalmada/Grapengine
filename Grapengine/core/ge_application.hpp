@@ -4,6 +4,7 @@
 #include "ge_config.hpp"
 #include "ge_macros.hpp"
 #include "ge_type_aliases.hpp"
+#include "layer/ge_imgui_layer.hpp"
 
 #include <functional>
 #include <string>
@@ -27,6 +28,8 @@ namespace GE
     void Close() const;
 
     void OnEvent(Event& e);
+
+    [[nodiscard]] Ref<ImGuiLayer> GetImGuiLayer() const;
 
   private:
     POINTER_TO_IMPLEMENTATION_IDIOM

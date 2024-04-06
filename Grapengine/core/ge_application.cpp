@@ -121,3 +121,8 @@ void GE::Application::Close() const
 {
   m_pimpl->Finish();
 }
+
+Ref<ImGuiLayer> GE::Application::GetImGuiLayer() const
+{
+  return m_pimpl->imgui_layer;
+}

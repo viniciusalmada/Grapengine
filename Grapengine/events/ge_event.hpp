@@ -4,6 +4,9 @@
 #include "core/ge_config.hpp"
 #include "core/ge_macros.hpp"
 #include "ge_event_type.hpp"
+
+#include <functional>
+
 namespace GE
 {
   class EventHandler
@@ -13,6 +16,7 @@ namespace GE
     ~EventHandler();
 
     void SetData(EvData data);
+    void SetHandled();
 
     void Then(const std::function<void()>& action);
     void Then(const std::function<void(const EvData&)>& action);
@@ -31,8 +35,10 @@ namespace GE
     GE3D ~Event();
 
     [[nodiscard]] GE3D bool IsHandled() const;
+    void SetHandled();
 
     [[nodiscard]] GE3D EvType GetType() const;
+    [[nodiscard]] GE3D bool IsType(EvType) const;
 
     EventHandler& When(EvType t);
 

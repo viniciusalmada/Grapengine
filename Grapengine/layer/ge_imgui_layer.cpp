@@ -19,6 +19,7 @@ namespace
 struct ImGuiLayer::Impl
 {
   Ref<Window> window = nullptr;
+  bool allow_imgui_events = false;
 };
 
 ImGuiLayer::ImGuiLayer(Ref<Window> window) : Layer(IMGUI_LAYER), m_pimpl(MakeScope<Impl>())
@@ -124,4 +125,35 @@ void ImGuiLayer::End()
     glfwMakeContextCurrent(backup_context);
   }
 #endif
+}
+
+void GE::ImGuiLayer::OnEvent(Event& e)
+{
+  if (!m_pimpl->allow_imgui_events)
+    return;
+
+  ImGuiIO& io = ImGui::GetIO();
+  if (io.WantCaptureMouse)
+  {
+    if (e.IsType(EvType::MOUSE_BUTTON_PRESSED) || e.IsType(EvType::MOUSE_BUTTON_RELEASE) ||
+        e.IsType(EvType::MOUSE_MOVE) || e.IsType(EvType::MOUSE_SCROLL))
+    {
+      e.SetHandled();
+      return;
+    }
+  }
+
+  if (io.WantCaptureKeyboard)
+  {
+    if (e.IsType(EvType::KEY_PRESS) || e.IsType(EvType::KEY_RELEASE))
+    {
+      e.SetHandled();
+      return;
+    }
+  }
+}
+
+void GE::ImGuiLayer::AllowMouseAndKeyboardEvents(bool allow)
+{
+  m_pimpl->allow_imgui_events = allow;
 }

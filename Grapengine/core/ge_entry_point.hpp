@@ -19,6 +19,7 @@ int main(int /*argc*/, char* argv[])
   app->Run();
 
   GE_DEBUG("----------Shutdown----------")
+  GE::Ctrl::App::Shutdown();
   app.reset();
   GE::Logger::Shutdown();
 }
