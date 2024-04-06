@@ -1,6 +1,6 @@
 #include "ge_app_controller.hpp"
 
-#include <core/ge_assert.hpp>
+#include "core/ge_assert.hpp"
 
 using namespace GE;
 

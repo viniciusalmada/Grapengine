@@ -1,7 +1,8 @@
 #ifndef GRAPENGINE_GE_APP_CONTROLLER_HPP
 #define GRAPENGINE_GE_APP_CONTROLLER_HPP
 
-#include <core/ge_application.hpp>
+#include "core/ge_application.hpp"
+
 namespace GE::Ctrl
 {
   class App
