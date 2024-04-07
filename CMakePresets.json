@@ -65,6 +65,17 @@
       }
     },
     {
+      "name": "cl-release",
+      "inherits": [
+        "h_default",
+        "h_release",
+        "h_toolchain-msvc"
+      ],
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "cl"
+      }
+    },
+    {
       "name": "clang-cl-debug",
       "inherits": [
         "h_default",
@@ -129,6 +140,11 @@
     {
       "name": "GCC Rel",
       "configurePreset": "gcc-release",
+      "jobs": 12
+    },
+    {
+      "name": "MSVC Rel",
+      "configurePreset": "cl-release",
       "jobs": 12
     }
   ]
