@@ -26,6 +26,8 @@ namespace GE
     void Bind();
     void Unbind();
 
+    [[nodiscard]] const FBSpecs& GetSpec() const;
+
     [[nodiscard]] u32 GetColorAttachmentID() const;
 
     [[nodiscard]] IVec2 GetSize() const;

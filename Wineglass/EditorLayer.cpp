@@ -1,6 +1,9 @@
 #include "EditorLayer.hpp"
 
+static constexpr const auto CLEAR_COLOR = 0x222222FF;
+
 GE::EditorLayer::EditorLayer() : Layer("EditorLayer"), m_cam(45.0f, 1280.0f / 720.0f) {}
+
 void GE::EditorLayer::OnAttach()
 {
   m_simple_shader = MakeRef<PosAndTex2DShader>();
@@ -16,13 +19,22 @@ void GE::EditorLayer::OnAttach()
 
 void GE::EditorLayer::OnUpdate(GE::TimeStep ts)
 {
-  m_fb->Bind();
+  const auto& spec = m_fb->GetSpec();
+  if (m_viewport_size.x > 0 && m_viewport_size.y > 0 &&
+      (static_cast<f32>(spec.width) != m_viewport_size.x ||
+       static_cast<f32>(spec.height) != m_viewport_size.y))
+  {
+    m_fb->Resize(static_cast<i32>(m_viewport_size.x), static_cast<i32>(m_viewport_size.y));
+    m_cam.OnResize(static_cast<u32>(m_viewport_size.x), static_cast<u32>(m_viewport_size.y));
+  }
 
-  GE::Renderer::SetClearColor(GE::Color{ 0x222222FF }.ToVec4());
-  GE::Renderer::Clear();
+  m_fb->Bind();
 
   if (/*m_viewport_focused &&*/ m_viewport_hovered)
     m_cam.OnUpdate(ts);
+
+  GE::Renderer::SetClearColor(GE::Color{ CLEAR_COLOR }.ToVec4());
+  GE::Renderer::Clear();
 
   m_simple_shader->Activate();
   m_simple_shader->UpdateViewProjectionMatrix(m_cam.GetViewProjection());
@@ -124,14 +136,8 @@ void GE::EditorLayer::OnImGuiUpdate()
   m_viewport_hovered = ImGui::IsWindowHovered();
   Ctrl::App::AllowImGuiEvents(/*!m_viewport_focused ||*/ !m_viewport_hovered);
   auto vp_size = ImGui::GetContentRegionAvail();
-  if (*(Vec2*)&vp_size != m_viewport_size)
-  {
-    m_viewport_size.x = vp_size.x;
-    m_viewport_size.y = vp_size.y;
-    m_fb->Resize(i32(m_viewport_size.x), i32(m_viewport_size.y));
-
-    m_cam.OnResize(u32(m_viewport_size.x), u32(m_viewport_size.y));
-  }
+  m_viewport_size.x = vp_size.x;
+  m_viewport_size.y = vp_size.y;
   u32 tex = m_fb->GetColorAttachmentID();
   const auto [w, h] = m_fb->GetSize();
   ImVec2 size{ f32(w), f32(h) };

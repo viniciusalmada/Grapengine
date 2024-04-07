@@ -132,3 +132,8 @@ void GE::Framebuffer::Resize(i32 w, i32 h)
   m_pimpl->specs.height = h;
   Invalidate();
 }
+
+const FBSpecs& GE::Framebuffer::GetSpec() const
+{
+  return m_pimpl->specs;
+}
