@@ -9,19 +9,19 @@ namespace GE
   class Layer
   {
   public:
-    GE3D explicit Layer(std::string_view name);
+    explicit Layer(std::string_view name);
 
-    GE3D virtual ~Layer();
+    virtual ~Layer();
 
-    GE3D virtual void OnAttach();
+    virtual void OnAttach();
 
-    GE3D virtual void OnDetach();
+    virtual void OnDetach();
 
     virtual void OnUpdate(TimeStep);
 
     virtual void OnImGuiUpdate();
 
-    GE3D virtual void OnEvent(Event&);
+    virtual void OnEvent(Event&);
 
     [[nodiscard]] const std::string& GetName() const;
 

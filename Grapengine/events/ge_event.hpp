@@ -31,14 +31,14 @@ namespace GE
   class Event
   {
   public:
-    GE3D explicit Event(EvType type, EvData data = std::monostate());
-    GE3D ~Event();
+    explicit Event(EvType type, EvData data = std::monostate());
+    ~Event();
 
-    [[nodiscard]] GE3D bool IsHandled() const;
+    [[nodiscard]] bool IsHandled() const;
     void SetHandled();
 
-    [[nodiscard]] GE3D EvType GetType() const;
-    [[nodiscard]] GE3D bool IsType(EvType) const;
+    [[nodiscard]] EvType GetType() const;
+    [[nodiscard]] bool IsType(EvType) const;
 
     [[nodiscard]] EventHandler& When(EvType t);
 

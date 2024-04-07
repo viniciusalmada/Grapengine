@@ -13,14 +13,14 @@ namespace GE
                             const std::filesystem::path& fragPath);
 
     Shader(const std::filesystem::path& vertexPath, const std::filesystem::path& fragPath);
-    GE3D Shader(const std::string& vertexSrc, const std::string& fragmentSrc);
-    GE3D ~Shader();
+    Shader(const std::string& vertexSrc, const std::string& fragmentSrc);
+    ~Shader();
 
-    GE3D [[nodiscard]] bool IsValid() const;
-    GE3D [[nodiscard]] bool IsBound() const;
+    [[nodiscard]] bool IsValid() const;
+    [[nodiscard]] bool IsBound() const;
 
     void Bind();
-    GE3D void Unbind() const;
+    void Unbind() const;
 
     void UploadMat4F(const std::string& name, const Mat4& mat);
 

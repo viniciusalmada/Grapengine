@@ -11,10 +11,10 @@ namespace GE
   class WorldReference
   {
   public:
-    GE3D WorldReference(const Ref<IShaderProgram>& shader, u64 platformSize);
-    GE3D ~WorldReference();
+    WorldReference(const Ref<IShaderProgram>& shader, u64 platformSize);
+    ~WorldReference();
 
-    GE3D void DrawBatch() const;
+    void DrawBatch() const;
 
     void ShowPlatform(bool show) const;
 

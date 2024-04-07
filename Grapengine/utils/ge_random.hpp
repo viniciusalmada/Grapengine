@@ -8,11 +8,10 @@
 
 namespace GE::Random
 {
-  GE3D u32 GenInt(u32 min = std::numeric_limits<u32>::min(),
-                  u32 max = std::numeric_limits<u32>::max());
+  u32 GenInt(u32 min = std::numeric_limits<u32>::min(), u32 max = std::numeric_limits<u32>::max());
 
-  GE3D f32 GenFloat(f32 min = std::numeric_limits<f32>::min(),
-                      f32 max = std::numeric_limits<f32>::max());
+  f32 GenFloat(f32 min = std::numeric_limits<f32>::min(),
+               f32 max = std::numeric_limits<f32>::max());
 }
 
 #endif // GRAPENGINE_RANDOM_HPP

@@ -8,9 +8,9 @@ namespace GE
   class Camera
   {
   public:
-    GE3D Camera(f32 aspectRatio, const Vec3& eye, f32 pitch, f32 yaw);
-    GE3D Camera(f32 aspectRatio, const Vec3& eye, const Vec3& dir);
-    GE3D ~Camera();
+    Camera(f32 aspectRatio, const Vec3& eye, f32 pitch, f32 yaw);
+    Camera(f32 aspectRatio, const Vec3& eye, const Vec3& dir);
+    ~Camera();
 
     [[nodiscard]] bool IsAiming() const;
     void StartAiming(Vec2 referencePoint) const;
@@ -29,7 +29,7 @@ namespace GE
 
     void SetZoom(f32 diffY) const;
 
-    GE3D [[nodiscard]] Mat4 GetViewProjection() const;
+    [[nodiscard]] Mat4 GetViewProjection() const;
     void SetAspectRatio(f32 ratio) const;
 
   private:

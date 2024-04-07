@@ -15,9 +15,9 @@ namespace GE
 
     static void SetWireframeRenderMode(bool enabled);
 
-    GE3D static void SetClearColor(const Vec4& color);
+    static void SetClearColor(const Vec4& color);
 
-    GE3D static void Clear();
+    static void Clear();
 
     static void DrawIndexed(const Ref<VertexArray>& vao, i32 count);
   };

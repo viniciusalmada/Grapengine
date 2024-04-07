@@ -31,18 +31,18 @@ namespace GE
   class Window
   {
   public:
-    GE3D explicit Window(const WindowProps& props, const EventCallbackFn& cb);
-    GE3D ~Window();
+    explicit Window(const WindowProps& props, const EventCallbackFn& cb);
+    ~Window();
 
-    [[nodiscard]] GE3D u32 GetWidth() const;
-    [[nodiscard]] GE3D u32 GetHeight() const;
+    [[nodiscard]] u32 GetWidth() const;
+    [[nodiscard]] u32 GetHeight() const;
 
     void SetVsync(bool enabled);
 
     void OnUpdate();
 
-    GE3D void Clear(Color color) const;
-    GE3D void Draw(const Ref<Drawable>& drawable) const;
+    void Clear(Color color) const;
+    void Draw(const Ref<Drawable>& drawable) const;
 
     [[nodiscard]] std::any GetNativeHandler() const;
 

@@ -5,8 +5,8 @@ namespace GE
   class VertexBuffer
   {
   public:
-    GE3D VertexBuffer(const void* ptr, u64 verticesSize, u32 parent);
-    GE3D ~VertexBuffer();
+    VertexBuffer(const void* ptr, u64 verticesSize, u32 parent);
+    ~VertexBuffer();
 
     void Bind() const;
 

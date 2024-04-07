@@ -14,7 +14,7 @@ namespace GE
   public:
     static Ref<Cube> Make(Color color, const Ref<IShaderProgram>&, Ref<Texture2D> texture);
 
-    GE3D Cube(Color color, const Ref<IShaderProgram>&, Ref<Texture2D> texture);
+    Cube(Color color, const Ref<IShaderProgram>&, Ref<Texture2D> texture);
 
     ~Cube() override;
 

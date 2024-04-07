@@ -19,8 +19,8 @@ namespace GE
                               Color color,
                               const Ref<Texture2D>& texture2D);
 
-    GE3D Cylinder(const Ref<IShaderProgram>& shader,
-                  f32 radius,
+    Cylinder(const Ref<IShaderProgram>& shader,
+             f32 radius,
                   const Vec3& basePoint,
                   const Vec3& direction,
                   f32 height,

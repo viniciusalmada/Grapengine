@@ -10,13 +10,13 @@
 
 namespace GE
 {
-  struct GE3D IVec2
+  struct IVec2
   {
     i32 x;
     i32 y;
   };
 
-  struct GE3D Vec2
+  struct Vec2
   {
     f32 x;
     f32 y;
@@ -35,7 +35,7 @@ namespace GE
     bool operator!=(const Vec2& rhs) const;
   };
 
-  struct GE3D IVec3
+  struct IVec3
   {
     i32 x;
     i32 y;
@@ -44,7 +44,7 @@ namespace GE
     bool operator<(const IVec3& other) const;
   };
 
-  struct GE3D Vec3
+  struct Vec3
   {
     f32 x;
     f32 y;
@@ -76,7 +76,7 @@ namespace GE
     f32 x3;
   };
 
-  class GE3D Mat4
+  class Mat4
   {
   public:
     Mat4();
