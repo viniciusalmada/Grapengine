@@ -3,6 +3,8 @@
 
 #include "grapengine.hpp"
 
+#define FIRST_SCENE_TEST
+
 namespace GE
 {
   class EditorLayer : public Layer
@@ -19,6 +21,14 @@ namespace GE
     void OnEvent(Event&) override;
 
   private:
+#ifdef FIRST_SCENE_TEST
+    Ref<Scene> m_scene;
+
+    Ref<Framebuffer> m_fb = nullptr;
+    Vec2 m_viewport_size{};
+    //    bool m_viewport_focused{};
+    bool m_viewport_hovered = true;
+#else
     EditorCamera m_cam;
     Ref<WorldReference> m_world_ref = nullptr;
     Ref<Cube> m_light_1 = nullptr;
@@ -41,6 +51,7 @@ namespace GE
     Vec2 m_viewport_size{};
     //    bool m_viewport_focused{};
     bool m_viewport_hovered = true;
+#endif
   };
 }
 

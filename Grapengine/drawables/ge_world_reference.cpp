@@ -74,4 +74,14 @@ void GE::WorldReference::ShowPlatform(bool show) const
   m_pimpl->show_platform = show;
 }
 
+Ref<DrawingObject> GE::WorldReference::GetVAO() const
+{
+  return m_pimpl->platform->GetVAO();
+}
+
+Mat4 GE::WorldReference::GetModelMatrix() const
+{
+  return m_pimpl->platform->GetModelMatrix();
+}
+
 WorldReference::~WorldReference() = default;

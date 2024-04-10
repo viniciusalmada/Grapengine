@@ -10,7 +10,7 @@ add_library(Grapengine STATIC
   drawables/ge_canvas.cpp
   drawables/ge_cube.cpp
   drawables/ge_cylinder.cpp
-  drawables/ge_draw_primitive.cpp
+  drawables/ge_drawing_object.cpp
   drawables/ge_mesh.cpp
   drawables/ge_world_reference.cpp
   events/ge_event.cpp
@@ -93,7 +93,7 @@ find_package(glad CONFIG REQUIRED)
 target_link_libraries(Grapengine PRIVATE glad::glad)
 
 find_package(Stb REQUIRED)
-target_include_directories(Grapengine PRIVATE ${Stb_INCLUDE_DIR})
+target_include_directories(Grapengine PRIVATE SYSTEM ${Stb_INCLUDE_DIR})
 
 find_package(spdlog CONFIG REQUIRED)
 target_link_libraries(Grapengine PUBLIC spdlog::spdlog_header_only)

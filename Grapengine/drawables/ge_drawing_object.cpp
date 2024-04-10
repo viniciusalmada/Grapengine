@@ -1,4 +1,4 @@
-#include "drawables/ge_draw_primitive.hpp"
+#include "drawables/ge_drawing_object.hpp"
 
 #include "renderer/ge_index_buffer.hpp"
 #include "renderer/ge_renderer.hpp"
@@ -8,7 +8,7 @@
 
 using namespace GE;
 
-struct DrawPrimitive::Impl
+struct DrawingObject::Impl
 {
   Ref<VertexArray> vao = nullptr;
   Ref<VertexBuffer> vbo = nullptr;
@@ -16,7 +16,8 @@ struct DrawPrimitive::Impl
   u64 triangles_count = 0;
 };
 
-DrawPrimitive::DrawPrimitive(const Ref<VerticesData>& vertices, const Ref<std::vector<u32>>& indices) :
+DrawingObject::DrawingObject(const Ref<VerticesData>& vertices,
+                             const Ref<std::vector<u32>>& indices) :
     m_pimpl(MakeScope<Impl>())
 {
   m_pimpl->vao = MakeRef<VertexArray>();
@@ -32,15 +33,25 @@ DrawPrimitive::DrawPrimitive(const Ref<VerticesData>& vertices, const Ref<std::v
   m_pimpl->vao->SetIndexBuffer(m_pimpl->ibo);
 }
 
-DrawPrimitive::~DrawPrimitive() = default;
+DrawingObject::~DrawingObject() = default;
 
-void DrawPrimitive::Draw() const
+void DrawingObject::Draw() const
 {
   Renderer::DrawIndexed(m_pimpl->vao, static_cast<i32>(m_pimpl->triangles_count * 3));
 }
 
-void DrawPrimitive::UpdateVerticesData(const Ref<VerticesData>& data)
+void DrawingObject::UpdateVerticesData(const Ref<VerticesData>& data)
 {
   m_pimpl->vao->Bind();
   m_pimpl->vbo->UpdateData(data->GetPtr(), data->GetSize());
+}
+
+void GE::DrawingObject::Bind() const
+{
+  m_pimpl->vao->Bind();
+}
+
+i32 GE::DrawingObject::IndicesCount() const
+{
+  return static_cast<i32>(m_pimpl->triangles_count * 3);
 }

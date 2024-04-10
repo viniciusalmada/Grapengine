@@ -3,6 +3,9 @@
 
 #include "core/ge_macros.hpp"
 #include "core/ge_type_aliases.hpp"
+#include "drawables/ge_drawing_object.hpp"
+#include "math/ge_vector.hpp"
+#include "renderer/ge_vertex_array.hpp"
 
 namespace GE
 {
@@ -17,6 +20,9 @@ namespace GE
     void DrawBatch() const;
 
     void ShowPlatform(bool show) const;
+
+    [[nodiscard]] Ref<DrawingObject> GetVAO() const;
+    [[nodiscard]] Mat4 GetModelMatrix() const;
 
   private:
     POINTER_TO_IMPLEMENTATION_IDIOM

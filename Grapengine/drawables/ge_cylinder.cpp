@@ -1,7 +1,7 @@
 #include "drawables/ge_cylinder.hpp"
 
 #include "drawables/ge_color.hpp"
-#include "drawables/ge_draw_primitive.hpp"
+#include "drawables/ge_drawing_object.hpp"
 #include "renderer/ge_buffer_layout.hpp"
 #include "renderer/ge_texture_2d.hpp"
 #include "renderer/ge_vertices_data.hpp"
@@ -13,7 +13,7 @@ using namespace GE;
 struct Cylinder::Impl
 {
   Color color{ 0 };
-  Ref<DrawPrimitive> draw_primitive;
+  Ref<DrawingObject> draw_primitive;
   Ref<IShaderProgram> shader;
   Ref<Texture2D> texture;
 };
@@ -84,7 +84,7 @@ Cylinder::Cylinder(const Ref<IShaderProgram>& shader,
   (*indices)[indices->size() - 2] = static_cast<u32>(SLICES * 2 - 1);
   (*indices)[indices->size() - 1] = 1;
 
-  m_pimpl->draw_primitive = MakeRef<DrawPrimitive>(positions, indices);
+  m_pimpl->draw_primitive = MakeRef<DrawingObject>(positions, indices);
 }
 
 Cylinder::~Cylinder() = default;
@@ -94,7 +94,7 @@ void Cylinder::Draw() const
   m_pimpl->texture->Bind(0);
   m_pimpl->shader->UpdateModelMatrix(Mat4{});
   m_pimpl->shader->UpdateTexture(0);
-  m_pimpl->draw_primitive->Draw();
+  //  m_pimpl->draw_primitive->Draw();
 }
 Ref<Cylinder> GE::Cylinder::Make(const Ref<IShaderProgram>& shader,
                                  f32 radius,

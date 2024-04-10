@@ -154,7 +154,7 @@ public:
   }
 };
 
-EditorCamera::EditorCamera() : m_pimpl(MakeScope<Impl>(0, 0)) {}
+EditorCamera::EditorCamera() : m_pimpl(MakeScope<Impl>(0.f, 0.f)) {}
 
 EditorCamera::EditorCamera(f32 fov, f32 aspectRatio)
 {
