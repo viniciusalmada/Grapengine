@@ -41,6 +41,9 @@ add_library(Grapengine STATIC
   renderer/shader_programs/ge_pos_tex_shader.cpp
   utils/ge_io.cpp
   utils/ge_random.cpp
+  scene/ge_scene.cpp
+  scene/ge_scene.hpp
+  scene/ge_components.hpp
 )
 target_precompile_headers(Grapengine PRIVATE ${CMAKE_SOURCE_DIR}/Grapengine/grapengine_pch.hpp)
 target_include_directories(Grapengine
