@@ -113,7 +113,7 @@ void VertexArray::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer)
 
 bool VertexArray::IsValid() const
 {
-  return glIsVertexArray(this->id);
+  return bool(glIsVertexArray(this->id));
 }
 
 void VertexArray::Unbind() const

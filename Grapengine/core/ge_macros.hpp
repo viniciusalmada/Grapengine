@@ -6,10 +6,12 @@
   #define DISABLE_WARNING_PUSH __pragma(warning(push))
   #define DISABLE_WARNING_POP __pragma(warning(pop))
   #define DISABLE_WARNING(number) __pragma(warning(disable : number)) // NOLINT(*-macro-parentheses)
+  #define WARN_CONVERSION_OF_GREATER_SIZE DISABLE_WARNING(4312)
 #elif defined(__GNUC__) || defined(__clang__)
   #define DISABLE_WARNING_PUSH _Pragma("GCC diagnostic push")
   #define DISABLE_WARNING_POP _Pragma("GCC diagnostic pop")
   #define DISABLE_WARNING(name) _Pragma(GCC diagnostic ignored #name)
+  #define WARN_CONVERSION_OF_GREATER_SIZE
 #endif
 
 #define POINTER_TO_IMPLEMENTATION_IDIOM                                                            \

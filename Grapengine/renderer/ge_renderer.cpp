@@ -69,5 +69,5 @@ void Renderer::DrawIndexed(const Ref<VertexArray>& vao, i32 count)
 
 void Renderer::SetWireframeRenderMode(bool enabled)
 {
-  glPolygonMode(GL_FRONT_AND_BACK, enabled ? GL_LINE : GL_FILL);
+  glPolygonMode(GL_FRONT_AND_BACK, u32(enabled ? GL_LINE : GL_FILL));
 }
