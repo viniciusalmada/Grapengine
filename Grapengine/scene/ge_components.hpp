@@ -6,29 +6,34 @@
 #include "renderer/ge_ishader_program.hpp"
 #include "renderer/ge_vertex_array.hpp"
 
-namespace GE::Component
+namespace GE
 {
-  struct Transform
+  struct TagComponent
+  {
+    std::string_view tag;
+  };
+
+  struct TransformComponent
   {
     Mat4 model{};
   };
 
-  struct Primitive
+  struct PrimitiveComponent
   {
     Ref<DrawingObject> drawing_obj{};
   };
 
-  struct Material
+  struct MaterialComponent
   {
     Ref<IShaderProgram> shader;
   };
 
-  struct ColorOnly
+  struct ColorOnlyComponent
   {
     Ref<IShaderProgram> shader;
   };
 
-  struct EditorCamera
+  struct EditorCameraComponent
   {
     Ref<::GE::EditorCamera> cam;
   };

@@ -21,15 +21,15 @@ void GE::EditorLayer::OnAttach()
   m_scene = Scene::Make();
 
   Ref<EditorCamera> cam = MakeRef<EditorCamera>(45.0f, 1280.0f / 720.0f);
-  auto camera_ent = m_scene->CreateEntity();
-  m_scene->AddComponent(camera_ent, Component::EditorCamera{ cam });
+  auto camera_ent = m_scene->CreateEntity("Camera");
+  m_scene->AddComponent<EditorCameraComponent>(camera_ent, cam);
 
   Ref<IShaderProgram> simple_shader = MakeRef<PosAndTex2DShader>();
   Ref<WorldReference> world_reference = MakeRef<WorldReference>(simple_shader, 20);
-  auto world_ref_ent = m_scene->CreateEntity();
-  m_scene->AddComponent(world_ref_ent, Component::Primitive{ world_reference->GetVAO() });
-  m_scene->AddComponent(world_ref_ent, Component::Transform{ world_reference->GetModelMatrix() });
-  m_scene->AddComponent(world_ref_ent, Component::ColorOnly{ simple_shader });
+  auto world_ref_ent = m_scene->CreateEntity("Platform");
+  m_scene->AddComponent<PrimitiveComponent>(world_ref_ent, world_reference->GetVAO());
+  m_scene->AddComponent<TransformComponent>(world_ref_ent, world_reference->GetModelMatrix());
+  m_scene->AddComponent<ColorOnlyComponent>(world_ref_ent, simple_shader);
   //
   //
   //  m_simple_shader = MakeRef<PosAndTex2DShader>();

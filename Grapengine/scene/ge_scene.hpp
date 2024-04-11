@@ -3,17 +3,11 @@
 
 #include "core/ge_time_step.hpp"
 #include "events/ge_event.hpp"
+#include "ge_ec_registry.hpp"
+#include "scene/ge_entity.hpp"
 
 namespace GE
 {
-
-  struct Entity
-  {
-    u32 id;
-
-    bool operator<(const Entity& rhs) const { return id < rhs.id; }
-  };
-
   class Scene
   {
   public:
@@ -22,16 +16,20 @@ namespace GE
     Scene();
     ~Scene();
 
-    Entity CreateEntity();
+    Entity CreateEntity(std::string_view name);
 
-    void AddComponent(Entity ent, std::any comp);
+    template <typename Comp, typename... Args>
+    void AddComponent(const Entity& ent, Args&&... args)
+    {
+      m_registry.AddComponent<Comp>(ent, std::forward<Args>(args)...);
+    }
 
     void OnUpdate(TimeStep ts);
 
     void OnEvent(Event&);
 
   private:
-    POINTER_TO_IMPLEMENTATION_IDIOM
+    ECRegistry m_registry;
   };
 
 } // GE
