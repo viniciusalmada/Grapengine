@@ -5,6 +5,17 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   target_compile_options(GrapengineCompileOptions INTERFACE
     /Wall                       # Enable most common warnings
     /W4                         # Set warning level 4 (highest warning level)
+    /wd4625 # Copy constructor implicitly deleted
+    /wd4626 # Copy assignment operator implicitly deleted
+    /wd5026 # Move constructor operator implicitly deleted
+    /wd5027 # Move assignment operator implicitly deleted
+    /wd4820 # bytes padding
+    /wd4711 # inline expansion
+    /wd4710 # not inlined (??)
+    /wd5039 # extern C
+    /wd4061 # explicitly handled by case
+    /wd4868 # enforce left-to-right
+    /wd5045 # insert Spectre mitigation
     $<$<CONFIG:Release>:/WX>     # Treat warnings as errors
   )
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL GNU)

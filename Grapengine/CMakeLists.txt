@@ -10,7 +10,7 @@ add_library(Grapengine STATIC
   drawables/ge_canvas.cpp
   drawables/ge_cube.cpp
   drawables/ge_cylinder.cpp
-  drawables/ge_draw_primitive.cpp
+  drawables/ge_drawing_object.cpp
   drawables/ge_mesh.cpp
   drawables/ge_world_reference.cpp
   events/ge_event.cpp
@@ -41,6 +41,12 @@ add_library(Grapengine STATIC
   renderer/shader_programs/ge_pos_tex_shader.cpp
   utils/ge_io.cpp
   utils/ge_random.cpp
+  scene/ge_scene.cpp
+  scene/ge_scene.hpp
+  scene/ge_components.hpp
+  scene/ge_ec_registry.cpp
+  scene/ge_ec_registry.hpp
+  scene/ge_entity.hpp
 )
 target_precompile_headers(Grapengine PRIVATE ${CMAKE_SOURCE_DIR}/Grapengine/grapengine_pch.hpp)
 target_include_directories(Grapengine
@@ -90,7 +96,7 @@ find_package(glad CONFIG REQUIRED)
 target_link_libraries(Grapengine PRIVATE glad::glad)
 
 find_package(Stb REQUIRED)
-target_include_directories(Grapengine PRIVATE ${Stb_INCLUDE_DIR})
+target_include_directories(Grapengine PRIVATE SYSTEM ${Stb_INCLUDE_DIR})
 
 find_package(spdlog CONFIG REQUIRED)
 target_link_libraries(Grapengine PUBLIC spdlog::spdlog_header_only)

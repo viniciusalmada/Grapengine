@@ -1,6 +1,6 @@
 #include "drawables/ge_cube.hpp"
 
-#include "drawables/ge_draw_primitive.hpp"
+#include "drawables/ge_drawing_object.hpp"
 #include "math/ge_transformations.hpp"
 #include "renderer/ge_ishader_program.hpp"
 #include "renderer/ge_texture_2d.hpp"
@@ -83,7 +83,7 @@ struct Cube::Impl
   f32 position_z = 0;
   f32 height = 0;
   Color color{ 0 };
-  Ref<DrawPrimitive> draw_primitive;
+  Ref<DrawingObject> draw_primitive;
   Ref<IShaderProgram> shader;
   Mat4 scale_mat{};
   Mat4 translate_mat{};
@@ -108,7 +108,7 @@ Cube::Cube(Color color, const Ref<IShaderProgram>& shader, Ref<Texture2D> textur
     20, 21, 22, 22, 23, 20, // Bottom face
   });
 
-  m_pimpl->draw_primitive = MakeRef<DrawPrimitive>(positions, indices);
+  m_pimpl->draw_primitive = MakeRef<DrawingObject>(positions, indices);
 }
 void Cube::Draw() const
 {
@@ -117,7 +117,7 @@ void Cube::Draw() const
   m_pimpl->texture->Bind(0);
   m_pimpl->shader->UpdateModelMatrix(m_pimpl->translate_mat * m_pimpl->scale_mat);
   m_pimpl->shader->UpdateTexture(0);
-  m_pimpl->draw_primitive->Draw();
+  //  m_pimpl->draw_primitive->Draw();
 }
 
 void GE::Cube::SetScale(f32 x, f32 y, f32 z) const
@@ -145,6 +145,16 @@ void GE::Cube::SetColor(Color color)
   m_pimpl->color = color;
   const auto positions = GetCubeVerticesPositions(m_pimpl->shader->GetLayout(), color);
   m_pimpl->draw_primitive->UpdateVerticesData(positions);
+}
+
+Ref<DrawingObject> GE::Cube::GetVAO() const
+{
+  return m_pimpl->draw_primitive;
+}
+
+Mat4 GE::Cube::GetModelMatrix() const
+{
+  return m_pimpl->translate_mat * m_pimpl->scale_mat;
 }
 
 Cube::~Cube() = default;

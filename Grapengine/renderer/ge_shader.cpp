@@ -25,6 +25,7 @@ namespace
     case ShaderType::FRAGMENT:
       return GL_FRAGMENT_SHADER;
     }
+    Platform::Unreachable();
   }
 
   std::string GetGLShaderName(ShaderType type)
@@ -36,6 +37,7 @@ namespace
     case ShaderType::FRAGMENT:
       return "Fragment";
     }
+    Platform::Unreachable();
   }
 
   std::tuple<u32, bool> Compile(const std::string& src, ShaderType type)
@@ -213,7 +215,7 @@ void GE::Shader::UploadFloatArray(const std::string& name, const std::vector<f32
 
 [[maybe_unused]] bool Shader::IsValid() const
 {
-  return glIsProgram(m_pimpl->renderer_id);
+  return bool(glIsProgram(m_pimpl->renderer_id));
 }
 
 bool Shader::IsBound() const

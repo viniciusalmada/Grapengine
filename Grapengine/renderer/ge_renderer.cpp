@@ -3,6 +3,7 @@
 #include "core/ge_assert.hpp"
 #include "renderer/ge_vertex_array.hpp"
 
+#include <drawables/ge_drawing_object.hpp>
 #include <glad/glad.h>
 
 using namespace GE;
@@ -69,5 +70,11 @@ void Renderer::DrawIndexed(const Ref<VertexArray>& vao, i32 count)
 
 void Renderer::SetWireframeRenderMode(bool enabled)
 {
-  glPolygonMode(GL_FRONT_AND_BACK, enabled ? GL_LINE : GL_FILL);
+  glPolygonMode(GL_FRONT_AND_BACK, u32(enabled ? GL_LINE : GL_FILL));
+}
+
+void Renderer::DrawObject(const Ref<DrawingObject>& primitive)
+{
+  primitive->Bind();
+  glDrawElements(GL_TRIANGLES, primitive->IndicesCount(), GL_UNSIGNED_INT, nullptr);
 }

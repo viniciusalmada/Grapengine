@@ -3,7 +3,7 @@
 #include "drawables/ge_color.hpp"
 #include "drawables/ge_cube.hpp"
 #include "drawables/ge_cylinder.hpp"
-#include "drawables/ge_draw_primitive.hpp"
+#include "drawables/ge_drawing_object.hpp"
 #include "renderer/ge_vertices_data.hpp"
 
 using namespace GE;
@@ -18,7 +18,7 @@ struct Face
 struct Mesh::Impl
 {
   Color color = Colors::MAGENTA;
-  Ref<DrawPrimitive> draw_primitive;
+  Ref<DrawingObject> draw_primitive;
   Ref<Cube> bbox;
   Ref<IShaderProgram> shader;
   Ref<Texture2D> texture;
@@ -137,8 +137,9 @@ GE::Mesh::Mesh(std::string_view path, const GE::Ref<GE::IShaderProgram>& shader)
                   normals.end(),
                   std::pair<Vec3, f32>{},
                   [&](std::pair<Vec3, float> res,
-                      const std::pair<Vec3, f32>& norm_weight) -> std::pair<Vec3, f32>
-                  { return std::make_pair(res.first + norm_weight.first * norm_weight.second, 0); })
+                      const std::pair<Vec3, f32>& norm_weight) -> std::pair<Vec3, f32> {
+                    return std::make_pair(res.first + norm_weight.first * norm_weight.second, 0.0f);
+                  })
         .first;
     return normal;
   };
@@ -149,7 +150,7 @@ GE::Mesh::Mesh(std::string_view path, const GE::Ref<GE::IShaderProgram>& shader)
     vertices_data->PushData(m_pimpl->vertices[vtx_idx], Vec2{}, m_pimpl->color.ToVec4(), normal);
   }
 
-  m_pimpl->draw_primitive = MakeRef<DrawPrimitive>(vertices_data, indices);
+  m_pimpl->draw_primitive = MakeRef<DrawingObject>(vertices_data, indices);
 
   m_pimpl->bbox = Cube::Make(Color(0xFFFFFF33), shader, m_pimpl->texture);
   m_pimpl->bbox->SetTranslate(min_x.x + (max_x.x - min_x.x) / 2.0f,
@@ -165,7 +166,7 @@ void GE::Mesh::Draw() const
   m_pimpl->texture->Bind(0);
   m_pimpl->shader->UpdateTexture(0);
   m_pimpl->shader->UpdateModelMatrix(Mat4{});
-  m_pimpl->draw_primitive->Draw();
+  //  m_pimpl->draw_primitive->Draw();
 
   //  Renderer::SetWireframeRenderMode(false);
   //  for (auto& n : m_pimpl->normals)

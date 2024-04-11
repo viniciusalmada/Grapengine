@@ -5,6 +5,7 @@
 namespace GE
 {
   class VertexArray;
+  class DrawingObject;
 
   class Renderer
   {
@@ -20,6 +21,8 @@ namespace GE
     static void Clear();
 
     static void DrawIndexed(const Ref<VertexArray>& vao, i32 count);
+
+    static void DrawObject(const Ref<DrawingObject>& primitive);
   };
 }
 

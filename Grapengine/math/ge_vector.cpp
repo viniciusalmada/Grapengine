@@ -108,7 +108,9 @@ f32 Vec3::Length() const
   return std::sqrt(x * x + y * y + z * z);
 }
 
-Mat4::Mat4() : Mat4({ 1, 0, 0, 0 }, { 0, 1, 0, 0 }, { 0, 0, 1, 0 }, { 0, 0, 0, 1 }) {}
+Mat4::Mat4() : Mat4({ { 1, 0, 0, 0 } }, { { 0, 1, 0, 0 } }, { { 0, 0, 1, 0 } }, { { 0, 0, 0, 1 } })
+{
+}
 
 Mat4::Mat4(const std::array<f32, 4>& row0,
            const std::array<f32, 4>& row1,

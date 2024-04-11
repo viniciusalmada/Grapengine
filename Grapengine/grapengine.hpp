@@ -25,6 +25,10 @@
 #include "renderer/shader_programs/ge_material_shader.hpp"
 #include "renderer/shader_programs/ge_pos_tex_shader.hpp"
 
+// Scene
+#include "scene/ge_components.hpp"
+#include "scene/ge_scene.hpp"
+
 // Logger
 #include "log/ge_logger.hpp"
 
