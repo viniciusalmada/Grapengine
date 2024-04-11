@@ -6,9 +6,6 @@
 #include "renderer/ge_renderer.hpp"
 #include "scene/ge_components.hpp"
 
-#include <entt/entt.hpp>
-#include <utility>
-
 using namespace GE;
 
 Scene::Scene() {}
