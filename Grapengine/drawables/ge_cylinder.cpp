@@ -10,14 +10,6 @@
 
 using namespace GE;
 
-struct Cylinder::Impl
-{
-  Color color{ 0 };
-  Ref<DrawingObject> draw_primitive;
-  Ref<IShaderProgram> shader;
-  Ref<Texture2D> texture;
-};
-
 constexpr auto SLICES = 20ul;
 // constexpr auto STACKS = 8;
 
@@ -28,11 +20,11 @@ Cylinder::Cylinder(const Ref<IShaderProgram>& shader,
                    const f32 height,
                    Color color,
                    Ref<Texture2D> texture2D) :
-    Drawable(shader), m_pimpl(MakeScope<Impl>())
+    Drawable(shader)
 {
-  m_pimpl->shader = shader;
-  m_pimpl->color = color;
-  m_pimpl->texture = std::move(texture2D);
+  m_shader = shader;
+  m_color = color;
+  m_texture = std::move(texture2D);
   Ref<BufferLayout> layout = shader->GetLayout();
 
   const Vec3 normal = direction.Normalize();
@@ -84,17 +76,17 @@ Cylinder::Cylinder(const Ref<IShaderProgram>& shader,
   (*indices)[indices->size() - 2] = static_cast<u32>(SLICES * 2 - 1);
   (*indices)[indices->size() - 1] = 1;
 
-  m_pimpl->draw_primitive = MakeRef<DrawingObject>(positions, indices);
+  m_draw_primitive = MakeRef<DrawingObject>(positions, indices);
 }
 
 Cylinder::~Cylinder() = default;
 
 void Cylinder::Draw() const
 {
-  m_pimpl->texture->Bind(0);
-  m_pimpl->shader->UpdateModelMatrix(Mat4{});
-  m_pimpl->shader->UpdateTexture(0);
-  //  m_pimpl->draw_primitive->Draw();
+  m_texture->Bind(0);
+  m_shader->UpdateModelMatrix(Mat4{});
+  m_shader->UpdateTexture(0);
+  //  m_draw_primitive->Draw();
 }
 Ref<Cylinder> GE::Cylinder::Make(const Ref<IShaderProgram>& shader,
                                  f32 radius,

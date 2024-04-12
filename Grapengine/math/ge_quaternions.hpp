@@ -30,7 +30,10 @@ namespace GE
     [[nodiscard]] Vec3 GetVec() const noexcept;
 
   private:
-    POINTER_TO_IMPLEMENTATION_IDIOM
+    f32 m_w = 0;
+    f32 m_x = 0;
+    f32 m_y = 0;
+    f32 m_z = 0;
   };
 }
 

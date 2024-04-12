@@ -8,45 +8,40 @@
 
 using namespace GE;
 
-struct PosAndTex2DShader::Impl
+PosAndTex2DShader::PosAndTex2DShader()
 {
-  Ref<Shader> shader;
-};
-
-PosAndTex2DShader::PosAndTex2DShader() : m_pimpl(MakeScope<Impl>())
-{
-  m_pimpl->shader = Shader::Make("assets/shaders/PositionAndTex2D.vshader.glsl",
-                                 "assets/shaders/PositionAndTex2D.fshader.glsl");
+  m_shader = Shader::Make("assets/shaders/PositionAndTex2D.vshader.glsl",
+                          "assets/shaders/PositionAndTex2D.fshader.glsl");
 }
 
 PosAndTex2DShader::~PosAndTex2DShader() = default;
 
 void PosAndTex2DShader::Activate()
 {
-  m_pimpl->shader->Bind();
+  m_shader->Bind();
 }
 
 void PosAndTex2DShader::Deactivate()
 {
-  m_pimpl->shader->Unbind();
+  m_shader->Unbind();
 }
 
 void PosAndTex2DShader::UpdateModelMatrix(Mat4 data)
 {
   Activate();
-  m_pimpl->shader->UploadMat4F("u_M", data);
+  m_shader->UploadMat4F("u_M", data);
 }
 
 void PosAndTex2DShader::UpdateViewProjectionMatrix(Mat4 viewProj)
 {
   Activate();
-  m_pimpl->shader->UploadMat4F("u_VP", viewProj);
+  m_shader->UploadMat4F("u_VP", viewProj);
 }
 
 void PosAndTex2DShader::UpdateTexture(int id)
 {
   Activate();
-  m_pimpl->shader->UploadInt("u_texture", id);
+  m_shader->UploadInt("u_texture", id);
 }
 
 Ref<BufferLayout> GE::PosAndTex2DShader::GetLayout() const

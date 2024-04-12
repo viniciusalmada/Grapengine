@@ -1,5 +1,10 @@
 #ifndef GRAPENGINE_DRAWING_OBJECT_HPP
 #define GRAPENGINE_DRAWING_OBJECT_HPP
+
+#include "renderer/ge_index_buffer.hpp"
+#include "renderer/ge_vertex_array.hpp"
+#include "renderer/ge_vertex_buffer.hpp"
+
 namespace GE
 {
   class VerticesData;
@@ -19,7 +24,10 @@ namespace GE
     i32 IndicesCount() const;
 
   private:
-    POINTER_TO_IMPLEMENTATION_IDIOM
+    Ref<VertexArray> m_vao = nullptr;
+    Ref<VertexBuffer> m_vbo = nullptr;
+    Ref<IndexBuffer> m_ibo = nullptr;
+    u64 m_triangles_count = 0;
   };
 }
 

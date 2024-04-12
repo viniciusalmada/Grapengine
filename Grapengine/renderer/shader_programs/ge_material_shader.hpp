@@ -4,6 +4,7 @@
 #include "drawables/ge_color.hpp"
 #include "math/ge_vector.hpp"
 #include "renderer/ge_ishader_program.hpp"
+#include "renderer/ge_shader.hpp"
 
 namespace GE
 {
@@ -30,7 +31,7 @@ namespace GE
     [[nodiscard]] Ref<BufferLayout> GetLayout() const override;
 
   private:
-    POINTER_TO_IMPLEMENTATION_IDIOM
+    Ref<Shader> m_shader;
   };
 }
 #endif // GRAPENGINE_MATERIAL_SHADER_HPP

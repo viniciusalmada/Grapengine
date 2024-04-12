@@ -33,7 +33,12 @@ namespace GE
     [[nodiscard]] IVec2 GetSize() const;
 
   private:
-    POINTER_TO_IMPLEMENTATION_IDIOM
+    void Clear();
+
+    FBSpecs m_specs;
+    u32 m_id = 0;
+    u32 m_color_attachment = 0;
+    u32 m_depth_attachment = 0;
   };
 }
 

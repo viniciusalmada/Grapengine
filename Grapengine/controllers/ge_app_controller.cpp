@@ -9,36 +9,12 @@ namespace
   std::optional<Ctrl::App> ctrl_app = std::nullopt;
 }
 
-struct Ctrl::App::Impl
-{
-  void Init(const Ref<Application>& app) { application = app; }
-
-  void Close()
-  {
-    GE_ASSERT(ctrl_app.has_value(), "Controller not initialized")
-    GE_ASSERT(application != nullptr, "Application destroyed")
-
-    application->Close();
-  }
-
-  void AllowImGuiEvents(bool value)
-  {
-    GE_ASSERT(ctrl_app.has_value(), "Controller not initialized")
-    GE_ASSERT(application != nullptr, "Application destroyed")
-
-    application->GetImGuiLayer()->AllowMouseAndKeyboardEvents(value);
-  }
-
-private:
-  Ref<Application> application = nullptr;
-};
-
-GE::Ctrl::App::App() : m_pimpl(MakeScope<Impl>()) {}
+GE::Ctrl::App::App() {}
 
 void Ctrl::App::Init(const Ref<Application>& app)
 {
   ctrl_app.emplace(App{});
-  ctrl_app->m_pimpl->Init(app);
+  ctrl_app->m_application = app;
 }
 
 void GE::Ctrl::App::Shutdown()
@@ -48,9 +24,15 @@ void GE::Ctrl::App::Shutdown()
 
 void GE::Ctrl::App::Close()
 {
-  ctrl_app->m_pimpl->Close();
+  GE_ASSERT(ctrl_app.has_value(), "Controller not initialized")
+  GE_ASSERT(ctrl_app->m_application != nullptr, "Application destroyed")
+
+  ctrl_app->m_application->Close();
 }
 void GE::Ctrl::App::AllowImGuiEvents(bool value)
 {
-  ctrl_app->m_pimpl->AllowImGuiEvents(value);
+  GE_ASSERT(ctrl_app.has_value(), "Controller not initialized")
+  GE_ASSERT(ctrl_app->m_application != nullptr, "Application destroyed")
+
+  ctrl_app->m_application->GetImGuiLayer()->AllowMouseAndKeyboardEvents(value);
 }

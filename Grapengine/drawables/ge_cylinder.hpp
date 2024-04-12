@@ -1,13 +1,16 @@
 #ifndef GRAPENGINE_CYLINDER_HPP
 #define GRAPENGINE_CYLINDER_HPP
 
-#include "ge_drawable.hpp"
+#include "drawables/ge_color.hpp"
+#include "drawables/ge_drawable.hpp"
+#include "drawables/ge_drawing_object.hpp"
 
 #include <math/ge_vector.hpp>
+
 namespace GE
 {
-  struct Color;
   class Texture2D;
+
   class Cylinder : public Drawable
   {
   public:
@@ -21,17 +24,20 @@ namespace GE
 
     Cylinder(const Ref<IShaderProgram>& shader,
              f32 radius,
-                  const Vec3& basePoint,
-                  const Vec3& direction,
-                  f32 height,
-                  Color color,
-                  Ref<Texture2D> texture2D);
+             const Vec3& basePoint,
+             const Vec3& direction,
+             f32 height,
+             Color color,
+             Ref<Texture2D> texture2D);
     ~Cylinder() override;
 
     void Draw() const override;
 
   private:
-    POINTER_TO_IMPLEMENTATION_IDIOM
+    Color m_color{ 0 };
+    Ref<DrawingObject> m_draw_primitive;
+    Ref<IShaderProgram> m_shader;
+    Ref<Texture2D> m_texture;
   };
 }
 

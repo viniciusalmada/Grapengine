@@ -40,31 +40,25 @@ namespace
   }
 }
 
-struct BufferLayout::Impl
+BufferLayout::BufferLayout(std::list<BufferElem> list)
 {
-  std::vector<BufferElem> elements;
-  u64 stride = 0;
-};
-
-BufferLayout::BufferLayout(std::list<BufferElem> list) : m_pimpl(MakeScope<Impl>())
-{
-  m_pimpl->elements = { list.begin(), list.end() };
+  m_elements = { list.begin(), list.end() };
   u64 offset = 0;
-  m_pimpl->stride = 0;
+  m_stride = 0;
 
-  for (auto& elem : m_pimpl->elements)
+  for (auto& elem : m_elements)
   {
     elem.offset = offset;
     offset += elem.size;
-    m_pimpl->stride += elem.size;
+    m_stride += elem.size;
   }
 }
 
 std::vector<ShaderDataType> BufferLayout::GetTypesSortedList() const
 {
   std::vector<ShaderDataType> sorted_list;
-  sorted_list.reserve(m_pimpl->elements.size());
-  for (auto& e : m_pimpl->elements)
+  sorted_list.reserve(m_elements.size());
+  for (auto& e : m_elements)
     sorted_list.push_back(e.type);
 
   return sorted_list;
@@ -72,13 +66,13 @@ std::vector<ShaderDataType> BufferLayout::GetTypesSortedList() const
 
 void BufferLayout::ForEachElement(const std::function<void(BufferElem)>& action) const
 {
-  for (auto& e : m_pimpl->elements)
+  for (auto& e : m_elements)
     action(e);
 }
 
 u64 BufferLayout::GetStride() const
 {
-  return m_pimpl->stride;
+  return m_stride;
 }
 
 std::list<BufferElem> GE::BufferLayout::BuildElementsList(
@@ -101,7 +95,7 @@ Ref<BufferLayout> GE::BufferLayout::Make(std::list<BufferElem> list)
 
 bool GE::BufferLayout::HasNormal() const
 {
-  return std::ranges::any_of(m_pimpl->elements,
+  return std::ranges::any_of(m_elements,
                              [&](const BufferElem& e) { return e.purpose == DataPurpose::NORMAL; });
 }
 

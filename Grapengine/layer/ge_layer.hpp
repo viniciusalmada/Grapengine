@@ -26,7 +26,7 @@ namespace GE
     [[nodiscard]] const std::string& GetName() const;
 
   protected:
-    POINTER_TO_IMPLEMENTATION_IDIOM
+    std::string m_name;
   };
 }
 

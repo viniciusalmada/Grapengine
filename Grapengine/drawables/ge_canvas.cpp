@@ -5,21 +5,11 @@
 
 using namespace GE;
 
-struct Canvas::Impl
-{
-  u32 width;
-  u32 height;
-};
+Canvas::Canvas(u32 width, u32 height) :
+    m_width(width),
+    m_height(height){ GE_INFO("Canvas creation") }
 
-Canvas::Canvas(u32 width, u32 height) : m_pimpl(MakeScope<Impl>())
-{
-  GE_INFO("Canvas creation")
-
-  m_pimpl->width = width;
-  m_pimpl->height = height;
-}
-
-Canvas::~Canvas() = default;
+    Canvas::~Canvas() = default;
 
 void Canvas::Clear(const Vec4& color)
 {

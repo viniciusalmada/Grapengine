@@ -17,7 +17,10 @@ namespace GE
     void Bind(u32 slot) const;
 
   private:
-    POINTER_TO_IMPLEMENTATION_IDIOM
+    std::filesystem::path m_path;
+    u32 m_width = 0;
+    u32 m_height = 0;
+    u32 m_renderer_ID = 0;
   };
 }
 

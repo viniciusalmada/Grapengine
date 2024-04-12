@@ -47,6 +47,8 @@ add_library(Grapengine STATIC
   scene/ge_ec_registry.cpp
   scene/ge_ec_registry.hpp
   scene/ge_entity.hpp
+  core/ge_context.cpp
+  core/ge_context.hpp
 )
 target_precompile_headers(Grapengine PRIVATE ${CMAKE_SOURCE_DIR}/Grapengine/grapengine_pch.hpp)
 target_include_directories(Grapengine

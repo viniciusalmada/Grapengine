@@ -23,15 +23,24 @@ namespace GE
     void SetColor(Color color);
     void Draw() const override;
 
-    void SetScale(f32 x, f32 y, f32 z) const;
-    void SetTranslate(f32 x, f32 y, f32 z) const;
-    void SetTranslate(Vec3 xyz) const;
+    void SetScale(f32 x, f32 y, f32 z);
+    void SetTranslate(f32 x, f32 y, f32 z);
+    void SetTranslate(Vec3 xyz);
 
     [[nodiscard]] Ref<DrawingObject> GetVAO() const;
     [[nodiscard]] Mat4 GetModelMatrix() const;
 
   private:
-    POINTER_TO_IMPLEMENTATION_IDIOM
+    f32 m_position_x = 0;
+    f32 m_position_y = 0;
+    f32 m_position_z = 0;
+    f32 m_height = 0;
+    Color m_color{ 0 };
+    Ref<DrawingObject> m_draw_primitive;
+    Ref<IShaderProgram> m_shader;
+    Mat4 m_scale_mat{};
+    Mat4 m_translate_mat{};
+    Ref<Texture2D> m_texture;
   };
 }
 

@@ -12,80 +12,11 @@
 
 using namespace GE;
 
-struct Application::Impl
-{
-  Ref<Window> window;
-  bool running = true;
-  bool minimized = false;
-  u64 last_frame_time{ 0 };
-  std::vector<Ref<Layer>> layers;
-  Ref<ImGuiLayer> imgui_layer;
-
-  void Init(std::string_view title,
-            u32 width,
-            u32 height,
-            std::string_view icon,
-            const EventCallbackFn& cb)
-  {
-    window = MakeScope<Window>(WindowProps{ title, width, height, icon }, cb);
-    Input::Initialize(window);
-    imgui_layer = ImGuiLayer::Make(window);
-    imgui_layer->OnAttach();
-  }
-
-  void OnEvent(Event& event)
-  {
-    imgui_layer->OnEvent(event);
-
-    for (const auto& layer : layers | std::views::reverse)
-    {
-      if (event.IsHandled())
-        break;
-      layer->OnEvent(event);
-    }
-
-    event //
-      .When(EvType::WINDOW_CLOSE)
-      .Then([this] { Finish(); });
-  }
-
-  void Run()
-  {
-    while (running)
-    {
-      u64 time_ms = Platform::GetCurrentTimeMS();
-      TimeStep step{ time_ms - last_frame_time };
-      last_frame_time = time_ms;
-
-      if (!minimized)
-      {
-        std::ranges::for_each(layers, [&](auto&& l) { l->OnUpdate(step); });
-
-        imgui_layer->Begin();
-        std::ranges::for_each(layers, [&](auto&& l) { l->OnImGuiUpdate(); });
-        imgui_layer->End();
-      }
-
-      window->OnUpdate();
-    }
-  }
-
-  void Finish() { running = false; }
-
-  void OnDestroy()
-  {
-    Input::Shutdown();
-    imgui_layer->OnDetach();
-    std::ranges::for_each(layers, [](auto&& l) { l->OnDetach(); });
-  }
-};
-
 Application::Application(std::string_view title, u32 width, u32 height, std::string_view icon)
 {
   GE_INFO("Application creation")
 
-  m_pimpl = MakeScope<Impl>();
-  m_pimpl->Init(title, width, height, icon, [this](auto&& e) { OnEvent(e); });
+  Init(title, width, height, icon, [this](auto&& e) { OnEvent(e); });
 
   Renderer::Init();
   Renderer::SetViewport(0, 0, width, height);
@@ -93,34 +24,84 @@ Application::Application(std::string_view title, u32 width, u32 height, std::str
 
 Application::~Application()
 {
-  m_pimpl->OnDestroy();
-  m_pimpl.reset();
+  OnDestroy();
 
   GE_INFO("Application shutdown")
 }
 
-void Application::Run() const
+void Application::Init(std::string_view title,
+                       u32 width,
+                       u32 height,
+                       std::string_view icon,
+                       const EventCallbackFn& cb)
 {
-  m_pimpl->Run();
+  m_window = MakeScope<Window>(WindowProps{ title, width, height, icon }, cb);
+  Input::Initialize(m_window);
+  m_imgui_layer = ImGuiLayer::Make(m_window);
+  m_imgui_layer->OnAttach();
+}
+
+void Application::Finish()
+{
+  m_running = false;
+}
+
+void Application::OnDestroy()
+{
+  Input::Shutdown();
+  m_imgui_layer->OnDetach();
+  std::ranges::for_each(m_layers, [](auto&& l) { l->OnDetach(); });
+}
+
+void Application::Run()
+{
+  while (m_running)
+  {
+    u64 time_ms = Platform::GetCurrentTimeMS();
+    TimeStep step{ time_ms - m_last_frame_time };
+    m_last_frame_time = time_ms;
+
+    if (!m_minimized)
+    {
+      std::ranges::for_each(m_layers, [&](auto&& l) { l->OnUpdate(step); });
+
+      m_imgui_layer->Begin();
+      std::ranges::for_each(m_layers, [&](auto&& l) { l->OnImGuiUpdate(); });
+      m_imgui_layer->End();
+    }
+
+    m_window->OnUpdate();
+  }
 }
 
 void GE::Application::OnEvent(Event& event)
 {
-  m_pimpl->OnEvent(event);
+  m_imgui_layer->OnEvent(event);
+
+  for (const auto& layer : m_layers | std::views::reverse)
+  {
+    if (event.IsHandled())
+      break;
+    layer->OnEvent(event);
+  }
+
+  event //
+    .When(EvType::WINDOW_CLOSE)
+    .Then([this] { Finish(); });
 }
 
-void GE::Application::AddLayer(const Ref<Layer>& layer) const
+void GE::Application::AddLayer(const Ref<Layer>& layer)
 {
-  m_pimpl->layers.push_back(layer);
+  m_layers.push_back(layer);
   layer->OnAttach();
 }
 
-void GE::Application::Close() const
+void GE::Application::Close()
 {
-  m_pimpl->Finish();
+  Finish();
 }
 
 Ref<ImGuiLayer> GE::Application::GetImGuiLayer() const
 {
-  return m_pimpl->imgui_layer;
+  return m_imgui_layer;
 }

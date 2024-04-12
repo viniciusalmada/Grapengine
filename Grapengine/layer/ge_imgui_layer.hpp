@@ -22,7 +22,8 @@ namespace GE
     void AllowMouseAndKeyboardEvents(bool allow);
 
   private:
-    POINTER_TO_IMPLEMENTATION_IDIOM
+    Ref<Window> m_window = nullptr;
+    bool m_allow_imgui_events = false;
   };
 }
 

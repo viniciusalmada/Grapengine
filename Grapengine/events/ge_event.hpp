@@ -25,7 +25,8 @@ namespace GE
     explicit operator bool() const;
 
   private:
-    POINTER_TO_IMPLEMENTATION_IDIOM
+    EvData m_data;
+    bool m_handled = false;
   };
 
   class Event
@@ -43,7 +44,8 @@ namespace GE
     [[nodiscard]] EventHandler& When(EvType t);
 
   private:
-    POINTER_TO_IMPLEMENTATION_IDIOM
+    EventHandler m_handler;
+    EvType m_type = EvType::NONE;
   };
 }
 

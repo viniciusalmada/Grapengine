@@ -13,7 +13,8 @@ namespace GE
     void UpdateData(const void* data, u64 size) const;
 
   private:
-    POINTER_TO_IMPLEMENTATION_IDIOM
+    u32 m_id = 0;
+    u32 m_parent = 0;
   };
 }
 

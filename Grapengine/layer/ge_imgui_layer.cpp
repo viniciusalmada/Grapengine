@@ -15,16 +15,7 @@ namespace
   constexpr auto IMGUI_LAYER = "IMGUI_LAYER";
 }
 
-struct ImGuiLayer::Impl
-{
-  Ref<Window> window = nullptr;
-  bool allow_imgui_events = false;
-};
-
-ImGuiLayer::ImGuiLayer(Ref<Window> window) : Layer(IMGUI_LAYER), m_pimpl(MakeScope<Impl>())
-{
-  m_pimpl->window = std::move(window);
-}
+ImGuiLayer::ImGuiLayer(Ref<Window> window) : Layer(IMGUI_LAYER), m_window(window) {}
 
 ImGuiLayer::~ImGuiLayer() = default;
 
@@ -80,8 +71,7 @@ void ImGuiLayer::OnAttach()
     colors[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
   }
 
-  ImGui_ImplGlfw_InitForOpenGL(std::any_cast<GLFWwindow*>(m_pimpl->window->GetNativeHandler()),
-                               true);
+  ImGui_ImplGlfw_InitForOpenGL(std::any_cast<GLFWwindow*>(m_window->GetNativeHandler()), true);
   ImGui_ImplOpenGL3_Init();
 }
 void ImGuiLayer::OnDetach()
@@ -96,7 +86,7 @@ void ImGuiLayer::OnDetach()
 }
 void ImGuiLayer::Begin()
 {
-  if (m_pimpl->window == nullptr)
+  if (m_window == nullptr)
     return;
   ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplGlfw_NewFrame();
@@ -111,8 +101,8 @@ Ref<ImGuiLayer> ImGuiLayer::Make(Ref<Window> window)
 void ImGuiLayer::End()
 {
   auto& io = ImGui::GetIO();
-  io.DisplaySize = ImVec2(static_cast<f32>(m_pimpl->window->GetWidth()),
-                          static_cast<float>(m_pimpl->window->GetWidth()));
+  io.DisplaySize =
+    ImVec2(static_cast<f32>(m_window->GetWidth()), static_cast<float>(m_window->GetWidth()));
 
   ImGui::Render();
   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -130,7 +120,7 @@ void ImGuiLayer::End()
 
 void GE::ImGuiLayer::OnEvent(Event& e)
 {
-  if (!m_pimpl->allow_imgui_events)
+  if (!m_allow_imgui_events)
     return;
 
   ImGuiIO& io = ImGui::GetIO();
@@ -156,5 +146,5 @@ void GE::ImGuiLayer::OnEvent(Event& e)
 
 void GE::ImGuiLayer::AllowMouseAndKeyboardEvents(bool allow)
 {
-  m_pimpl->allow_imgui_events = allow;
+  m_allow_imgui_events = allow;
 }
