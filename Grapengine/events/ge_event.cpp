@@ -7,13 +7,7 @@ namespace
   EventHandler INVALID_HANDLER;
 }
 
-struct EventHandler::Impl
-{
-  EvData data;
-  bool handled = false;
-};
-
-EventHandler::EventHandler() : m_pimpl(MakeScope<Impl>()) {}
+EventHandler::EventHandler() {}
 
 void GE::EventHandler::Then(const std::function<void()>& action)
 {
@@ -21,7 +15,7 @@ void GE::EventHandler::Then(const std::function<void()>& action)
     return;
 
   action();
-  m_pimpl->handled = true;
+  m_handled = true;
 }
 
 void GE::EventHandler::Then(const std::function<void(const EvData&)>& action)
@@ -29,8 +23,8 @@ void GE::EventHandler::Then(const std::function<void(const EvData&)>& action)
   if (this == &INVALID_HANDLER)
     return;
 
-  action(std::ref(m_pimpl->data));
-  m_pimpl->handled = true;
+  action(std::ref(m_data));
+  m_handled = true;
 }
 
 void GE::EventHandler::ThenWithRes(const std::function<bool(const EvData&)>& action)
@@ -38,46 +32,39 @@ void GE::EventHandler::ThenWithRes(const std::function<bool(const EvData&)>& act
   if (this == &INVALID_HANDLER)
     return;
 
-  m_pimpl->handled = action(std::ref(m_pimpl->data));
+  m_handled = action(std::ref(m_data));
 }
 
 GE::EventHandler::operator bool() const
 {
-  return m_pimpl->handled;
+  return m_handled;
 }
 void GE::EventHandler::SetData(EvData data)
 {
-  m_pimpl->data = data;
+  m_data = data;
 }
 void GE::EventHandler::SetHandled()
 {
-  m_pimpl->handled = true;
+  m_handled = true;
 }
 
 EventHandler::~EventHandler() = default;
 
-struct Event::Impl
+Event::Event(EvType type, EvData data) : m_type(type)
 {
-  EventHandler handler;
-  EvType type = EvType::NONE;
-};
-
-Event::Event(EvType type, EvData data) : m_pimpl(MakeScope<Impl>())
-{
-  m_pimpl->handler.SetData(std::move(data));
-  m_pimpl->type = type;
+  m_handler.SetData(std::move(data));
 }
 
 Event::~Event() = default;
 
 bool Event::IsHandled() const
 {
-  return bool(m_pimpl->handler);
+  return bool(m_handler);
 }
 
 EvType Event::GetType() const
 {
-  return m_pimpl->type;
+  return m_type;
 }
 
 EventHandler& GE::Event::When(EvType t)
@@ -85,15 +72,15 @@ EventHandler& GE::Event::When(EvType t)
   if (this->GetType() != t)
     return INVALID_HANDLER;
 
-  return m_pimpl->handler;
+  return m_handler;
 }
 
 void GE::Event::SetHandled()
 {
-  m_pimpl->handler.SetHandled();
+  m_handler.SetHandled();
 }
 
 bool GE::Event::IsType(EvType t) const
 {
-  return m_pimpl->type == t;
+  return m_type == t;
 }

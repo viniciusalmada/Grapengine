@@ -8,14 +8,9 @@
 
 using namespace GE;
 
-struct MaterialShader::Impl
+MaterialShader::MaterialShader()
 {
-  Ref<Shader> shader;
-};
-
-MaterialShader::MaterialShader() : m_pimpl(MakeScope<Impl>())
-{
-  m_pimpl->shader =
+  m_shader =
     Shader::Make("assets/shaders/Material.vshader.glsl", "assets/shaders/Material.fshader.glsl");
 }
 
@@ -23,30 +18,30 @@ MaterialShader::~MaterialShader() = default;
 
 void MaterialShader::Activate()
 {
-  m_pimpl->shader->Bind();
+  m_shader->Bind();
 }
 
 void MaterialShader::Deactivate()
 {
-  m_pimpl->shader->Unbind();
+  m_shader->Unbind();
 }
 
 void MaterialShader::UpdateModelMatrix(Mat4 data)
 {
   Activate();
-  m_pimpl->shader->UploadMat4F("u_M", data);
+  m_shader->UploadMat4F("u_M", data);
 }
 
 void MaterialShader::UpdateViewProjectionMatrix(Mat4 viewProj)
 {
   Activate();
-  m_pimpl->shader->UploadMat4F("u_VP", viewProj);
+  m_shader->UploadMat4F("u_VP", viewProj);
 }
 
 void MaterialShader::UpdateTexture(int id)
 {
   Activate();
-  m_pimpl->shader->UploadInt("u_texture", id);
+  m_shader->UploadInt("u_texture", id);
 }
 
 Ref<BufferLayout> GE::MaterialShader::GetLayout() const
@@ -64,17 +59,17 @@ Ref<BufferLayout> GE::MaterialShader::GetLayout() const
 
 void GE::MaterialShader::UpdateAmbientColor(Color color)
 {
-  m_pimpl->shader->UploadVec3("u_ambientColor", color.ToVec3());
+  m_shader->UploadVec3("u_ambientColor", color.ToVec3());
 }
 
 void GE::MaterialShader::UpdateAmbientStrength(f32 strength)
 {
-  m_pimpl->shader->UploadFloat("u_ambientStrength", strength);
+  m_shader->UploadFloat("u_ambientStrength", strength);
 }
 
 void GE::MaterialShader::UpdateLightPosition(const std::vector<Vec3>& pos)
 {
-  m_pimpl->shader->UploadVec3Array("u_lightPos", pos);
+  m_shader->UploadVec3Array("u_lightPos", pos);
 }
 
 void GE::MaterialShader::UpdateLightColor(std::vector<Color> color)
@@ -83,10 +78,10 @@ void GE::MaterialShader::UpdateLightColor(std::vector<Color> color)
   std::ranges::transform(color,
                          std::back_inserter(colors_vec),
                          [](auto&& c) { return c.ToVec3(); });
-  m_pimpl->shader->UploadVec3Array("u_lightColor", colors_vec);
+  m_shader->UploadVec3Array("u_lightColor", colors_vec);
 }
 
 void GE::MaterialShader::UpdateLightStrength(const std::vector<f32>& strength)
 {
-  m_pimpl->shader->UploadFloatArray("u_lightStrength", strength);
+  m_shader->UploadFloatArray("u_lightStrength", strength);
 }

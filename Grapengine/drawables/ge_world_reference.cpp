@@ -12,76 +12,63 @@ namespace
   constexpr f32 AXIS_RADIUS = 0.02f;
 }
 
-struct WorldReference::Impl
+GE::WorldReference::WorldReference(const Ref<IShaderProgram>& shader, u64 platformSize)
 {
-  Ref<IShaderProgram> shader;
-  Ref<Texture2D> blank_texture;
-  Ref<Cube> platform;
-  Ref<Cylinder> x_axis;
-  Ref<Cylinder> y_axis;
-  Ref<Cylinder> z_axis;
-  bool show_platform = true;
-  u64 platform_side_size = 10;
-};
+  m_shader = shader;
+  m_platform_side_size = platformSize;
+  const f32 SIDE_SIZE = static_cast<f32>(m_platform_side_size);
+  m_blank_texture = MakeRef<Texture2D>();
+  m_platform = MakeRef<Cube>(Color{ 0xAAAAAAFF }, m_shader, m_blank_texture);
+  m_platform->SetScale(SIDE_SIZE, AXIS_RADIUS, SIDE_SIZE);
+  m_platform->SetTranslate(SIDE_SIZE / 2, 0, SIDE_SIZE / 2);
 
-GE::WorldReference::WorldReference(const Ref<IShaderProgram>& shader, u64 platformSize) :
-    m_pimpl(MakeScope<Impl>())
-{
-  m_pimpl->shader = shader;
-  m_pimpl->platform_side_size = platformSize;
-  const f32 SIDE_SIZE = static_cast<f32>(m_pimpl->platform_side_size);
-  m_pimpl->blank_texture = MakeRef<Texture2D>();
-  m_pimpl->platform = MakeRef<Cube>(Color{ 0xAAAAAAFF }, m_pimpl->shader, m_pimpl->blank_texture);
-  m_pimpl->platform->SetScale(SIDE_SIZE, AXIS_RADIUS, SIDE_SIZE);
-  m_pimpl->platform->SetTranslate(SIDE_SIZE / 2, 0, SIDE_SIZE / 2);
-
-  m_pimpl->x_axis = MakeRef<Cylinder>(m_pimpl->shader,
-                                      AXIS_RADIUS,
-                                      ORIGIN,
-                                      Vec3{ 1, 0, 0 },
-                                      SIDE_SIZE * 10,
-                                      Colors::RED,
-                                      m_pimpl->blank_texture);
-  m_pimpl->y_axis = MakeRef<Cylinder>(m_pimpl->shader,
-                                      AXIS_RADIUS,
-                                      ORIGIN,
-                                      Vec3{ 0, 1, 0 },
-                                      SIDE_SIZE * 10,
-                                      Colors::GREEN,
-                                      m_pimpl->blank_texture);
-  m_pimpl->z_axis = MakeRef<Cylinder>(m_pimpl->shader,
-                                      AXIS_RADIUS,
-                                      ORIGIN,
-                                      Vec3{ 0, 0, 1 },
-                                      SIDE_SIZE * 10,
-                                      Colors::BLUE,
-                                      m_pimpl->blank_texture);
+  m_x_axis = MakeRef<Cylinder>(m_shader,
+                               AXIS_RADIUS,
+                               ORIGIN,
+                               Vec3{ 1, 0, 0 },
+                               SIDE_SIZE * 10,
+                               Colors::RED,
+                               m_blank_texture);
+  m_y_axis = MakeRef<Cylinder>(m_shader,
+                               AXIS_RADIUS,
+                               ORIGIN,
+                               Vec3{ 0, 1, 0 },
+                               SIDE_SIZE * 10,
+                               Colors::GREEN,
+                               m_blank_texture);
+  m_z_axis = MakeRef<Cylinder>(m_shader,
+                               AXIS_RADIUS,
+                               ORIGIN,
+                               Vec3{ 0, 0, 1 },
+                               SIDE_SIZE * 10,
+                               Colors::BLUE,
+                               m_blank_texture);
 }
 
 void WorldReference::DrawBatch() const
 {
-  m_pimpl->shader->Activate();
+  m_shader->Activate();
 
-  if (m_pimpl->show_platform)
-    m_pimpl->platform->Draw();
-  m_pimpl->x_axis->Draw();
-  m_pimpl->y_axis->Draw();
-  m_pimpl->z_axis->Draw();
+  if (m_show_platform)
+    m_platform->Draw();
+  m_x_axis->Draw();
+  m_y_axis->Draw();
+  m_z_axis->Draw();
 }
 
-void GE::WorldReference::ShowPlatform(bool show) const
+void GE::WorldReference::ShowPlatform(bool show)
 {
-  m_pimpl->show_platform = show;
+  m_show_platform = show;
 }
 
 Ref<DrawingObject> GE::WorldReference::GetVAO() const
 {
-  return m_pimpl->platform->GetVAO();
+  return m_platform->GetVAO();
 }
 
 Mat4 GE::WorldReference::GetModelMatrix() const
 {
-  return m_pimpl->platform->GetModelMatrix();
+  return m_platform->GetModelMatrix();
 }
 
 WorldReference::~WorldReference() = default;

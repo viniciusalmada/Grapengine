@@ -36,7 +36,10 @@ namespace GE
     void UploadFloatArray(const std::string& name, const std::vector<f32>& vec3);
 
   private:
-    POINTER_TO_IMPLEMENTATION_IDIOM
+    i32 RetrieveUniform(const std::string& name);
+
+    u32 m_renderer_id{ 0 };
+    std::unordered_map<std::string, i32> m_uniforms;
   };
 }
 #endif

@@ -11,7 +11,9 @@ namespace GE
     void Bind() const;
 
   private:
-    POINTER_TO_IMPLEMENTATION_IDIOM
+    u32 m_id;
+    u32 m_count;
+    u32 m_parent;
   };
 }
 #endif // GRAPENGINE_INDEX_BUFFER_HPP

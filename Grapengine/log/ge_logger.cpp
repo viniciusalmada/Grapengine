@@ -4,14 +4,8 @@
 
 using namespace GE;
 
-struct Logger::Impl
-{
-  static Ref<spdlog::logger> library_logger;
-  static Ref<spdlog::logger> client_logger;
-};
-
-Ref<spdlog::logger> Logger::Impl::library_logger = nullptr;
-Ref<spdlog::logger> Logger::Impl::client_logger = nullptr;
+Ref<spdlog::logger> Logger::s_library_logger = nullptr;
+Ref<spdlog::logger> Logger::s_client_logger = nullptr;
 
 void Logger::Init()
 {
@@ -34,27 +28,27 @@ void Logger::Init()
   pattern.append(" %v%$");
   spdlog::set_pattern(pattern);
 
-  Impl::library_logger = spdlog::stdout_color_mt("🍇");
-  Impl::library_logger->set_level(spdlog::level::trace);
-  Impl::client_logger = spdlog::stdout_color_mt("🍷");
-  Impl::client_logger->set_level(spdlog::level::trace);
+  s_library_logger = spdlog::stdout_color_mt("🍇");
+  s_library_logger->set_level(spdlog::level::trace);
+  s_client_logger = spdlog::stdout_color_mt("🍷");
+  s_client_logger->set_level(spdlog::level::trace);
 
   GE_INFO("Logger initialized")
 }
 
 Ref<spdlog::logger>& GE::Logger::GetLibLogger()
 {
-  return Impl::library_logger;
+  return s_library_logger;
 }
 
 Ref<spdlog::logger>& GE::Logger::GetClientLogger()
 {
-  return Impl::client_logger;
+  return s_client_logger;
 }
 void GE::Logger::Shutdown()
 {
   GE_INFO("Logger shutdown")
 
-  Impl::client_logger.reset();
-  Impl::library_logger.reset();
+  s_client_logger.reset();
+  s_library_logger.reset();
 }

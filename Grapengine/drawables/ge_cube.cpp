@@ -76,26 +76,12 @@ namespace
   }
 }
 
-struct Cube::Impl
-{
-  f32 position_x = 0;
-  f32 position_y = 0;
-  f32 position_z = 0;
-  f32 height = 0;
-  Color color{ 0 };
-  Ref<DrawingObject> draw_primitive;
-  Ref<IShaderProgram> shader;
-  Mat4 scale_mat{};
-  Mat4 translate_mat{};
-  Ref<Texture2D> texture;
-};
-
 Cube::Cube(Color color, const Ref<IShaderProgram>& shader, Ref<Texture2D> texture) :
-    Drawable(shader), m_pimpl(MakeScope<Impl>())
+    Drawable(shader)
 {
-  m_pimpl->shader = shader;
-  m_pimpl->color = color;
-  m_pimpl->texture = std::move(texture);
+  m_shader = shader;
+  m_color = color;
+  m_texture = std::move(texture);
   auto layout = shader->GetLayout();
 
   const auto positions = GetCubeVerticesPositions(layout, color);
@@ -108,26 +94,26 @@ Cube::Cube(Color color, const Ref<IShaderProgram>& shader, Ref<Texture2D> textur
     20, 21, 22, 22, 23, 20, // Bottom face
   });
 
-  m_pimpl->draw_primitive = MakeRef<DrawingObject>(positions, indices);
+  m_draw_primitive = MakeRef<DrawingObject>(positions, indices);
 }
 void Cube::Draw() const
 {
-  m_pimpl->shader->Activate();
-  m_pimpl->texture->Bind(0);
-  m_pimpl->texture->Bind(0);
-  m_pimpl->shader->UpdateModelMatrix(m_pimpl->translate_mat * m_pimpl->scale_mat);
-  m_pimpl->shader->UpdateTexture(0);
-  //  m_pimpl->draw_primitive->Draw();
+  m_shader->Activate();
+  m_texture->Bind(0);
+  m_texture->Bind(0);
+  m_shader->UpdateModelMatrix(m_translate_mat * m_scale_mat);
+  m_shader->UpdateTexture(0);
+  //  m_draw_primitive->Draw();
 }
 
-void GE::Cube::SetScale(f32 x, f32 y, f32 z) const
+void GE::Cube::SetScale(f32 x, f32 y, f32 z)
 {
-  m_pimpl->scale_mat = Transform::Scale(x, y, z);
+  m_scale_mat = Transform::Scale(x, y, z);
 }
 
-void GE::Cube::SetTranslate(f32 x, f32 y, f32 z) const
+void GE::Cube::SetTranslate(f32 x, f32 y, f32 z)
 {
-  m_pimpl->translate_mat = Transform::Translate(x, y, z);
+  m_translate_mat = Transform::Translate(x, y, z);
 }
 
 Ref<Cube> GE::Cube::Make(Color color, const Ref<IShaderProgram>& shader, Ref<Texture2D> texture)
@@ -135,26 +121,26 @@ Ref<Cube> GE::Cube::Make(Color color, const Ref<IShaderProgram>& shader, Ref<Tex
   return MakeRef<Cube>(color, shader, std::move(texture));
 }
 
-void GE::Cube::SetTranslate(Vec3 xyz) const
+void GE::Cube::SetTranslate(Vec3 xyz)
 {
   SetTranslate(xyz.x, xyz.y, xyz.z);
 }
 
 void GE::Cube::SetColor(Color color)
 {
-  m_pimpl->color = color;
-  const auto positions = GetCubeVerticesPositions(m_pimpl->shader->GetLayout(), color);
-  m_pimpl->draw_primitive->UpdateVerticesData(positions);
+  m_color = color;
+  const auto positions = GetCubeVerticesPositions(m_shader->GetLayout(), color);
+  m_draw_primitive->UpdateVerticesData(positions);
 }
 
 Ref<DrawingObject> GE::Cube::GetVAO() const
 {
-  return m_pimpl->draw_primitive;
+  return m_draw_primitive;
 }
 
 Mat4 GE::Cube::GetModelMatrix() const
 {
-  return m_pimpl->translate_mat * m_pimpl->scale_mat;
+  return m_translate_mat * m_scale_mat;
 }
 
 Cube::~Cube() = default;

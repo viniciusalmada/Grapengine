@@ -8,50 +8,39 @@
 
 using namespace GE;
 
-struct DrawingObject::Impl
-{
-  Ref<VertexArray> vao = nullptr;
-  Ref<VertexBuffer> vbo = nullptr;
-  Ref<IndexBuffer> ibo = nullptr;
-  u64 triangles_count = 0;
-};
-
 DrawingObject::DrawingObject(const Ref<VerticesData>& vertices,
-                             const Ref<std::vector<u32>>& indices) :
-    m_pimpl(MakeScope<Impl>())
+                             const Ref<std::vector<u32>>& indices)
 {
-  m_pimpl->vao = MakeRef<VertexArray>();
-  m_pimpl->triangles_count = indices->size() / 3ul;
-  m_pimpl->vao->Bind();
+  m_vao = MakeRef<VertexArray>();
+  m_triangles_count = indices->size() / 3ul;
+  m_vao->Bind();
 
-  m_pimpl->vbo =
-    MakeRef<VertexBuffer>(vertices->GetPtr(), vertices->GetSize(), m_pimpl->vao->GetID());
-  m_pimpl->ibo =
-    MakeRef<IndexBuffer>(indices->data(), static_cast<u32>(indices->size()), m_pimpl->vao->GetID());
+  m_vbo = MakeRef<VertexBuffer>(vertices->GetPtr(), vertices->GetSize(), m_vao->GetID());
+  m_ibo = MakeRef<IndexBuffer>(indices->data(), static_cast<u32>(indices->size()), m_vao->GetID());
 
-  m_pimpl->vao->SetVertexBuffer(m_pimpl->vbo, vertices->GetLayout());
-  m_pimpl->vao->SetIndexBuffer(m_pimpl->ibo);
+  m_vao->SetVertexBuffer(m_vbo, vertices->GetLayout());
+  m_vao->SetIndexBuffer(m_ibo);
 }
 
 DrawingObject::~DrawingObject() = default;
 
 void DrawingObject::Draw() const
 {
-  Renderer::DrawIndexed(m_pimpl->vao, static_cast<i32>(m_pimpl->triangles_count * 3));
+  Renderer::DrawIndexed(m_vao, static_cast<i32>(m_triangles_count * 3));
 }
 
 void DrawingObject::UpdateVerticesData(const Ref<VerticesData>& data)
 {
-  m_pimpl->vao->Bind();
-  m_pimpl->vbo->UpdateData(data->GetPtr(), data->GetSize());
+  m_vao->Bind();
+  m_vbo->UpdateData(data->GetPtr(), data->GetSize());
 }
 
 void GE::DrawingObject::Bind() const
 {
-  m_pimpl->vao->Bind();
+  m_vao->Bind();
 }
 
 i32 GE::DrawingObject::IndicesCount() const
 {
-  return static_cast<i32>(m_pimpl->triangles_count * 3);
+  return static_cast<i32>(m_triangles_count * 3);
 }

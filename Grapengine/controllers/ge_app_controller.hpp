@@ -18,7 +18,7 @@ namespace GE::Ctrl
   private:
     App();
 
-    POINTER_TO_IMPLEMENTATION_IDIOM
+    Ref<Application> m_application = nullptr;
   };
 }
 #endif // GRAPENGINE_GE_APP_CONTROLLER_HPP

@@ -120,54 +120,21 @@ namespace
   }
 }
 
-struct Shader::Impl
+Shader::Shader(const std::string& vertexSrc, const std::string& fragmentSrc)
 {
-  u32 renderer_id{ 0 };
-  std::unordered_map<std::string, i32> uniforms;
-
-  [[nodiscard]] bool IsBound() const
-  {
-    i32 curr_program = -1;
-    glGetIntegerv(GL_CURRENT_PROGRAM, &curr_program);
-    if (curr_program <= 0)
-      return false;
-
-    return static_cast<decltype(renderer_id)>(curr_program) == renderer_id;
-  }
-
-  i32 RetrieveUniform(const std::string& name)
-  {
-    GE_ASSERT(IsBound(), "Shader not bound")
-
-  check:
-    if (uniforms.contains(name))
-      return uniforms[name];
-
-    i32 location = glGetUniformLocation(renderer_id, name.c_str());
-    GE_ASSERT(location != -1, "Invalid uniform name")
-
-    uniforms[name] = location;
-    goto check;
-  }
-};
-
-Shader::Shader(const std::string& vertexSrc, const std::string& fragmentSrc) :
-    m_pimpl(MakeScope<Impl>())
-{
-  m_pimpl->renderer_id = CreateProgram(vertexSrc, fragmentSrc);
+  m_renderer_id = CreateProgram(vertexSrc, fragmentSrc);
 }
 
-Shader::Shader(const std::filesystem::path& vertexPath, const std::filesystem::path& fragPath) :
-    m_pimpl(MakeScope<Impl>())
+Shader::Shader(const std::filesystem::path& vertexPath, const std::filesystem::path& fragPath)
 {
   auto vertex_src = IO::ReadFileToString(vertexPath);
   auto frag_src = IO::ReadFileToString(fragPath);
-  m_pimpl->renderer_id = CreateProgram(vertex_src, frag_src);
+  m_renderer_id = CreateProgram(vertex_src, frag_src);
 }
 
 void Shader::Bind()
 {
-  glUseProgram(m_pimpl->renderer_id);
+  glUseProgram(m_renderer_id);
 }
 
 Shader::~Shader() = default;
@@ -179,48 +146,53 @@ void Shader::UploadMat4F(const std::string& name, const Mat4& mat)
 
 void Shader::UploadMat4F(const std::string& name, const f32* data)
 {
-  auto location = m_pimpl->RetrieveUniform(name);
+  auto location = RetrieveUniform(name);
   glUniformMatrix4fv(location, 1, GL_FALSE, data);
 }
 
 void Shader::UploadInt(const std::string& name, i32 i)
 {
-  auto location = m_pimpl->RetrieveUniform(name);
+  auto location = RetrieveUniform(name);
   glUniform1i(location, i);
 }
 
 void Shader::UploadFloat(const std::string& name, f32 i)
 {
-  auto location = m_pimpl->RetrieveUniform(name);
+  auto location = RetrieveUniform(name);
   glUniform1f(location, i);
 }
 
 void Shader::UploadVec3(const std::string& name, const Vec3& vec3)
 {
-  auto location = m_pimpl->RetrieveUniform(name);
+  auto location = RetrieveUniform(name);
   glUniform3f(location, vec3.x, vec3.y, vec3.z);
 }
 
 void GE::Shader::UploadVec3Array(const std::string& name, const std::vector<Vec3>& vec3)
 {
-  auto location = m_pimpl->RetrieveUniform(name);
+  auto location = RetrieveUniform(name);
   glUniform3fv(location, static_cast<GLsizei>(vec3.size()), &vec3.data()->x);
 }
 
 void GE::Shader::UploadFloatArray(const std::string& name, const std::vector<f32>& vec3)
 {
-  auto location = m_pimpl->RetrieveUniform(name);
+  auto location = RetrieveUniform(name);
   glUniform1fv(location, static_cast<GLsizei>(vec3.size()), vec3.data());
 }
 
 [[maybe_unused]] bool Shader::IsValid() const
 {
-  return bool(glIsProgram(m_pimpl->renderer_id));
+  return bool(glIsProgram(m_renderer_id));
 }
 
 bool Shader::IsBound() const
 {
-  return m_pimpl->IsBound();
+  i32 curr_program = -1;
+  glGetIntegerv(GL_CURRENT_PROGRAM, &curr_program);
+  if (curr_program <= 0)
+    return false;
+
+  return static_cast<decltype(m_renderer_id)>(curr_program) == m_renderer_id;
 }
 
 void Shader::Unbind() const
@@ -232,4 +204,19 @@ Ref<Shader> GE::Shader::Make(const std::filesystem::path& vertexPath,
                              const std::filesystem::path& fragPath)
 {
   return MakeScope<Shader>(vertexPath, fragPath);
+}
+
+i32 Shader::RetrieveUniform(const std::string& name)
+{
+  GE_ASSERT(IsBound(), "Shader not bound")
+
+check:
+  if (m_uniforms.contains(name))
+    return m_uniforms[name];
+
+  i32 location = glGetUniformLocation(m_renderer_id, name.c_str());
+  GE_ASSERT(location != -1, "Invalid uniform name")
+
+  m_uniforms[name] = location;
+  goto check;
 }

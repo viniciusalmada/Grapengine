@@ -24,76 +24,57 @@ namespace
 
 }
 
-struct Framebuffer::Impl
-{
-  FBSpecs specs;
-  u32 id = 0;
-  u32 color_attachment = 0;
-  u32 depth_attachment = 0;
-
-  void Clear()
-  {
-    glDeleteFramebuffers(1, &id);
-    glDeleteTextures(1, &color_attachment);
-    glDeleteTextures(1, &depth_attachment);
-  }
-};
-
 Ref<Framebuffer> Framebuffer::Make(const FBSpecs& specs)
 {
   return MakeRef<Framebuffer>(specs);
 }
 
-Framebuffer::Framebuffer(const FBSpecs& specs) : m_pimpl(MakeScope<Impl>())
+Framebuffer::Framebuffer(const FBSpecs& specs)
 {
-  m_pimpl->specs = specs;
+  m_specs = specs;
   Invalidate();
 }
 
 GE::Framebuffer::~Framebuffer()
 {
-  m_pimpl->Clear();
+  Clear();
 }
 
 void Framebuffer::Invalidate()
 {
-  if (!glIsTexture(m_pimpl->id))
+  if (!glIsTexture(m_id))
   {
-    m_pimpl->Clear();
+    Clear();
   }
 
   // Create framebuffer
-  glCreateFramebuffers(1, &m_pimpl->id);
-  glBindFramebuffer(GL_FRAMEBUFFER, m_pimpl->id);
+  glCreateFramebuffers(1, &m_id);
+  glBindFramebuffer(GL_FRAMEBUFFER, m_id);
 
   // Create colors texture
-  glCreateTextures(GL_TEXTURE_2D, 1, &m_pimpl->color_attachment);
-  glBindTexture(GL_TEXTURE_2D, m_pimpl->color_attachment);
+  glCreateTextures(GL_TEXTURE_2D, 1, &m_color_attachment);
+  glBindTexture(GL_TEXTURE_2D, m_color_attachment);
   glTexImage2D(GL_TEXTURE_2D,
                0,
                GL_RGBA8,
-               m_pimpl->specs.width,
-               m_pimpl->specs.height,
+               m_specs.width,
+               m_specs.height,
                0,
                GL_RGBA,
                GL_UNSIGNED_BYTE,
                nullptr);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_pimpl->color_attachment, 0);
+  glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_color_attachment, 0);
 
   // Create depth texture
-  glCreateTextures(GL_TEXTURE_2D, 1, &m_pimpl->depth_attachment);
-  glBindTexture(GL_TEXTURE_2D, m_pimpl->depth_attachment);
-  glTexStorage2D(GL_TEXTURE_2D,
-                 1,
-                 GL_DEPTH24_STENCIL8,
-                 m_pimpl->specs.width,
-                 m_pimpl->specs.height);
+  glCreateTextures(GL_TEXTURE_2D, 1, &m_depth_attachment);
+  glBindTexture(GL_TEXTURE_2D, m_depth_attachment);
+  glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH24_STENCIL8, m_specs.width, m_specs.height);
   glFramebufferTexture2D(GL_FRAMEBUFFER,
                          GL_DEPTH_STENCIL_ATTACHMENT,
                          GL_TEXTURE_2D,
-                         m_pimpl->depth_attachment,
+                         m_depth_attachment,
                          0);
 
   GE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE,
@@ -104,36 +85,44 @@ void Framebuffer::Invalidate()
 
 void Framebuffer::Bind()
 {
-  glBindFramebuffer(GL_FRAMEBUFFER, m_pimpl->id);
-  glViewport(0, 0, m_pimpl->specs.width, m_pimpl->specs.height);
+  glBindFramebuffer(GL_FRAMEBUFFER, m_id);
+  glViewport(0, 0, m_specs.width, m_specs.height);
 }
 
 void Framebuffer::Unbind()
 {
-  GE_ASSERT(IsFramebufferBound(m_pimpl->id), "Framebuffer not bound")
+  GE_ASSERT(IsFramebufferBound(m_id), "Framebuffer not bound")
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 u32 GE::Framebuffer::GetColorAttachmentID() const
 {
-  return m_pimpl->color_attachment;
+  return m_color_attachment;
 }
 
 IVec2 GE::Framebuffer::GetSize() const
 {
-  return { m_pimpl->specs.width, m_pimpl->specs.height };
+  return { m_specs.width, m_specs.height };
 }
 
 void GE::Framebuffer::Resize(i32 w, i32 h)
 {
   if (w == 0 || h == 0)
     return;
-  m_pimpl->specs.width = w;
-  m_pimpl->specs.height = h;
+  m_specs.width = w;
+  m_specs.height = h;
   Invalidate();
 }
 
 const FBSpecs& GE::Framebuffer::GetSpec() const
 {
-  return m_pimpl->specs;
+  return m_specs;
+}
+
+void Framebuffer::Clear()
+{
+
+  glDeleteFramebuffers(1, &m_id);
+  glDeleteTextures(1, &m_color_attachment);
+  glDeleteTextures(1, &m_depth_attachment);
 }

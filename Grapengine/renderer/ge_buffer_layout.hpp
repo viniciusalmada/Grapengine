@@ -33,7 +33,8 @@ namespace GE
     BuildElementsList(std::initializer_list<std::pair<DataPurpose, ShaderDataType>> types);
 
   private:
-    POINTER_TO_IMPLEMENTATION_IDIOM
+    std::vector<BufferElem> m_elements;
+    u64 m_stride = 0;
   };
 }
 #endif // GRAPENGINE_BUFFER_LAYOUT_HPP

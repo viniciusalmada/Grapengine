@@ -14,8 +14,4 @@
   #define WARN_CONVERSION_OF_GREATER_SIZE
 #endif
 
-#define POINTER_TO_IMPLEMENTATION_IDIOM                                                            \
-  struct Impl;                                                                                     \
-  Scope<Impl> m_pimpl;
-
 #endif // GE_MACROS_HPP

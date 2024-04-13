@@ -29,7 +29,8 @@ namespace GE
     static void Shutdown();
 
   private:
-    POINTER_TO_IMPLEMENTATION_IDIOM
+    static Ref<spdlog::logger> s_library_logger;
+    static Ref<spdlog::logger> s_client_logger;
   };
 }
 

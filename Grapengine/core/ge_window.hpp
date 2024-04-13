@@ -1,10 +1,13 @@
 #ifndef GRAPENGINE_WINDOW_HPP
 #define GRAPENGINE_WINDOW_HPP
 
+#include "GLFW/glfw3.h"
 #include "core/ge_macros.hpp"
 #include "drawables/ge_canvas.hpp"
 #include "drawables/ge_color.hpp"
 #include "events/ge_event.hpp"
+#include "ge_context.hpp"
+#include "log/ge_logger.hpp"
 #include "math/ge_vector.hpp"
 
 #include <any>
@@ -14,6 +17,8 @@
 namespace GE
 {
   using EventCallbackFn = std::function<void(Event&)>;
+
+  class Context;
 
   struct WindowProps
   {
@@ -31,6 +36,8 @@ namespace GE
   class Window
   {
   public:
+    static Ref<Window> Make(const WindowProps& props, const EventCallbackFn& cb);
+
     explicit Window(const WindowProps& props, const EventCallbackFn& cb);
     ~Window();
 
@@ -47,7 +54,14 @@ namespace GE
     [[nodiscard]] std::any GetNativeHandler() const;
 
   private:
-    POINTER_TO_IMPLEMENTATION_IDIOM
+    void SetupCallbacks(const EventCallbackFn& cb);
+
+    WindowProps m_window_props;
+    bool m_vsync;
+    GLFWwindow* m_window;
+    Context m_context;
+    EventCallbackFn m_event_callback;
+    Ref<Canvas> m_canvas;
   };
 }
 

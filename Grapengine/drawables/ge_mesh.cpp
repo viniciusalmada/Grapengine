@@ -8,30 +8,10 @@
 
 using namespace GE;
 
-struct Face
+GE::Mesh::Mesh(std::string_view path, const GE::Ref<GE::IShaderProgram>& shader) : Drawable(shader)
 {
-  IVec3 indices;
-  Vec3 center;
-  Vec3 normal;
-};
-
-struct Mesh::Impl
-{
-  Color color = Colors::MAGENTA;
-  Ref<DrawingObject> draw_primitive;
-  Ref<Cube> bbox;
-  Ref<IShaderProgram> shader;
-  Ref<Texture2D> texture;
-  std::vector<Vec3> vertices;
-  std::vector<Face> faces;
-  std::vector<Ref<Cylinder>> normals;
-};
-
-GE::Mesh::Mesh(std::string_view path, const GE::Ref<GE::IShaderProgram>& shader) :
-    Drawable(shader), m_pimpl(MakeScope<Impl>())
-{
-  m_pimpl->shader = shader;
-  m_pimpl->texture = Texture2D::Make();
+  m_shader = shader;
+  m_texture = Texture2D::Make();
 
   std::ifstream file{ std::string{ path } };
   if (!file.is_open())
@@ -49,9 +29,7 @@ GE::Mesh::Mesh(std::string_view path, const GE::Ref<GE::IShaderProgram>& shader)
     {
       if (type == 'v')
       {
-        m_pimpl->vertices.emplace_back(static_cast<f32>(x),
-                                       static_cast<f32>(y),
-                                       static_cast<f32>(z));
+        m_vertices.emplace_back(static_cast<f32>(x), static_cast<f32>(y), static_cast<f32>(z));
       }
       else if (type == 'f')
       {
@@ -60,9 +38,9 @@ GE::Mesh::Mesh(std::string_view path, const GE::Ref<GE::IShaderProgram>& shader)
         u32 i3 = static_cast<u32>(z) - 1;
         IVec3 indices{ static_cast<i32>(i1), static_cast<i32>(i2), static_cast<i32>(i3) };
 
-        const auto& v1 = m_pimpl->vertices[i1];
-        const auto& v2 = m_pimpl->vertices[i2];
-        const auto& v3 = m_pimpl->vertices[i3];
+        const auto& v1 = m_vertices[i1];
+        const auto& v2 = m_vertices[i2];
+        const auto& v3 = m_vertices[i3];
 
         const auto e1 = v2 - v1;
         const auto e2 = v3 - v1;
@@ -70,39 +48,39 @@ GE::Mesh::Mesh(std::string_view path, const GE::Ref<GE::IShaderProgram>& shader)
         const auto normal = (e1.Cross(e2)).Normalize();
         const auto center = (v1 + v2 + v3) * (1.0f / 3.0f);
 
-        m_pimpl->faces.emplace_back(indices, center, normal);
+        m_faces.emplace_back(indices, center, normal);
       }
     }
   }
 
-  GE_TRACE("Read {} vertices", m_pimpl->vertices.size())
-  GE_TRACE("Read {} faces", m_pimpl->faces.size())
+  GE_TRACE("Read {} vertices", m_vertices.size())
+  GE_TRACE("Read {} faces", m_faces.size())
 
-  const auto max_x = std::ranges::max(m_pimpl->vertices, {}, &Vec3::x);
-  const auto min_x = std::ranges::min(m_pimpl->vertices, {}, &Vec3::x);
-  const auto max_y = std::ranges::max(m_pimpl->vertices, {}, &Vec3::y);
-  const auto min_y = std::ranges::min(m_pimpl->vertices, {}, &Vec3::y);
-  const auto max_z = std::ranges::max(m_pimpl->vertices, {}, &Vec3::z);
-  const auto min_z = std::ranges::min(m_pimpl->vertices, {}, &Vec3::z);
+  const auto max_x = std::ranges::max(m_vertices, {}, &Vec3::x);
+  const auto min_x = std::ranges::min(m_vertices, {}, &Vec3::x);
+  const auto max_y = std::ranges::max(m_vertices, {}, &Vec3::y);
+  const auto min_y = std::ranges::min(m_vertices, {}, &Vec3::y);
+  const auto max_z = std::ranges::max(m_vertices, {}, &Vec3::z);
+  const auto min_z = std::ranges::min(m_vertices, {}, &Vec3::z);
   const auto translate_fac = Vec3(-min_x.x, 0, -min_z.z);
-  for (Vec3& v : m_pimpl->vertices)
+  for (Vec3& v : m_vertices)
   {
     v += translate_fac;
   }
-  for (auto& face : m_pimpl->faces)
+  for (auto& face : m_faces)
   {
-    m_pimpl->normals.push_back(Cylinder::Make(m_pimpl->shader,
-                                              0.01f,
-                                              face.center + translate_fac,
-                                              face.normal,
-                                              0.5f,
-                                              Colors::RED,
-                                              m_pimpl->texture));
+    m_normals.push_back(Cylinder::Make(m_shader,
+                                       0.01f,
+                                       face.center + translate_fac,
+                                       face.normal,
+                                       0.5f,
+                                       Colors::RED,
+                                       m_texture));
   }
 
   Ref<std::vector<u32>> indices = MakeRef<std::vector<u32>>();
-  indices->reserve(m_pimpl->faces.size() * 3);
-  for (const auto& face : m_pimpl->faces //
+  indices->reserve(m_faces.size() * 3);
+  for (const auto& face : m_faces //
                             | std::views::transform([](auto&& f) { return f.indices; }))
   {
     indices->push_back((u32)face.x);
@@ -116,11 +94,11 @@ GE::Mesh::Mesh(std::string_view path, const GE::Ref<GE::IShaderProgram>& shader)
   auto get_normal = [&](u64 idx)
   {
     std::vector<std::pair<Vec3, f32>> normals; // normal, distance
-    for (const auto& [f, c, n] : m_pimpl->faces)
+    for (const auto& [f, c, n] : m_faces)
     {
       if ((u64)f.x == idx || (u64)f.y == idx || (u64)f.z == idx)
       {
-        normals.emplace_back(n, c.Distance(m_pimpl->vertices[idx]));
+        normals.emplace_back(n, c.Distance(m_vertices[idx]));
       }
     }
 
@@ -144,32 +122,32 @@ GE::Mesh::Mesh(std::string_view path, const GE::Ref<GE::IShaderProgram>& shader)
     return normal;
   };
 
-  for (u64 vtx_idx : std::views::iota(0u, m_pimpl->vertices.size()))
+  for (u64 vtx_idx : std::views::iota(0u, m_vertices.size()))
   {
     Vec3 normal = get_normal(vtx_idx);
-    vertices_data->PushData(m_pimpl->vertices[vtx_idx], Vec2{}, m_pimpl->color.ToVec4(), normal);
+    vertices_data->PushData(m_vertices[vtx_idx], Vec2{}, m_color.ToVec4(), normal);
   }
 
-  m_pimpl->draw_primitive = MakeRef<DrawingObject>(vertices_data, indices);
+  m_draw_primitive = MakeRef<DrawingObject>(vertices_data, indices);
 
-  m_pimpl->bbox = Cube::Make(Color(0xFFFFFF33), shader, m_pimpl->texture);
-  m_pimpl->bbox->SetTranslate(min_x.x + (max_x.x - min_x.x) / 2.0f,
-                              min_y.y + (max_y.y - min_y.y) / 2.0f,
-                              min_z.z + (max_z.z - min_z.z) / 2.0f);
-  m_pimpl->bbox->SetScale(max_x.x - min_x.x, max_y.y - min_y.y, max_z.z - min_z.z);
+  m_bbox = Cube::Make(Color(0xFFFFFF33), shader, m_texture);
+  m_bbox->SetTranslate(min_x.x + (max_x.x - min_x.x) / 2.0f,
+                       min_y.y + (max_y.y - min_y.y) / 2.0f,
+                       min_z.z + (max_z.z - min_z.z) / 2.0f);
+  m_bbox->SetScale(max_x.x - min_x.x, max_y.y - min_y.y, max_z.z - min_z.z);
 }
 
 Mesh::~Mesh() = default;
 
 void GE::Mesh::Draw() const
 {
-  m_pimpl->texture->Bind(0);
-  m_pimpl->shader->UpdateTexture(0);
-  m_pimpl->shader->UpdateModelMatrix(Mat4{});
-  //  m_pimpl->draw_primitive->Draw();
+  m_texture->Bind(0);
+  m_shader->UpdateTexture(0);
+  m_shader->UpdateModelMatrix(Mat4{});
+  //  m_draw_primitive->Draw();
 
   //  Renderer::SetWireframeRenderMode(false);
-  //  for (auto& n : m_pimpl->normals)
+  //  for (auto& n : m_normals)
   //    n->Draw();
-  //  m_pimpl->bbox->Draw();
+  //  m_bbox->Draw();
 }
