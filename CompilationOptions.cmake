@@ -2,6 +2,7 @@ add_library(GrapengineCompileOptions INTERFACE)
 
 message(STATUS "Setting up compiler flags = ${CMAKE_CXX_COMPILER_ID}:${CMAKE_CXX_COMPILER_FRONTEND_VARIANT}")
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+  target_compile_definitions(GrapengineCompileOptions INTERFACE GE_MSVC_COMPILER)
   target_compile_options(GrapengineCompileOptions INTERFACE
     /Wall                       # Enable most common warnings
     /W4                         # Set warning level 4 (highest warning level)
@@ -19,6 +20,7 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     $<$<CONFIG:Release>:/WX>     # Treat warnings as errors
   )
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL GNU)
+  target_compile_definitions(GrapengineCompileOptions INTERFACE GE_GCC_COMPILER)
   target_compile_options(GrapengineCompileOptions INTERFACE
     -Wall                       # Enable most common warnings
     -Wextra                     # Enable extra warnings
@@ -41,6 +43,7 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL GNU)
   )
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL Clang)
   if (CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "MSVC" OR CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "GNU")
+    target_compile_definitions(GrapengineCompileOptions INTERFACE GE_CLANG_COMPILER)
     target_compile_options(GrapengineCompileOptions INTERFACE
       -Wall                       # Enable most warning messages
       -Wextra                     # Enable some extra warning messages
@@ -53,6 +56,10 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL Clang)
       -Wundef                     # Warn if an undefined identifier is evaluated in an #if directive
       -Wunreachable-code          # Warn if code will never be executed
       -Wunused                    # Warn about unused functions, variables, etc.
+      -Wno-c++98-compat
+      -Wno-c++98-compat-pedantic
+      -Wno-exit-time-destructors
+
     )
   else ()
     message(FATAL_ERROR "Unsupported CLANG frontend (CMAKE_CXX_COMPILER_FRONTEND_VARIANT = ${CMAKE_CXX_COMPILER_FRONTEND_VARIANT})")
