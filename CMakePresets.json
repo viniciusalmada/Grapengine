@@ -54,7 +54,7 @@
       }
     },
     {
-      "name": "cl-debug",
+      "name": "microsoft-cl-debug",
       "inherits": [
         "h_default",
         "h_debug",
@@ -65,7 +65,7 @@
       }
     },
     {
-      "name": "cl-release",
+      "name": "microsoft-cl-release",
       "inherits": [
         "h_default",
         "h_release",
@@ -76,7 +76,7 @@
       }
     },
     {
-      "name": "clang-cl-debug",
+      "name": "llvm-clang-cl-debug",
       "inherits": [
         "h_default",
         "h_debug",
@@ -87,7 +87,18 @@
       }
     },
     {
-      "name": "clang-gcc-debug",
+      "name": "llvm-clang-cl-release",
+      "inherits": [
+        "h_default",
+        "h_release",
+        "h_toolchain-clang"
+      ],
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "clang-cl"
+      }
+    },
+    {
+      "name": "llvm-clang-gcc-debug",
       "inherits": [
         "h_default",
         "h_debug",
@@ -98,7 +109,18 @@
       }
     },
     {
-      "name": "gcc-debug",
+      "name": "llvm-clang-gcc-release",
+      "inherits": [
+        "h_default",
+        "h_release",
+        "h_toolchain-clang"
+      ],
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "clang++"
+      }
+    },
+    {
+      "name": "gnu-gcc-debug",
       "inherits": [
         "h_default",
         "h_debug",
@@ -109,7 +131,7 @@
       }
     },
     {
-      "name": "gcc-release",
+      "name": "gnu-gcc-release",
       "hidden": false,
       "inherits": [
         "h_default",
@@ -119,33 +141,6 @@
       "cacheVariables": {
         "CMAKE_CXX_COMPILER": "g++"
       }
-    }
-  ],
-  "buildPresets": [
-    {
-      "name": "GCC Dbg",
-      "configurePreset": "gcc-debug",
-      "jobs": 12
-    },
-    {
-      "name": "CLANG Dbg",
-      "configurePreset": "clang-gcc-debug",
-      "jobs": 12
-    },
-    {
-      "name": "MSVC Dbg",
-      "configurePreset": "cl-debug",
-      "jobs": 12
-    },
-    {
-      "name": "GCC Rel",
-      "configurePreset": "gcc-release",
-      "jobs": 12
-    },
-    {
-      "name": "MSVC Rel",
-      "configurePreset": "cl-release",
-      "jobs": 12
     }
   ]
 }
