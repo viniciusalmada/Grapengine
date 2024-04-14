@@ -53,7 +53,6 @@ add_library(Grapengine STATIC
 target_precompile_headers(Grapengine PRIVATE ${CMAKE_SOURCE_DIR}/Grapengine/grapengine_pch.hpp)
 target_include_directories(Grapengine
   PUBLIC ${CMAKE_SOURCE_DIR}/Grapengine
-  PUBLIC SYSTEM "${CMAKE_SOURCE_DIR}/imgui"
 )
 
 target_compile_definitions(Grapengine PRIVATE
@@ -85,7 +84,7 @@ add_library(ImGui STATIC
   ${CMAKE_SOURCE_DIR}/vendor/imgui/misc/cpp/imgui_stdlib.h
   ${CMAKE_SOURCE_DIR}/vendor/imgui/misc/cpp/imgui_stdlib.cpp
 )
-target_include_directories(ImGui PUBLIC ${CMAKE_SOURCE_DIR}/vendor/imgui)
+target_include_directories(ImGui SYSTEM PUBLIC ${CMAKE_SOURCE_DIR}/vendor/imgui)
 target_link_libraries(Grapengine PUBLIC ImGui)
 
 # #############################################################################
@@ -98,7 +97,7 @@ find_package(glad CONFIG REQUIRED)
 target_link_libraries(Grapengine PRIVATE glad::glad)
 
 find_package(Stb REQUIRED)
-target_include_directories(Grapengine PRIVATE SYSTEM ${Stb_INCLUDE_DIR})
+target_include_directories(Grapengine SYSTEM PRIVATE ${Stb_INCLUDE_DIR})
 
 find_package(spdlog CONFIG REQUIRED)
 target_link_libraries(Grapengine PUBLIC spdlog::spdlog_header_only)
