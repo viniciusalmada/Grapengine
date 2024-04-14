@@ -47,6 +47,19 @@ namespace GE
     EventHandler m_handler;
     EvType m_type = EvType::NONE;
   };
+
+  class EventsHelper
+  {
+  public:
+    static EventsHelper& Get();
+    static void Init() { Get(); }
+    static void Shutdown() {}
+
+    EventHandler& Invalid() { return m_invalid_handler; }
+
+  private:
+    EventHandler m_invalid_handler;
+  };
 }
 
 #endif

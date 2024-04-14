@@ -17,6 +17,11 @@ namespace GE
     [[nodiscard]] static bool IsKeyPressed(KeyCode keyCode);
     [[nodiscard]] static bool IsMouseButtonPressed(KeyCode keyCode);
     [[nodiscard]] static Vec2 GetMouseXY();
+
+  private:
+    static Input& Get();
+
+    Ref<Window> m_windows;
   };
 }
 

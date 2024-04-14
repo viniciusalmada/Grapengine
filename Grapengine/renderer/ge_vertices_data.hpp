@@ -94,8 +94,13 @@ namespace GE
       if constexpr (std::is_same_v<T, Vec4>)
         value = true;
       break;
-    default:
-      value = false;
+    case ShaderDataType::Mat3:
+    case ShaderDataType::Mat4:
+    case ShaderDataType::Int:
+    case ShaderDataType::Int2:
+    case ShaderDataType::Int3:
+    case ShaderDataType::Int4:
+    case ShaderDataType::Bool:
       break;
     }
     objEvaluator.PushValue(value);
@@ -106,7 +111,7 @@ namespace GE
   {
     ObjEvaluator obj_evaluator{ m_layout->GetTypesSortedList() };
     (..., EvaluateArgument(args, obj_evaluator));
-    GE_ASSERT(obj_evaluator.IsValid(), "Some types passed to be push are invalids");
+    GE_ASSERT(obj_evaluator.IsValid(), "Some types passed to be push are invalids")
     (..., PushBytes(args));
   }
 }

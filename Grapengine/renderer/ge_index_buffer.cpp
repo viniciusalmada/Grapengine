@@ -16,7 +16,7 @@ IndexBuffer::IndexBuffer(const u32* indices, u32 count, u32 parent)
 
   glGenBuffers(1, &m_id);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, (u32)(count * sizeof(u32)), indices, GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, u32(count * sizeof(u32)), indices, GL_STATIC_DRAW);
 }
 
 IndexBuffer::~IndexBuffer() = default;

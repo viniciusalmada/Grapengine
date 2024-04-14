@@ -8,13 +8,15 @@
 
 using namespace GE;
 
-void OpenGLDebuggerFunc(GLenum /* source */,
-                        GLenum /* type */,
+void OpenGLDebuggerFunc(GLenum source,
+                        GLenum type,
                         u32 id,
-                        GLenum /* severity */,
-                        GLsizei /* length */,
+                        GLenum severity,
+                        GLsizei length,
                         const char* message,
-                        const void* /* userParam */)
+                        const void* userParam);
+
+void OpenGLDebuggerFunc(GLenum, GLenum, u32 id, GLenum, GLsizei, const char* message, const void*)
 {
   // ignore non-significant error/warning codes
   if (id == 131169 || id == 131185 || id == 131218 || id == 131204)
@@ -48,7 +50,7 @@ void Renderer::Init()
 
 void Renderer::SetViewport(u32 x, u32 y, u32 width, u32 height)
 {
-  glViewport((i32)x, (i32)y, (i32)width, (i32)height);
+  glViewport(i32(x), i32(y), i32(width), i32(height));
 }
 
 void Renderer::SetClearColor(const Vec4& color)

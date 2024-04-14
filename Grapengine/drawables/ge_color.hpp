@@ -30,19 +30,19 @@ namespace GE
     [[nodiscard]] Vec4 ToVec4() const
     {
       return {
-        (f32)R / 255.0f,
-        (f32)G / 255.0f,
-        (f32)B / 255.0f,
-        (f32)A / 255.0f,
+        f32(R) / 255.0f,
+        f32(G) / 255.0f,
+        f32(B) / 255.0f,
+        f32(A) / 255.0f,
       };
     }
 
     [[nodiscard]] Vec3 ToVec3() const
     {
       return {
-        (f32)R / 255.0f,
-        (f32)G / 255.0f,
-        (f32)B / 255.0f,
+        f32(R) / 255.0f,
+        f32(G) / 255.0f,
+        f32(B) / 255.0f,
       };
     }
   };

@@ -46,13 +46,10 @@ void GE::EditorLayer::OnAttach()
 void GE::EditorLayer::OnUpdate(GE::TimeStep ts)
 {
   const auto& spec = m_fb->GetSpec();
-  if (m_viewport_size.x > 0 && m_viewport_size.y > 0 &&
-      (static_cast<f32>(spec.width) != m_viewport_size.x ||
-       static_cast<f32>(spec.height) != m_viewport_size.y))
+  if (spec.width != i32(m_viewport_width) || spec.height != i32(m_viewport_height))
   {
-    m_fb->Resize(static_cast<i32>(m_viewport_size.x), static_cast<i32>(m_viewport_size.y));
-    //    m_cam.OnResize(static_cast<u32>(m_viewport_size.x),
-    //    static_cast<u32>(m_viewport_size.y));
+    m_fb->Resize(static_cast<i32>(m_viewport_width), static_cast<i32>(m_viewport_height));
+    m_scene->OnResize(m_viewport_width, m_viewport_height);
   }
 
   m_fb->Bind();
@@ -167,8 +164,8 @@ void GE::EditorLayer::OnImGuiUpdate()
   m_viewport_hovered = ImGui::IsWindowHovered();
   Ctrl::App::AllowImGuiEvents(/*!m_viewport_focused ||*/ !m_viewport_hovered);
   auto vp_size = ImGui::GetContentRegionAvail();
-  m_viewport_size.x = vp_size.x;
-  m_viewport_size.y = vp_size.y;
+  m_viewport_width = u32(vp_size.x);
+  m_viewport_height = u32(vp_size.y);
   u32 tex = m_fb->GetColorAttachmentID();
   const auto [w, h] = m_fb->GetSize();
   ImVec2 size{ f32(w), f32(h) };

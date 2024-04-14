@@ -15,7 +15,7 @@ namespace
 
   void ErrorCB(i32 error_code, const char* description)
   {
-    GE_ASSERT(false, "Code: {} \'{}\'", error_code, description);
+    GE_ASSERT(false, "Code: {} \'{}\'", error_code, description)
   }
 }
 
@@ -37,7 +37,7 @@ Window::Window(const WindowProps& props, const EventCallbackFn& cb) : m_window_p
 
   glfwWindowHint(GLFW_SAMPLES, 4);
   m_window =
-    glfwCreateWindow((i32)props.width, (i32)props.height, props.title.c_str(), nullptr, nullptr);
+    glfwCreateWindow(i32(props.width), i32(props.height), props.title.c_str(), nullptr, nullptr);
   //  glfwSetWindowAspectRatio(m_window,
   //                           static_cast<i32>(props.width),
   //                           static_cast<i32>(props.height));
@@ -117,7 +117,7 @@ void Window::SetupCallbacks(const EventCallbackFn& cb)
   auto close_callback = [](GLFWwindow* win)
   {
     Event event{ EvType::WINDOW_CLOSE };
-    auto* data = (Window*)glfwGetWindowUserPointer(win);
+    auto* data = static_cast<Window*>(glfwGetWindowUserPointer(win));
     data->m_event_callback(event);
   };
   glfwSetWindowCloseCallback(m_window, close_callback);
@@ -127,7 +127,7 @@ void Window::SetupCallbacks(const EventCallbackFn& cb)
   {
     Event event{ EvType::WINDOW_RESIZE,
                  std::make_pair(static_cast<u32>(width), static_cast<u32>(height)) };
-    auto* data = (Window*)glfwGetWindowUserPointer(win);
+    auto* data = static_cast<Window*>(glfwGetWindowUserPointer(win));
     data->m_event_callback(event);
     data->m_window_props.width = static_cast<u32>(width);
     data->m_window_props.height = static_cast<u32>(height);
@@ -143,8 +143,8 @@ void Window::SetupCallbacks(const EventCallbackFn& cb)
     else if (action == GLFW_RELEASE)
       type = EvType::KEY_RELEASE;
 
-    Event event{ type, ConvertGLFWtoGE(key) };
-    auto* data = (Window*)glfwGetWindowUserPointer(win);
+    Event event{ type, Keys::ConvertGLFWtoGE(key) };
+    auto* data = static_cast<Window*>(glfwGetWindowUserPointer(win));
     data->m_event_callback(event);
   };
   glfwSetKeyCallback(m_window, key_callback);
@@ -160,8 +160,8 @@ void Window::SetupCallbacks(const EventCallbackFn& cb)
     else if (action == GLFW_RELEASE)
       type = EvType::MOUSE_BUTTON_RELEASE;
 
-    Event event{ type, ConvertGLFWtoGE(button) };
-    auto* data = (Window*)glfwGetWindowUserPointer(win);
+    Event event{ type, Keys::ConvertGLFWtoGE(button) };
+    auto* data = static_cast<Window*>(glfwGetWindowUserPointer(win));
     data->m_event_callback(event);
   };
   glfwSetMouseButtonCallback(m_window, mouse_bt_callback);
@@ -169,8 +169,8 @@ void Window::SetupCallbacks(const EventCallbackFn& cb)
   //-----------------------------
   auto mouse_move = [](GLFWwindow* win, f64 xpos, f64 ypos)
   {
-    Event event{ EvType::MOUSE_MOVE, std::make_pair((f32)xpos, (f32)ypos) };
-    auto* data = (Window*)glfwGetWindowUserPointer(win);
+    Event event{ EvType::MOUSE_MOVE, std::make_pair(f32(xpos), f32(ypos)) };
+    auto* data = static_cast<Window*>(glfwGetWindowUserPointer(win));
     data->m_event_callback(event);
   };
   glfwSetCursorPosCallback(m_window, mouse_move);
@@ -180,8 +180,8 @@ void Window::SetupCallbacks(const EventCallbackFn& cb)
   {
     //      if (ImGui::GetIO().WantCaptureMouse)
     //        return;
-    Event event{ EvType::MOUSE_SCROLL, std::make_pair((f32)xoffset, (f32)yoffset) };
-    auto* data = (Window*)glfwGetWindowUserPointer(win);
+    Event event{ EvType::MOUSE_SCROLL, std::make_pair(f32(xoffset), f32(yoffset)) };
+    auto* data = static_cast<Window*>(glfwGetWindowUserPointer(win));
     data->m_event_callback(event);
   };
   glfwSetScrollCallback(m_window, mouse_scroll);

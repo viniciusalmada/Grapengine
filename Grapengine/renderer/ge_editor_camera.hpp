@@ -33,7 +33,7 @@ namespace GE
     void OnMouseScroll(MousePairData data);
     [[nodiscard]] bool OnMousePressed(KeyCode bt);
     [[nodiscard]] bool OnMouseReleased(KeyCode bt);
-    [[nodiscard]] bool UpdateAspectRatio(u32 w, u32 h);
+    void UpdateAspectRatio(u32 w, u32 h);
 
     f32 m_field_of_view;
     f32 m_aspect_ratio;

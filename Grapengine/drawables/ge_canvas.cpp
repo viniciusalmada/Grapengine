@@ -5,11 +5,9 @@
 
 using namespace GE;
 
-Canvas::Canvas(u32 width, u32 height) :
-    m_width(width),
-    m_height(height){ GE_INFO("Canvas creation") }
+Canvas::Canvas(u32 /*width*/, u32 /*height*/){ GE_INFO("Canvas creation") }
 
-    Canvas::~Canvas() = default;
+Canvas::~Canvas() = default;
 
 void Canvas::Clear(const Vec4& color)
 {

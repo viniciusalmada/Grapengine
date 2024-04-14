@@ -29,8 +29,6 @@ namespace GE::Transform
   Mat4 Perspective(f32 fovDegrees, f32 aspectRatio, f32 near, f32 far);
 
   Mat4 Identity();
-
-  std::string ToString(const Mat4& mat4);
 }
 
 #endif // GRAPENGINE_TRANSFORMATIONS_HPP

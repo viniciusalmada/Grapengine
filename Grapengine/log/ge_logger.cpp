@@ -4,9 +4,6 @@
 
 using namespace GE;
 
-Ref<spdlog::logger> Logger::s_library_logger = nullptr;
-Ref<spdlog::logger> Logger::s_client_logger = nullptr;
-
 void Logger::Init()
 {
   /* Pattern:
@@ -28,27 +25,35 @@ void Logger::Init()
   pattern.append(" %v%$");
   spdlog::set_pattern(pattern);
 
-  s_library_logger = spdlog::stdout_color_mt("🍇");
-  s_library_logger->set_level(spdlog::level::trace);
-  s_client_logger = spdlog::stdout_color_mt("🍷");
-  s_client_logger->set_level(spdlog::level::trace);
+  Logger& logger = GetInstance();
+
+  logger.m_library_logger = spdlog::stdout_color_mt("🍇");
+  logger.m_library_logger->set_level(spdlog::level::trace);
+  logger.m_client_logger = spdlog::stdout_color_mt("🍷");
+  logger.m_client_logger->set_level(spdlog::level::trace);
 
   GE_INFO("Logger initialized")
 }
 
 Ref<spdlog::logger>& GE::Logger::GetLibLogger()
 {
-  return s_library_logger;
+  return Logger::GetInstance().m_library_logger;
 }
 
 Ref<spdlog::logger>& GE::Logger::GetClientLogger()
 {
-  return s_client_logger;
+  return Logger::GetInstance().m_client_logger;
 }
 void GE::Logger::Shutdown()
 {
   GE_INFO("Logger shutdown")
 
-  s_client_logger.reset();
-  s_library_logger.reset();
+  Logger::GetInstance().m_client_logger.reset();
+  Logger::GetInstance().m_library_logger.reset();
+}
+
+Logger& Logger::GetInstance()
+{
+  static Logger logger{};
+  return logger;
 }

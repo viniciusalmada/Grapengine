@@ -18,7 +18,9 @@ namespace GE::Ctrl
   private:
     App();
 
-    Ref<Application> m_application = nullptr;
+    static App& Get();
+
+    std::optional<Ref<Application>> m_application = std::nullopt;
   };
 }
 #endif // GRAPENGINE_GE_APP_CONTROLLER_HPP

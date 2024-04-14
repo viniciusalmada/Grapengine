@@ -11,10 +11,12 @@
 #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
 #define SPDLOG_USE_STD_FORMAT
 #include <spdlog/spdlog.h>
-#undef far
-#undef near
-#undef NEAR
-#undef FAR
+#if defined(GE_PLATFORM_WINDOWS)
+  #undef far
+  #undef near
+  #undef NEAR
+  #undef FAR
+#endif
 
 namespace GE
 {
@@ -22,6 +24,7 @@ namespace GE
   {
   public:
     static void Init();
+    static Logger& GetInstance();
 
     static Ref<spdlog::logger>& GetLibLogger();
     static Ref<spdlog::logger>& GetClientLogger();
@@ -29,8 +32,8 @@ namespace GE
     static void Shutdown();
 
   private:
-    static Ref<spdlog::logger> s_library_logger;
-    static Ref<spdlog::logger> s_client_logger;
+    Ref<spdlog::logger> m_library_logger;
+    Ref<spdlog::logger> m_client_logger;
   };
 }
 

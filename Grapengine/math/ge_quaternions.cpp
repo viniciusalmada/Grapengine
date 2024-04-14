@@ -2,8 +2,6 @@
 
 using namespace GE;
 
-Quaternion Quaternion::IDENTITY{ 1, 0, 0, 0 };
-
 Quaternion::Quaternion(f32 angle, Vec3 axis)
 {
   Vec3 unit = axis.Normalize();
@@ -11,14 +9,6 @@ Quaternion::Quaternion(f32 angle, Vec3 axis)
   m_x = std::sin(Transform::Deg2Rad(angle / 2.0f)) * unit.x;
   m_y = std::sin(Transform::Deg2Rad(angle / 2.0f)) * unit.y;
   m_z = std::sin(Transform::Deg2Rad(angle / 2.0f)) * unit.z;
-}
-
-Quaternion::Quaternion(f32 w, f32 x, f32 y, f32 z)
-{
-  m_w = w;
-  m_x = x;
-  m_y = y;
-  m_z = z;
 }
 
 Quaternion::Quaternion(const Quaternion& other) = default;
@@ -59,9 +49,7 @@ Vec3 Quaternion::RotateVector(Vec3 A) const
 
 Vec3 Quaternion::GetVec() const noexcept
 {
-  return Vec3(m_x, m_y, m_z);
+  return Vec3{ m_x, m_y, m_z };
 }
 
 Quaternion& Quaternion::operator=(const Quaternion& other) = default;
-
-Quaternion::~Quaternion() = default;

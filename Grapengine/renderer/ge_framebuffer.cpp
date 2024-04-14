@@ -9,13 +9,13 @@ namespace
 {
   bool IsFramebufferBound(u32 fb)
   {
-    u32 current_fb = 0;
-    glGetIntegerv(GL_FRAMEBUFFER_BINDING, (i32*)(&current_fb));
+    i32 current_fb = 0;
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &current_fb);
     const bool is_any_fb_bound = current_fb != 0;
     if (!is_any_fb_bound)
       return false;
 
-    const bool is_fb_bound = current_fb == fb;
+    const bool is_fb_bound = current_fb == i32(fb);
     if (!is_fb_bound)
       return false;
 

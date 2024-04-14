@@ -157,25 +157,3 @@ Mat4 Transform::Perspective(f32 fovDegrees, f32 aspectRatio, f32 near, f32 far)
 
   return res;
 }
-
-std::string Transform::ToString(const Mat4& mat4)
-{
-  std::string str{ "mat4x4(" };
-  i32 count = 0;
-  for (i32 i = 0; i < 16; ++i)
-  {
-    if (count == 0)
-      str.append("(");
-    str.append(std::to_string(mat4.ValuePtr()[i]));
-    if (count < 3)
-      str.append(", ");
-    count++;
-    if (count == 4)
-    {
-      str.append("), ");
-      count = 0;
-    }
-  }
-  str.append(")");
-  return str;
-}

@@ -2,16 +2,11 @@
 
 using namespace GE;
 
-namespace
-{
-  EventHandler INVALID_HANDLER;
-}
-
-EventHandler::EventHandler() {}
+EventHandler::EventHandler() = default;
 
 void GE::EventHandler::Then(const std::function<void()>& action)
 {
-  if (this == &INVALID_HANDLER)
+  if (this == &EventsHelper::Get().Invalid())
     return;
 
   action();
@@ -20,7 +15,7 @@ void GE::EventHandler::Then(const std::function<void()>& action)
 
 void GE::EventHandler::Then(const std::function<void(const EvData&)>& action)
 {
-  if (this == &INVALID_HANDLER)
+  if (this == &EventsHelper::Get().Invalid())
     return;
 
   action(std::ref(m_data));
@@ -29,7 +24,7 @@ void GE::EventHandler::Then(const std::function<void(const EvData&)>& action)
 
 void GE::EventHandler::ThenWithRes(const std::function<bool(const EvData&)>& action)
 {
-  if (this == &INVALID_HANDLER)
+  if (this == &EventsHelper::Get().Invalid())
     return;
 
   m_handled = action(std::ref(m_data));
@@ -70,7 +65,7 @@ EvType Event::GetType() const
 EventHandler& GE::Event::When(EvType t)
 {
   if (this->GetType() != t)
-    return INVALID_HANDLER;
+    return EventsHelper::Get().Invalid();
 
   return m_handler;
 }
@@ -83,4 +78,10 @@ void GE::Event::SetHandled()
 bool GE::Event::IsType(EvType t) const
 {
   return m_type == t;
+}
+
+EventsHelper& EventsHelper::Get()
+{
+  static EventsHelper helper;
+  return helper;
 }

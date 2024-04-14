@@ -19,6 +19,8 @@ ImGuiLayer::ImGuiLayer(Ref<Window> window) : Layer(IMGUI_LAYER), m_window(window
 
 ImGuiLayer::~ImGuiLayer() = default;
 
+DISABLE_WARNING_PUSH
+WARN_UNSAFE_BUFFER
 void ImGuiLayer::OnAttach()
 {
   GE_INFO("ImGui initialization")
@@ -74,6 +76,8 @@ void ImGuiLayer::OnAttach()
   ImGui_ImplGlfw_InitForOpenGL(std::any_cast<GLFWwindow*>(m_window->GetNativeHandler()), true);
   ImGui_ImplOpenGL3_Init();
 }
+DISABLE_WARNING_POP
+
 void ImGuiLayer::OnDetach()
 {
   GE_INFO("ImGui shutdown")

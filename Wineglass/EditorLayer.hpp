@@ -25,7 +25,8 @@ namespace GE
     Ref<Scene> m_scene;
 
     Ref<Framebuffer> m_fb = nullptr;
-    Vec2 m_viewport_size{};
+    u32 m_viewport_width{};
+    u32 m_viewport_height{};
     //    bool m_viewport_focused{};
     bool m_viewport_hovered = true;
 #else

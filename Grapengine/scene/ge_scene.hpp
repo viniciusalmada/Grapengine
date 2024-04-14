@@ -28,6 +28,8 @@ namespace GE
 
     void OnEvent(Event&);
 
+    void OnResize(u32 w, u32 h);
+
   private:
     ECRegistry m_registry;
   };

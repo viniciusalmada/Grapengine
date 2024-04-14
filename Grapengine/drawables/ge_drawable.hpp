@@ -8,7 +8,7 @@ namespace GE
   class Drawable
   {
   public:
-    explicit Drawable(const Ref<IShaderProgram>&){};
+    explicit Drawable(const Ref<IShaderProgram>&) {}
 
     virtual ~Drawable() = default;
 

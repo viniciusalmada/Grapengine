@@ -1,6 +1,8 @@
 #ifndef GRAPENGINE_GE_KEY_CODES_HPP
 #define GRAPENGINE_GE_KEY_CODES_HPP
 
+#include <map>
+
 namespace GE
 {
   enum class KeyCode
@@ -130,9 +132,21 @@ namespace GE
     K_NONE,
   };
 
-  KeyCode ConvertGLFWtoGE(i32 code);
+  class Keys
+  {
+  public:
+    static KeyCode ConvertGLFWtoGE(i32 code);
 
-  i32 ConvertGEtoGFLW(KeyCode code);
+    static i32 ConvertGEtoGFLW(KeyCode code);
+
+  private:
+    Keys();
+
+    static Keys& Get();
+
+    std::map<i32, KeyCode> m_glfw_to_ge;
+    std::map<KeyCode, i32> m_ge_to_glfw;
+  };
 }
 
 #endif // GRAPENGINE_GE_KEY_CODES_HPP

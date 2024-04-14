@@ -62,7 +62,7 @@ GE::Mesh::Mesh(std::string_view path, const GE::Ref<GE::IShaderProgram>& shader)
   const auto min_y = std::ranges::min(m_vertices, {}, &Vec3::y);
   const auto max_z = std::ranges::max(m_vertices, {}, &Vec3::z);
   const auto min_z = std::ranges::min(m_vertices, {}, &Vec3::z);
-  const auto translate_fac = Vec3(-min_x.x, 0, -min_z.z);
+  const auto translate_fac = Vec3{ -min_x.x, 0, -min_z.z };
   for (Vec3& v : m_vertices)
   {
     v += translate_fac;
@@ -80,12 +80,12 @@ GE::Mesh::Mesh(std::string_view path, const GE::Ref<GE::IShaderProgram>& shader)
 
   Ref<std::vector<u32>> indices = MakeRef<std::vector<u32>>();
   indices->reserve(m_faces.size() * 3);
-  for (const auto& face : m_faces //
+  for (const IVec3 face : m_faces //
                             | std::views::transform([](auto&& f) { return f.indices; }))
   {
-    indices->push_back((u32)face.x);
-    indices->push_back((u32)face.y);
-    indices->push_back((u32)face.z);
+    indices->push_back(u32(face.x));
+    indices->push_back(u32(face.y));
+    indices->push_back(u32(face.z));
   }
   std::set<u32> indices_set{ indices->begin(), indices->end() };
 
@@ -96,7 +96,7 @@ GE::Mesh::Mesh(std::string_view path, const GE::Ref<GE::IShaderProgram>& shader)
     std::vector<std::pair<Vec3, f32>> normals; // normal, distance
     for (const auto& [f, c, n] : m_faces)
     {
-      if ((u64)f.x == idx || (u64)f.y == idx || (u64)f.z == idx)
+      if (u64(f.x) == idx || u64(f.y) == idx || u64(f.z) == idx)
       {
         normals.emplace_back(n, c.Distance(m_vertices[idx]));
       }

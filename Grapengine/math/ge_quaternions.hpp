@@ -10,13 +10,12 @@ namespace GE
   {
   public:
     Quaternion(f32 angle, Vec3 axis);
-    Quaternion(f32 w, f32 x, f32 y, f32 z);
+    constexpr Quaternion(f32 w, f32 x, f32 y, f32 z) : m_w(w), m_x(x), m_y(y), m_z(z) {}
     Quaternion(const Quaternion& other);
-    ~Quaternion();
 
     Quaternion& operator=(const Quaternion& other);
 
-    static Quaternion IDENTITY;
+    static constexpr Quaternion IDENTITY() { return Quaternion{ 1, 0, 0, 0 }; }
 
     [[nodiscard]] Quaternion Conjugate() const;
 

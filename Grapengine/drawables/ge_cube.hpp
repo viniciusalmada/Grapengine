@@ -31,10 +31,6 @@ namespace GE
     [[nodiscard]] Mat4 GetModelMatrix() const;
 
   private:
-    f32 m_position_x = 0;
-    f32 m_position_y = 0;
-    f32 m_position_z = 0;
-    f32 m_height = 0;
     Color m_color{ 0 };
     Ref<DrawingObject> m_draw_primitive;
     Ref<IShaderProgram> m_shader;

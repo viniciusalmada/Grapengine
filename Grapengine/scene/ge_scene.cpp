@@ -51,4 +51,12 @@ void Scene::OnEvent(Event& ev)
   cam.cam->OnEvent(ev);
 }
 
+void Scene::OnResize(u32 w, u32 h)
+{
+  auto cam_ent = m_registry.Group<EditorCameraComponent>();
+  auto cam = m_registry.GetComponent<EditorCameraComponent>(cam_ent.front());
+
+  cam.cam->OnResize(w, h);
+}
+
 Scene::~Scene() = default;

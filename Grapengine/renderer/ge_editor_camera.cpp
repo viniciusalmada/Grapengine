@@ -129,7 +129,7 @@ void EditorCamera::MouseZoom(const f32 delta)
 
 void EditorCamera::UpdateView()
 {
-  auto up = Vec3(0, 1, 0);
+  auto up = Vec3{ 0, 1, 0 };
   m_view_mat = Transform::LookAt(m_eye, m_focal_point, up);
 }
 
@@ -174,9 +174,8 @@ bool EditorCamera::OnMouseReleased(KeyCode bt)
   return false;
 }
 
-bool EditorCamera::UpdateAspectRatio(u32 w, u32 h)
+void EditorCamera::UpdateAspectRatio(u32 w, u32 h)
 {
-  m_aspect_ratio = (f32)w / (f32)h;
+  m_aspect_ratio = f32(w) / f32(h);
   m_projection_mat = Transform::Perspective(m_field_of_view, m_aspect_ratio, NEAR, FAR);
-  return false;
 }

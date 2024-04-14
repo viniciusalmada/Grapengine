@@ -17,10 +17,6 @@ namespace GE
 
     static void Clear(const Vec4& color);
     static void Draw(const Ref<Drawable>& drawable);
-
-  private:
-    u32 m_width;
-    u32 m_height;
   };
 }
 
