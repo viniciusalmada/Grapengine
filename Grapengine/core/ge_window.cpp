@@ -15,7 +15,7 @@ namespace
 
   void ErrorCB(i32 error_code, const char* description)
   {
-    GE_ASSERT(false, "Code: {} \'{}\'", error_code, description)
+    GE::Assert(false, "Code: {} \'{}\'", error_code, description);
   }
 }
 

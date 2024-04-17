@@ -26,7 +26,7 @@ std::string IO::ReadFileToString(const std::filesystem::path& path)
   }
   catch (const std::exception& ex)
   {
-    GE_ASSERT(false, ex.what())
+    GE::Assert(false, ex.what());
     return {};
   }
 }

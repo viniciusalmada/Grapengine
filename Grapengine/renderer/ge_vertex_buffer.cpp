@@ -9,7 +9,7 @@ using namespace GE;
 
 VertexBuffer::VertexBuffer(const void* ptr, u64 verticesSize, u32 parent)
 {
-  GE_ASSERT(IsVAOBound(parent), "The associated VAO lacks a binding")
+  GE::Assert(IsVAOBound(parent), "The associated VAO lacks a binding");
 
   m_parent = parent;
 
@@ -22,7 +22,7 @@ VertexBuffer::~VertexBuffer() = default;
 
 void VertexBuffer::Bind() const
 {
-  GE_ASSERT(IsVAOBound(m_parent), "The associated VAO lacks a binding")
+  GE::Assert(IsVAOBound(m_parent), "The associated VAO lacks a binding");
 
   glBindBuffer(GL_ARRAY_BUFFER, m_id);
 }

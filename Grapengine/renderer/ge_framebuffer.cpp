@@ -77,8 +77,8 @@ void Framebuffer::Invalidate()
                          m_depth_attachment,
                          0);
 
-  GE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE,
-            "Framebuffer is incomplete")
+  GE::Assert(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE,
+             "Framebuffer is incomplete");
 
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
@@ -91,7 +91,7 @@ void Framebuffer::Bind()
 
 void Framebuffer::Unbind()
 {
-  GE_ASSERT(IsFramebufferBound(m_id), "Framebuffer not bound")
+  GE::Assert(IsFramebufferBound(m_id), "Framebuffer not bound");
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
