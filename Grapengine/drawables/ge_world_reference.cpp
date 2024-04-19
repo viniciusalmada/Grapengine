@@ -9,16 +9,16 @@ using namespace GE;
 namespace
 {
   constexpr Vec3 ORIGIN{ 0, 0, 0 };
-  constexpr f32 AXIS_RADIUS = 0.02f;
+  constexpr f32 AXIS_RADIUS = 0.02F;
+  constexpr Color PLATFORM_COLOR{ 0xAAAAAAFF };
 }
 
-GE::WorldReference::WorldReference(const Ref<IShaderProgram>& shader, u64 platformSize)
+GE::WorldReference::WorldReference(const Ref<IShaderProgram>& shader, u64 platformSize) :
+    m_shader(shader), m_platform_side_size(platformSize)
 {
-  m_shader = shader;
-  m_platform_side_size = platformSize;
   const f32 SIDE_SIZE = static_cast<f32>(m_platform_side_size);
   m_blank_texture = MakeRef<Texture2D>();
-  m_platform = MakeRef<Cube>(Color{ 0xAAAAAAFF }, m_shader, m_blank_texture);
+  m_platform = MakeRef<Cube>(PLATFORM_COLOR, m_shader, m_blank_texture);
   m_platform->SetScale(SIDE_SIZE, AXIS_RADIUS, SIDE_SIZE);
   m_platform->SetTranslate(SIDE_SIZE / 2, 0, SIDE_SIZE / 2);
 

@@ -20,12 +20,9 @@ Cylinder::Cylinder(const Ref<IShaderProgram>& shader,
                    const f32 height,
                    Color color,
                    Ref<Texture2D> texture2D) :
-    Drawable(shader)
+    Drawable(shader), m_color(color), m_shader(shader), m_texture(std::move(texture2D))
 {
-  m_shader = shader;
-  m_color = color;
-  m_texture = std::move(texture2D);
-  Ref<BufferLayout> layout = shader->GetLayout();
+  const Ref<const BufferLayout> layout = shader->GetLayout();
 
   const Vec3 normal = direction.Normalize();
   const Vec3 ref_random{ Random::GenFloat(0, 1), Random::GenFloat(0, 1), Random::GenFloat(0, 1) };

@@ -17,11 +17,11 @@ namespace GE
 
     [[deprecated]] void Draw() const;
 
-    void UpdateVerticesData(const Ref<VerticesData>&);
+    void UpdateVerticesData(const Ref<VerticesData>& data);
 
     void Bind() const;
 
-    i32 IndicesCount() const;
+    [[nodiscard]] i32 IndicesCount() const;
 
   private:
     Ref<VertexArray> m_vao = nullptr;

@@ -9,10 +9,11 @@
 using namespace GE;
 
 DrawingObject::DrawingObject(const Ref<VerticesData>& vertices,
-                             const Ref<std::vector<u32>>& indices)
+                             const Ref<std::vector<u32>>& indices) :
+    m_triangles_count(indices->size() / 3UL)
 {
   m_vao = MakeRef<VertexArray>();
-  m_triangles_count = indices->size() / 3ul;
+
   m_vao->Bind();
 
   m_vbo = MakeRef<VertexBuffer>(vertices->GetPtr(), vertices->GetSize(), m_vao->GetID());
