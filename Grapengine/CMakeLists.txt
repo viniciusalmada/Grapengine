@@ -39,6 +39,17 @@ endif ()
 
 target_link_libraries(Grapengine PRIVATE GrapengineCompileOptions)
 
+##############################################################################
+#
+if (CMAKE_CXX_COMPILER_ID STREQUAL Clang)
+  add_custom_target(
+    ClangTidy
+    DEPENDS Grapengine
+    COMMAND clang-tidy --config-file=${CMAKE_SOURCE_DIR}/.clang-tidy -p ${CMAKE_BINARY_DIR}
+    ${GRAPENGINE_SOURCES}
+  )
+endif ()
+
 # ############################################################################
 # imgui
 file(GLOB IMGUI_SRC ${CMAKE_SOURCE_DIR}/vendor/imgui/*.cpp ${CMAKE_SOURCE_DIR}/imgui/*.h)

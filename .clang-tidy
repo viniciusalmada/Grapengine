@@ -39,7 +39,7 @@ readability-*,
 -readability-identifier-length,
 -readability-identifier-naming,
 -readability-uppercase-literal-suffix,
--bugprone-easily-swappable-parameters
+-bugprone-easily-swappable-parameters,
 '
 WarningsAsErrors: "*"
 HeaderFileExtensions:
