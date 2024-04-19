@@ -53,7 +53,7 @@ Texture2D::Texture2D()
   constexpr auto width = 1;
   constexpr auto height = 1;
   bool size_check = true; // size == width * height * 4;
-  GE::Assert(size_check, "Error at texture size!");
+  GE_ASSERT(size_check, "Error at texture size!")
 
   glCreateTextures(GL_TEXTURE_2D, 1, &m_renderer_ID);
   glTextureStorage2D(m_renderer_ID, 1, internal_format, width, height);

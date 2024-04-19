@@ -18,15 +18,15 @@ void GE::Ctrl::App::Shutdown()
 
 void GE::Ctrl::App::Close()
 {
-  GE::Assert(Get().m_application.has_value(), "Controller not initialized");
-  GE::Assert(Get().m_application != nullptr, "Application destroyed");
+  GE_ASSERT(Get().m_application.has_value(), "Controller not initialized")
+  GE_ASSERT(Get().m_application != nullptr, "Application destroyed")
 
   Get().m_application.value()->Close();
 }
 void GE::Ctrl::App::AllowImGuiEvents(bool value)
 {
-  GE::Assert(Get().m_application.has_value(), "Controller not initialized");
-  GE::Assert(Get().m_application != nullptr, "Application destroyed");
+  GE_ASSERT(Get().m_application.has_value(), "Controller not initialized")
+  GE_ASSERT(Get().m_application != nullptr, "Application destroyed")
 
   Get().m_application.value()->GetImGuiLayer()->AllowMouseAndKeyboardEvents(value);
 }

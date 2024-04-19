@@ -33,13 +33,13 @@ void GE::Input::Initialize(Ref<Window> window)
 {
   GE_INFO("Input polling creation")
 
-  GE::Assert(Get().m_windows == nullptr, "Input already initialized");
+  GE_ASSERT(Get().m_windows == nullptr, "Input already initialized")
   Get().m_windows = std::move(window);
 }
 
 void GE::Input::Shutdown()
 {
-  GE::Assert(Get().m_windows != nullptr, "Input not initialized");
+  GE_ASSERT(Get().m_windows != nullptr, "Input not initialized")
   Get().m_windows = nullptr;
 }
 

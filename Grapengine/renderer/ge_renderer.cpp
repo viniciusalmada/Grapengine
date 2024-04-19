@@ -26,7 +26,7 @@ void OpenGLDebuggerFunc(GLenum, GLenum, u32 id, GLenum, GLsizei, const char* mes
   ss << "OpenGL Error:" << std::endl;
   ss << "  (0x" << std::setfill('0') << std::setw(4) << std::hex << id << "): " << message
      << std::endl;
-  GE::Assert(false, ss.str().c_str());
+  GE_ASSERT(false, ss.str().c_str())
 }
 
 void Renderer::Init()

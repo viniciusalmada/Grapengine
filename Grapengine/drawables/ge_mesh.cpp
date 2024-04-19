@@ -108,7 +108,7 @@ GE::Mesh::Mesh(std::string_view path, const GE::Ref<GE::IShaderProgram>& shader)
     for (auto& [normal, w] : normals)
       w = w / distance_sums;
 
-    GE::Assert(!normals.empty(), "Not normal");
+    GE_ASSERT(!normals.empty(), "Not normal")
 
     Vec3 normal =
       std::reduce(normals.begin(),

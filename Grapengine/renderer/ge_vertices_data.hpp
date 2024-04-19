@@ -109,7 +109,7 @@ namespace GE
   {
     ObjEvaluator obj_evaluator{ m_layout->GetTypesSortedList() };
     (..., EvaluateArgument(args, obj_evaluator));
-    GE::Assert(obj_evaluator.IsValid(), "Some types passed to be push are invalids");
+    GE_ASSERT(obj_evaluator.IsValid(), "Some types passed to be push are invalids")
     (..., PushBytes(args));
   }
 }

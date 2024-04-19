@@ -11,16 +11,19 @@
   #endif
 #endif
 
-namespace GE
-{
-  template <typename... Args>
-  void Assert(bool condition, Args... args)
-  {
-    if (condition)
-      return;
-
-    GE_ERROR(std::forward<Args>(args)...)
-  }
-}
+#ifndef GE_ASSERT
+  #if defined(GE_DIST)
+    #define GE_ASSERT(...)
+  #else
+    #define GE_ASSERT(cond, ...)                                                                   \
+      {                                                                                            \
+        if (!(cond))                                                                               \
+        {                                                                                          \
+          GE_ERROR("Assertion failed: {0}", __VA_ARGS__)                                           \
+          BREAKPOINT                                                                               \
+        }                                                                                          \
+      }
+  #endif
+#endif
 
 #endif // GRAPENGINE_ASSERT_HPP
