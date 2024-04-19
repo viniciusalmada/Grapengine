@@ -11,7 +11,7 @@ using namespace GE;
 
 namespace
 {
-  auto GetCubeVerticesPositions(const Ref<BufferLayout>& layout, Color color)
+  auto GetCubeVerticesPositions(const Ref<const BufferLayout>& layout, Color color)
   {
     auto position = VerticesData::Make(layout);
     if (layout->HasNormal())

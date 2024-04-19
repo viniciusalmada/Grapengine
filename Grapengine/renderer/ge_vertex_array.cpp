@@ -85,7 +85,8 @@ void VertexArray::Bind() const
     index_buffer->Bind();
 }
 
-void VertexArray::SetVertexBuffer(const Ref<VertexBuffer>& vertexBuffer, Ref<BufferLayout> layout)
+void VertexArray::SetVertexBuffer(const Ref<VertexBuffer>& vertexBuffer,
+                                  Ref<const BufferLayout> layout)
 {
   GE_ASSERT(IsVAOBound(id), "The associated VAO lacks a binding")
 

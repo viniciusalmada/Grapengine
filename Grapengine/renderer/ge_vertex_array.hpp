@@ -16,7 +16,7 @@ namespace GE
     void Bind() const;
     void Unbind() const;
 
-    void SetVertexBuffer(const Ref<VertexBuffer>& vertexBuffer, Ref<BufferLayout> layout);
+    void SetVertexBuffer(const Ref<VertexBuffer>& vertexBuffer, Ref<const BufferLayout> layout);
     void SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer);
 
     [[nodiscard]] u32 GetID() const { return id; }

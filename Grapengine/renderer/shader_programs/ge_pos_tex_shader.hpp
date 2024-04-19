@@ -21,7 +21,7 @@ namespace GE
     void UpdateViewProjectionMatrix(Mat4 viewProj) override;
     void UpdateTexture(int id) override;
 
-    [[nodiscard]] Ref<BufferLayout> GetLayout() const override;
+    [[nodiscard]] Ref<const BufferLayout> GetLayout() const override;
 
   private:
     Ref<Shader> m_shader;
