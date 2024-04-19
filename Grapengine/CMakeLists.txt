@@ -2,54 +2,22 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # #############################################################################
 # Engine
-add_library(Grapengine STATIC
-  controllers/ge_app_controller.cpp
-  core/ge_application.cpp
-  core/ge_platform.cpp
-  core/ge_window.cpp
-  drawables/ge_canvas.cpp
-  drawables/ge_cube.cpp
-  drawables/ge_cylinder.cpp
-  drawables/ge_drawing_object.cpp
-  drawables/ge_mesh.cpp
-  drawables/ge_world_reference.cpp
-  events/ge_event.cpp
-  input/ge_input.cpp
-  input/ge_key_codes.cpp
-  layer/ge_imgui_layer.cpp
-  layer/ge_layer.cpp
-  log/ge_logger.cpp
-  math/ge_arithmetic.cpp
-  math/ge_geometry.cpp
-  math/ge_quaternions.cpp
-  math/ge_transformations.cpp
-  math/ge_vector.cpp
-  profiling/ge_time.cpp
-  renderer/ge_buffer_layout.cpp
-  renderer/ge_camera.cpp
-  renderer/ge_editor_camera.cpp
-  renderer/ge_framebuffer.cpp
-  renderer/ge_gl_checkers.cpp
-  renderer/ge_index_buffer.cpp
-  renderer/ge_ishader_program.hpp
-  renderer/ge_renderer.cpp
-  renderer/ge_shader.cpp
-  renderer/ge_texture_2d.cpp
-  renderer/ge_vertex_array.cpp
-  renderer/ge_vertex_buffer.cpp
-  renderer/shader_programs/ge_material_shader.cpp
-  renderer/shader_programs/ge_pos_tex_shader.cpp
-  utils/ge_io.cpp
-  utils/ge_random.cpp
-  scene/ge_scene.cpp
-  scene/ge_scene.hpp
-  scene/ge_components.hpp
-  scene/ge_ec_registry.cpp
-  scene/ge_ec_registry.hpp
-  scene/ge_entity.hpp
-  core/ge_context.cpp
-  core/ge_context.hpp
+file(GLOB_RECURSE GRAPENGINE_SOURCES
+  controllers/*.cpp controllers/*.hpp
+  core/*.cpp core/*.hpp
+  drawables/*.cpp drawables/*.hpp
+  events/*.cpp events/*.hpp
+  input/*.cpp input/*.hpp
+  layer/*.cpp layer/*.hpp
+  log/*.cpp log/*.hpp
+  math/*.cpp math/*.hpp
+  profiling/*.cpp profiling/*.hpp
+  renderer/*.cpp renderer/*.hpp
+  scene/*.cpp scene/*.hpp
+  utils/*.cpp utils/*.hpp
 )
+
+add_library(Grapengine STATIC ${GRAPENGINE_SOURCES})
 target_precompile_headers(Grapengine PRIVATE ${CMAKE_SOURCE_DIR}/Grapengine/grapengine_pch.hpp)
 target_include_directories(Grapengine
   PUBLIC ${CMAKE_SOURCE_DIR}/Grapengine
