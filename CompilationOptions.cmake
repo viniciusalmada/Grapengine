@@ -1,6 +1,6 @@
 add_library(GrapengineCompileOptions INTERFACE)
 
-message(STATUS "Setting up compiler flags = ${CMAKE_CXX_COMPILER_ID}:${CMAKE_CXX_COMPILER_FRONTEND_VARIANT}")
+message(STATUS "GRAPENGINE: Setting up compiler flags = ${CMAKE_CXX_COMPILER_ID}:${CMAKE_CXX_COMPILER_FRONTEND_VARIANT}")
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   target_compile_definitions(GrapengineCompileOptions INTERFACE GE_MSVC_COMPILER)
   target_compile_options(GrapengineCompileOptions INTERFACE

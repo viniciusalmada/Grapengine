@@ -57,11 +57,10 @@ target_include_directories(Grapengine
 
 target_compile_definitions(Grapengine PRIVATE
   GLFW_INCLUDE_NONE
-  GRAPENGINE_EXPORTS
   GRAPENGINE_CORE
 )
 
-message(STATUS "Setting up platform = ${CMAKE_SYSTEM_NAME}")
+message(STATUS "GRAPENGINE: Setting up platform = ${CMAKE_SYSTEM_NAME}")
 if (CMAKE_SYSTEM_NAME STREQUAL Windows)
   target_compile_definitions(Grapengine PUBLIC GE_PLATFORM_WINDOWS)
 elseif (CMAKE_SYSTEM_NAME STREQUAL Linux)
@@ -83,6 +82,11 @@ add_library(ImGui STATIC
   ${CMAKE_SOURCE_DIR}/vendor/imgui/backends/imgui_impl_opengl3.h
   ${CMAKE_SOURCE_DIR}/vendor/imgui/misc/cpp/imgui_stdlib.h
   ${CMAKE_SOURCE_DIR}/vendor/imgui/misc/cpp/imgui_stdlib.cpp
+)
+set_target_properties(
+  ImGui
+  PROPERTIES
+  CXX_CLANG_TIDY ""
 )
 target_include_directories(ImGui SYSTEM PUBLIC ${CMAKE_SOURCE_DIR}/vendor/imgui)
 target_link_libraries(Grapengine PUBLIC ImGui)
