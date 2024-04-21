@@ -2,22 +2,37 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # #############################################################################
 # Engine
-file(GLOB_RECURSE GRAPENGINE_SOURCES
-  controllers/*.cpp controllers/*.hpp
-  core/*.cpp core/*.hpp
-  drawables/*.cpp drawables/*.hpp
-  events/*.cpp events/*.hpp
-  input/*.cpp input/*.hpp
-  layer/*.cpp layer/*.hpp
-  log/*.cpp log/*.hpp
-  math/*.cpp math/*.hpp
-  profiling/*.cpp profiling/*.hpp
-  renderer/*.cpp renderer/*.hpp
-  scene/*.cpp scene/*.hpp
-  utils/*.cpp utils/*.hpp
+file(GLOB_RECURSE GRAPES_SOURCES
+  controllers/*.cpp
+  core/*.cpp
+  drawables/*.cpp
+  events/*.cpp
+  input/*.cpp
+  layer/*.cpp
+  log/*.cpp
+  math/*.cpp
+  profiling/*.cpp
+  renderer/*.cpp
+  scene/*.cpp
+  utils/*.cpp
 )
 
-add_library(Grapengine STATIC ${GRAPENGINE_SOURCES})
+file(GLOB_RECURSE GRAPES_HEADERS
+  controllers/*.hpp
+  core/*.hpp
+  drawables/*.hpp
+  events/*.hpp
+  input/*.hpp
+  layer/*.hpp
+  log/*.hpp
+  math/*.hpp
+  profiling/*.hpp
+  renderer/*.hpp
+  scene/*.hpp
+  utils/*.hpp
+)
+
+add_library(Grapengine STATIC ${GRAPES_HEADERS} ${GRAPES_SOURCES})
 target_precompile_headers(Grapengine PRIVATE ${CMAKE_SOURCE_DIR}/Grapengine/grapengine_pch.hpp)
 target_include_directories(Grapengine
   PUBLIC ${CMAKE_SOURCE_DIR}/Grapengine
@@ -43,10 +58,10 @@ target_link_libraries(Grapengine PRIVATE GrapengineCompileOptions)
 #
 if (CMAKE_CXX_COMPILER_ID STREQUAL Clang)
   add_custom_target(
-    ClangTidy
+    GrapeTidy
     DEPENDS Grapengine
-    COMMAND clang-tidy --config-file=${CMAKE_SOURCE_DIR}/.clang-tidy -p ${CMAKE_BINARY_DIR}
-    ${GRAPENGINE_SOURCES}
+    COMMAND clang-tidy --config-file=${CMAKE_SOURCE_DIR}/.clang-tidy -p ${CMAKE_BINARY_DIR} --quiet --export-fixes=${CMAKE_SOURCE_DIR}/fixes.yaml --header-filter='^ge_.*?\.hpp$$'
+    ${GRAPES_SOURCES}
   )
 endif ()
 
