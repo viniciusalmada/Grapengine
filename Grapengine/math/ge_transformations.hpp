@@ -22,9 +22,9 @@ namespace GE::Transform
 
   Mat4 Scale(f32 xFac, f32 yFac, f32 zFac);
 
-  Mat4 LookAt(const Vec3& eye, const Vec3& dir, const Vec3& up);
+  Mat4 LookAt(const Vec3& eye, const Vec3& target, const Vec3& up);
 
-  std::tuple<Vec3, Vec3, Vec3> LookAtVector(const Vec3& eye, const Vec3& dir, const Vec3& up);
+  std::tuple<Vec3, Vec3, Vec3> LookAtVector(const Vec3& eye, const Vec3& target, const Vec3& up);
 
   Mat4 Perspective(f32 fovDegrees, f32 aspectRatio, f32 near, f32 far);
 

@@ -11,6 +11,7 @@ namespace
   constexpr Vec3 ORIGIN{ 0, 0, 0 };
   constexpr f32 AXIS_RADIUS = 0.02F;
   constexpr Color PLATFORM_COLOR{ 0xAAAAAAFF };
+  constexpr auto PLATFORM_MULTIPLIER = 10;
 }
 
 GE::WorldReference::WorldReference(const Ref<IShaderProgram>& shader, u64 platformSize) :
@@ -22,27 +23,27 @@ GE::WorldReference::WorldReference(const Ref<IShaderProgram>& shader, u64 platfo
   m_platform->SetScale(SIDE_SIZE, AXIS_RADIUS, SIDE_SIZE);
   m_platform->SetTranslate(SIDE_SIZE / 2, 0, SIDE_SIZE / 2);
 
-  m_x_axis = MakeRef<Cylinder>(m_shader,
-                               AXIS_RADIUS,
-                               ORIGIN,
-                               Vec3{ 1, 0, 0 },
-                               SIDE_SIZE * 10,
-                               Colors::RED,
-                               m_blank_texture);
-  m_y_axis = MakeRef<Cylinder>(m_shader,
-                               AXIS_RADIUS,
-                               ORIGIN,
-                               Vec3{ 0, 1, 0 },
-                               SIDE_SIZE * 10,
-                               Colors::GREEN,
-                               m_blank_texture);
-  m_z_axis = MakeRef<Cylinder>(m_shader,
-                               AXIS_RADIUS,
-                               ORIGIN,
-                               Vec3{ 0, 0, 1 },
-                               SIDE_SIZE * 10,
-                               Colors::BLUE,
-                               m_blank_texture);
+  m_x_axis = Cylinder::Make(m_shader,
+                            ORIGIN,
+                            AXIS_RADIUS,
+                            Vec3{ 1, 0, 0 },
+                            SIDE_SIZE * PLATFORM_MULTIPLIER,
+                            Colors::RED,
+                            m_blank_texture);
+  m_y_axis = Cylinder::Make(m_shader,
+                            ORIGIN,
+                            AXIS_RADIUS,
+                            Vec3{ 0, 1, 0 },
+                            SIDE_SIZE * PLATFORM_MULTIPLIER,
+                            Colors::GREEN,
+                            m_blank_texture);
+  m_z_axis = Cylinder::Make(m_shader,
+                            ORIGIN,
+                            AXIS_RADIUS,
+                            Vec3{ 0, 0, 1 },
+                            SIDE_SIZE * PLATFORM_MULTIPLIER,
+                            Colors::BLUE,
+                            m_blank_texture);
 }
 
 void WorldReference::DrawBatch() const

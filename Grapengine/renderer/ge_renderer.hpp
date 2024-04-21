@@ -2,6 +2,7 @@
 #define GRAPENGINE_RENDERER_HPP
 
 #include "math/ge_vector.hpp"
+#include "utils/ge_dimension.hpp"
 namespace GE
 {
   class VertexArray;
@@ -12,7 +13,7 @@ namespace GE
   public:
     static void Init();
 
-    static void SetViewport(u32 x, u32 y, u32 width, u32 height);
+    static void SetViewport(u32 x, u32 y, Dimension dim);
 
     static void SetWireframeRenderMode(bool enabled);
 

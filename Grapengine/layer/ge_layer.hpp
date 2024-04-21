@@ -25,7 +25,7 @@ namespace GE
 
     [[nodiscard]] const std::string& GetName() const;
 
-  protected:
+  private:
     std::string m_name;
   };
 }

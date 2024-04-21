@@ -5,6 +5,7 @@
 #include <backends/imgui_impl_opengl3.h>
 #include <core/ge_time_step.hpp>
 #include <imgui.h>
+#include <utility>
 
 #define USE_MULTIPLE_VIEWPORTS
 
@@ -15,7 +16,7 @@ namespace
   constexpr auto IMGUI_LAYER = "IMGUI_LAYER";
 }
 
-ImGuiLayer::ImGuiLayer(Ref<Window> window) : Layer(IMGUI_LAYER), m_window(window) {}
+ImGuiLayer::ImGuiLayer(Ref<Window> window) : Layer(IMGUI_LAYER), m_window(std::move(window)) {}
 
 ImGuiLayer::~ImGuiLayer() = default;
 
@@ -38,7 +39,8 @@ void ImGuiLayer::OnAttach()
 #endif
 
   ImGuiStyle& style = ImGui::GetStyle();
-  if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+  // NOLINTBEGIN(*-magic-numbers)
+  if (bool(io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable))
   {
     style.WindowRounding = 0;
     style.Alpha = 1.0f;
@@ -72,6 +74,7 @@ void ImGuiLayer::OnAttach()
     colors[ImGuiCol_TitleBgActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
     colors[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
   }
+  // NOLINTEND(*-magic-numbers)
 
   ImGui_ImplGlfw_InitForOpenGL(std::any_cast<GLFWwindow*>(m_window->GetNativeHandler()), true);
   ImGui_ImplOpenGL3_Init();
@@ -105,14 +108,14 @@ Ref<ImGuiLayer> ImGuiLayer::Make(Ref<Window> window)
 void ImGuiLayer::End()
 {
   auto& io = ImGui::GetIO();
-  io.DisplaySize =
-    ImVec2(static_cast<f32>(m_window->GetWidth()), static_cast<float>(m_window->GetWidth()));
+  const Dimension win_dim = m_window->GetDimension();
+  io.DisplaySize = ImVec2(static_cast<f32>(win_dim.width), static_cast<float>(win_dim.height));
 
   ImGui::Render();
   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 #ifdef USE_MULTIPLE_VIEWPORTS
-  if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+  if (bool(io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable))
   {
     GLFWwindow* backup_context = glfwGetCurrentContext();
     ImGui::UpdatePlatformWindows();
@@ -127,8 +130,8 @@ void GE::ImGuiLayer::OnEvent(Event& e)
   if (!m_allow_imgui_events)
     return;
 
-  ImGuiIO& io = ImGui::GetIO();
-  if (io.WantCaptureMouse)
+  const ImGuiIO& io = ImGui::GetIO();
+  if (bool(io.WantCaptureMouse))
   {
     if (e.IsType(EvType::MOUSE_BUTTON_PRESSED) || e.IsType(EvType::MOUSE_BUTTON_RELEASE) ||
         e.IsType(EvType::MOUSE_MOVE) || e.IsType(EvType::MOUSE_SCROLL))

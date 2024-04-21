@@ -8,9 +8,17 @@
 
 using namespace GE;
 
-GE::Mesh::Mesh(std::string_view path, const GE::Ref<GE::IShaderProgram>& shader) : Drawable(shader)
+namespace
 {
-  m_shader = shader;
+  constexpr auto NORMAL_RADIUS = 0.01f;
+  constexpr auto NORMAL_HEIGHT = 0.05f;
+  constexpr auto TWO = 2.0f;
+}
+
+GE::Mesh::Mesh(std::string_view path, const GE::Ref<GE::IShaderProgram>& shader) :
+    Drawable(shader), m_shader(shader)
+{
+
   m_texture = Texture2D::Make();
 
   std::ifstream file{ std::string{ path } };
@@ -23,8 +31,10 @@ GE::Mesh::Mesh(std::string_view path, const GE::Ref<GE::IShaderProgram>& shader)
   while (std::getline(file, line))
   {
     std::istringstream iss(line);
-    char type;
-    f64 x, y, z;
+    char type = '\0';
+    f64 x{};
+    f64 y{};
+    f64 z{};
     if (iss >> type >> x >> y >> z)
     {
       if (type == 'v')
@@ -33,10 +43,10 @@ GE::Mesh::Mesh(std::string_view path, const GE::Ref<GE::IShaderProgram>& shader)
       }
       else if (type == 'f')
       {
-        u32 i1 = static_cast<u32>(x) - 1;
-        u32 i2 = static_cast<u32>(y) - 1;
-        u32 i3 = static_cast<u32>(z) - 1;
-        IVec3 indices{ static_cast<i32>(i1), static_cast<i32>(i2), static_cast<i32>(i3) };
+        const u32 i1 = static_cast<u32>(x) - 1;
+        const u32 i2 = static_cast<u32>(y) - 1;
+        const u32 i3 = static_cast<u32>(z) - 1;
+        const IVec3 indices{ static_cast<i32>(i1), static_cast<i32>(i2), static_cast<i32>(i3) };
 
         const auto& v1 = m_vertices[i1];
         const auto& v2 = m_vertices[i2];
@@ -70,15 +80,15 @@ GE::Mesh::Mesh(std::string_view path, const GE::Ref<GE::IShaderProgram>& shader)
   for (auto& face : m_faces)
   {
     m_normals.push_back(Cylinder::Make(m_shader,
-                                       0.01f,
                                        face.center + translate_fac,
+                                       NORMAL_RADIUS,
                                        face.normal,
-                                       0.5f,
+                                       NORMAL_HEIGHT,
                                        Colors::RED,
                                        m_texture));
   }
 
-  Ref<std::vector<u32>> indices = MakeRef<std::vector<u32>>();
+  const Ref<std::vector<u32>> indices = MakeRef<std::vector<u32>>();
   indices->reserve(m_faces.size() * 3);
   for (const IVec3 face : m_faces //
                             | std::views::transform([](auto&& f) { return f.indices; }))
@@ -87,9 +97,9 @@ GE::Mesh::Mesh(std::string_view path, const GE::Ref<GE::IShaderProgram>& shader)
     indices->push_back(u32(face.y));
     indices->push_back(u32(face.z));
   }
-  std::set<u32> indices_set{ indices->begin(), indices->end() };
+  const std::set<u32> indices_set{ indices->begin(), indices->end() };
 
-  Ref<VerticesData> vertices_data = MakeRef<VerticesData>(shader->GetLayout());
+  const Ref<VerticesData> vertices_data = MakeRef<VerticesData>(shader->GetLayout());
 
   auto get_normal = [&](u64 idx)
   {
@@ -110,7 +120,7 @@ GE::Mesh::Mesh(std::string_view path, const GE::Ref<GE::IShaderProgram>& shader)
 
     GE_ASSERT(!normals.empty(), "Not normal")
 
-    Vec3 normal =
+    const Vec3 normal =
       std::reduce(normals.begin(),
                   normals.end(),
                   std::pair<Vec3, f32>{},
@@ -122,18 +132,19 @@ GE::Mesh::Mesh(std::string_view path, const GE::Ref<GE::IShaderProgram>& shader)
     return normal;
   };
 
-  for (u64 vtx_idx : std::views::iota(0u, m_vertices.size()))
+  for (const u64 vtx_idx : std::views::iota(0u, m_vertices.size()))
   {
-    Vec3 normal = get_normal(vtx_idx);
+    const Vec3 normal = get_normal(vtx_idx);
     vertices_data->PushData(m_vertices[vtx_idx], Vec2{}, m_color.ToVec4(), normal);
   }
 
   m_draw_primitive = MakeRef<DrawingObject>(vertices_data, indices);
 
-  m_bbox = Cube::Make(Color(0xFFFFFF33), shader, m_texture);
-  m_bbox->SetTranslate(min_x.x + (max_x.x - min_x.x) / 2.0f,
-                       min_y.y + (max_y.y - min_y.y) / 2.0f,
-                       min_z.z + (max_z.z - min_z.z) / 2.0f);
+  const Color BBOX_COLOR{ 0xFFFFFF33 };
+  m_bbox = Cube::Make(BBOX_COLOR, shader, m_texture);
+  m_bbox->SetTranslate(min_x.x + (max_x.x - min_x.x) / TWO,
+                       min_y.y + (max_y.y - min_y.y) / TWO,
+                       min_z.z + (max_z.z - min_z.z) / TWO);
   m_bbox->SetScale(max_x.x - min_x.x, max_y.y - min_y.y, max_z.z - min_z.z);
 }
 

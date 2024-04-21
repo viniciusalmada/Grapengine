@@ -17,7 +17,7 @@ namespace GE
     void End();
     void OnAttach() override;
     void OnDetach() override;
-    void OnEvent(GE::Event&) override;
+    void OnEvent(GE::Event& /*unused*/) override;
 
     void AllowMouseAndKeyboardEvents(bool allow);
 

@@ -48,9 +48,9 @@ void Renderer::Init()
   glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 }
 
-void Renderer::SetViewport(u32 x, u32 y, u32 width, u32 height)
+void Renderer::SetViewport(u32 x, u32 y, Dimension dim)
 {
-  glViewport(i32(x), i32(y), i32(width), i32(height));
+  glViewport(i32(x), i32(y), i32(dim.width), i32(dim.height));
 }
 
 void Renderer::SetClearColor(const Vec4& color)

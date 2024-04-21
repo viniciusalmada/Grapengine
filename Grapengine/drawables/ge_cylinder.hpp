@@ -15,16 +15,16 @@ namespace GE
   {
   public:
     static Ref<Cylinder> Make(const Ref<IShaderProgram>& shader,
-                              f32 radius,
                               const Vec3& basePoint,
+                              f32 radius,
                               const Vec3& direction,
                               f32 height,
                               Color color,
                               const Ref<Texture2D>& texture2D);
 
     Cylinder(const Ref<IShaderProgram>& shader,
-             f32 radius,
              const Vec3& basePoint,
+             f32 radius,
              const Vec3& direction,
              f32 height,
              Color color,
