@@ -13,7 +13,6 @@ namespace GE
   {
   public:
     explicit EventHandler();
-    ~EventHandler();
 
     void SetData(EvData data);
     void SetHandled();
@@ -33,13 +32,12 @@ namespace GE
   {
   public:
     explicit Event(EvType type, EvData data = std::monostate());
-    ~Event();
 
     [[nodiscard]] bool IsHandled() const;
     void SetHandled();
 
     [[nodiscard]] EvType GetType() const;
-    [[nodiscard]] bool IsType(EvType) const;
+    [[nodiscard]] bool IsType(EvType type) const;
 
     [[nodiscard]] EventHandler& When(EvType t);
 

@@ -43,14 +43,10 @@ void GE::EventHandler::SetHandled()
   m_handled = true;
 }
 
-EventHandler::~EventHandler() = default;
-
 Event::Event(EvType type, EvData data) : m_type(type)
 {
   m_handler.SetData(std::move(data));
 }
-
-Event::~Event() = default;
 
 bool Event::IsHandled() const
 {

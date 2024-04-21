@@ -14,6 +14,7 @@
   #define DISABLE_WARNING_POP _Pragma("GCC diagnostic pop")
   #define DISABLE_WARNING(name) _Pragma(GCC diagnostic ignored #name)
   #define WARN_CONVERSION_OF_GREATER_SIZE
+  #define WARN_UNSAFE_BUFFER
 #elif defined(GE_CLANG_COMPILER) && defined(GE_PLATFORM_WINDOWS)
   #define DISABLE_WARNING_PUSH __pragma(clang diagnostic push)
   #define DISABLE_WARNING_POP __pragma(clang diagnostic pop)
@@ -25,6 +26,7 @@
   #define DISABLE_WARNING_POP _Pragma("clang diagnostic pop")
   #define DISABLE_WARNING(name) _pragma(clang diagnostic ignored #name)
   #define WARN_CONVERSION_OF_GREATER_SIZE
+  #define WARN_UNSAFE_BUFFER
 #else
   #error "Unknown compiler"
 #endif

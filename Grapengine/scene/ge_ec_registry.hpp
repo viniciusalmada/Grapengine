@@ -5,6 +5,7 @@
 #include "log/ge_logger.hpp"
 #include "scene/ge_entity.hpp"
 
+#include <list>
 #include <map>
 #include <ranges>
 #include <set>
@@ -24,7 +25,7 @@ namespace GE
     template <typename Comp, typename... Args>
     void AddComponent(const Entity& ent, Args&&... args)
     {
-      GE_ASSERT(!Has<Comp>(ent), "Entity already has this component!")
+      GE::Assert(!Has<Comp>(ent), "Entity already has this component!");
 
       m_components[ent].emplace_back(std::make_any<Comp>(std::forward<Args>(args)...));
     }
@@ -32,7 +33,7 @@ namespace GE
     template <typename Comp>
     Comp& GetComponent(const Entity& ent)
     {
-      GE_ASSERT(Has<Comp>(ent), "Entity does not have this component!")
+      GE::Assert(Has<Comp>(ent), "Entity does not have this component!");
 
       auto found = std::ranges::find_if(m_components[ent],
                                         [](const std::any& anyComp)

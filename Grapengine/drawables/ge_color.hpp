@@ -5,44 +5,47 @@
 
 namespace GE
 {
+  constexpr auto MAX_U8 = std::numeric_limits<u8>::max();
+  constexpr auto BITS_ONE_BYTE = 8;
+
   struct Color
   {
     u8 R = 0x00;
     u8 G = 0x00;
     u8 B = 0x00;
-    u8 A = 0xFF;
+    u8 A = MAX_U8;
 
-    constexpr explicit Color(u32 rgba)
+    constexpr explicit Color(u32 rgba) :
+        R(static_cast<u8>((rgba >> BITS_ONE_BYTE * 3) & MAX_U8)),
+        G(static_cast<u8>((rgba >> BITS_ONE_BYTE * 2) & MAX_U8)),
+        B(static_cast<u8>((rgba >> BITS_ONE_BYTE * 1) & MAX_U8)),
+        A(static_cast<u8>((rgba >> BITS_ONE_BYTE * 0) & MAX_U8))
     {
-      R = static_cast<u8>((rgba >> 8 * 3) & 0xFF);
-      G = static_cast<u8>((rgba >> 8 * 2) & 0xFF);
-      B = static_cast<u8>((rgba >> 8 * 1) & 0xFF);
-      A = static_cast<u8>((rgba >> 8 * 0) & 0xFF);
     }
 
-    explicit Color(Vec3 rgb)
+    explicit Color(Vec3 rgb) :
+        R(static_cast<u8>(rgb.x * MAX_U8)),
+        G(static_cast<u8>(rgb.y * MAX_U8)),
+        B(static_cast<u8>(rgb.z * MAX_U8))
     {
-      R = static_cast<u8>(rgb.x * 255.0f);
-      G = static_cast<u8>(rgb.y * 255.0f);
-      B = static_cast<u8>(rgb.z * 255.0f);
     }
 
     [[nodiscard]] Vec4 ToVec4() const
     {
       return {
-        f32(R) / 255.0f,
-        f32(G) / 255.0f,
-        f32(B) / 255.0f,
-        f32(A) / 255.0f,
+        f32(R) / f32(MAX_U8),
+        f32(G) / f32(MAX_U8),
+        f32(B) / f32(MAX_U8),
+        f32(A) / f32(MAX_U8),
       };
     }
 
     [[nodiscard]] Vec3 ToVec3() const
     {
       return {
-        f32(R) / 255.0f,
-        f32(G) / 255.0f,
-        f32(B) / 255.0f,
+        f32(R) / f32(MAX_U8),
+        f32(G) / f32(MAX_U8),
+        f32(B) / f32(MAX_U8),
       };
     }
   };

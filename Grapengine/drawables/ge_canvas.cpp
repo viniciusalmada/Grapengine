@@ -7,8 +7,6 @@ using namespace GE;
 
 Canvas::Canvas(u32 /*width*/, u32 /*height*/){ GE_INFO("Canvas creation") }
 
-Canvas::~Canvas() = default;
-
 void Canvas::Clear(const Vec4& color)
 {
   Renderer::SetClearColor(color);

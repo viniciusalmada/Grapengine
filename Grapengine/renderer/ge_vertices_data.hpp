@@ -8,9 +8,7 @@ namespace GE
   class ObjEvaluator
   {
   public:
-    explicit ObjEvaluator(const std::vector<ShaderDataType>& types) : m_validator(), m_types(types)
-    {
-    }
+    explicit ObjEvaluator(const std::vector<ShaderDataType>& types) : m_types(types) {}
 
     [[nodiscard]] u64 ValidityPositionToFill() const { return m_validator.size(); }
 
@@ -68,7 +66,7 @@ namespace GE
   }
 
   template <class T>
-  void VerticesData::EvaluateArgument(T, ObjEvaluator& objEvaluator)
+  void VerticesData::EvaluateArgument(T /*unused*/, ObjEvaluator& objEvaluator)
   {
     auto pos = objEvaluator.ValidityPositionToFill();
     bool value = false;
@@ -111,7 +109,7 @@ namespace GE
   {
     ObjEvaluator obj_evaluator{ m_layout->GetTypesSortedList() };
     (..., EvaluateArgument(args, obj_evaluator));
-    GE_ASSERT(obj_evaluator.IsValid(), "Some types passed to be push are invalids")
+    GE::Assert(obj_evaluator.IsValid(), "Some types passed to be push are invalids");
     (..., PushBytes(args));
   }
 }

@@ -11,11 +11,9 @@ using namespace GE;
 
 namespace
 {
-  bool glfw_initialized = false;
-
   void ErrorCB(i32 error_code, const char* description)
   {
-    GE_ASSERT(false, "Code: {} \'{}\'", error_code, description)
+    GE::Assert(false, "Code: {} \'{}\'", error_code, description);
   }
 }
 
@@ -23,17 +21,12 @@ Window::Window(const WindowProps& props, const EventCallbackFn& cb) : m_window_p
 {
   //  GE_INFO("Window creation")
 
-  if (!glfw_initialized)
-  {
-    GE_INFO("GLFW initialization")
-    auto success = glfwInit();
-    if (!success)
-      throw std::runtime_error("Error GLFW");
+  GE_INFO("GLFW initialization")
+  const bool success = bool(glfwInit());
+  if (!success)
+    throw std::runtime_error("Error GLFW");
 
-    glfwSetErrorCallback(ErrorCB);
-
-    glfw_initialized = true;
-  }
+  glfwSetErrorCallback(ErrorCB);
 
   glfwWindowHint(GLFW_SAMPLES, 4);
   m_window =
@@ -66,7 +59,6 @@ Window::~Window()
 
   glfwDestroyWindow(m_window);
   glfwTerminate();
-  glfw_initialized = false;
 }
 
 u32 Window::GetWidth() const
@@ -83,7 +75,7 @@ void Window::SetVsync(bool enabled)
 {
   glfwSwapInterval(enabled ? 1 : 0);
 
-  m_vsync = enabled;
+  //  m_vsync = enabled;
 }
 
 void Window::OnUpdate()

@@ -13,7 +13,6 @@ namespace GE
   {
   public:
     Canvas(u32 width, u32 height);
-    ~Canvas();
 
     static void Clear(const Vec4& color);
     static void Draw(const Ref<Drawable>& drawable);
