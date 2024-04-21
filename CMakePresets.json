@@ -1,0 +1,146 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 24,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "h_default",
+      "binaryDir": "${sourceDir}/build-${presetName}",
+      "hidden": true,
+      "generator": "Ninja"
+    },
+    {
+      "name": "h_debug",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "h_release",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "h_toolchain-msvc",
+      "hidden": true,
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "MSVC"
+        }
+      }
+    },
+    {
+      "name": "h_toolchain-clang",
+      "hidden": true,
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "CLANG"
+        }
+      }
+    },
+    {
+      "name": "h_toolchain-gcc",
+      "hidden": true,
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "GCC"
+        }
+      }
+    },
+    {
+      "name": "microsoft-cl-debug",
+      "inherits": [
+        "h_default",
+        "h_debug",
+        "h_toolchain-msvc"
+      ],
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "cl"
+      }
+    },
+    {
+      "name": "microsoft-cl-release",
+      "inherits": [
+        "h_default",
+        "h_release",
+        "h_toolchain-msvc"
+      ],
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "cl"
+      }
+    },
+    {
+      "name": "llvm-clang-cl-debug",
+      "inherits": [
+        "h_default",
+        "h_debug",
+        "h_toolchain-clang"
+      ],
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "clang-cl"
+      }
+    },
+    {
+      "name": "llvm-clang-cl-release",
+      "inherits": [
+        "h_default",
+        "h_release",
+        "h_toolchain-clang"
+      ],
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "clang-cl"
+      }
+    },
+    {
+      "name": "llvm-clang-gcc-debug",
+      "inherits": [
+        "h_default",
+        "h_debug",
+        "h_toolchain-clang"
+      ],
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "clang++"
+      }
+    },
+    {
+      "name": "llvm-clang-gcc-release",
+      "inherits": [
+        "h_default",
+        "h_release",
+        "h_toolchain-clang"
+      ],
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "clang++"
+      }
+    },
+    {
+      "name": "gnu-gcc-debug",
+      "inherits": [
+        "h_default",
+        "h_debug",
+        "h_toolchain-gcc"
+      ],
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "g++"
+      }
+    },
+    {
+      "name": "gnu-gcc-release",
+      "hidden": false,
+      "inherits": [
+        "h_default",
+        "h_release",
+        "h_toolchain-gcc"
+      ],
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "g++"
+      }
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+---
+Checks: '
+-*,
+bugprone-*,
+cert-*,
+clang-analyzer-*,
+cppcoreguidelines-*,
+misc-*,
+modernize-*,
+performance-*,
+readability-*,
+-cppcoreguidelines-macro-usage,
+-cppcoreguidelines-special-member-functions,
+-misc-confusable-identifiers,
+-misc-include-cleaner,
+-modernize-use-trailing-return-type,
+-readability-braces-around-statements,
+-readability-identifier-length,
+-readability-uppercase-literal-suffix,
+'
+# REVISIT -cppcoreguidelines-macro-usage,
+WarningsAsErrors: "*,-cppcoreguidelines-pro-type-reinterpret-cast,-*-use-default-member-init"
+HeaderFileExtensions:
+  - ''
+  - h
+  - hh
+  - hpp
+  - hxx
+ImplementationFileExtensions:
+  - c
+  - cc
+  - cpp
+  - cxx
+#HeaderFilterRegex: 'ge_*'
+AnalyzeTemporaryDtors: true
+FormatStyle: file
+SystemHeaders: false
+UseColor: true
+CheckOptions:
+  misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic: true
+...
+
