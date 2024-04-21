@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.24)
+cmake_minimum_required(VERSION 3.22)
 
 if (NOT DEFINED ${CMAKE_TOOLCHAIN_FILE})
   message(STATUS "Defining vcpkg as toolchain file")

@@ -19,17 +19,8 @@ jobs:
       - name: Update Ubuntu
         run: sudo apt-get update -y
 
-      - name: Install CMake
-        run: |
-          wget https://github.com/Kitware/CMake/releases/download/v3.29.2/cmake-3.29.2.tar.gz
-          tar zxvf cmake-3.29.2.tar.gz
-          cd cmake-3.29.2
-          ./bootstrap --prefix=/usr/local
-          make -j`nproc`
-          sudo make install
-
-      - name: Install clang and ninja
-        run: sudo apt-get install -y clang clang-tidy ninja-build libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev pkg-config
+      - name: Install clang, cmake and ninja
+        run: sudo apt-get install -y cmake clang clang-tidy ninja-build libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev pkg-config
 
       - name: Configure CMake
         run: |
