@@ -15,7 +15,7 @@ void Logger::Init()
    */
 #define SHOW_FILENAMES
 #if defined(SHOW_FILENAMES)
-  std::string_view filename{ "(%s:%#)" };
+  const std::string_view filename{ "(%s:%#)" };
 #else
   std::string_view filename{ "" };
 #endif

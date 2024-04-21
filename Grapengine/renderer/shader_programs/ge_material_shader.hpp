@@ -28,7 +28,7 @@ namespace GE
     void UpdateLightColor(std::vector<Color> color);
     void UpdateLightStrength(const std::vector<f32>& strength);
 
-    [[nodiscard]] Ref<BufferLayout> GetLayout() const override;
+    [[nodiscard]] Ref<const BufferLayout> GetLayout() const override;
 
   private:
     Ref<Shader> m_shader;

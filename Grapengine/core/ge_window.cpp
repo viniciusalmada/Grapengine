@@ -1,10 +1,8 @@
 #include "core/ge_window.hpp"
 
 #include "core/ge_assert.hpp"
-#include "drawables/ge_canvas.hpp"
 
 #include <GLFW/glfw3.h>
-#include <glad/glad.h>
 #include <stb_image.h>
 
 using namespace GE;
@@ -13,11 +11,12 @@ namespace
 {
   void ErrorCB(i32 error_code, const char* description)
   {
-    GE::Assert(false, "Code: {} \'{}\'", error_code, description);
+    GE_ASSERT(false, "Code: {} \'{}\'", error_code, description)
   }
 }
 
-Window::Window(const WindowProps& props, const EventCallbackFn& cb) : m_window_props(props)
+Window::Window(const WindowProps& props, const EventCallbackFn& cb) :
+    m_window_props(props), m_vsync(true)
 {
   //  GE_INFO("Window creation")
 
@@ -29,8 +28,11 @@ Window::Window(const WindowProps& props, const EventCallbackFn& cb) : m_window_p
   glfwSetErrorCallback(ErrorCB);
 
   glfwWindowHint(GLFW_SAMPLES, 4);
-  m_window =
-    glfwCreateWindow(i32(props.width), i32(props.height), props.title.c_str(), nullptr, nullptr);
+  m_window = glfwCreateWindow(i32(props.dim.width),
+                              i32(props.dim.height),
+                              props.title.c_str(),
+                              nullptr,
+                              nullptr);
   //  glfwSetWindowAspectRatio(m_window,
   //                           static_cast<i32>(props.width),
   //                           static_cast<i32>(props.height));
@@ -41,8 +43,6 @@ Window::Window(const WindowProps& props, const EventCallbackFn& cb) : m_window_p
   stbi_image_free(image.pixels);
 
   glfwSetWindowUserPointer(m_window, this);
-
-  m_canvas = MakeRef<Canvas>(props.width, props.height);
 
   m_context = Context{ m_window };
   m_context.Init();
@@ -63,35 +63,29 @@ Window::~Window()
 
 u32 Window::GetWidth() const
 {
-  return m_window_props.width;
+  return m_window_props.dim.width;
 }
 
 u32 Window::GetHeight() const
 {
-  return m_window_props.height;
+  return m_window_props.dim.height;
+}
+
+Dimension Window::GetDimension() const
+{
+  return m_window_props.dim;
 }
 
 void Window::SetVsync(bool enabled)
 {
-  glfwSwapInterval(enabled ? 1 : 0);
-
-  //  m_vsync = enabled;
+  m_vsync = enabled;
+  glfwSwapInterval(m_vsync ? 1 : 0);
 }
 
 void Window::OnUpdate()
 {
   glfwPollEvents();
   m_context.SwapBuffers();
-}
-
-void Window::Clear(Color color) const
-{
-  m_canvas->Clear(color.ToVec4());
-}
-
-void Window::Draw(const Ref<Drawable>& drawable) const
-{
-  m_canvas->Draw(drawable);
 }
 
 std::any Window::GetNativeHandler() const
@@ -115,18 +109,19 @@ void Window::SetupCallbacks(const EventCallbackFn& cb)
   glfwSetWindowCloseCallback(m_window, close_callback);
 
   //-----------------------------
+  // NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
   auto resize_callback = [](GLFWwindow* win, i32 width, i32 height)
   {
     Event event{ EvType::WINDOW_RESIZE,
                  std::make_pair(static_cast<u32>(width), static_cast<u32>(height)) };
     auto* data = static_cast<Window*>(glfwGetWindowUserPointer(win));
     data->m_event_callback(event);
-    data->m_window_props.width = static_cast<u32>(width);
-    data->m_window_props.height = static_cast<u32>(height);
+    data->m_window_props.dim = Dimension{ u32(width), u32(height) };
   };
   glfwSetWindowSizeCallback(m_window, resize_callback);
 
   //-----------------------------
+  // NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
   auto key_callback = [](GLFWwindow* win, i32 key, i32 /*scancode*/, i32 action, i32 /*mods*/)
   {
     EvType type = EvType::NONE;
@@ -142,6 +137,7 @@ void Window::SetupCallbacks(const EventCallbackFn& cb)
   glfwSetKeyCallback(m_window, key_callback);
 
   //-----------------------------
+  // NOLINTNEXTLINE(*-easily-swappable-parameters)
   auto mouse_bt_callback = [](GLFWwindow* win, i32 button, i32 action, i32 /*mods*/)
   {
     //      if (ImGui::GetIO().WantCaptureMouse)
@@ -178,7 +174,6 @@ void Window::SetupCallbacks(const EventCallbackFn& cb)
   };
   glfwSetScrollCallback(m_window, mouse_scroll);
 }
-
 Ref<Window> Window::Make(const WindowProps& props, const EventCallbackFn& cb)
 {
   return MakeRef<Window>(props, cb);

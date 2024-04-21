@@ -12,14 +12,14 @@
 
 using namespace GE;
 
-Application::Application(std::string_view title, u32 width, u32 height, std::string_view icon)
+Application::Application(std::string_view title, Dimension dim, std::string_view icon)
 {
   GE_INFO("Application creation")
 
-  Init(title, width, height, icon, [this](auto&& e) { OnEvent(e); });
+  Init(title, dim, icon, [this](auto&& e) { OnEvent(e); });
 
   Renderer::Init();
-  Renderer::SetViewport(0, 0, width, height);
+  Renderer::SetViewport(0, 0, dim);
 }
 
 Application::~Application()
@@ -30,12 +30,11 @@ Application::~Application()
 }
 
 void Application::Init(std::string_view title,
-                       u32 width,
-                       u32 height,
+                       Dimension dim,
                        std::string_view icon,
                        const EventCallbackFn& cb)
 {
-  m_window = MakeScope<Window>(WindowProps{ title, width, height, icon }, cb);
+  m_window = MakeScope<Window>(WindowProps{ title, dim, icon }, cb);
   Input::Initialize(m_window);
   m_imgui_layer = ImGuiLayer::Make(m_window);
   m_imgui_layer->OnAttach();
@@ -57,7 +56,7 @@ void Application::Run()
 {
   while (m_running)
   {
-    u64 time_ms = Platform::GetCurrentTimeMS();
+    const u64 time_ms = Platform::GetCurrentTimeMS();
     TimeStep step{ time_ms - m_last_frame_time };
     m_last_frame_time = time_ms;
 

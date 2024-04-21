@@ -8,14 +8,19 @@
 
 using namespace GE;
 
+namespace
+{
+  constexpr auto STRAIGHT_ANGLE = 180.0f;
+}
+
 f32 Transform::Deg2Rad(f32 deg)
 {
-  return deg * (std::numbers::pi_v<decltype(deg)> / 180.0f);
+  return deg * (std::numbers::pi_v<decltype(deg)> / STRAIGHT_ANGLE);
 }
 
 f32 Transform::Rad2Deg(f32 rad)
 {
-  return rad * (180.0f / std::numbers::pi_v<decltype(rad)>);
+  return rad * (STRAIGHT_ANGLE / std::numbers::pi_v<decltype(rad)>);
 }
 
 Mat4 Transform::Translate(f32 xFac, f32 yFac, f32 zFac)
@@ -65,7 +70,7 @@ Mat4 Transform::RotateZ(f32 degrees)
 Mat4 Transform::Rotate(f32 degrees, const Vec3& vector)
 {
   Mat4 res = Identity();
-  Vec3 norm = vector.Normalize();
+  const Vec3 norm = vector.Normalize();
   const auto& vx = norm.x;
   const auto& vy = norm.y;
   const auto& vz = norm.z;

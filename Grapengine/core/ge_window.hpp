@@ -3,12 +3,12 @@
 
 #include "GLFW/glfw3.h"
 #include "core/ge_macros.hpp"
-#include "drawables/ge_canvas.hpp"
 #include "drawables/ge_color.hpp"
 #include "events/ge_event.hpp"
 #include "ge_context.hpp"
 #include "log/ge_logger.hpp"
 #include "math/ge_vector.hpp"
+#include "utils/ge_dimension.hpp"
 
 #include <any>
 #include <functional>
@@ -24,11 +24,10 @@ namespace GE
   {
     std::string title;
     std::string icon_path;
-    u32 width;
-    u32 height;
+    Dimension dim;
 
-    explicit WindowProps(std::string_view titleStr, u32 w, u32 h, std::string_view icon) :
-        title(titleStr), icon_path(icon), width(w), height(h)
+    explicit WindowProps(std::string_view titleStr, Dimension d, std::string_view icon) :
+        title(titleStr), icon_path(icon), dim(d)
     {
     }
   };
@@ -41,15 +40,13 @@ namespace GE
     explicit Window(const WindowProps& props, const EventCallbackFn& cb);
     ~Window();
 
-    [[nodiscard]] u32 GetWidth() const;
-    [[nodiscard]] u32 GetHeight() const;
+    [[deprecated("Use GetDimension")]] [[nodiscard]] u32 GetWidth() const;
+    [[deprecated("Use GetDimension")]] [[nodiscard]] u32 GetHeight() const;
+    [[nodiscard]] Dimension GetDimension() const;
 
     void SetVsync(bool enabled);
 
     void OnUpdate();
-
-    void Clear(Color color) const;
-    void Draw(const Ref<Drawable>& drawable) const;
 
     [[nodiscard]] std::any GetNativeHandler() const;
 
@@ -61,7 +58,6 @@ namespace GE
     GLFWwindow* m_window;
     Context m_context;
     EventCallbackFn m_event_callback;
-    Ref<Canvas> m_canvas;
   };
 }
 

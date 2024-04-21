@@ -26,7 +26,7 @@ void OpenGLDebuggerFunc(GLenum, GLenum, u32 id, GLenum, GLsizei, const char* mes
   ss << "OpenGL Error:" << std::endl;
   ss << "  (0x" << std::setfill('0') << std::setw(4) << std::hex << id << "): " << message
      << std::endl;
-  GE::Assert(false, ss.str().c_str());
+  GE_ASSERT(false, ss.str().c_str())
 }
 
 void Renderer::Init()
@@ -48,9 +48,9 @@ void Renderer::Init()
   glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 }
 
-void Renderer::SetViewport(u32 x, u32 y, u32 width, u32 height)
+void Renderer::SetViewport(u32 x, u32 y, Dimension dim)
 {
-  glViewport(i32(x), i32(y), i32(width), i32(height));
+  glViewport(i32(x), i32(y), i32(dim.width), i32(dim.height));
 }
 
 void Renderer::SetClearColor(const Vec4& color)

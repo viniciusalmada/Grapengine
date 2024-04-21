@@ -14,9 +14,9 @@ namespace GE
   class Cube : public Drawable
   {
   public:
-    static Ref<Cube> Make(Color color, const Ref<IShaderProgram>&, Ref<Texture2D> texture);
+    static Ref<Cube> Make(Color color, const Ref<IShaderProgram>& shader, Ref<Texture2D> texture);
 
-    Cube(Color color, const Ref<IShaderProgram>&, Ref<Texture2D> texture);
+    Cube(Color color, const Ref<IShaderProgram>& shader, Ref<Texture2D> texture);
 
     ~Cube() override;
 

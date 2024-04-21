@@ -63,7 +63,7 @@ namespace
       std::stringstream ss;
       ss << "Failure at compiling the " << shader_name << " shader\n";
       ss << info_log.data();
-      GE::Assert(false, ss.str().c_str());
+      GE_ASSERT(false, ss.str().c_str())
 
       glDeleteShader(shader);
     }
@@ -104,7 +104,7 @@ namespace
       std::stringstream ss;
       ss << "Failure at linking program!\n";
       ss << info_log.data();
-      GE::Assert(false, ss.str().c_str());
+      GE_ASSERT(false, ss.str().c_str())
 
       glDeleteProgram(renderer_id);
 
@@ -208,14 +208,14 @@ Ref<Shader> GE::Shader::Make(const std::filesystem::path& vertexPath,
 
 i32 Shader::RetrieveUniform(const std::string& name)
 {
-  GE::Assert(IsBound(), "Shader not bound");
+  GE_ASSERT(IsBound(), "Shader not bound")
 
 check:
   if (m_uniforms.contains(name))
     return m_uniforms[name];
 
   i32 location = glGetUniformLocation(m_renderer_id, name.c_str());
-  GE::Assert(location != -1, "Invalid uniform name");
+  GE_ASSERT(location != -1, "Invalid uniform name")
 
   m_uniforms[name] = location;
   goto check;

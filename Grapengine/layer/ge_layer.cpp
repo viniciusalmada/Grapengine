@@ -4,21 +4,17 @@
 
 using namespace GE;
 
-GE::Layer::Layer(std::string_view name) : m_name(name)
-{
-  GE_INFO("Create layer <{}>", name)
+GE::Layer::Layer(std::string_view name) :
+    m_name(name){ GE_INFO("Create layer <{}>", name) }
 
-  m_name = name;
-}
-
-Layer::~Layer()
+    Layer::~Layer()
 {
   GE_INFO("Destroy layer <{}>", m_name)
 }
 void Layer::OnAttach() {}
 void Layer::OnDetach() {}
-void Layer::OnUpdate(TimeStep) {}
-void Layer::OnEvent(Event&) {}
+void Layer::OnUpdate(TimeStep ts) {}
+void Layer::OnEvent(Event& ev) {}
 const std::string& Layer::GetName() const
 {
   return m_name;

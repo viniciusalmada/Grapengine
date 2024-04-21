@@ -18,7 +18,7 @@ namespace GE
   class Application
   {
   public:
-    Application(std::string_view title, u32 width, u32 height, std::string_view icon);
+    Application(std::string_view title, Dimension dim, std::string_view icon);
     virtual ~Application();
 
     void AddLayer(const Ref<Layer>& layer);
@@ -32,11 +32,8 @@ namespace GE
     [[nodiscard]] Ref<ImGuiLayer> GetImGuiLayer() const;
 
   private:
-    void Init(std::string_view title,
-              u32 width,
-              u32 height,
-              std::string_view icon,
-              const EventCallbackFn& cb);
+    void
+    Init(std::string_view title, Dimension dim, std::string_view icon, const EventCallbackFn& cb);
 
     void OnDestroy();
 

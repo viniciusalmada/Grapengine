@@ -14,8 +14,8 @@ constexpr auto SLICES = 20ul;
 // constexpr auto STACKS = 8;
 
 Cylinder::Cylinder(const Ref<IShaderProgram>& shader,
-                   const f32 radius,
                    const Vec3& basePoint,
+                   const f32 radius,
                    const Vec3& direction,
                    const f32 height,
                    Color color,
@@ -33,9 +33,9 @@ Cylinder::Cylinder(const Ref<IShaderProgram>& shader,
   {
     const f32 slice_percent = static_cast<f32>(i) / static_cast<f32>(SLICES);
     const f32 theta = 2.0f * std::numbers::pi_v<f32> * slice_percent;
-    Vec3 pt = reference * std::cos(theta) + normal.Cross(reference) * std::sin(theta);
-    Vec3 pt_base = basePoint + pt * radius;
-    Vec3 pt_final = pt_base + normal * height;
+    const Vec3 pt = reference * std::cos(theta) + normal.Cross(reference) * std::sin(theta);
+    const Vec3 pt_base = basePoint + pt * radius;
+    const Vec3 pt_final = pt_base + normal * height;
     base_pts.push_back(pt_base);
     final_pts.push_back(pt_final);
   }
@@ -55,6 +55,7 @@ Cylinder::Cylinder(const Ref<IShaderProgram>& shader,
     }
   }
 
+  // NOLINTBEGIN(*-magic-numbers)
   const auto indices = MakeRef<std::vector<u32>>();
   for (int i = 0; i < static_cast<int>(SLICES * 2); i += 2)
   {
@@ -72,6 +73,7 @@ Cylinder::Cylinder(const Ref<IShaderProgram>& shader,
   (*indices)[indices->size() - 3] = 0;
   (*indices)[indices->size() - 2] = static_cast<u32>(SLICES * 2 - 1);
   (*indices)[indices->size() - 1] = 1;
+  // NOLINTEND(*-magic-numbers)
 
   m_draw_primitive = MakeRef<DrawingObject>(positions, indices);
 }
@@ -86,12 +88,12 @@ void Cylinder::Draw() const
   //  m_draw_primitive->Draw();
 }
 Ref<Cylinder> GE::Cylinder::Make(const Ref<IShaderProgram>& shader,
-                                 f32 radius,
                                  const Vec3& basePoint,
+                                 f32 radius,
                                  const Vec3& direction,
                                  f32 height,
                                  Color color,
                                  const Ref<Texture2D>& texture2D)
 {
-  return MakeRef<Cylinder>(shader, radius, basePoint, direction, height, color, texture2D);
+  return MakeRef<Cylinder>(shader, basePoint, radius, direction, height, color, texture2D);
 }

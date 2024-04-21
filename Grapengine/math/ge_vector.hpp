@@ -24,7 +24,7 @@ namespace GE
     Vec2 operator+(const Vec2& other) const noexcept;
     Vec2 operator*(f32 fac) const;
     [[nodiscard]] f32 Length() const noexcept;
-    [[nodiscard]] f32 Dot(Vec2 vec2) const noexcept;
+    [[nodiscard]] f32 Dot(Vec2 other) const noexcept;
 
     friend std::ostream& operator<<(std::ostream& os, const Vec2& vec)
     {
@@ -95,7 +95,7 @@ namespace GE
     [[nodiscard]] const f32* ValuePtr() const;
 
   private:
-    std::array<std::array<f32, 4>, 4> data{ { { 0.0f } } };
+    std::array<std::array<f32, 4>, 4> data{ { { 0.0F } } };
   };
 }
 #endif

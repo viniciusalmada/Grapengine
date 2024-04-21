@@ -11,65 +11,68 @@ using namespace GE;
 
 namespace
 {
-  auto GetCubeVerticesPositions(const Ref<BufferLayout>& layout, Color color)
+  constexpr auto HALF = 0.5f;
+  constexpr auto THIRD = 0.333333334f;
+
+  auto GetCubeVerticesPositions(const Ref<const BufferLayout>& layout, Color color)
   {
     auto position = VerticesData::Make(layout);
     if (layout->HasNormal())
     {
       // clang-format off
-    position->PushData(Vec3{ -0.5f, -0.5f, +0.5f  },Vec2{ 0.00f + 0 * 0.33f, 0.00f + 0 * 0.33f }, color.ToVec4(), Vec3{+0,+0,+1}.Normalize());// Front face
-    position->PushData(Vec3{ +0.5f, -0.5f, +0.5f  },Vec2{ 0.34f + 0 * 0.33f, 0.00f + 0 * 0.33f }, color.ToVec4(), Vec3{+0,+0,+1}.Normalize());
-    position->PushData(Vec3{ +0.5f, +0.5f, +0.5f  },Vec2{ 0.34f + 0 * 0.33f, 0.34f + 0 * 0.33f }, color.ToVec4(), Vec3{+0,+0,+1}.Normalize());
-    position->PushData(Vec3{ -0.5f, +0.5f, +0.5f  },Vec2{ 0.00f + 0 * 0.33f, 0.34f + 0 * 0.33f }, color.ToVec4(), Vec3{+0,+0,+1}.Normalize());
-    position->PushData(Vec3{ +0.5f, -0.5f, +0.5f  },Vec2{ 0.00f + 2 * 0.33f, 0.00f + 1 * 0.33f }, color.ToVec4(), Vec3{+1,+0,+0}.Normalize());// Right face
-    position->PushData(Vec3{ +0.5f, -0.5f, -0.5f  },Vec2{ 0.34f + 2 * 0.33f, 0.00f + 1 * 0.33f }, color.ToVec4(), Vec3{+1,+0,+0}.Normalize());
-    position->PushData(Vec3{ +0.5f, +0.5f, -0.5f  },Vec2{ 0.34f + 2 * 0.33f, 0.34f + 1 * 0.33f }, color.ToVec4(), Vec3{+1,+0,+0}.Normalize());
-    position->PushData(Vec3{ +0.5f, +0.5f, +0.5f  },Vec2{ 0.00f + 2 * 0.33f, 0.34f + 1 * 0.33f }, color.ToVec4(), Vec3{+1,+0,+0}.Normalize());
-    position->PushData(Vec3{ +0.5f, -0.5f, -0.5f  },Vec2{ 0.00f + 2 * 0.33f, 0.00f + 0 * 0.33f }, color.ToVec4(), Vec3{+0,+0,-1}.Normalize());// Back face
-    position->PushData(Vec3{ -0.5f, -0.5f, -0.5f  },Vec2{ 0.34f + 2 * 0.33f, 0.00f + 0 * 0.33f }, color.ToVec4(), Vec3{+0,+0,-1}.Normalize());
-    position->PushData(Vec3{ -0.5f, +0.5f, -0.5f  },Vec2{ 0.34f + 2 * 0.33f, 0.34f + 0 * 0.33f }, color.ToVec4(), Vec3{+0,+0,-1}.Normalize());
-    position->PushData(Vec3{ +0.5f, +0.5f, -0.5f  },Vec2{ 0.00f + 2 * 0.33f, 0.34f + 0 * 0.33f }, color.ToVec4(), Vec3{+0,+0,-1}.Normalize());
-    position->PushData(Vec3{ -0.5f, -0.5f, -0.5f  },Vec2{ 0.00f + 1 * 0.33f, 0.00f + 1 * 0.33f }, color.ToVec4(), Vec3{-1,+0,+0}.Normalize());// Left face
-    position->PushData(Vec3{ -0.5f, -0.5f, +0.5f  },Vec2{ 0.34f + 1 * 0.33f, 0.00f + 1 * 0.33f }, color.ToVec4(), Vec3{-1,+0,+0}.Normalize());
-    position->PushData(Vec3{ -0.5f, +0.5f, +0.5f  },Vec2{ 0.34f + 1 * 0.33f, 0.34f + 1 * 0.33f }, color.ToVec4(), Vec3{-1,+0,+0}.Normalize());
-    position->PushData(Vec3{ -0.5f, +0.5f, -0.5f  },Vec2{ 0.00f + 1 * 0.33f, 0.34f + 1 * 0.33f }, color.ToVec4(), Vec3{-1,+0,+0}.Normalize());
-    position->PushData(Vec3{ -0.5f, +0.5f, +0.5f  },Vec2{ 0.00f + 0 * 0.33f, 0.00f + 1 * 0.33f }, color.ToVec4(), Vec3{+0,+1,+0}.Normalize());// Top face
-    position->PushData(Vec3{ +0.5f, +0.5f, +0.5f  },Vec2{ 0.34f + 0 * 0.33f, 0.00f + 1 * 0.33f }, color.ToVec4(), Vec3{+0,+1,+0}.Normalize());
-    position->PushData(Vec3{ +0.5f, +0.5f, -0.5f  },Vec2{ 0.34f + 0 * 0.33f, 0.34f + 1 * 0.33f }, color.ToVec4(), Vec3{+0,+1,+0}.Normalize());
-    position->PushData(Vec3{ -0.5f, +0.5f, -0.5f  },Vec2{ 0.00f + 0 * 0.33f, 0.34f + 1 * 0.33f }, color.ToVec4(), Vec3{+0,+1,+0}.Normalize());
-    position->PushData(Vec3{ -0.5f, -0.5f, -0.5f  },Vec2{ 0.00f + 0 * 0.33f, 0.00f + 1 * 0.33f }, color.ToVec4(), Vec3{+0,-1,+0}.Normalize());// Bottom face
-    position->PushData(Vec3{ +0.5f, -0.5f, -0.5f  },Vec2{ 0.34f + 0 * 0.33f, 0.00f + 1 * 0.33f }, color.ToVec4(), Vec3{+0,-1,+0}.Normalize());
-    position->PushData(Vec3{ +0.5f, -0.5f, +0.5f  },Vec2{ 0.34f + 0 * 0.33f, 0.34f + 1 * 0.33f }, color.ToVec4(), Vec3{+0,-1,+0}.Normalize());
-    position->PushData(Vec3{ -0.5f, -0.5f, +0.5f  },Vec2{ 0.00f + 0 * 0.33f, 0.34f + 1 * 0.33f }, color.ToVec4(), Vec3{+0,-1,+0}.Normalize());
+    position->PushData(Vec3{ -HALF, -HALF, +HALF  },Vec2{ 0.00f + 0 * THIRD, 0.00f + 0 * THIRD }, color.ToVec4(), Vec3{+0,+0,+1}.Normalize());// Front face
+    position->PushData(Vec3{ +HALF, -HALF, +HALF  },Vec2{ THIRD + 0 * THIRD, 0.00f + 0 * THIRD }, color.ToVec4(), Vec3{+0,+0,+1}.Normalize());
+    position->PushData(Vec3{ +HALF, +HALF, +HALF  },Vec2{ THIRD + 0 * THIRD, THIRD + 0 * THIRD }, color.ToVec4(), Vec3{+0,+0,+1}.Normalize());
+    position->PushData(Vec3{ -HALF, +HALF, +HALF  },Vec2{ 0.00f + 0 * THIRD, THIRD + 0 * THIRD }, color.ToVec4(), Vec3{+0,+0,+1}.Normalize());
+    position->PushData(Vec3{ +HALF, -HALF, +HALF  },Vec2{ 0.00f + 2 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4(), Vec3{+1,+0,+0}.Normalize());// Right face
+    position->PushData(Vec3{ +HALF, -HALF, -HALF  },Vec2{ THIRD + 2 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4(), Vec3{+1,+0,+0}.Normalize());
+    position->PushData(Vec3{ +HALF, +HALF, -HALF  },Vec2{ THIRD + 2 * THIRD, THIRD + 1 * THIRD }, color.ToVec4(), Vec3{+1,+0,+0}.Normalize());
+    position->PushData(Vec3{ +HALF, +HALF, +HALF  },Vec2{ 0.00f + 2 * THIRD, THIRD + 1 * THIRD }, color.ToVec4(), Vec3{+1,+0,+0}.Normalize());
+    position->PushData(Vec3{ +HALF, -HALF, -HALF  },Vec2{ 0.00f + 2 * THIRD, 0.00f + 0 * THIRD }, color.ToVec4(), Vec3{+0,+0,-1}.Normalize());// Back face
+    position->PushData(Vec3{ -HALF, -HALF, -HALF  },Vec2{ THIRD + 2 * THIRD, 0.00f + 0 * THIRD }, color.ToVec4(), Vec3{+0,+0,-1}.Normalize());
+    position->PushData(Vec3{ -HALF, +HALF, -HALF  },Vec2{ THIRD + 2 * THIRD, THIRD + 0 * THIRD }, color.ToVec4(), Vec3{+0,+0,-1}.Normalize());
+    position->PushData(Vec3{ +HALF, +HALF, -HALF  },Vec2{ 0.00f + 2 * THIRD, THIRD + 0 * THIRD }, color.ToVec4(), Vec3{+0,+0,-1}.Normalize());
+    position->PushData(Vec3{ -HALF, -HALF, -HALF  },Vec2{ 0.00f + 1 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4(), Vec3{-1,+0,+0}.Normalize());// Left face
+    position->PushData(Vec3{ -HALF, -HALF, +HALF  },Vec2{ THIRD + 1 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4(), Vec3{-1,+0,+0}.Normalize());
+    position->PushData(Vec3{ -HALF, +HALF, +HALF  },Vec2{ THIRD + 1 * THIRD, THIRD + 1 * THIRD }, color.ToVec4(), Vec3{-1,+0,+0}.Normalize());
+    position->PushData(Vec3{ -HALF, +HALF, -HALF  },Vec2{ 0.00f + 1 * THIRD, THIRD + 1 * THIRD }, color.ToVec4(), Vec3{-1,+0,+0}.Normalize());
+    position->PushData(Vec3{ -HALF, +HALF, +HALF  },Vec2{ 0.00f + 0 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4(), Vec3{+0,+1,+0}.Normalize());// Top face
+    position->PushData(Vec3{ +HALF, +HALF, +HALF  },Vec2{ THIRD + 0 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4(), Vec3{+0,+1,+0}.Normalize());
+    position->PushData(Vec3{ +HALF, +HALF, -HALF  },Vec2{ THIRD + 0 * THIRD, THIRD + 1 * THIRD }, color.ToVec4(), Vec3{+0,+1,+0}.Normalize());
+    position->PushData(Vec3{ -HALF, +HALF, -HALF  },Vec2{ 0.00f + 0 * THIRD, THIRD + 1 * THIRD }, color.ToVec4(), Vec3{+0,+1,+0}.Normalize());
+    position->PushData(Vec3{ -HALF, -HALF, -HALF  },Vec2{ 0.00f + 0 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4(), Vec3{+0,-1,+0}.Normalize());// Bottom face
+    position->PushData(Vec3{ +HALF, -HALF, -HALF  },Vec2{ THIRD + 0 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4(), Vec3{+0,-1,+0}.Normalize());
+    position->PushData(Vec3{ +HALF, -HALF, +HALF  },Vec2{ THIRD + 0 * THIRD, THIRD + 1 * THIRD }, color.ToVec4(), Vec3{+0,-1,+0}.Normalize());
+    position->PushData(Vec3{ -HALF, -HALF, +HALF  },Vec2{ 0.00f + 0 * THIRD, THIRD + 1 * THIRD }, color.ToVec4(), Vec3{+0,-1,+0}.Normalize());
       // clang-format on
     }
     else
     {
       // clang-format off
-    position->PushData(Vec3{ -0.5f, -0.5f, +0.5f  },Vec2{ 0.00f + 0 * 0.33f, 0.00f + 0 * 0.33f }, color.ToVec4());// Front face
-    position->PushData(Vec3{ +0.5f, -0.5f, +0.5f  },Vec2{ 0.34f + 0 * 0.33f, 0.00f + 0 * 0.33f }, color.ToVec4());
-    position->PushData(Vec3{ +0.5f, +0.5f, +0.5f  },Vec2{ 0.34f + 0 * 0.33f, 0.34f + 0 * 0.33f }, color.ToVec4());
-    position->PushData(Vec3{ -0.5f, +0.5f, +0.5f  },Vec2{ 0.00f + 0 * 0.33f, 0.34f + 0 * 0.33f }, color.ToVec4());
-    position->PushData(Vec3{ +0.5f, -0.5f, +0.5f  },Vec2{ 0.00f + 2 * 0.33f, 0.00f + 1 * 0.33f }, color.ToVec4());// Right face
-    position->PushData(Vec3{ +0.5f, -0.5f, -0.5f  },Vec2{ 0.34f + 2 * 0.33f, 0.00f + 1 * 0.33f }, color.ToVec4());
-    position->PushData(Vec3{ +0.5f, +0.5f, -0.5f  },Vec2{ 0.34f + 2 * 0.33f, 0.34f + 1 * 0.33f }, color.ToVec4());
-    position->PushData(Vec3{ +0.5f, +0.5f, +0.5f  },Vec2{ 0.00f + 2 * 0.33f, 0.34f + 1 * 0.33f }, color.ToVec4());
-    position->PushData(Vec3{ +0.5f, -0.5f, -0.5f  },Vec2{ 0.00f + 2 * 0.33f, 0.00f + 0 * 0.33f }, color.ToVec4());// Back face
-    position->PushData(Vec3{ -0.5f, -0.5f, -0.5f  },Vec2{ 0.34f + 2 * 0.33f, 0.00f + 0 * 0.33f }, color.ToVec4());
-    position->PushData(Vec3{ -0.5f, +0.5f, -0.5f  },Vec2{ 0.34f + 2 * 0.33f, 0.34f + 0 * 0.33f }, color.ToVec4());
-    position->PushData(Vec3{ +0.5f, +0.5f, -0.5f  },Vec2{ 0.00f + 2 * 0.33f, 0.34f + 0 * 0.33f }, color.ToVec4());
-    position->PushData(Vec3{ -0.5f, -0.5f, -0.5f  },Vec2{ 0.00f + 1 * 0.33f, 0.00f + 1 * 0.33f }, color.ToVec4());// Left face
-    position->PushData(Vec3{ -0.5f, -0.5f, +0.5f  },Vec2{ 0.34f + 1 * 0.33f, 0.00f + 1 * 0.33f }, color.ToVec4());
-    position->PushData(Vec3{ -0.5f, +0.5f, +0.5f  },Vec2{ 0.34f + 1 * 0.33f, 0.34f + 1 * 0.33f }, color.ToVec4());
-    position->PushData(Vec3{ -0.5f, +0.5f, -0.5f  },Vec2{ 0.00f + 1 * 0.33f, 0.34f + 1 * 0.33f }, color.ToVec4());
-    position->PushData(Vec3{ -0.5f, +0.5f, +0.5f  },Vec2{ 0.00f + 0 * 0.33f, 0.00f + 1 * 0.33f }, color.ToVec4());// Top face
-    position->PushData(Vec3{ +0.5f, +0.5f, +0.5f  },Vec2{ 0.34f + 0 * 0.33f, 0.00f + 1 * 0.33f }, color.ToVec4());
-    position->PushData(Vec3{ +0.5f, +0.5f, -0.5f  },Vec2{ 0.34f + 0 * 0.33f, 0.34f + 1 * 0.33f }, color.ToVec4());
-    position->PushData(Vec3{ -0.5f, +0.5f, -0.5f  },Vec2{ 0.00f + 0 * 0.33f, 0.34f + 1 * 0.33f }, color.ToVec4());
-    position->PushData(Vec3{ -0.5f, -0.5f, -0.5f  },Vec2{ 0.00f + 0 * 0.33f, 0.00f + 1 * 0.33f }, color.ToVec4());// Bottom face
-    position->PushData(Vec3{ +0.5f, -0.5f, -0.5f  },Vec2{ 0.34f + 0 * 0.33f, 0.00f + 1 * 0.33f }, color.ToVec4());
-    position->PushData(Vec3{ +0.5f, -0.5f, +0.5f  },Vec2{ 0.34f + 0 * 0.33f, 0.34f + 1 * 0.33f }, color.ToVec4());
-    position->PushData(Vec3{ -0.5f, -0.5f, +0.5f  },Vec2{ 0.00f + 0 * 0.33f, 0.34f + 1 * 0.33f }, color.ToVec4());
+    position->PushData(Vec3{ -HALF, -HALF, +HALF  },Vec2{ 0.00f + 0 * THIRD, 0.00f + 0 * THIRD }, color.ToVec4());// Front face
+    position->PushData(Vec3{ +HALF, -HALF, +HALF  },Vec2{ THIRD + 0 * THIRD, 0.00f + 0 * THIRD }, color.ToVec4());
+    position->PushData(Vec3{ +HALF, +HALF, +HALF  },Vec2{ THIRD + 0 * THIRD, THIRD + 0 * THIRD }, color.ToVec4());
+    position->PushData(Vec3{ -HALF, +HALF, +HALF  },Vec2{ 0.00f + 0 * THIRD, THIRD + 0 * THIRD }, color.ToVec4());
+    position->PushData(Vec3{ +HALF, -HALF, +HALF  },Vec2{ 0.00f + 2 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4());// Right face
+    position->PushData(Vec3{ +HALF, -HALF, -HALF  },Vec2{ THIRD + 2 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4());
+    position->PushData(Vec3{ +HALF, +HALF, -HALF  },Vec2{ THIRD + 2 * THIRD, THIRD + 1 * THIRD }, color.ToVec4());
+    position->PushData(Vec3{ +HALF, +HALF, +HALF  },Vec2{ 0.00f + 2 * THIRD, THIRD + 1 * THIRD }, color.ToVec4());
+    position->PushData(Vec3{ +HALF, -HALF, -HALF  },Vec2{ 0.00f + 2 * THIRD, 0.00f + 0 * THIRD }, color.ToVec4());// Back face
+    position->PushData(Vec3{ -HALF, -HALF, -HALF  },Vec2{ THIRD + 2 * THIRD, 0.00f + 0 * THIRD }, color.ToVec4());
+    position->PushData(Vec3{ -HALF, +HALF, -HALF  },Vec2{ THIRD + 2 * THIRD, THIRD + 0 * THIRD }, color.ToVec4());
+    position->PushData(Vec3{ +HALF, +HALF, -HALF  },Vec2{ 0.00f + 2 * THIRD, THIRD + 0 * THIRD }, color.ToVec4());
+    position->PushData(Vec3{ -HALF, -HALF, -HALF  },Vec2{ 0.00f + 1 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4());// Left face
+    position->PushData(Vec3{ -HALF, -HALF, +HALF  },Vec2{ THIRD + 1 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4());
+    position->PushData(Vec3{ -HALF, +HALF, +HALF  },Vec2{ THIRD + 1 * THIRD, THIRD + 1 * THIRD }, color.ToVec4());
+    position->PushData(Vec3{ -HALF, +HALF, -HALF  },Vec2{ 0.00f + 1 * THIRD, THIRD + 1 * THIRD }, color.ToVec4());
+    position->PushData(Vec3{ -HALF, +HALF, +HALF  },Vec2{ 0.00f + 0 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4());// Top face
+    position->PushData(Vec3{ +HALF, +HALF, +HALF  },Vec2{ THIRD + 0 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4());
+    position->PushData(Vec3{ +HALF, +HALF, -HALF  },Vec2{ THIRD + 0 * THIRD, THIRD + 1 * THIRD }, color.ToVec4());
+    position->PushData(Vec3{ -HALF, +HALF, -HALF  },Vec2{ 0.00f + 0 * THIRD, THIRD + 1 * THIRD }, color.ToVec4());
+    position->PushData(Vec3{ -HALF, -HALF, -HALF  },Vec2{ 0.00f + 0 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4());// Bottom face
+    position->PushData(Vec3{ +HALF, -HALF, -HALF  },Vec2{ THIRD + 0 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4());
+    position->PushData(Vec3{ +HALF, -HALF, +HALF  },Vec2{ THIRD + 0 * THIRD, THIRD + 1 * THIRD }, color.ToVec4());
+    position->PushData(Vec3{ -HALF, -HALF, +HALF  },Vec2{ 0.00f + 0 * THIRD, THIRD + 1 * THIRD }, color.ToVec4());
       // clang-format on
     }
     return position;
@@ -77,15 +80,14 @@ namespace
 }
 
 Cube::Cube(Color color, const Ref<IShaderProgram>& shader, Ref<Texture2D> texture) :
-    Drawable(shader)
+    Drawable(shader), m_color(color), m_shader(shader), m_texture(std::move(texture))
 {
-  m_shader = shader;
-  m_color = color;
-  m_texture = std::move(texture);
+
   auto layout = shader->GetLayout();
 
   const auto positions = GetCubeVerticesPositions(layout, color);
-  Ref<std::vector<u32>> indices = MakeRef<std::vector<u32>>(std::initializer_list<u32>{
+  // NOLINTBEGIN(*-magic-numbers)
+  const Ref<std::vector<u32>> indices = MakeRef<std::vector<u32>>(std::initializer_list<u32>{
     0,  1,  2,  2,  3,  0,  // Front face
     4,  5,  6,  6,  7,  4,  // Right face
     8,  9,  10, 10, 11, 8,  // Back face
@@ -93,6 +95,7 @@ Cube::Cube(Color color, const Ref<IShaderProgram>& shader, Ref<Texture2D> textur
     16, 17, 18, 18, 19, 16, // Top face
     20, 21, 22, 22, 23, 20, // Bottom face
   });
+  // NOLINTEND(*-magic-numbers)
 
   m_draw_primitive = MakeRef<DrawingObject>(positions, indices);
 }

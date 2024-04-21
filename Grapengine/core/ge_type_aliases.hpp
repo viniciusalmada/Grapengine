@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <memory>
+#include <optional>
 
 using i8 [[maybe_unused]] = std::int8_t;
 using i16 [[maybe_unused]] = std::int16_t;
@@ -17,6 +18,12 @@ using f64 [[maybe_unused]] = double;
 
 namespace GE
 {
+  /**
+   * Pointer that acts as reference
+   */
+  template <class T>
+  using Opt = std::optional<T>;
+
   /**
    * Pointer that acts as reference
    */

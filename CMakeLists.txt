@@ -15,9 +15,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_COLOR_DIAGNOSTICS ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CMAKE_CXX_CLANG_TIDY clang-tidy -p ${CMAKE_BINARY_DIR} --config-file=${CMAKE_SOURCE_DIR}/.clang-tidy)
-message("CMAKE_CXX_CLANG_TIDY=${CMAKE_CXX_CLANG_TIDY}")
-
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)
   if (CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "GNU")
     add_compile_options(-fdiagnostics-color=always -fansi-escape-codes)
