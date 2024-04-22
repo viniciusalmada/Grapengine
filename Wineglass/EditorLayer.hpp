@@ -14,19 +14,18 @@ namespace GE
 
     void OnAttach() override;
 
-    void OnUpdate(TimeStep) override;
+    void OnUpdate(TimeStep ts) override;
 
     void OnImGuiUpdate() override;
 
-    void OnEvent(Event&) override;
+    void OnEvent(Event& ev) override;
 
   private:
 #ifdef FIRST_SCENE_TEST
     Ref<Scene> m_scene;
 
     Ref<Framebuffer> m_fb = nullptr;
-    u32 m_viewport_width{};
-    u32 m_viewport_height{};
+    Dimension m_viewport_dimension{};
     //    bool m_viewport_focused{};
     bool m_viewport_hovered = true;
 #else

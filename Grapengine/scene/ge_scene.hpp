@@ -13,9 +13,6 @@ namespace GE
   public:
     static Ref<Scene> Make();
 
-    Scene();
-    ~Scene();
-
     Entity CreateEntity(std::string_view name);
 
     template <typename Comp, typename... Args>

@@ -7,6 +7,9 @@
 
 namespace GE::Transform
 {
+  constexpr f32 FRUSTUM_NEAR = 0.1f;
+  constexpr f32 FRUSTUM_FAR = 1000.0f;
+
   f32 Deg2Rad(f32 degree);
   f32 Rad2Deg(f32 rad);
 
@@ -26,7 +29,7 @@ namespace GE::Transform
 
   std::tuple<Vec3, Vec3, Vec3> LookAtVector(const Vec3& eye, const Vec3& target, const Vec3& up);
 
-  Mat4 Perspective(f32 fovDegrees, f32 aspectRatio, f32 near, f32 far);
+  Mat4 Perspective(f32 fovDegrees, f32 aspectRatio, f32 near = FRUSTUM_NEAR, f32 far = FRUSTUM_FAR);
 
   Mat4 Identity();
 }

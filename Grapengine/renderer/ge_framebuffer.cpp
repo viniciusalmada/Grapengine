@@ -57,8 +57,8 @@ void Framebuffer::Invalidate()
   glTexImage2D(GL_TEXTURE_2D,
                0,
                GL_RGBA8,
-               m_specs.width,
-               m_specs.height,
+               i32(m_specs.dimension.width),
+               i32(m_specs.dimension.height),
                0,
                GL_RGBA,
                GL_UNSIGNED_BYTE,
@@ -70,7 +70,11 @@ void Framebuffer::Invalidate()
   // Create depth texture
   glCreateTextures(GL_TEXTURE_2D, 1, &m_depth_attachment);
   glBindTexture(GL_TEXTURE_2D, m_depth_attachment);
-  glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH24_STENCIL8, m_specs.width, m_specs.height);
+  glTexStorage2D(GL_TEXTURE_2D,
+                 1,
+                 GL_DEPTH24_STENCIL8,
+                 i32(m_specs.dimension.width),
+                 i32(m_specs.dimension.height));
   glFramebufferTexture2D(GL_FRAMEBUFFER,
                          GL_DEPTH_STENCIL_ATTACHMENT,
                          GL_TEXTURE_2D,
@@ -86,7 +90,7 @@ void Framebuffer::Invalidate()
 void Framebuffer::Bind()
 {
   glBindFramebuffer(GL_FRAMEBUFFER, m_id);
-  glViewport(0, 0, m_specs.width, m_specs.height);
+  glViewport(0, 0, i32(m_specs.dimension.width), i32(m_specs.dimension.height));
 }
 
 void Framebuffer::Unbind()
@@ -100,17 +104,16 @@ u32 GE::Framebuffer::GetColorAttachmentID() const
   return m_color_attachment;
 }
 
-IVec2 GE::Framebuffer::GetSize() const
+const Dimension& GE::Framebuffer::GetDimension() const
 {
-  return { m_specs.width, m_specs.height };
+  return m_specs.dimension;
 }
 
-void GE::Framebuffer::Resize(i32 w, i32 h)
+void GE::Framebuffer::Resize(Dimension dim)
 {
-  if (w == 0 || h == 0)
+  if (dim.IsEmpty())
     return;
-  m_specs.width = w;
-  m_specs.height = h;
+  m_specs.dimension = dim;
   Invalidate();
 }
 

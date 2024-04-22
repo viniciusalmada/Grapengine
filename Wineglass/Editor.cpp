@@ -3,7 +3,13 @@
 #include "EditorLayer.hpp"
 #include "core/ge_entry_point.hpp"
 
-GE::Editor::Editor() : Application("Wineglass - Grapengine", 1280, 720, "assets/ic_grapengine.png")
+namespace
+{
+  constexpr GE::Dimension HD_DIMENSION{ 1280, 720 };
+}
+
+GE::Editor::Editor() :
+    Application("Wineglass - Grapengine", HD_DIMENSION, "assets/ic_grapengine.png")
 {
   GE_INFO("Create Wineglass Editor")
   auto editor_layer = MakeRef<EditorLayer>();

@@ -13,21 +13,23 @@ using namespace GE;
 
 namespace
 {
-  constexpr f32 NEAR = 0.1f;
-  constexpr f32 FAR = 1000.0f;
   constexpr Vec3 UP_DIR{ 0, 1, 0 };
+  constexpr Vec3 INITIAL_EYE_POSITION{ 2.5f, 2.5f, 12.0f };
+  constexpr Vec3 INITIAL_FOCAL_POINT{ 2.5f, 2.5f, 2.5f };
+
+  constexpr auto ZOOM_FACTOR = 15;
 }
 
 EditorCamera::EditorCamera() : EditorCamera(0, 0) {}
 
-EditorCamera::EditorCamera(f32 fov, f32 aspectRatio)
+EditorCamera::EditorCamera(f32 fov, f32 aspectRatio) :
+    m_field_of_view(fov),
+    m_aspect_ratio(aspectRatio),
+    m_eye(INITIAL_EYE_POSITION),
+    m_focal_point(INITIAL_FOCAL_POINT)
 {
-  m_projection_mat = Transform::Perspective(fov, aspectRatio, NEAR, FAR);
-  m_aspect_ratio = aspectRatio;
-  m_field_of_view = fov;
+  m_projection_mat = Transform::Perspective(fov, aspectRatio);
 }
-
-EditorCamera::~EditorCamera() = default;
 
 void EditorCamera::OnUpdate(TimeStep ts)
 {
@@ -123,7 +125,7 @@ void EditorCamera::MouseZoom(const f32 delta)
 {
   const auto distance = m_focal_point.Distance(m_eye);
   const auto direction = (m_eye - m_focal_point).Normalize();
-  m_eye = m_focal_point + direction * (distance + -delta * 15);
+  m_eye = m_focal_point + direction * (distance + -delta * ZOOM_FACTOR);
   UpdateView();
 }
 
@@ -177,5 +179,5 @@ bool EditorCamera::OnMouseReleased(KeyCode bt)
 void EditorCamera::UpdateAspectRatio(u32 w, u32 h)
 {
   m_aspect_ratio = f32(w) / f32(h);
-  m_projection_mat = Transform::Perspective(m_field_of_view, m_aspect_ratio, NEAR, FAR);
+  m_projection_mat = Transform::Perspective(m_field_of_view, m_aspect_ratio);
 }

@@ -4,11 +4,14 @@ static constexpr const auto CLEAR_COLOR = 0x222222FF;
 
 namespace
 {
+  constexpr auto DEFAULT_FOV = 45.0f;
+  constexpr auto HD_RATIO = 1280.0f / 720.0f;
+
   DISABLE_WARNING_PUSH
   WARN_CONVERSION_OF_GREATER_SIZE
   void* SafeConversion(u32 i)
   {
-    return reinterpret_cast<void*>(i);
+    return reinterpret_cast<void*>(i); // NOLINT(*-pro-type-reinterpret-cast, *-no-int-to-ptr)
   }
   DISABLE_WARNING_POP
 }
@@ -40,16 +43,16 @@ void GE::EditorLayer::OnAttach()
   //  m_light_2->SetScale(0.5, 0.5, 0.5);
   //  m_world_ref = MakeRef<WorldReference>(m_simple_shader, 20);
   //  m_mesh = MakeRef<Mesh>("assets/objs/teapot.obj", m_mat_shader);
-  m_fb = Framebuffer::Make(FBSpecs{ 1280, 720, 1, true });
+  m_fb = Framebuffer::Make(FBSpecs{ { 1280, 720 }, 1, true });
 }
 
 void GE::EditorLayer::OnUpdate(GE::TimeStep ts)
 {
   const auto& spec = m_fb->GetSpec();
-  if (spec.width != i32(m_viewport_width) || spec.height != i32(m_viewport_height))
+  if (spec.dimension != m_viewport_dimension)
   {
-    m_fb->Resize(static_cast<i32>(m_viewport_width), static_cast<i32>(m_viewport_height));
-    m_scene->OnResize(m_viewport_width, m_viewport_height);
+    m_fb->Resize(m_viewport_dimension);
+    //    m_scene->OnResize(m_viewport_width, m_viewport_height);
   }
 
   m_fb->Bind();
@@ -163,11 +166,11 @@ void GE::EditorLayer::OnImGuiUpdate()
   //  m_viewport_focused = ImGui::IsWindowFocused();
   m_viewport_hovered = ImGui::IsWindowHovered();
   Ctrl::App::AllowImGuiEvents(/*!m_viewport_focused ||*/ !m_viewport_hovered);
-  auto vp_size = ImGui::GetContentRegionAvail();
-  m_viewport_width = u32(vp_size.x);
-  m_viewport_height = u32(vp_size.y);
+  ImVec2 vp_size = ImGui::GetContentRegionAvail();
+  m_viewport_dimension.width = u32(vp_size.x);
+  m_viewport_dimension.height = u32(vp_size.y);
   u32 tex = m_fb->GetColorAttachmentID();
-  const auto [w, h] = m_fb->GetSize();
+  const auto [w, h] = m_fb->GetDimension();
   ImVec2 size{ f32(w), f32(h) };
   ImGui::Image(SafeConversion(tex), size, { 0, 1 }, { 1, 0 });
   ImGui::End();

@@ -2,12 +2,13 @@
 #define GRAPENGINE_GE_FRAMEBUFFER_HPP
 
 #include "math/ge_vector.hpp"
+#include "utils/ge_dimension.hpp"
 
 namespace GE
 {
   struct FBSpecs
   {
-    i32 width = 1, height = 1;
+    Dimension dimension;
     u32 samples = 1;
     bool swap_chain_target = false;
   };
@@ -21,7 +22,7 @@ namespace GE
     ~Framebuffer();
 
     void Invalidate();
-    void Resize(i32 w, i32 h);
+    void Resize(Dimension dim);
 
     void Bind();
     void Unbind();
@@ -30,7 +31,7 @@ namespace GE
 
     [[nodiscard]] u32 GetColorAttachmentID() const;
 
-    [[nodiscard]] IVec2 GetSize() const;
+    [[nodiscard]] const Dimension& GetDimension() const;
 
   private:
     void Clear();

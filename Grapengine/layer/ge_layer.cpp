@@ -13,8 +13,8 @@ GE::Layer::Layer(std::string_view name) :
 }
 void Layer::OnAttach() {}
 void Layer::OnDetach() {}
-void Layer::OnUpdate(TimeStep ts) {}
-void Layer::OnEvent(Event& ev) {}
+void Layer::OnUpdate(TimeStep /*ts*/) {}
+void Layer::OnEvent(Event& /*ev*/) {}
 const std::string& Layer::GetName() const
 {
   return m_name;
