@@ -2,7 +2,7 @@
 #define GRAPENGINE_GE_COMPONENTS_HPP
 
 #include "math/ge_vector.hpp"
-#include "renderer/ge_editor_camera.hpp"
+#include "renderer/ge_camera.hpp"
 #include "renderer/ge_ishader_program.hpp"
 #include "renderer/ge_vertex_array.hpp"
 
@@ -15,12 +15,12 @@ namespace GE
 
   struct TransformComponent
   {
-    Mat4 model{};
+    Mat4 transform;
   };
 
   struct PrimitiveComponent
   {
-    Ref<DrawingObject> drawing_obj{};
+    Ref<DrawingObject> drawing_obj;
   };
 
   struct MaterialComponent
@@ -33,9 +33,14 @@ namespace GE
     Ref<IShaderProgram> shader;
   };
 
-  struct EditorCameraComponent
+  struct CameraComponent
   {
-    Ref<::GE::EditorCamera> cam;
+    Camera cam;
+    bool active;
+
+    CameraComponent() : cam(Camera{ Mat4{} }), active(false) {}
+    CameraComponent(Mat4 proj, bool act) : cam(Camera{ proj }), active(act) {}
+    CameraComponent(const CameraComponent& other) = default;
   };
 }
 

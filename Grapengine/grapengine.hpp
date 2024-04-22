@@ -16,7 +16,11 @@
 #include "drawables/ge_world_reference.hpp"
 
 // Utilities
+#include "utils/ge_dimension.hpp"
 #include "utils/ge_random.hpp"
+
+// Math
+#include "math/ge_transformations.hpp"
 
 // Renderer
 #include "renderer/ge_editor_camera.hpp"

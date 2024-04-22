@@ -20,12 +20,17 @@ GE::EditorLayer::EditorLayer() : Layer("EditorLayer") {}
 
 void GE::EditorLayer::OnAttach()
 {
-
   m_scene = Scene::Make();
 
-  Ref<EditorCamera> cam = MakeRef<EditorCamera>(45.0f, 1280.0f / 720.0f);
-  auto camera_ent = m_scene->CreateEntity("Camera");
-  m_scene->AddComponent<EditorCameraComponent>(camera_ent, cam);
+  m_camera_entity = m_scene->CreateEntity("Camera");
+  m_scene->AddComponent<CameraComponent>(m_camera_entity,
+                                         Transform::Perspective(DEFAULT_FOV, HD_RATIO),
+                                         true);
+  m_scene->AddComponent<TransformComponent>(m_camera_entity,
+                                            Transform::LookAt({}, {}, { 0, 1, 0 }));
+
+  //  auto camera_ent = m_scene->CreateEntity("Camera");
+  //  m_scene->AddComponent<CameraComponent>(camera_ent, cam);
 
   Ref<IShaderProgram> simple_shader = MakeRef<PosAndTex2DShader>();
   Ref<WorldReference> world_reference = MakeRef<WorldReference>(simple_shader, 20);
