@@ -8,7 +8,7 @@ on:
 
 jobs:
   clang-tidy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Checkout code
@@ -16,18 +16,17 @@ jobs:
         with:
           submodules: 'true'
 
-      - name: Update Ubuntu
-        run: sudo apt-get update -y
-
       - name: Install clang, cmake and ninja
-        run: sudo apt-get install -y cmake clang clang-tidy ninja-build libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev pkg-config
+        run: |
+          winget install --id LLVM.LLVM
+          winget install --id Kitware.CMake
 
       - name: Configure CMake
         run: |
-          cmake --preset llvm-clang-gcc-release
-          cmake --build build-llvm-clang-gcc-release --target GrapeTidy -j`nproc`
+          cmake --preset llvm-clang-cl-release
+          cmake --build build-llvm-clang-cl-release --target GrapeTidy --parallel=$env:NUMBER_OF_PROCESSORS
     
-
+    
     # strategy:
     #   # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations. Consider changing this to true when your workflow is stable.
     #   fail-fast: false
