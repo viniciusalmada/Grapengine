@@ -54,7 +54,7 @@ Texture2D::Texture2D(const std::filesystem::path& path) : m_dim(), m_renderer_ID
   stbi_image_free(data);
 }
 
-Texture2D::Texture2D() : m_renderer_ID(0)
+Texture2D::Texture2D() : m_dim(), m_renderer_ID(0)
 {
   const uint32_t internal_format = GL_RGBA8;
   const uint32_t format = GL_RGBA;

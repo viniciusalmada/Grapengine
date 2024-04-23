@@ -13,7 +13,7 @@ using namespace GE;
 
 namespace
 {
-  constexpr auto IMGUI_LAYER = "IMGUI_LAYER";
+  constexpr std::string_view IMGUI_LAYER = "IMGUI_LAYER";
 }
 
 ImGuiLayer::ImGuiLayer(Ref<Window> window) : Layer(IMGUI_LAYER), m_window(std::move(window)) {}
