@@ -3,8 +3,9 @@
 
 #include "core/ge_time_step.hpp"
 #include "events/ge_event.hpp"
-#include "ge_ec_registry.hpp"
+#include "scene/ge_ec_registry.hpp"
 #include "scene/ge_entity.hpp"
+#include "utils/ge_dimension.hpp"
 
 namespace GE
 {
@@ -21,14 +22,21 @@ namespace GE
       m_registry.AddComponent<Comp>(ent, std::forward<Args>(args)...);
     }
 
+    template <typename Comp>
+    Comp& GetComponent(const Entity& ent)
+    {
+      return m_registry.GetComponent<Comp>(ent);
+    }
+
     void OnUpdate(TimeStep ts);
 
     void OnEvent(Event&);
 
-    void OnResize(u32 w, u32 h);
+    void OnViewportResize(Dimension dim);
 
   private:
     ECRegistry m_registry;
+    Dimension m_viewport;
   };
 
 } // GE

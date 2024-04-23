@@ -1,6 +1,7 @@
 #ifndef GRAPENGINE_GE_COMPONENTS_HPP
 #define GRAPENGINE_GE_COMPONENTS_HPP
 
+#include "ge_scene_camera.hpp"
 #include "math/ge_vector.hpp"
 #include "renderer/ge_camera.hpp"
 #include "renderer/ge_ishader_program.hpp"
@@ -35,12 +36,16 @@ namespace GE
 
   struct CameraComponent
   {
-    Camera cam;
+    SceneCamera camera;
     bool active;
+    bool fixed_ratio;
 
-    CameraComponent() : cam(Camera{ Mat4{} }), active(false) {}
-    CameraComponent(Mat4 proj, bool act) : cam(Camera{ proj }), active(act) {}
-    CameraComponent(const CameraComponent& other) = default;
+    CameraComponent() : active(false), fixed_ratio(false) {}
+    CameraComponent(bool act, bool fixedRatio) : active(act), fixed_ratio(fixedRatio) {}
+    CameraComponent(const CameraComponent& other) :
+        camera(other.camera), active(other.active), fixed_ratio(other.fixed_ratio)
+    {
+    }
   };
 }
 

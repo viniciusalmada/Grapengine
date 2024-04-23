@@ -49,7 +49,7 @@ void Scene::OnUpdate(TimeStep /*ts*/)
   {
     ColorOnlyComponent shader = m_registry.GetComponent<ColorOnlyComponent>(ent);
     shader.shader->Activate();
-    shader.shader->UpdateViewProjectionMatrix(cam_component.cam.GetProjection() *
+    shader.shader->UpdateViewProjectionMatrix(cam_component.camera.GetProjection() *
                                               cam_transform.transform);
 
     TransformComponent model_mat = m_registry.GetComponent<TransformComponent>(ent);
@@ -80,10 +80,17 @@ void Scene::OnEvent(Event& /*ev*/)
   //  cam.cam->OnEvent(ev);
 }
 
-void Scene::OnResize(u32 /*w*/, u32 /*h*/)
+void Scene::OnViewportResize(Dimension dim)
 {
-  //  auto cam_ent = m_registry.Group<CameraComponent>();
-  //  auto cam = m_registry.GetComponent<CameraComponent>(cam_ent.front());
-  //
-  //  cam.cam->OnResize(w, h);
+  m_viewport = dim;
+
+  const std::vector<Entity> camera_entities = m_registry.Group<CameraComponent>();
+  for (auto ent : camera_entities)
+  {
+    auto& cam_comp = m_registry.GetComponent<CameraComponent>(ent);
+    if (!cam_comp.fixed_ratio)
+    {
+      cam_comp.camera.SetViewport(dim);
+    }
+  }
 }

@@ -11,6 +11,7 @@ performance-*,
 readability-*,
 -cppcoreguidelines-macro-usage,
 -cppcoreguidelines-special-member-functions,
+-cppcoreguidelines-non-private-member-variables-in-classes
 -misc-confusable-identifiers,
 -misc-include-cleaner,
 -modernize-use-trailing-return-type,

@@ -8,11 +8,14 @@ namespace GE
   class Camera
   {
   public:
+    Camera() = default;
+    Camera(const Camera&) = delete;
     Camera(const Mat4 projection) : m_projection(projection) {}
+    virtual ~Camera() = default;
 
     [[nodiscard]] const Mat4& GetProjection() const { return m_projection; }
 
-  private:
+  protected:
     Mat4 m_projection;
   };
 }

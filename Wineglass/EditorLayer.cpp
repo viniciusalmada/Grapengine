@@ -22,22 +22,27 @@ void GE::EditorLayer::OnAttach()
 {
   m_scene = Scene::Make();
 
-  m_camera_entity = m_scene->CreateEntity("Camera");
-  m_scene->AddComponent<CameraComponent>(m_camera_entity,
-                                         Transform::Perspective(DEFAULT_FOV, HD_RATIO),
-                                         true);
-  m_scene->AddComponent<TransformComponent>(m_camera_entity,
-                                            Transform::LookAt({}, {}, { 0, 1, 0 }));
+  m_front_camera_entity = m_scene->CreateEntity("Front Camera");
+  m_scene->AddComponent<CameraComponent>(m_front_camera_entity, true, false);
+  m_scene->AddComponent<TransformComponent>(
+    m_front_camera_entity,
+    Transform::LookAt({ 0, 0, -10 }, { 0, 0, 0 }, { 0, 1, 0 }));
+
+  m_oblique_camera_entity = m_scene->CreateEntity("Oblique Camera");
+  m_scene->AddComponent<CameraComponent>(m_oblique_camera_entity, false, false);
+  m_scene->AddComponent<TransformComponent>(
+    m_oblique_camera_entity,
+    Transform::LookAt({ 10, 10, -10 }, { 0, 0, 0 }, { 0, 1, 0 }));
 
   //  auto camera_ent = m_scene->CreateEntity("Camera");
   //  m_scene->AddComponent<CameraComponent>(camera_ent, cam);
 
   Ref<IShaderProgram> simple_shader = MakeRef<PosAndTex2DShader>();
-  Ref<WorldReference> world_reference = MakeRef<WorldReference>(simple_shader, 20);
-  auto world_ref_ent = m_scene->CreateEntity("Platform");
-  m_scene->AddComponent<PrimitiveComponent>(world_ref_ent, world_reference->GetVAO());
-  m_scene->AddComponent<TransformComponent>(world_ref_ent, world_reference->GetModelMatrix());
-  m_scene->AddComponent<ColorOnlyComponent>(world_ref_ent, simple_shader);
+  Ref<Cube> cube = Cube::Make(Colors::BLUE, simple_shader, Texture2D::Make());
+  auto cube_ent = m_scene->CreateEntity("Cube");
+  m_scene->AddComponent<PrimitiveComponent>(cube_ent, cube->GetVAO());
+  m_scene->AddComponent<TransformComponent>(cube_ent, Mat4{});
+  m_scene->AddComponent<ColorOnlyComponent>(cube_ent, simple_shader);
   //
   //
   //  m_simple_shader = MakeRef<PosAndTex2DShader>();
@@ -57,7 +62,7 @@ void GE::EditorLayer::OnUpdate(GE::TimeStep ts)
   if (spec.dimension != m_viewport_dimension)
   {
     m_fb->Resize(m_viewport_dimension);
-    //    m_scene->OnResize(m_viewport_width, m_viewport_height);
+    m_scene->OnViewportResize(m_viewport_dimension);
   }
 
   m_fb->Bind();
@@ -147,7 +152,16 @@ void GE::EditorLayer::OnImGuiUpdate()
 
   ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 0 });
 
-  ImGui::ShowDemoWindow();
+  ImGui::Begin("Settings");
+
+  static int cam = 0;
+  ImGui::RadioButton("Front camera", &cam, 0);
+  ImGui::RadioButton("Oblique camera", &cam, 1);
+
+  m_scene->GetComponent<CameraComponent>(m_front_camera_entity).active = cam == 0;
+  m_scene->GetComponent<CameraComponent>(m_oblique_camera_entity).active = cam == 1;
+
+  ImGui::End();
 
   //  ImGui::Begin("Settings");
   //  ImGui::SliderFloat("AmbientStrength", &m_ambient_str, 0, 1);
