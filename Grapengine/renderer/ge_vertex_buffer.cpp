@@ -7,24 +7,24 @@
 
 using namespace GE;
 
-VertexBuffer::VertexBuffer(const void* ptr, u64 verticesSize, u32 parent)
+VertexBuffer::VertexBuffer(const void* ptr, u64 verticesSize, RendererID parent)
 {
-  GE_ASSERT(IsVAOBound(parent), "The associated VAO lacks a binding")
+  GE_ASSERT(IsVAOBound(u32(parent)), "The associated VAO lacks a binding")
 
   m_parent = parent;
 
-  glGenBuffers(1, &m_id);
-  glBindBuffer(GL_ARRAY_BUFFER, m_id);
+  u32 id = 0;
+  glGenBuffers(1, &id);
+  m_id = RendererID{ id };
+  glBindBuffer(GL_ARRAY_BUFFER, id);
   glBufferData(GL_ARRAY_BUFFER, i64(verticesSize), ptr, GL_DYNAMIC_DRAW);
 }
 
-VertexBuffer::~VertexBuffer() = default;
-
 void VertexBuffer::Bind() const
 {
-  GE_ASSERT(IsVAOBound(m_parent), "The associated VAO lacks a binding")
+  GE_ASSERT(IsVAOBound(u32(m_parent)), "The associated VAO lacks a binding")
 
-  glBindBuffer(GL_ARRAY_BUFFER, m_id);
+  glBindBuffer(GL_ARRAY_BUFFER, u32(m_id));
 }
 
 void VertexBuffer::UpdateData(const void* data, u64 size) const

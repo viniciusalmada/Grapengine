@@ -70,7 +70,7 @@ namespace
     return std::tuple<u32, bool>{ shader, success == 1 };
   }
 
-  u32 CreateProgram(const std::string& vertexSrc, const std::string& fragmentSrc)
+  RendererID CreateProgram(const std::string& vertexSrc, const std::string& fragmentSrc)
   {
     auto [vertex_shader, vertex_ok] = Compile(vertexSrc, ShaderType::VERTEX);
     if (!vertex_ok)
@@ -120,12 +120,14 @@ namespace
   }
 }
 
-Shader::Shader(const std::string& vertexSrc, const std::string& fragmentSrc)
+Shader::Shader(const std::string& vertexSrc, const std::string& fragmentSrc) :
+    m_renderer_id(CreateProgram(vertexSrc, fragmentSrc))
 {
   m_renderer_id = CreateProgram(vertexSrc, fragmentSrc);
 }
 
-Shader::Shader(const std::filesystem::path& vertexPath, const std::filesystem::path& fragPath)
+Shader::Shader(const std::filesystem::path& vertexPath, const std::filesystem::path& fragPath) :
+    m_renderer_id(0)
 {
   auto vertex_src = IO::ReadFileToString(vertexPath);
   auto frag_src = IO::ReadFileToString(fragPath);
@@ -134,7 +136,7 @@ Shader::Shader(const std::filesystem::path& vertexPath, const std::filesystem::p
 
 void Shader::Bind()
 {
-  glUseProgram(m_renderer_id);
+  glUseProgram(u32(m_renderer_id));
 }
 
 Shader::~Shader() = default;
@@ -182,7 +184,7 @@ void GE::Shader::UploadFloatArray(const std::string& name, const std::vector<f32
 
 [[maybe_unused]] bool Shader::IsValid() const
 {
-  return bool(glIsProgram(m_renderer_id));
+  return bool(glIsProgram(u32(m_renderer_id)));
 }
 
 bool Shader::IsBound() const
@@ -192,7 +194,7 @@ bool Shader::IsBound() const
   if (curr_program <= 0)
     return false;
 
-  return static_cast<decltype(m_renderer_id)>(curr_program) == m_renderer_id;
+  return static_cast<decltype(m_renderer_id)>(u32(curr_program)) == m_renderer_id;
 }
 
 void Shader::Unbind() const
@@ -214,7 +216,7 @@ check:
   if (m_uniforms.contains(name))
     return m_uniforms[name];
 
-  i32 location = glGetUniformLocation(m_renderer_id, name.c_str());
+  const i32 location = glGetUniformLocation(u32(m_renderer_id), name.c_str());
   GE_ASSERT(location != -1, "Invalid uniform name")
 
   m_uniforms[name] = location;

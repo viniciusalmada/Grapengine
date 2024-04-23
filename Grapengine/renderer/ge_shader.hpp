@@ -1,6 +1,7 @@
 #ifndef GRAPENGINE_SHADER_HPP
 #define GRAPENGINE_SHADER_HPP
 
+#include "ge_renderer_id.hpp"
 #include "math/ge_vector.hpp"
 
 #include <filesystem>
@@ -38,7 +39,7 @@ namespace GE
   private:
     i32 RetrieveUniform(const std::string& name);
 
-    u32 m_renderer_id{ 0 };
+    RendererID m_renderer_id;
     std::unordered_map<std::string, i32> m_uniforms;
   };
 }

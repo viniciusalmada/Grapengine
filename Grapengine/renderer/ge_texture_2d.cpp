@@ -7,11 +7,18 @@
 
 using namespace GE;
 
-Texture2D::Texture2D(const std::filesystem::path& path)
+namespace
 {
-  stbi_uc* data;
-  stbi_set_flip_vertically_on_load(true);
-  i32 w{}, h{}, channels{};
+  constexpr auto WHITE_RGBA{ 0xFF'FF'FF'FF };
+}
+
+Texture2D::Texture2D(const std::filesystem::path& path) : m_renderer_ID(0)
+{
+  stbi_uc* data = nullptr;
+  stbi_set_flip_vertically_on_load(1);
+  i32 w{};
+  i32 h{};
+  i32 channels{};
   data = stbi_load(path.string().c_str(), &w, &h, &channels, 0);
 
   m_width = static_cast<decltype(m_width)>(w);
@@ -24,58 +31,75 @@ Texture2D::Texture2D(const std::filesystem::path& path)
     internal_format = GL_RGBA8;
     format = GL_RGBA;
   }
-  else if (channels)
+  else if (channels != 0)
   {
     internal_format = GL_RGB8;
     format = GL_RGB;
   }
 
-  glCreateTextures(GL_TEXTURE_2D, 1, &m_renderer_ID);
-  glTextureStorage2D(m_renderer_ID, 1, internal_format, w, h);
+  {
+    u32 id = 0;
+    glCreateTextures(GL_TEXTURE_2D, 1, &id);
+    m_renderer_ID = RendererID{ 0 };
+  }
+  glTextureStorage2D(u32(m_renderer_ID), 1, internal_format, w, h);
 
-  glTextureParameteri(m_renderer_ID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTextureParameteri(m_renderer_ID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTextureParameteri(u32(m_renderer_ID), GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTextureParameteri(u32(m_renderer_ID), GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-  glTextureParameteri(m_renderer_ID, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-  glTextureParameteri(m_renderer_ID, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+  glTextureParameteri(u32(m_renderer_ID), GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+  glTextureParameteri(u32(m_renderer_ID), GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 
-  glTextureSubImage2D(m_renderer_ID, 0, 0, 0, w, h, format, GL_UNSIGNED_BYTE, data);
+  glTextureSubImage2D(u32(m_renderer_ID), 0, 0, 0, w, h, format, GL_UNSIGNED_BYTE, data);
 
   stbi_image_free(data);
 }
 
-Texture2D::Texture2D()
+Texture2D::Texture2D() : m_renderer_ID(0)
 {
-  uint32_t internal_format = GL_RGBA8;
-  uint32_t format = GL_RGBA;
+  const uint32_t internal_format = GL_RGBA8;
+  const uint32_t format = GL_RGBA;
 
   //  constexpr auto size = sizeof(u32);
   constexpr auto width = 1;
   constexpr auto height = 1;
-  bool size_check = true; // size == width * height * 4;
+  const bool size_check = true; // size == width * height * 4;
   GE_ASSERT(size_check, "Error at texture size!")
 
-  glCreateTextures(GL_TEXTURE_2D, 1, &m_renderer_ID);
-  glTextureStorage2D(m_renderer_ID, 1, internal_format, width, height);
+  {
+    u32 i = 0;
+    glCreateTextures(GL_TEXTURE_2D, 1, &i);
+    m_renderer_ID = RendererID{ 0 };
+  }
+  glTextureStorage2D(u32(m_renderer_ID), 1, internal_format, width, height);
 
-  glTextureParameteri(m_renderer_ID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTextureParameteri(m_renderer_ID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  glTextureParameteri(u32(m_renderer_ID), GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTextureParameteri(u32(m_renderer_ID), GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-  glTextureParameteri(m_renderer_ID, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTextureParameteri(m_renderer_ID, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTextureParameteri(u32(m_renderer_ID), GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTextureParameteri(u32(m_renderer_ID), GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-  constexpr u32 data[] = { 0xFF'FF'FF'FF };
-  glTextureSubImage2D(m_renderer_ID, 0, 0, 0, width, height, format, GL_UNSIGNED_BYTE, data);
+  std::array<u32, 1> data{ { WHITE_RGBA } };
+  glTextureSubImage2D(u32(m_renderer_ID),
+                      0,
+                      0,
+                      0,
+                      width,
+                      height,
+                      format,
+                      GL_UNSIGNED_BYTE,
+                      data.data());
 }
 
 Texture2D::~Texture2D()
 {
-  glDeleteTextures(1, &m_renderer_ID);
+  u32 id = u32(m_renderer_ID);
+  glDeleteTextures(1, &id);
 }
 
 void Texture2D::Bind(u32 slot) const
 {
-  glBindTextureUnit(slot, m_renderer_ID);
+  glBindTextureUnit(slot, u32(m_renderer_ID));
 }
 
 Ref<Texture2D> GE::Texture2D::Make()

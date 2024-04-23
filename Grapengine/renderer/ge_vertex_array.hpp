@@ -1,5 +1,8 @@
 #ifndef GRAPENGINE_VERTEXARRAY_HPP
 #define GRAPENGINE_VERTEXARRAY_HPP
+
+#include "ge_renderer_id.hpp"
+
 namespace GE
 {
   class VertexBuffer;
@@ -19,10 +22,10 @@ namespace GE
     void SetVertexBuffer(const Ref<VertexBuffer>& vertexBuffer, Ref<const BufferLayout> layout);
     void SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer);
 
-    [[nodiscard]] u32 GetID() const { return id; }
+    [[nodiscard]] u32 GetID() const { return u32(id); }
 
   private:
-    u32 id;
+    RendererID id;
     Ref<VertexBuffer> vertex_buffer;
     Ref<IndexBuffer> index_buffer;
   };
