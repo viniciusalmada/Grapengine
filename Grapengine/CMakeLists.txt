@@ -63,6 +63,11 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL Clang)
     COMMAND clang-tidy --config-file=${CMAKE_SOURCE_DIR}/.clang-tidy -p ${CMAKE_BINARY_DIR} --quiet --export-fixes=${CMAKE_SOURCE_DIR}/fixes.yaml --header-filter='^ge_.*?\.hpp$$'
     ${GRAPES_SOURCES}
   )
+  add_custom_target(
+    GrapeTidyWithClangD
+    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_SOURCE_DIR}/Grapengine/RunClangd.cmake "${CMAKE_BINARY_DIR}" "${GRAPES_SOURCES}"
+    DEPENDS Grapengine
+  )
 endif ()
 
 # ############################################################################
