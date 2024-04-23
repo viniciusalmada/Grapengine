@@ -40,11 +40,10 @@ namespace
   }
 }
 
-BufferLayout::BufferLayout(std::list<BufferElem> list)
+BufferLayout::BufferLayout(std::list<BufferElem> list) : m_stride(0)
 {
   m_elements = { list.begin(), list.end() };
   u64 offset = 0;
-  m_stride = 0;
 
   for (auto& elem : m_elements)
   {
@@ -58,7 +57,7 @@ std::vector<ShaderDataType> BufferLayout::GetTypesSortedList() const
 {
   std::vector<ShaderDataType> sorted_list;
   sorted_list.reserve(m_elements.size());
-  for (auto& e : m_elements)
+  for (const BufferElem& e : m_elements)
     sorted_list.push_back(e.type);
 
   return sorted_list;
@@ -66,7 +65,7 @@ std::vector<ShaderDataType> BufferLayout::GetTypesSortedList() const
 
 void BufferLayout::ForEachElement(const std::function<void(BufferElem)>& action) const
 {
-  for (auto& e : m_elements)
+  for (const BufferElem& e : m_elements)
     action(e);
 }
 
@@ -80,7 +79,7 @@ std::list<BufferElem> GE::BufferLayout::BuildElementsList(
 {
   std::list<BufferElem> elems{};
   u64 offset = 0;
-  for (auto& [purpose, type] : types)
+  for (const auto& [purpose, type] : types)
   {
     auto size = GetShaderDataTypeSize(type);
     elems.emplace_back(purpose, type, size, offset, false);

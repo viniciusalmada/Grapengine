@@ -102,15 +102,17 @@ Mat4 Transform::Scale(f32 xFac, f32 yFac, f32 zFac)
   };
 }
 
+// NOLINTBEGIN(bugprone-easily-swappable-parameters)
 std::tuple<Vec3, Vec3, Vec3>
 Transform::LookAtVector(const Vec3& eye, const Vec3& target, const Vec3& up)
 {
   Vec3 view = (target - eye).Normalize();
-  Vec3 z_eye = -view;
-  Vec3 x_eye = (up.Cross(z_eye)).Normalize();
-  Vec3 y_eye = z_eye.Cross(x_eye);
+  const Vec3 z_eye = -view;
+  const Vec3 x_eye = (up.Cross(z_eye)).Normalize();
+  const Vec3 y_eye = z_eye.Cross(x_eye);
   return { x_eye, y_eye, z_eye };
 }
+// NOLINTEND(bugprone-easily-swappable-parameters)
 
 Mat4 Transform::LookAt(const Vec3& eye, const Vec3& target, const Vec3& up)
 {
@@ -120,14 +122,14 @@ Mat4 Transform::LookAt(const Vec3& eye, const Vec3& target, const Vec3& up)
   const auto& [Ux, Uy, Uz] = y_eye;
   const auto& [Dx, Dy, Dz] = z_eye;
 
-  Mat4 m1{
+  const Mat4 m1{
     { { Rx, Ry, Rz, 0 } },
     { { Ux, Uy, Uz, 0 } },
     { { Dx, Dy, Dz, 0 } },
     { { 0, 0, 0, 1 } },
   };
 
-  Mat4 m2{
+  const Mat4 m2{
     { { 1, 0, 0, -eye.x } },
     { { 0, 1, 0, -eye.y } },
     { { 0, 0, 1, -eye.z } },
@@ -149,8 +151,10 @@ Mat4 Transform::Identity()
   };
 }
 
+// NOLINTBEGIN(bugprone-easily-swappable-parameters)
 Mat4 Transform::Perspective(f32 fovDegrees, f32 aspectRatio, f32 near, f32 far)
 {
+  // NOLINTNEXTLINE(*-avoid-magic-numbers,*-magic-numbers)
   auto tan_half_fov = std::tan(Deg2Rad(fovDegrees) / 2.0f);
 
   Mat4 res{
@@ -162,3 +166,4 @@ Mat4 Transform::Perspective(f32 fovDegrees, f32 aspectRatio, f32 near, f32 far)
 
   return res;
 }
+// NOLINTEND(bugprone-easily-swappable-parameters)

@@ -4,7 +4,7 @@
 #include "math/ge_vector.hpp"
 namespace GE
 {
-  enum class ShaderDataType
+  enum class ShaderDataType : u8
   {
     None,
     Float,
@@ -20,7 +20,7 @@ namespace GE
     Bool
   };
 
-  enum class DataPurpose
+  enum class DataPurpose : u8
   {
     POSITION,
     COLOR,

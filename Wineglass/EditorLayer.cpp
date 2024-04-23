@@ -53,13 +53,12 @@ void GE::EditorLayer::OnAttach()
   //  m_light_2->SetScale(0.5, 0.5, 0.5);
   //  m_world_ref = MakeRef<WorldReference>(m_simple_shader, 20);
   //  m_mesh = MakeRef<Mesh>("assets/objs/teapot.obj", m_mat_shader);
-  m_fb = Framebuffer::Make(FBSpecs{ { 1280, 720 }, 1, true });
+  m_fb = Framebuffer::Make({ 1280, 720 });
 }
 
 void GE::EditorLayer::OnUpdate(GE::TimeStep ts)
 {
-  const auto& spec = m_fb->GetSpec();
-  if (spec.dimension != m_viewport_dimension)
+  if (m_fb->GetDimension() != m_viewport_dimension)
   {
     m_fb->Resize(m_viewport_dimension);
     m_scene->OnViewportResize(m_viewport_dimension);
@@ -188,10 +187,10 @@ void GE::EditorLayer::OnImGuiUpdate()
   ImVec2 vp_size = ImGui::GetContentRegionAvail();
   m_viewport_dimension.width = u32(vp_size.x);
   m_viewport_dimension.height = u32(vp_size.y);
-  u32 tex = m_fb->GetColorAttachmentID();
+  RendererID tex = m_fb->GetColorAttachmentID();
   const auto [w, h] = m_fb->GetDimension();
   ImVec2 size{ f32(w), f32(h) };
-  ImGui::Image(SafeConversion(tex), size, { 0, 1 }, { 1, 0 });
+  ImGui::Image(SafeConversion(u32(tex)), size, { 0, 1 }, { 1, 0 });
   ImGui::End();
   ImGui::PopStyleVar();
 

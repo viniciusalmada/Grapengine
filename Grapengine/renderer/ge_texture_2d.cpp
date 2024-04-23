@@ -12,7 +12,7 @@ namespace
   constexpr auto WHITE_RGBA{ 0xFF'FF'FF'FF };
 }
 
-Texture2D::Texture2D(const std::filesystem::path& path) : m_renderer_ID(0)
+Texture2D::Texture2D(const std::filesystem::path& path) : m_dim(), m_renderer_ID(0)
 {
   stbi_uc* data = nullptr;
   stbi_set_flip_vertically_on_load(1);
@@ -21,8 +21,7 @@ Texture2D::Texture2D(const std::filesystem::path& path) : m_renderer_ID(0)
   i32 channels{};
   data = stbi_load(path.string().c_str(), &w, &h, &channels, 0);
 
-  m_width = static_cast<decltype(m_width)>(w);
-  m_height = static_cast<decltype(m_width)>(h);
+  m_dim = Dimension{ u32(w), u32(h) };
 
   u32 internal_format = 0;
   u32 format = 0;
@@ -69,7 +68,7 @@ Texture2D::Texture2D() : m_renderer_ID(0)
   {
     u32 i = 0;
     glCreateTextures(GL_TEXTURE_2D, 1, &i);
-    m_renderer_ID = RendererID{ 0 };
+    m_renderer_ID = RendererID{ i };
   }
   glTextureStorage2D(u32(m_renderer_ID), 1, internal_format, width, height);
 
@@ -93,7 +92,7 @@ Texture2D::Texture2D() : m_renderer_ID(0)
 
 Texture2D::~Texture2D()
 {
-  u32 id = u32(m_renderer_ID);
+  const u32 id = u32(m_renderer_ID);
   glDeleteTextures(1, &id);
 }
 

@@ -34,7 +34,7 @@ namespace GE
 
   private:
     std::vector<BufferElem> m_elements;
-    u64 m_stride = 0;
+    u64 m_stride;
   };
 }
 #endif // GRAPENGINE_BUFFER_LAYOUT_HPP

@@ -45,10 +45,10 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL Clang)
   if (CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "MSVC" OR CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "GNU")
     target_compile_definitions(GrapengineCompileOptions INTERFACE GE_CLANG_COMPILER)
     target_compile_options(GrapengineCompileOptions INTERFACE
+      $<$<CONFIG:Release>:-Werror> # Treat warnings as errors
       -Wall                       # Enable most warning messages
       -Wextra                     # Enable some extra warning messages
       -Wpedantic                  # Warn about non-portable constructs
-      $<$<CONFIG:Release>:-Werror> # Treat warnings as errors
       -Wshadow                    # Warn whenever a local variable shadows another local variable
       -Wconversion                # Warn for implicit conversions that may change the value
       -Wsign-conversion           # Warn for implicit conversions that may change the sign
@@ -56,10 +56,11 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL Clang)
       -Wundef                     # Warn if an undefined identifier is evaluated in an #if directive
       -Wunreachable-code          # Warn if code will never be executed
       -Wunused                    # Warn about unused functions, variables, etc.
+      -Wunused-private-field
+      -Warray-bounds
       -Wno-c++98-compat
       -Wno-c++98-compat-pedantic
       -Wno-exit-time-destructors
-
     )
   else ()
     message(FATAL_ERROR "Unsupported CLANG frontend (CMAKE_CXX_COMPILER_FRONTEND_VARIANT = ${CMAKE_CXX_COMPILER_FRONTEND_VARIANT})")

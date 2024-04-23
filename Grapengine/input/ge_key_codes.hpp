@@ -5,7 +5,7 @@
 
 namespace GE
 {
-  enum class KeyCode
+  enum class KeyCode : u8
   {
     MOUSE_BT_RIGHT,
     MOUSE_BT_LEFT,

@@ -20,12 +20,12 @@ namespace GE
     [[nodiscard]] bool IsValid() const;
     [[nodiscard]] bool IsBound() const;
 
-    void Bind();
+    void Bind() const;
     void Unbind() const;
 
     void UploadMat4F(const std::string& name, const Mat4& mat);
 
-    void UploadMat4F(const std::string& name, const f32* mat);
+    void UploadMat4F(const std::string& name, const f32* data);
 
     void UploadInt(const std::string& name, i32 i);
 

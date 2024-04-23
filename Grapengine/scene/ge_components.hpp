@@ -42,10 +42,7 @@ namespace GE
 
     CameraComponent() : active(false), fixed_ratio(false) {}
     CameraComponent(bool act, bool fixedRatio) : active(act), fixed_ratio(fixedRatio) {}
-    CameraComponent(const CameraComponent& other) :
-        camera(other.camera), active(other.active), fixed_ratio(other.fixed_ratio)
-    {
-    }
+    CameraComponent(const CameraComponent& other) = default;
   };
 }
 

@@ -8,6 +8,8 @@
 
 using namespace GE;
 
+Scene::Scene() : m_registry({}), m_viewport(Dimension{ 1, 1 }) {}
+
 void Scene::OnUpdate(TimeStep /*ts*/)
 {
   std::vector<Entity> camera_group = m_registry.Group<TransformComponent, CameraComponent>();
@@ -35,7 +37,7 @@ void Scene::OnUpdate(TimeStep /*ts*/)
     return;
   }
 
-  Entity active_camera = *std::ranges::find_if(
+  const Entity active_camera = *std::ranges::find_if(
     camera_group,
     [&](Entity ent) -> bool { return m_registry.GetComponent<CameraComponent>(ent).active; });
 
@@ -43,19 +45,19 @@ void Scene::OnUpdate(TimeStep /*ts*/)
     m_registry.GetComponent<TransformComponent>(active_camera);
   const CameraComponent& cam_component = m_registry.GetComponent<CameraComponent>(active_camera);
 
-  std::vector<Entity> g =
+  const std::vector<Entity> g =
     m_registry.Group<TransformComponent, PrimitiveComponent, ColorOnlyComponent>();
   for (auto ent : g)
   {
-    ColorOnlyComponent shader = m_registry.GetComponent<ColorOnlyComponent>(ent);
+    const ColorOnlyComponent shader = m_registry.GetComponent<ColorOnlyComponent>(ent);
     shader.shader->Activate();
     shader.shader->UpdateViewProjectionMatrix(cam_component.camera.GetProjection() *
                                               cam_transform.transform);
 
-    TransformComponent model_mat = m_registry.GetComponent<TransformComponent>(ent);
+    const TransformComponent model_mat = m_registry.GetComponent<TransformComponent>(ent);
     shader.shader->UpdateModelMatrix(model_mat.transform);
 
-    PrimitiveComponent primitive = m_registry.GetComponent<PrimitiveComponent>(ent);
+    const PrimitiveComponent primitive = m_registry.GetComponent<PrimitiveComponent>(ent);
     Renderer::DrawObject(primitive.drawing_obj);
   }
 }

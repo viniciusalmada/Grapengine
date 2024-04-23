@@ -10,7 +10,7 @@ using namespace GE;
 bool Input::IsKeyPressed(KeyCode keyCode)
 {
   auto* native_win = std::any_cast<GLFWwindow*>(Get().m_windows->GetNativeHandler());
-  int state = glfwGetKey(native_win, Keys::ConvertGEtoGFLW(keyCode));
+  const int state = glfwGetKey(native_win, Keys::ConvertGEtoGFLW(keyCode));
   return state == GLFW_PRESS;
 }
 

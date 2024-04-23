@@ -131,15 +131,15 @@ void GE::Framebuffer::Resize(Dimension dim)
 void Framebuffer::Clear()
 {
   {
-    u32 i = u32(m_id);
+    const u32 i = u32(m_id);
     glDeleteFramebuffers(1, &i);
   }
   {
-    u32 i = u32(m_color_attachment);
+    const u32 i = u32(m_color_attachment);
     glDeleteTextures(1, &i);
   }
   {
-    u32 i = u32(m_depth_attachment);
+    const u32 i = u32(m_depth_attachment);
     glDeleteTextures(1, &i);
   }
 }

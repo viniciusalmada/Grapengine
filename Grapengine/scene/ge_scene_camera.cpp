@@ -4,8 +4,14 @@
 
 using namespace GE;
 
+namespace
+{
+  constexpr auto DEFAULT_Z = 10;
+  constexpr auto DEFAULT_FOV = 45.0f;
+}
+
 SceneCamera::SceneCamera() :
-    m_position(Vec3{ 0, 0, 10 }), m_target(Vec3{ 0, 0, 0 }), m_viewport(1, 1)
+    m_position(Vec3{ 0, 0, DEFAULT_Z }), m_target(Vec3{ 0, 0, 0 }), m_viewport({ 1, 1 })
 {
   RecalculateProjection();
 }
@@ -30,6 +36,5 @@ void SceneCamera::SetViewport(Dimension vp)
 void SceneCamera::RecalculateProjection()
 {
   const f32 ar = f32(m_viewport.width) / f32(m_viewport.height);
-  // TODO revise fovy
-  m_projection = Transform::Perspective(45.0f, ar);
+  m_projection = Transform::Perspective(DEFAULT_FOV, ar);
 }

@@ -8,7 +8,7 @@ u32 Random::GenInt(u32 min, u32 max)
 {
   if (Get().m_int_dist.a() != min || Get().m_int_dist.b() != max)
   {
-    std::uniform_int_distribution<u32>::param_type p{ min, max };
+    const std::uniform_int_distribution<u32>::param_type p{ min, max };
     Get().m_int_dist.param(p);
   }
   return Get().m_int_dist(Get().m_engine);
@@ -19,7 +19,7 @@ f32 Random::GenFloat(f32 min, f32 max)
   if (!Arithmetic::IsEqual(Get().m_real_dist.a(), min) ||
       !Arithmetic::IsEqual(Get().m_real_dist.b(), max))
   {
-    std::uniform_real_distribution<f32>::param_type p{ min, max };
+    const std::uniform_real_distribution<f32>::param_type p{ min, max };
     Get().m_real_dist.param(p);
   }
   return Get().m_real_dist(Get().m_engine);

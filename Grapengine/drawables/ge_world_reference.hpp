@@ -34,7 +34,7 @@ namespace GE
     Ref<Cylinder> m_y_axis;
     Ref<Cylinder> m_z_axis;
     bool m_show_platform = true;
-    u64 m_platform_side_size = 10;
+    u64 m_platform_side_size;
   };
 }
 

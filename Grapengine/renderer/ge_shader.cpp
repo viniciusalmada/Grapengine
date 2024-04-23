@@ -10,7 +10,7 @@ using namespace GE;
 
 namespace
 {
-  enum class ShaderType
+  enum class ShaderType : u8
   {
     VERTEX,
     FRAGMENT
@@ -42,7 +42,7 @@ namespace
 
   std::tuple<u32, bool> Compile(const std::string& src, ShaderType type)
   {
-    u32 shader = glCreateShader(GetGLShaderType(type));
+    const u32 shader = glCreateShader(GetGLShaderType(type));
     const char* chars = src.c_str();
     glShaderSource(shader, 1, &chars, nullptr);
 
@@ -50,7 +50,7 @@ namespace
 
     i32 success = 0;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-    if (!success)
+    if (success == 0)
     {
       i32 max_length = 0;
       glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &max_length);
@@ -59,7 +59,7 @@ namespace
       info_log.reserve(static_cast<u32>(max_length));
       glGetShaderInfoLog(shader, max_length, &max_length, info_log.data());
 
-      std::string shader_name = GetGLShaderName(type);
+      const std::string shader_name = GetGLShaderName(type);
       std::stringstream ss;
       ss << "Failure at compiling the " << shader_name << " shader\n";
       ss << info_log.data();
@@ -92,7 +92,7 @@ namespace
 
     i32 is_linked = 0;
     glGetProgramiv(renderer_id, GL_LINK_STATUS, &is_linked);
-    if (!is_linked)
+    if (is_linked == 0)
     {
       i32 max_length = 0;
       glGetProgramiv(renderer_id, GL_INFO_LOG_LENGTH, &max_length);
@@ -123,7 +123,6 @@ namespace
 Shader::Shader(const std::string& vertexSrc, const std::string& fragmentSrc) :
     m_renderer_id(CreateProgram(vertexSrc, fragmentSrc))
 {
-  m_renderer_id = CreateProgram(vertexSrc, fragmentSrc);
 }
 
 Shader::Shader(const std::filesystem::path& vertexPath, const std::filesystem::path& fragPath) :
@@ -134,7 +133,7 @@ Shader::Shader(const std::filesystem::path& vertexPath, const std::filesystem::p
   m_renderer_id = CreateProgram(vertex_src, frag_src);
 }
 
-void Shader::Bind()
+void Shader::Bind() const
 {
   glUseProgram(u32(m_renderer_id));
 }
@@ -212,7 +211,6 @@ i32 Shader::RetrieveUniform(const std::string& name)
 {
   GE_ASSERT(IsBound(), "Shader not bound")
 
-check:
   if (m_uniforms.contains(name))
     return m_uniforms[name];
 
@@ -220,5 +218,5 @@ check:
   GE_ASSERT(location != -1, "Invalid uniform name")
 
   m_uniforms[name] = location;
-  goto check;
+  return location;
 }

@@ -26,10 +26,10 @@ void MaterialShader::Deactivate()
   m_shader->Unbind();
 }
 
-void MaterialShader::UpdateModelMatrix(Mat4 data)
+void MaterialShader::UpdateModelMatrix(Mat4 model)
 {
   Activate();
-  m_shader->UploadMat4F("u_M", data);
+  m_shader->UploadMat4F("u_M", model);
 }
 
 void MaterialShader::UpdateViewProjectionMatrix(Mat4 viewProj)
