@@ -33,4 +33,4 @@ add_subdirectory(Wineglass)
 
 # #############################################################################
 # Tests
-add_subdirectory(Grapengine/tests)
+add_subdirectory(tests)
