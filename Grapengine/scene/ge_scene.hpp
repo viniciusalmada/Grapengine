@@ -37,6 +37,8 @@ namespace GE
     void OnViewportResize(Dimension dim);
 
   private:
+    [[nodiscard]] Opt<Entity> GetActiveCamera() const;
+
     ECRegistry m_registry;
     Dimension m_viewport;
   };

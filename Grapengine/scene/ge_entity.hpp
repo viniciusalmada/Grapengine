@@ -7,9 +7,12 @@ namespace GE
 {
   struct Entity
   {
-    u32 handle;
+    i32 handle;
 
+    Entity() : handle(-1) {}
+    Entity(u32 h) : handle(i32(h)) {}
     bool operator<(const Entity& ent) const { return handle < ent.handle; }
+    operator bool() const { return handle >= 0; }
   };
 }
 

@@ -12,34 +12,9 @@ Scene::Scene() : m_registry({}), m_viewport(Dimension{ 1, 1 }) {}
 
 void Scene::OnUpdate(TimeStep /*ts*/)
 {
-  std::vector<Entity> camera_group = m_registry.Group<TransformComponent, CameraComponent>();
-  if (camera_group.empty())
-  {
-    GE_INFO("No camera")
+  const Entity active_camera = GetActiveCamera().value_or(Entity{});
+  if (!active_camera)
     return;
-  }
-
-  if (std::ranges::none_of(camera_group,
-                           [&](Entity ent)
-                           { return m_registry.GetComponent<CameraComponent>(ent).active; }))
-  {
-    GE_INFO("No active camera")
-    return;
-  }
-
-  if (std::ranges::count(
-        camera_group |
-          std::views::transform([&](Entity ent) -> bool
-                                { return m_registry.GetComponent<CameraComponent>(ent).active; }),
-        true) > 1)
-  {
-    GE_INFO("More than one active camera")
-    return;
-  }
-
-  const Entity active_camera = *std::ranges::find_if(
-    camera_group,
-    [&](Entity ent) -> bool { return m_registry.GetComponent<CameraComponent>(ent).active; });
 
   const TransformComponent& cam_transform =
     m_registry.GetComponent<TransformComponent>(active_camera);
@@ -95,4 +70,38 @@ void Scene::OnViewportResize(Dimension dim)
       cam_comp.camera.SetViewport(dim);
     }
   }
+}
+
+Opt<Entity> Scene::GetActiveCamera() const
+{
+  std::vector<Entity> camera_group = m_registry.Group<TransformComponent, CameraComponent>();
+  if (camera_group.empty())
+  {
+    GE_INFO("No camera")
+    return std::nullopt;
+  }
+
+  if (std::ranges::none_of(camera_group,
+                           [&](Entity ent)
+                           { return m_registry.GetComponent<CameraComponent>(ent).active; }))
+  {
+    GE_INFO("No active camera")
+    return std::nullopt;
+  }
+
+  if (std::ranges::count(
+        camera_group |
+          std::views::transform([&](Entity ent) -> bool
+                                { return m_registry.GetComponent<CameraComponent>(ent).active; }),
+        true) > 1)
+  {
+    GE_INFO("More than one active camera")
+    return std::nullopt;
+  }
+
+  const Entity active_camera = *std::ranges::find_if(
+    camera_group,
+    [&](Entity ent) -> bool { return m_registry.GetComponent<CameraComponent>(ent).active; });
+
+  return active_camera;
 }

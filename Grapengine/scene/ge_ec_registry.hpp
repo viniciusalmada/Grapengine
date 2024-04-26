@@ -51,10 +51,27 @@ namespace GE
     {
       GE_ASSERT(Has<Comp>(ent), "Entity does not have this component!")
 
-      auto found = std::ranges::find_if(m_components[ent],
+      auto found = std::ranges::find_if(m_components.at(ent),
                                         [](const std::any& anyComp)
                                         { return anyComp.type() == typeid(Comp); });
       return std::any_cast<Comp&>(*found);
+    }
+
+    /**
+     * Retrieve the component of type Comp associated with entity
+     * @tparam Comp component type to be got
+     * @param ent entity that is associated with component
+     * @return associated component
+     */
+    template <typename Comp>
+    const Comp& GetComponent(const Entity& ent) const
+    {
+      GE_ASSERT(Has<Comp>(ent), "Entity does not have this component!")
+
+      auto found = std::ranges::find_if(m_components.at(ent),
+                                        [](const std::any& anyComp)
+                                        { return anyComp.type() == typeid(Comp); });
+      return std::any_cast<const Comp&>(*found);
     }
 
     /**
