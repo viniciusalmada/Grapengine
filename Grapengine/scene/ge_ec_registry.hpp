@@ -5,6 +5,7 @@
 #include "log/ge_logger.hpp"
 #include "scene/ge_entity.hpp"
 
+#include <list>
 #include <map>
 #include <ranges>
 #include <set>
