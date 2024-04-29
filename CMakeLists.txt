@@ -34,3 +34,7 @@ add_subdirectory(Wineglass)
 # #############################################################################
 # Tests
 add_subdirectory(tests)
+
+# #############################################################################
+# Scripts
+add_subdirectory(Wineglass/nativescripts)

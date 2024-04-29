@@ -1,6 +1,10 @@
 #include "EditorLayer.hpp"
 
+#include "nativescripts/CamController.hpp"
+
 static constexpr const auto CLEAR_COLOR = 0x222222FF;
+
+using namespace GE;
 
 namespace
 {
@@ -16,9 +20,9 @@ namespace
   DISABLE_WARNING_POP
 }
 
-GE::EditorLayer::EditorLayer() : Layer("EditorLayer") {}
+EditorLayer::EditorLayer() : Layer("EditorLayer") {}
 
-void GE::EditorLayer::OnAttach()
+void EditorLayer::OnAttach()
 {
   m_scene = Scene::Make();
 
@@ -43,6 +47,11 @@ void GE::EditorLayer::OnAttach()
   m_scene->AddComponent<PrimitiveComponent>(cube_ent, cube->GetVAO());
   m_scene->AddComponent<TransformComponent>(cube_ent, Mat4{});
   m_scene->AddComponent<ColorOnlyComponent>(cube_ent, simple_shader);
+
+  m_scene->AddComponent<NativeScriptComponent>(m_oblique_camera_entity);
+  auto& nat_script_comp = m_scene->GetComponent<NativeScriptComponent>(m_oblique_camera_entity);
+  nat_script_comp.Bind<CamController>();
+
   //
   //
   //  m_simple_shader = MakeRef<PosAndTex2DShader>();
@@ -56,7 +65,7 @@ void GE::EditorLayer::OnAttach()
   m_fb = Framebuffer::Make({ 1280, 720 });
 }
 
-void GE::EditorLayer::OnUpdate(GE::TimeStep ts)
+void EditorLayer::OnUpdate(TimeStep ts)
 {
   if (m_fb->GetDimension() != m_viewport_dimension)
   {
@@ -69,8 +78,8 @@ void GE::EditorLayer::OnUpdate(GE::TimeStep ts)
   //  if (/*m_viewport_focused &&*/ m_viewport_hovered)
   //    m_cam.OnUpdate(ts);
 
-  GE::Renderer::SetClearColor(GE::Color{ CLEAR_COLOR }.ToVec4());
-  GE::Renderer::Clear();
+  Renderer::SetClearColor(Color{ CLEAR_COLOR }.ToVec4());
+  Renderer::Clear();
 
   m_scene->OnUpdate(ts);
 
@@ -102,7 +111,7 @@ void GE::EditorLayer::OnUpdate(GE::TimeStep ts)
   m_fb->Unbind();
 }
 
-void GE::EditorLayer::OnImGuiUpdate()
+void EditorLayer::OnImGuiUpdate()
 {
   static ImGuiDockNodeFlags dock_node_flags = ImGuiDockNodeFlags_None;
 
@@ -166,15 +175,15 @@ void GE::EditorLayer::OnImGuiUpdate()
   //  ImGui::SliderFloat("AmbientStrength", &m_ambient_str, 0, 1);
   //  ImGui::SliderFloat3("LightPos1", &m_light_pos_1.x, -10, 10);
   //  {
-  //    GE::Vec3 light_color = m_light_color_1.ToVec3();
+  //    Vec3 light_color = m_light_color_1.ToVec3();
   //    ImGui::ColorEdit3("LightColor1", &light_color.x);
-  //    m_light_color_1 = GE::Color(light_color);
+  //    m_light_color_1 = Color(light_color);
   //  }
   //  ImGui::SliderFloat3("LightPos2", &m_light_pos_2.x, -10, 10);
   //  {
-  //    GE::Vec3 light_color = m_light_color_2.ToVec3();
+  //    Vec3 light_color = m_light_color_2.ToVec3();
   //    ImGui::ColorEdit3("LightColor2", &light_color.x);
-  //    m_light_color_2 = GE::Color(light_color);
+  //    m_light_color_2 = Color(light_color);
   //  }
   //  ImGui::SliderFloat("LightStrength", &m_light_strength, 0, 10);
   //  ImGui::End();
@@ -197,7 +206,7 @@ void GE::EditorLayer::OnImGuiUpdate()
   ImGui::End();
 }
 
-void GE::EditorLayer::OnEvent(GE::Event& e)
+void EditorLayer::OnEvent(Event& e)
 {
   m_scene->OnEvent(e);
   //  m_cam.OnEvent(e);

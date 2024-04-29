@@ -12,4 +12,5 @@ target_include_directories(Wine PRIVATE SYSTEM
   ${CMAKE_SOURCE_DIR}/vendor/imgui
 )
 target_link_libraries(Wine PRIVATE Grapengine)
+target_link_libraries(Wine PRIVATE Scripts)
 target_link_libraries(Wine PRIVATE GrapengineCompileOptions)

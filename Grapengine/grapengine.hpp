@@ -7,6 +7,10 @@
 #include "core/ge_time_step.hpp"
 #include "core/ge_window.hpp"
 
+// Input
+#include "input/ge_input.hpp"
+#include "input/ge_key_codes.hpp"
+
 // Layers
 #include "layer/ge_layer.hpp"
 
@@ -32,6 +36,7 @@
 // Scene
 #include "scene/ge_components.hpp"
 #include "scene/ge_scene.hpp"
+#include "scene/ge_scriptable_entity.hpp"
 
 // Logger
 #include "log/ge_logger.hpp"

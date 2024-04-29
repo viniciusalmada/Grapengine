@@ -10,8 +10,23 @@ using namespace GE;
 
 Scene::Scene() : m_registry({}), m_viewport(Dimension{ 1, 1 }) {}
 
-void Scene::OnUpdate(TimeStep /*ts*/)
+void Scene::OnUpdate(TimeStep ts)
 {
+  {
+    const std::vector<Entity> g = m_registry.Group<NativeScriptComponent>();
+    for (auto ent : g)
+    {
+      const auto& nsc = m_registry.GetComponent<NativeScriptComponent>(ent);
+      if (nsc.instance == nullptr)
+      {
+        nsc.instantiateFun(ent, *this);
+        nsc.onCreateFun(nsc.instance);
+      }
+
+      nsc.onUpdateFun(nsc.instance, ts);
+    }
+  }
+
   const Entity active_camera = GetActiveCamera().value_or(Entity{});
   if (!active_camera)
     return;
