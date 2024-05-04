@@ -53,11 +53,7 @@ namespace GE
     std::function<void(Entity, Scene&)> instantiateFun;
     std::function<void()> destroyFun;
 
-    std::function<void(ScriptableEntity*)> onCreateFun;
-    std::function<void(ScriptableEntity*)> onDestroyFun;
-    std::function<void(ScriptableEntity*, TimeStep)> onUpdateFun;
-
-    template <typename T, typename... Args>
+    template <typename T>
     void Bind()
     {
       instantiateFun = [this](Entity e, Scene& s) { instance = new T(e, std::ref(s)); };
@@ -66,9 +62,6 @@ namespace GE
         delete (T*)instance;
         instance = nullptr;
       };
-      onCreateFun = [](ScriptableEntity* ent) { ((T*)ent)->OnCreate(); };
-      onDestroyFun = [](ScriptableEntity* ent) { ((T*)ent)->OnDestroy(); };
-      onUpdateFun = [](ScriptableEntity* ent, TimeStep ts) { ((T*)ent)->OnUpdate(ts); };
     }
   };
 }

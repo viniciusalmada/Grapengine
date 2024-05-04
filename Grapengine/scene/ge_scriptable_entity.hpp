@@ -11,6 +11,10 @@ namespace GE
   public:
     ScriptableEntity(Entity ent, Scene& scene);
 
+    virtual void OnCreate() {}
+    virtual void OnDestroy() {}
+    virtual void OnUpdate(TimeStep /*ts*/) {}
+
   protected:
     Entity m_entity;
     Scene& m_scene;

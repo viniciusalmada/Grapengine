@@ -8,8 +8,8 @@ using namespace GE;
 
 namespace
 {
-  constexpr auto DEFAULT_FOV = 45.0f;
-  constexpr auto HD_RATIO = 1280.0f / 720.0f;
+  //  constexpr auto DEFAULT_FOV = 45.0f;
+  //  constexpr auto HD_RATIO = 1280.0f / 720.0f;
 
   DISABLE_WARNING_PUSH
   WARN_CONVERSION_OF_GREATER_SIZE
@@ -49,8 +49,10 @@ void EditorLayer::OnAttach()
   m_scene->AddComponent<ColorOnlyComponent>(cube_ent, simple_shader);
 
   m_scene->AddComponent<NativeScriptComponent>(m_front_camera_entity);
-  auto& nat_script_comp = m_scene->GetComponent<NativeScriptComponent>(m_front_camera_entity);
-  nat_script_comp.Bind<CamController>();
+  m_scene->GetComponent<NativeScriptComponent>(m_front_camera_entity).Bind<CamController>();
+
+  m_scene->AddComponent<NativeScriptComponent>(m_oblique_camera_entity);
+  m_scene->GetComponent<NativeScriptComponent>(m_oblique_camera_entity).Bind<CamController>();
 
   //
   //

@@ -14,16 +14,18 @@ void Scene::OnUpdate(TimeStep ts)
 {
   {
     const std::vector<Entity> g = m_registry.Group<NativeScriptComponent>();
+
+    // Move to Scene::OnScenePlay
     for (auto ent : g)
     {
       const auto& nsc = m_registry.GetComponent<NativeScriptComponent>(ent);
       if (nsc.instance == nullptr)
       {
         nsc.instantiateFun(ent, *this);
-        nsc.onCreateFun(nsc.instance);
+        nsc.instance->OnCreate();
       }
 
-      nsc.onUpdateFun(nsc.instance, ts);
+      nsc.instance->OnUpdate(ts);
     }
   }
 
@@ -55,6 +57,7 @@ void Scene::OnUpdate(TimeStep ts)
 Entity Scene::CreateEntity(std::string_view name)
 {
   Entity ent = m_registry.Create();
+  GE_INFO("Creating entity \'{}\' with id={}", name, ent.handle)
   AddComponent<TagComponent>(ent, name);
   return ent;
 }

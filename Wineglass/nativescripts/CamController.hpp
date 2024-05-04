@@ -5,14 +5,19 @@
 
 using namespace GE;
 
-class CamController : public ScriptableEntity
+class CamController final : public ScriptableEntity
 {
 public:
-  CamController(Entity e, Scene& s) : ScriptableEntity(e, s) {}
+  CamController(Entity e, Scene& s) : ScriptableEntity(e, s), xy_cam({}) {}
 
-  void OnCreate() {}
-  void OnDestroy() {}
-  void OnUpdate(TimeStep ts)
+  void OnCreate() override
+  {
+    const f32 x = GE::Random::GenFloat(0, 5);
+    const f32 y = GE::Random::GenFloat(0, 5);
+    xy_cam = Vec2{ x, y };
+  }
+  void OnDestroy() override {}
+  void OnUpdate(TimeStep ts) override
   {
     constexpr f32 speed = 0.01f;
     const f32 incr = speed * ts.f();
@@ -32,7 +37,7 @@ public:
   }
 
 private:
-  Vec2 xy_cam{ 0, 0 };
+  Vec2 xy_cam;
 };
 
 #endif // GRAPENGINE_CAMCONTROLLER_HPP
