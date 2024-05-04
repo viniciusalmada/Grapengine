@@ -48,8 +48,8 @@ void EditorLayer::OnAttach()
   m_scene->AddComponent<TransformComponent>(cube_ent, Mat4{});
   m_scene->AddComponent<ColorOnlyComponent>(cube_ent, simple_shader);
 
-  m_scene->AddComponent<NativeScriptComponent>(m_oblique_camera_entity);
-  auto& nat_script_comp = m_scene->GetComponent<NativeScriptComponent>(m_oblique_camera_entity);
+  m_scene->AddComponent<NativeScriptComponent>(m_front_camera_entity);
+  auto& nat_script_comp = m_scene->GetComponent<NativeScriptComponent>(m_front_camera_entity);
   nat_script_comp.Bind<CamController>();
 
   //
