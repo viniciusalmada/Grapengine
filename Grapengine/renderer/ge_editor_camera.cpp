@@ -33,7 +33,7 @@ EditorCamera::EditorCamera(f32 fov, f32 aspectRatio) :
 
 void EditorCamera::OnUpdate(TimeStep ts)
 {
-  if (Input::IsKeyPressed(KeyCode::K_LEFT_CONTROL))
+  if (Input::IsKeyPressed(KeyCode::LEFT_CONTROL))
     ProcessMouseAction(ts.f());
 
   UpdateView();

@@ -18,13 +18,13 @@ public:
     const f32 incr = speed * ts.f();
 
     auto& transform_comp = m_scene.GetComponent<TransformComponent>(m_entity);
-    if (Input::IsKeyPressed(KeyCode::K_A))
+    if (Input::IsKeyPressed(KeyCode::A))
       xy_cam.x += incr;
-    else if (Input::IsKeyPressed(KeyCode::K_D))
+    else if (Input::IsKeyPressed(KeyCode::D))
       xy_cam.x -= incr;
-    else if (Input::IsKeyPressed(KeyCode::K_W))
+    else if (Input::IsKeyPressed(KeyCode::W))
       xy_cam.y += incr;
-    else if (Input::IsKeyPressed(KeyCode::K_S))
+    else if (Input::IsKeyPressed(KeyCode::S))
       xy_cam.y -= incr;
 
     transform_comp.transform =
