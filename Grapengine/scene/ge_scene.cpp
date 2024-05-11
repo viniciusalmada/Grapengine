@@ -13,7 +13,7 @@ Scene::Scene() : m_registry({}), m_viewport(Dimension{ 1, 1 }) {}
 void Scene::OnUpdate(TimeStep ts)
 {
   {
-    const std::vector<Entity> g = m_registry.Group<NativeScriptComponent>();
+    const std::vector<Entity> g = m_registry.Group({ CompType::NATIVE_SCRIPT });
 
     // Move to Scene::OnScenePlay
     for (auto ent : g)
@@ -38,7 +38,7 @@ void Scene::OnUpdate(TimeStep ts)
   const CameraComponent& cam_component = m_registry.GetComponent<CameraComponent>(active_camera);
 
   const std::vector<Entity> g =
-    m_registry.Group<TransformComponent, PrimitiveComponent, ColorOnlyComponent>();
+    m_registry.Group({ CompType::TRANF, CompType::PRIMITIVE, CompType::COLOR_ONLY });
   for (auto ent : g)
   {
     const ColorOnlyComponent shader = m_registry.GetComponent<ColorOnlyComponent>(ent);
@@ -54,7 +54,7 @@ void Scene::OnUpdate(TimeStep ts)
   }
 }
 
-Entity Scene::CreateEntity(std::string_view name)
+Entity Scene::CreateEntity(const char* name)
 {
   Entity ent = m_registry.Create();
   GE_INFO("Creating entity \'{}\' with id={}", name, ent.handle)
@@ -79,7 +79,7 @@ void Scene::OnViewportResize(Dimension dim)
 {
   m_viewport = dim;
 
-  const std::vector<Entity> camera_entities = m_registry.Group<CameraComponent>();
+  const std::vector<Entity> camera_entities = m_registry.Group({ CompType::CAMERA });
   for (auto ent : camera_entities)
   {
     auto& cam_comp = m_registry.GetComponent<CameraComponent>(ent);
@@ -92,7 +92,7 @@ void Scene::OnViewportResize(Dimension dim)
 
 Opt<Entity> Scene::GetActiveCamera() const
 {
-  std::vector<Entity> camera_group = m_registry.Group<TransformComponent, CameraComponent>();
+  std::vector<Entity> camera_group = m_registry.Group({ CompType::TRANF, CompType::CAMERA });
   if (camera_group.empty())
   {
     GE_INFO("No camera")
@@ -101,7 +101,10 @@ Opt<Entity> Scene::GetActiveCamera() const
 
   if (std::ranges::none_of(camera_group,
                            [&](Entity ent)
-                           { return m_registry.GetComponent<CameraComponent>(ent).active; }))
+                           {
+                             const auto cc = m_registry.GetComponent<CameraComponent>(ent);
+                             return cc.active;
+                           }))
   {
     GE_INFO("No active camera")
     return std::nullopt;
@@ -122,4 +125,9 @@ Opt<Entity> Scene::GetActiveCamera() const
     [&](Entity ent) -> bool { return m_registry.GetComponent<CameraComponent>(ent).active; });
 
   return active_camera;
+}
+
+ECRegistry& Scene::Registry()
+{
+  return m_registry;
 }

@@ -16,18 +16,20 @@ namespace GE
 
     Scene();
 
-    Entity CreateEntity(std::string_view name);
+    ECRegistry& Registry();
 
-    template <typename Comp, typename... Args>
+    Entity CreateEntity(const char* name);
+
+    template <typename Component, typename... Args>
     void AddComponent(const Entity& ent, Args&&... args)
     {
-      m_registry.AddComponent<Comp>(ent, std::forward<Args>(args)...);
+      m_registry.AddComponent<Component>(ent, std::forward<Args>(args)...);
     }
 
-    template <typename Comp>
-    Comp& GetComponent(const Entity& ent)
+    template <typename Component>
+    Component& GetComponent(const Entity& ent)
     {
-      return m_registry.GetComponent<Comp>(ent);
+      return m_registry.GetComponent<Component>(ent);
     }
 
     void OnUpdate(TimeStep ts);

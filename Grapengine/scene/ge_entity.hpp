@@ -13,6 +13,7 @@ namespace GE
     Entity(u32 h) : handle(i32(h)) {}
     bool operator<(const Entity& ent) const { return handle < ent.handle; }
     operator bool() const { return handle >= 0; }
+    explicit operator i32() const { return handle; }
   };
 }
 

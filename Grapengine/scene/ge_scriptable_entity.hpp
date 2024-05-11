@@ -1,8 +1,8 @@
 #ifndef GRAPENGINE_GE_SCRIPTABLE_ENTITY_HPP
 #define GRAPENGINE_GE_SCRIPTABLE_ENTITY_HPP
 
-#include "ge_entity.hpp"
-#include "ge_scene.hpp"
+#include "scene/ge_entity.hpp"
+#include "scene/ge_scene.hpp"
 
 namespace GE
 {
