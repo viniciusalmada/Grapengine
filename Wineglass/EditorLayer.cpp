@@ -20,7 +20,7 @@ namespace
   DISABLE_WARNING_POP
 }
 
-EditorLayer::EditorLayer() : Layer("EditorLayer") {}
+EditorLayer::EditorLayer() : Layer("EditorLayer"), m_scene_panel(nullptr) {}
 
 void EditorLayer::OnAttach()
 {
@@ -53,6 +53,8 @@ void EditorLayer::OnAttach()
 
   m_scene->AddComponent<NativeScriptComponent>(m_oblique_camera_entity);
   m_scene->GetComponent<NativeScriptComponent>(m_oblique_camera_entity).Bind<CamController>();
+
+  m_scene_panel.SetContext(m_scene);
 
   //
   //
@@ -161,6 +163,8 @@ void EditorLayer::OnImGuiUpdate()
   }
 
   ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 0 });
+
+  m_scene_panel.OnImGuiRender();
 
   ImGui::Begin("Settings");
 

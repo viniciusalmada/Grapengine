@@ -2,6 +2,7 @@
 #define GRAPENGINE_EDITORLAYER_HPP
 
 #include "grapengine.hpp"
+#include "panels/SceneHierarchyPanel.hpp"
 
 #define FIRST_SCENE_TEST
 
@@ -30,6 +31,8 @@ namespace GE
     Dimension m_viewport_dimension{};
     //    bool m_viewport_focused{};
     bool m_viewport_hovered = true;
+
+    SceneHierarchyPanel m_scene_panel;
 #else
     EditorCamera m_cam;
     Ref<WorldReference> m_world_ref = nullptr;
