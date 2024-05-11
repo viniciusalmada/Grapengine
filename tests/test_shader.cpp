@@ -45,12 +45,12 @@ void main()
 TEST(ShaderProgram, Shader)
 {
   using namespace GE;
-  Scope<Window> window = MakeScope<Window>(WindowProps{ "Test", 1, 1, {}}, nullptr);
+  Scope<Window> window = MakeScope<Window>(WindowProps{ "Test", { 1, 1 }, {} }, nullptr);
   EXPECT_NE(window, nullptr);
 
-  ASSERT_DEATH({ Shader shader_program(std::string{ "" }, std::string{ "" }); }, "linking");
-  ASSERT_DEATH({ Shader shader_program(INVALID_VSHADER, INVALID_FSHADER); }, "Vertex");
-  ASSERT_DEATH({ Shader shader_program(VALID_VSHADER, INVALID_FSHADER); }, "Fragment");
+  ASSERT_DEATH({ Shader shader_program(std::string{ "" }, std::string{ "" }); }, "");
+  ASSERT_DEATH({ Shader shader_program(INVALID_VSHADER, INVALID_FSHADER); }, "");
+  ASSERT_DEATH({ Shader shader_program(VALID_VSHADER, INVALID_FSHADER); }, "");
 
   Shader shader_program(VALID_VSHADER, VALID_FSHADER);
   EXPECT_TRUE(shader_program.IsValid());

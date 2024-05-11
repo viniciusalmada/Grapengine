@@ -18,6 +18,7 @@ target_include_directories(EngineTests PRIVATE ${ENGINE_INCLUDE})
 
 target_link_libraries(EngineTests
   PRIVATE Grapengine
+        PRIVATE GrapengineCompileOptions
 )
 
 find_package(glfw3 CONFIG REQUIRED)

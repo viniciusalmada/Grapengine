@@ -17,7 +17,7 @@ TEST(Event, WindowCloseDataDispatcher)
   bool dispatched = false;
   close_ev //
     .When(EvType::WINDOW_CLOSE)
-    .Then([&](const EvData& ev) { dispatched = true; });
+    .Then([&](const EvData& /*ev*/) { dispatched = true; });
 
   EXPECT_TRUE(dispatched);
   EXPECT_TRUE(close_ev.IsHandled());
@@ -25,13 +25,13 @@ TEST(Event, WindowCloseDataDispatcher)
 
 TEST(Event, KeyPressData)
 {
-  Event key_press_ev{ EvType::KEY_PRESS, KeyCode::K_A };
+  Event key_press_ev{ EvType::KEY_PRESS, KeyCode::A };
   EXPECT_EQ(key_press_ev.GetType(), EvType::KEY_PRESS);
 }
 
 TEST(Event, KeyPressDataDispatcher)
 {
-  Event key_press_ev{ EvType::KEY_PRESS, KeyCode::K_A };
+  Event key_press_ev{ EvType::KEY_PRESS, KeyCode::A };
 
   key_press_ev //
     .When(EvType::KEY_PRESS)
@@ -39,7 +39,7 @@ TEST(Event, KeyPressDataDispatcher)
       [](const EvData& ev) -> bool
       {
         const auto& key = *std::get_if<KeyCode>(&ev);
-        return key == KeyCode::K_A;
+        return key == KeyCode::A;
       });
 
   EXPECT_TRUE(key_press_ev.IsHandled());
@@ -47,13 +47,13 @@ TEST(Event, KeyPressDataDispatcher)
 
 TEST(Event, KeyReleaseData)
 {
-  Event key_rel_ev{ EvType::KEY_RELEASE, KeyCode::K_B };
+  Event key_rel_ev{ EvType::KEY_RELEASE, KeyCode::B };
   EXPECT_EQ(key_rel_ev.GetType(), EvType::KEY_RELEASE);
 }
 
 TEST(Event, KeyReleaseDataDispatcher)
 {
-  Event key_rel_ev{ EvType::KEY_RELEASE, KeyCode::K_B };
+  Event key_rel_ev{ EvType::KEY_RELEASE, KeyCode::B };
 
   key_rel_ev //
     .When(EvType::KEY_RELEASE)
@@ -61,7 +61,7 @@ TEST(Event, KeyReleaseDataDispatcher)
       [](const EvData& ev)
       {
         const auto& key = *std::get_if<KeyCode>(&ev);
-        return key == KeyCode::K_B;
+        return key == KeyCode::B;
       });
   EXPECT_TRUE(key_rel_ev.IsHandled());
 }

@@ -2,6 +2,7 @@
 #define GRAPENGINE_GE_LOGGER_HPP
 
 #include "core/ge_macros.hpp"
+#include "core/ge_type_aliases.hpp"
 
 #if defined(GE_PLATFORM_WINDOWS)
   #define NOMINMAX

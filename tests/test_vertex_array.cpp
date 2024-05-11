@@ -12,7 +12,7 @@ TEST(VertexArray, VertexArray)
 {
   EXPECT_DEATH({ Ref<VertexArray> vao = MakeRef<VertexArray>(); }, "");
 
-  Scope<Window> window = MakeScope<Window>(WindowProps{ "Test", 1, 1, {}}, nullptr);
+  Scope<Window> window = MakeScope<Window>(WindowProps{ "Test", { 1, 1 }, {} }, nullptr);
   EXPECT_NE(window, nullptr);
 
   Ref<VertexArray> vao = MakeRef<VertexArray>();
@@ -21,7 +21,7 @@ TEST(VertexArray, VertexArray)
 
 TEST(VertexArray, VertexBuffer)
 {
-  Scope<Window> window = MakeScope<Window>(WindowProps{ "Test", 1, 1, {}}, nullptr);
+  Scope<Window> window = MakeScope<Window>(WindowProps{ "Test", { 1, 1 }, {} }, nullptr);
   EXPECT_NE(window, nullptr);
 
   Ref<VertexArray> vao = MakeRef<VertexArray>();
