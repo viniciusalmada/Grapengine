@@ -3,6 +3,7 @@
 
 // Core
 #include "core/ge_application.hpp"
+#include "core/ge_assert.hpp"
 #include "core/ge_memory.hpp"
 #include "core/ge_time_step.hpp"
 #include "core/ge_window.hpp"
