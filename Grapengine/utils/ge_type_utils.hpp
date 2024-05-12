@@ -6,8 +6,12 @@ namespace GE
   class TypeUtils
   {
   public:
-    static void* ToVoidPtr(u32 i);
-    static void* ToVoidPtr(i32 i);
+    template <typename Integer>
+      requires std::integral<Integer>
+    static void* ToVoidPtr(Integer i)
+    {
+      return reinterpret_cast<void*>(i); // NOLINT(*-pro-type-reinterpret-cast, *-no-int-to-ptr)
+    }
   };
 }
 

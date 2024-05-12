@@ -66,23 +66,37 @@ void SceneHierarchyPanel::DrawComponents(Entity ent)
 
   if (m_scene_context->HasComponent<TranslateScaleComponent>(ent))
   {
-    auto& pos = m_scene_context->GetComponent<TranslateScaleComponent>(ent).position_values;
-    auto& scale = m_scene_context->GetComponent<TranslateScaleComponent>(ent).scale_values;
+    if (ImGui::TreeNodeEx(TypeUtils::ToVoidPtr(typeid(TranslateScaleComponent).hash_code()),
+                          ImGuiTreeNodeFlags_DefaultOpen,
+                          "TranslateAndScale"))
+    {
+      auto& pos = m_scene_context->GetComponent<TranslateScaleComponent>(ent).position_values;
+      auto& scale = m_scene_context->GetComponent<TranslateScaleComponent>(ent).scale_values;
 
-    ImGui::DragFloat3("Position", &pos.x, 0.01f);
-    ImGui::DragFloat3("Scale", &scale.x, 0.01f);
+      ImGui::DragFloat3("Position", &pos.x, 0.01f);
+      ImGui::DragFloat3("Scale", &scale.x, 0.01f);
+
+      ImGui::TreePop();
+    }
   }
 
   if (m_scene_context->HasComponent<CameraComponent>(ent))
   {
-    auto& comp = m_scene_context->GetComponent<CameraComponent>(ent);
-    Vec3 eye = comp.camera.GetPosition();
-    Vec3 target = comp.camera.GetTarget();
+    if (ImGui::TreeNodeEx(TypeUtils::ToVoidPtr(typeid(CameraComponent).hash_code()),
+                          ImGuiTreeNodeFlags_DefaultOpen,
+                          "CameraComponent"))
+    {
+      auto& comp = m_scene_context->GetComponent<CameraComponent>(ent);
+      Vec3 eye = comp.camera.GetPosition();
+      Vec3 target = comp.camera.GetTarget();
 
-    bool changed_eye = ImGui::DragFloat3("Eye", &eye.x, 0.01f);
-    bool changed_target = ImGui::DragFloat3("Target", &target.x, 0.01f);
+      bool changed_eye = ImGui::DragFloat3("Eye", &eye.x, 0.01f);
+      bool changed_target = ImGui::DragFloat3("Target", &target.x, 0.01f);
 
-    if (changed_eye || changed_target)
-      comp.camera.SetView(eye, target);
+      if (changed_eye || changed_target)
+        comp.camera.SetView(eye, target);
+
+      ImGui::TreePop();
+    }
   }
 }
