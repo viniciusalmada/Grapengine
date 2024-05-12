@@ -5,6 +5,7 @@
 #include "math/ge_vector.hpp"
 #include "renderer/ge_renderer.hpp"
 #include "scene/ge_components.hpp"
+#include "scene/ge_scriptable_entity.hpp"
 
 using namespace GE;
 

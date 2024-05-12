@@ -3,9 +3,7 @@
 
 #include "core/ge_time_step.hpp"
 #include "events/ge_event.hpp"
-#include "scene/ge_ec_registry.hpp"
-#include "scene/ge_entity.hpp"
-#include "utils/ge_dimension.hpp"
+#include "ge_ec_registry.hpp"
 
 namespace GE
 {
@@ -21,9 +19,9 @@ namespace GE
     Entity CreateEntity(const char* name);
 
     template <typename Component, typename... Args>
-    void AddComponent(const Entity& ent, Args&&... args)
+    Component& AddComponent(const Entity& ent, Args&&... args)
     {
-      m_registry.AddComponent<Component>(ent, std::forward<Args>(args)...);
+      return m_registry.AddComponent<Component>(ent, std::forward<Args>(args)...);
     }
 
     template <typename Component>

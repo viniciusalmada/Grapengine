@@ -1,28 +1,14 @@
 #ifndef GRAPENGINE_GE_COMPONENTS_HPP
 #define GRAPENGINE_GE_COMPONENTS_HPP
 
-#include "ge_scriptable_entity.hpp"
+#include "ge_comp_types.hpp"
+#include "ge_entity.hpp"
+#include "ge_scene_camera.hpp"
 #include "math/ge_vector.hpp"
-#include "renderer/ge_camera.hpp"
 #include "renderer/ge_ishader_program.hpp"
-#include "renderer/ge_vertex_array.hpp"
-#include "scene/ge_entity.hpp"
-#include "scene/ge_scene_camera.hpp"
 
 namespace GE
 {
-  enum class CompType : u8
-  {
-    BASE,
-    TAG,
-    TRANF,
-    PRIMITIVE,
-    MATERIAL,
-    COLOR_ONLY,
-    CAMERA,
-    NATIVE_SCRIPT,
-  };
-
   struct BaseComponent
   {
     virtual ~BaseComponent() = default;
@@ -44,6 +30,7 @@ namespace GE
     TransformComponent(const Mat4& transf) : transform(transf) {}
   };
 
+  class DrawingObject;
   struct PrimitiveComponent : public BaseComponent
   {
     Ref<DrawingObject> drawing_obj;
@@ -76,6 +63,7 @@ namespace GE
     CameraComponent(const CameraComponent& other) = default;
   };
 
+  class ScriptableEntity;
   class Scene;
   struct NativeScriptComponent : public BaseComponent
   {

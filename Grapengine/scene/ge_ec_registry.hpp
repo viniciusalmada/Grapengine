@@ -1,10 +1,9 @@
 #ifndef GRAPENGINE_GE_EC_REGISTRY_HPP
 #define GRAPENGINE_GE_EC_REGISTRY_HPP
 
-#include "core/ge_assert.hpp"
-#include "log/ge_logger.hpp"
-#include "scene/ge_components.hpp"
-#include "scene/ge_entity.hpp"
+#include "ge_comp_types.hpp"
+#include "ge_components.hpp"
+#include "ge_entity.hpp"
 
 #include <list>
 #include <map>
@@ -20,12 +19,7 @@ namespace GE
      * Create and return an entity with a unique id
      * @return empty entity
      */
-    Entity Create()
-    {
-      Entity e{ m_entity_next_id++ };
-      m_entities.insert(e);
-      return e;
-    }
+    Entity Create();
 
     /**
      * Add a component to registry and associate to its entity
@@ -35,22 +29,15 @@ namespace GE
      * @param args argument list to construct the component
      */
     template <typename Component, typename... Args>
-    void AddComponent(const Entity& ent, Args... args)
+    Component& AddComponent(const Entity& ent, Args... args)
     {
       GE_ASSERT(!Has<Component>(ent), "Entity already has this component!")
 
       auto& added = m_components[ent].emplace_back(MakeRef<Component>(std::forward<Args>(args)...));
-      { //
-        if (typeid(Component) != typeid(TagComponent))
-        {
-          GE_DEBUG("Added component of type {} to entity {}[id={}]",
-                   typeid(Component).name(),
-                   GetComponent<TagComponent>(ent).tag,
-                   i32(ent))
-        }
-      } //
 
       GE_ASSERT(added->Type() != CompType::BASE, "Component must not have BASE type")
+
+      return dynamic_cast<Component&>(*added);
     }
 
     /**
@@ -108,9 +95,8 @@ namespace GE
       auto found = std::ranges::find_if(m_components.at(ent),
                                         [&](const Ref<BaseComponent>& anyComp)
                                         {
-                                          GE_DEBUG("any: {}", typeid(*anyComp).name())
-                                          GE_DEBUG("template: {}", typeid(Comp).name())
-                                          return typeid(*anyComp) == typeid(Comp);
+                                          [[maybe_unused]] auto& comp_ref = *anyComp;
+                                          return typeid(comp_ref) == typeid(Comp);
                                         });
       return found != m_components.at(ent).end();
     }
@@ -120,25 +106,7 @@ namespace GE
      * @tparam Comps list of components used to query the entities
      * @return set of entities that has all given components in common
      */
-    [[nodiscard]] std::vector<Entity> Group(std::initializer_list<CompType>&& comps) const
-    {
-#ifdef DEBUG_ECSREGISTRY
-      GE_DEBUG("BEGIN: Getting group of: ")
-      (..., [] { GE_DEBUG("{}", typeid(Comps).name()); }());
-      GE_DEBUG("END")
-#endif
-
-      std::vector<Entity> entities;
-      for (const Entity& e :
-           m_components //
-             |
-             std::views::filter([&](auto&& p) { return FilterComponentsFromEntities(comps, p); }) //
-             | std::views::keys)
-      {
-        entities.push_back(e);
-      }
-      return entities;
-    }
+    [[nodiscard]] std::vector<Entity> Group(const std::initializer_list<CompType>&& comps) const;
 
     void Each(const std::function<void(Entity)>& action) const;
 
