@@ -38,3 +38,8 @@ void SceneCamera::RecalculateProjection()
   const f32 ar = f32(m_viewport.width) / f32(m_viewport.height);
   m_projection = Transform::Perspective(DEFAULT_FOV, ar);
 }
+
+Mat4 SceneCamera::GetViewProjection() const
+{
+  return m_projection * Transform::LookAt(m_position, m_target);
+}

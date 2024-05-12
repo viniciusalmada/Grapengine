@@ -12,9 +12,9 @@ public:
 
   void OnCreate() override
   {
-    const f32 x = GE::Random::GenFloat(0, 5);
-    const f32 y = GE::Random::GenFloat(0, 5);
-    xy_cam = Vec2{ x, y };
+    //    const f32 x = GE::Random::GenFloat(0, 5);
+    //    const f32 y = GE::Random::GenFloat(0, 5);
+    //    xy_cam = Vec2{ x, y };
   }
   void OnDestroy() override {}
   void OnUpdate(TimeStep ts) override

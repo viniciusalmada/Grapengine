@@ -13,16 +13,24 @@ void EditorLayer::OnAttach()
   m_scene = Scene::Make();
 
   m_front_camera_entity = m_scene->CreateEntity("Front Camera");
-  m_scene->AddComponent<CameraComponent>(m_front_camera_entity, true, false);
-  m_scene->AddComponent<TransformComponent>(
-    m_front_camera_entity,
-    Transform::LookAt({ 0, 0, -10 }, { 0, 0, 0 }, { 0, 1, 0 }));
+  m_scene->AddComponent<CameraComponent>(m_front_camera_entity,
+                                         Vec3{ 0, 0, -10 },
+                                         Vec3{ 0, 0, 0 },
+                                         true,
+                                         false);
+  //  m_scene->AddComponent<TransformComponent>(
+  //    m_front_camera_entity,
+  //    Transform::LookAt({ 0, 0, -10 }, { 0, 0, 0 }, { 0, 1, 0 }));
 
   m_oblique_camera_entity = m_scene->CreateEntity("Oblique Camera");
-  m_scene->AddComponent<CameraComponent>(m_oblique_camera_entity, false, false);
-  m_scene->AddComponent<TransformComponent>(
-    m_oblique_camera_entity,
-    Transform::LookAt({ 10, 10, -10 }, { 0, 0, 0 }, { 0, 1, 0 }));
+  m_scene->AddComponent<CameraComponent>(m_oblique_camera_entity,
+                                         Vec3{ 10, 10, -10 },
+                                         Vec3{ 0, 0, 0 },
+                                         false,
+                                         false);
+  //  m_scene->AddComponent<TransformComponent>(
+  //    m_oblique_camera_entity,
+  //    Transform::LookAt({ 10, 10, -10 }, { 0, 0, 0 }, { 0, 1, 0 }));
 
   //  auto camera_ent = m_scene->CreateEntity("Camera");
   //  m_scene->AddComponent<CameraComponent>(camera_ent, cam);
@@ -31,12 +39,12 @@ void EditorLayer::OnAttach()
   Ref<Cube> cube = Cube::Make(Colors::BLUE, simple_shader, Texture2D::Make());
   auto cube_ent = m_scene->CreateEntity("Cube");
   m_scene->AddComponent<PrimitiveComponent>(cube_ent, cube->GetVAO());
-  m_scene->AddComponent<TransformComponent>(cube_ent, Mat4{});
+  m_scene->AddComponent<TranslateScaleComponent>(cube_ent, Vec3{}, Vec3{ 1, 1, 1 });
   m_scene->AddComponent<ColorOnlyComponent>(cube_ent, simple_shader);
 
-  m_scene->AddComponent<NativeScriptComponent>(m_front_camera_entity).Bind<CamController>();
-
-  m_scene->AddComponent<NativeScriptComponent>(m_oblique_camera_entity).Bind<CamController>();
+  //  m_scene->AddComponent<NativeScriptComponent>(m_front_camera_entity).Bind<CamController>();
+  //
+  //  m_scene->AddComponent<NativeScriptComponent>(m_oblique_camera_entity).Bind<CamController>();
 
   m_scene_panel.SetContext(m_scene);
 

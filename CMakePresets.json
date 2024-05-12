@@ -142,5 +142,12 @@
         "CMAKE_CXX_COMPILER": "g++"
       }
     }
+  ],
+  "buildPresets": [
+    {
+      "name": "debug-clang-linux",
+      "configurePreset": "llvm-clang-gcc-debug",
+      "jobs": 24
+    }
   ]
 }

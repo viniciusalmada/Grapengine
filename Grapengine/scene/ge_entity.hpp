@@ -14,6 +14,9 @@ namespace GE
     bool operator<(const Entity& ent) const { return handle < ent.handle; }
     operator bool() const { return handle >= 0; }
     explicit operator i32() const { return handle; }
+
+    bool operator==(const Entity& rhs) const { return handle == rhs.handle; }
+    bool operator!=(const Entity& rhs) const { return !(rhs == *this); }
   };
 }
 

@@ -4,6 +4,7 @@
 #include "ge_comp_types.hpp"
 #include "ge_entity.hpp"
 #include "ge_scene_camera.hpp"
+#include "math/ge_transformations.hpp"
 #include "math/ge_vector.hpp"
 #include "renderer/ge_ishader_program.hpp"
 
@@ -17,7 +18,7 @@ namespace GE
 
   struct TagComponent final : public BaseComponent
   {
-    const char* tag;
+    std::string tag;
     [[nodiscard]] CompType Type() const final { return CompType::TAG; }
 
     TagComponent(const char* t) : tag(t) {}
@@ -28,6 +29,21 @@ namespace GE
     Mat4 transform;
     [[nodiscard]] CompType Type() const final { return CompType::TRANF; }
     TransformComponent(const Mat4& transf) : transform(transf) {}
+  };
+
+  struct TranslateScaleComponent : public BaseComponent
+  {
+    Vec3 position_values;
+    Vec3 scale_values;
+    [[nodiscard]] CompType Type() const final { return CompType::TRANSL_SCALE; }
+    TranslateScaleComponent(const Vec3& pos, const Vec3& scale) :
+        position_values(pos), scale_values(scale)
+    {
+    }
+    [[nodiscard]] Mat4 GetModelMat() const
+    {
+      return Transform::Translate(position_values) * Transform::Scale(scale_values);
+    }
   };
 
   class DrawingObject;
@@ -58,9 +74,11 @@ namespace GE
     bool fixed_ratio;
 
     [[nodiscard]] CompType Type() const final { return CompType::CAMERA; }
-    CameraComponent() : active(false), fixed_ratio(false) {}
-    CameraComponent(bool act, bool fixedRatio) : active(act), fixed_ratio(fixedRatio) {}
-    CameraComponent(const CameraComponent& other) = default;
+    CameraComponent(const Vec3& eye, const Vec3& target, bool act, bool fixedRatio) :
+        active(act), fixed_ratio(fixedRatio)
+    {
+      camera.SetView(eye, target);
+    }
   };
 
   class ScriptableEntity;

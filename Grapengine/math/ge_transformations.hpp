@@ -9,10 +9,12 @@ namespace GE::Transform
 {
   constexpr f32 FRUSTUM_NEAR = 0.1f;
   constexpr f32 FRUSTUM_FAR = 1000.0f;
+  constexpr Vec3 UP_VECTOR{ 0, 1, 0 };
 
   f32 Deg2Rad(f32 degree);
   f32 Rad2Deg(f32 rad);
 
+  Mat4 Translate(const Vec3& fac);
   Mat4 Translate(f32 xFac, f32 yFac, f32 zFac);
 
   Mat4 RotateX(f32 degrees);
@@ -24,8 +26,9 @@ namespace GE::Transform
   Mat4 Rotate(f32 degrees, const Vec3& vector);
 
   Mat4 Scale(f32 xFac, f32 yFac, f32 zFac);
+  Mat4 Scale(const Vec3& fac);
 
-  Mat4 LookAt(const Vec3& eye, const Vec3& target, const Vec3& up);
+  Mat4 LookAt(const Vec3& eye, const Vec3& target, const Vec3& up = UP_VECTOR);
 
   std::tuple<Vec3, Vec3, Vec3> LookAtVector(const Vec3& eye, const Vec3& target, const Vec3& up);
 

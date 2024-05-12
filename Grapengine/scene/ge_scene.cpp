@@ -2,6 +2,7 @@
 
 #include "events/ge_event.hpp"
 #include "ge_ec_registry.hpp"
+#include "math/ge_transformations.hpp"
 #include "math/ge_vector.hpp"
 #include "renderer/ge_renderer.hpp"
 #include "scene/ge_components.hpp"
@@ -34,21 +35,19 @@ void Scene::OnUpdate(TimeStep ts)
   if (!active_camera)
     return;
 
-  const TransformComponent& cam_transform =
-    m_registry.GetComponent<TransformComponent>(active_camera);
   const CameraComponent& cam_component = m_registry.GetComponent<CameraComponent>(active_camera);
 
   const std::vector<Entity> g =
-    m_registry.Group({ CompType::TRANF, CompType::PRIMITIVE, CompType::COLOR_ONLY });
+    m_registry.Group({ CompType::TRANSL_SCALE, CompType::PRIMITIVE, CompType::COLOR_ONLY });
   for (auto ent : g)
   {
     const ColorOnlyComponent shader = m_registry.GetComponent<ColorOnlyComponent>(ent);
     shader.shader->Activate();
-    shader.shader->UpdateViewProjectionMatrix(cam_component.camera.GetProjection() *
-                                              cam_transform.transform);
+    shader.shader->UpdateViewProjectionMatrix(cam_component.camera.GetViewProjection());
 
-    const TransformComponent model_mat = m_registry.GetComponent<TransformComponent>(ent);
-    shader.shader->UpdateModelMatrix(model_mat.transform);
+    const TranslateScaleComponent& transl_scale_comp =
+      m_registry.GetComponent<TranslateScaleComponent>(ent);
+    shader.shader->UpdateModelMatrix(transl_scale_comp.GetModelMat());
 
     const PrimitiveComponent primitive = m_registry.GetComponent<PrimitiveComponent>(ent);
     Renderer::DrawObject(primitive.drawing_obj);
@@ -93,7 +92,7 @@ void Scene::OnViewportResize(Dimension dim)
 
 Opt<Entity> Scene::GetActiveCamera() const
 {
-  std::vector<Entity> camera_group = m_registry.Group({ CompType::TRANF, CompType::CAMERA });
+  std::vector<Entity> camera_group = m_registry.Group({ CompType::CAMERA });
   if (camera_group.empty())
   {
     GE_INFO("No camera")
@@ -128,7 +127,7 @@ Opt<Entity> Scene::GetActiveCamera() const
   return active_camera;
 }
 
-ECRegistry& Scene::Registry()
+void Scene::EachEntity(const std::function<void(Entity)>& fun) const
 {
-  return m_registry;
+  m_registry.Each(fun);
 }

@@ -23,6 +23,7 @@
 // Utilities
 #include "utils/ge_dimension.hpp"
 #include "utils/ge_random.hpp"
+#include "utils/ge_type_utils.hpp"
 
 // Math
 #include "math/ge_transformations.hpp"

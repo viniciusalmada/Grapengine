@@ -33,6 +33,11 @@ Mat4 Transform::Translate(f32 xFac, f32 yFac, f32 zFac)
   };
 }
 
+Mat4 Transform::Translate(const GE::Vec3& fac)
+{
+  return Translate(fac.x, fac.y, fac.z);
+}
+
 Mat4 Transform::RotateX(f32 degrees)
 {
   auto c = std::cos(Deg2Rad(degrees));
@@ -100,6 +105,11 @@ Mat4 Transform::Scale(f32 xFac, f32 yFac, f32 zFac)
     { { 0, 0, zFac, 0 } },
     { { 0, 0, 0, 1 } },
   };
+}
+
+Mat4 Transform::Scale(const Vec3& fac)
+{
+  return Transform::Scale(fac.x, fac.y, fac.z);
 }
 
 // NOLINTBEGIN(bugprone-easily-swappable-parameters)

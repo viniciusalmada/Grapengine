@@ -16,7 +16,11 @@ namespace GE
     void OnImGuiRender();
 
   private:
+    void DrawEntityNode(Entity ent);
+    void DrawComponents(Entity ent);
+
     Ref<Scene> m_scene_context;
+    Entity m_selected_entity;
   };
 
 } // GE

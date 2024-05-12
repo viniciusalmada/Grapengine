@@ -14,9 +14,15 @@ namespace GE
 
     Scene();
 
-    ECRegistry& Registry();
-
     Entity CreateEntity(const char* name);
+
+    void OnUpdate(TimeStep ts);
+
+    void OnEvent(Event&);
+
+    void OnViewportResize(Dimension dim);
+
+    // Registry wrappers functions
 
     template <typename Component, typename... Args>
     Component& AddComponent(const Entity& ent, Args&&... args)
@@ -30,11 +36,13 @@ namespace GE
       return m_registry.GetComponent<Component>(ent);
     }
 
-    void OnUpdate(TimeStep ts);
+    template <typename Component>
+    [[nodiscard]] bool HasComponent(const Entity& ent)
+    {
+      return m_registry.Has<Component>(ent);
+    }
 
-    void OnEvent(Event&);
-
-    void OnViewportResize(Dimension dim);
+    void EachEntity(const std::function<void(Entity)>& fun) const;
 
   private:
     [[nodiscard]] Opt<Entity> GetActiveCamera() const;

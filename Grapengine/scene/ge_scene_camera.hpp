@@ -15,8 +15,11 @@ namespace GE
     SceneCamera(const SceneCamera&);
     ~SceneCamera() override = default;
 
-    void SetView(Vec3 position, Vec3 target);
+    [[nodiscard]] Mat4 GetViewProjection() const;
+    [[nodiscard]] Vec3 GetPosition() const { return m_position; }
+    [[nodiscard]] Vec3 GetTarget() const { return m_target; }
 
+    void SetView(Vec3 position, Vec3 target);
     void SetViewport(Dimension vp);
 
   private:
