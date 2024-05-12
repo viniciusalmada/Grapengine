@@ -6,20 +6,6 @@ static constexpr const auto CLEAR_COLOR = 0x222222FF;
 
 using namespace GE;
 
-namespace
-{
-  //  constexpr auto DEFAULT_FOV = 45.0f;
-  //  constexpr auto HD_RATIO = 1280.0f / 720.0f;
-
-  DISABLE_WARNING_PUSH
-  WARN_CONVERSION_OF_GREATER_SIZE
-  void* SafeConversion(u32 i)
-  {
-    return reinterpret_cast<void*>(i); // NOLINT(*-pro-type-reinterpret-cast, *-no-int-to-ptr)
-  }
-  DISABLE_WARNING_POP
-}
-
 EditorLayer::EditorLayer() : Layer("EditorLayer"), m_scene_panel(nullptr) {}
 
 void EditorLayer::OnAttach()
@@ -203,7 +189,7 @@ void EditorLayer::OnImGuiUpdate()
   RendererID tex = m_fb->GetColorAttachmentID();
   const auto [w, h] = m_fb->GetDimension();
   ImVec2 size{ f32(w), f32(h) };
-  ImGui::Image(SafeConversion(u32(tex)), size, { 0, 1 }, { 1, 0 });
+  ImGui::Image(TypeUtils::ToVoidPtr(u32(tex)), size, { 0, 1 }, { 1, 0 });
   ImGui::End();
   ImGui::PopStyleVar();
 
