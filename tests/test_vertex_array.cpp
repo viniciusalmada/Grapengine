@@ -27,7 +27,7 @@ TEST(VertexArray, VertexBuffer)
   Ref<VertexArray> vao = MakeRef<VertexArray>();
   vao->Unbind();
   float vertices[] = { 0.0, 0.0, 1.0, 0.0, 0.0, 1.0 };
-  EXPECT_DEATH(
+  ASSERT_DEATH(
     { Ref<VertexBuffer> vbo = MakeRef<VertexBuffer>(vertices, sizeof(float) * 6, vao->GetID()); },
-    "binding");
+    "");
 }

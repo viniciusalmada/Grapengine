@@ -1,4 +1,4 @@
-#include "log/ge_logger.hpp"
+#include "grapengine.hpp"
 
 #include <gtest/gtest.h>
 

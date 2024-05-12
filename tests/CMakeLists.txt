@@ -1,15 +1,9 @@
 enable_testing()
 
+file(GLOB_RECURSE TestsSources ${CMAKE_SOURCE_DIR}/tests/*.cpp)
+
 add_executable(EngineTests
-  test_main.cpp
-  test_window.cpp
-  test_events.cpp
-  test_vector.cpp
-  test_transformations.cpp
-  test_shader.cpp
-  test_vertex_array.cpp
-  test_random.cpp
-  test_camera.cpp
+        ${TestsSources}
 )
 find_package(GTest CONFIG REQUIRED)
 target_link_libraries(EngineTests PRIVATE GTest::gtest GTest::gtest_main GTest::gmock GTest::gmock_main)
@@ -17,7 +11,7 @@ target_link_libraries(EngineTests PRIVATE GTest::gtest GTest::gtest_main GTest::
 target_include_directories(EngineTests PRIVATE ${ENGINE_INCLUDE})
 
 target_link_libraries(EngineTests
-  PRIVATE Grapengine
+        PRIVATE Grapengine
         PRIVATE GrapengineCompileOptions
 )
 
