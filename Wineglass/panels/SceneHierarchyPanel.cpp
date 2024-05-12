@@ -13,6 +13,10 @@ void SceneHierarchyPanel::OnImGuiRender()
 {
   ImGui::Begin("Scene Hierarchy");
   m_scene_context->EachEntity([&](Entity ent) { DrawEntityNode(ent); });
+
+  if (ImGui::IsMouseDown(ImGuiMouseButton_Left) && ImGui::IsWindowHovered())
+    m_selected_entity = {};
+
   ImGui::End();
 
   ImGui::Begin("Properties");
