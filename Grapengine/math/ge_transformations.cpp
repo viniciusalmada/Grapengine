@@ -177,3 +177,17 @@ Mat4 Transform::Perspective(f32 fovDegrees, f32 aspectRatio, f32 near, f32 far)
   return res;
 }
 // NOLINTEND(bugprone-easily-swappable-parameters)
+
+// NOLINTBEGIN(bugprone-easily-swappable-parameters)
+Mat4 Transform::Ortho(f32 left, f32 right, f32 bottom, f32 top, f32 near, f32 far)
+{
+  // NOLINTBEGIN(*-avoid-magic-numbers,*-magic-numbers)
+  Mat4 res{ { { 2.0f / (right - left), 0, 0, -(right + left) / (right - left) } },
+            { { 0, 2.0f / (top - bottom), 0, -(top + bottom) / (top - bottom) } },
+            { { 0, 0, -2.0f / (far - near), -(far + near) / (far - near) } },
+            { { 0, 0, 0, 1 } } };
+  // NOLINTEND(*-avoid-magic-numbers,*-magic-numbers)
+
+  return res;
+}
+// NOLINTEND(bugprone-easily-swappable-parameters)

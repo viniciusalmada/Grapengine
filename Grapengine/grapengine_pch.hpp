@@ -32,6 +32,8 @@
 #include <variant>
 #include <vector>
 
+using namespace std::string_literals;
+
 // clang-format off
 #include "log/ge_logger.hpp"
 

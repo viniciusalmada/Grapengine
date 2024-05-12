@@ -22,6 +22,8 @@ namespace GE
 
     void OnViewportResize(Dimension dim);
 
+    void UpdateActiveCamera(Entity activeCamera);
+
     // Registry wrappers functions
 
     template <typename Component, typename... Args>

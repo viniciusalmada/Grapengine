@@ -1,5 +1,6 @@
 #include "SceneHierarchyPanel.hpp"
 
+using namespace std::string_literals;
 using namespace GE;
 
 SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& scene) : m_scene_context(scene) {}
@@ -22,6 +23,8 @@ void SceneHierarchyPanel::OnImGuiRender()
   ImGui::Begin("Properties");
   DrawComponents(m_selected_entity);
   ImGui::End();
+
+  ImGui::ShowDemoWindow(nullptr);
 }
 
 void SceneHierarchyPanel::DrawEntityNode(Entity ent)
@@ -91,6 +94,61 @@ void SceneHierarchyPanel::DrawComponents(Entity ent)
                           "CameraComponent"))
     {
       auto& comp = m_scene_context->GetComponent<CameraComponent>(ent);
+      GE_DEBUG("Camera {} is {}", (i32)ent, comp.active);
+
+      if (ImGui::Checkbox("Active", &comp.active))
+      {
+        comp.active = true;
+        m_scene_context->UpdateActiveCamera(ent);
+      }
+      ImGui::Checkbox("Fixed AR", &comp.fixed_ratio);
+
+      const std::array TITLES{ "Perspective"s, "Orthographic"s };
+      u8 current_mode = (u8)comp.camera.GetProjectionMode();
+      const char* preview_value = TITLES.at(current_mode).c_str();
+      if (ImGui::BeginCombo("Projection", preview_value))
+      {
+        for (u32 n = 0; n < TITLES.size(); n++)
+        {
+          const bool is_selected = (current_mode == n);
+          if (ImGui::Selectable(TITLES.at(n).c_str(), is_selected))
+          {
+            current_mode = (u8)n;
+            comp.camera.SetProjectionMode((ProjectionMode)current_mode);
+          }
+
+          if (is_selected)
+            ImGui::SetItemDefaultFocus();
+        }
+        ImGui::EndCombo();
+      }
+
+      if (comp.camera.IsInProjectionMode(ProjectionMode::PERSPECTIVE))
+      {
+        f32 fov = comp.camera.GetFov();
+        if (ImGui::DragFloat("FOV",
+                             &fov,
+                             10.0f,
+                             30.0f,
+                             100.0f,
+                             "%1.0f deg",
+                             ImGuiSliderFlags_AlwaysClamp))
+          comp.camera.SetFov(fov);
+      }
+
+      if (comp.camera.IsInProjectionMode(ProjectionMode::ORTHO))
+      {
+        f32 size = comp.camera.GetOrthographicSize();
+        if (ImGui::DragFloat("Size",
+                             &size,
+                             10.0f,
+                             5.0f,
+                             100.0f,
+                             "%1.0f",
+                             ImGuiSliderFlags_AlwaysClamp))
+          comp.camera.SetOrthographicSize(size);
+      }
+
       Vec3 eye = comp.camera.GetPosition();
       Vec3 target = comp.camera.GetTarget();
 

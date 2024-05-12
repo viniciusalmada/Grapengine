@@ -158,16 +158,16 @@ void EditorLayer::OnImGuiUpdate()
 
   m_scene_panel.OnImGuiRender();
 
-  ImGui::Begin("Settings");
-
-  static int cam = 0;
-  ImGui::RadioButton("Front camera", &cam, 0);
-  ImGui::RadioButton("Oblique camera", &cam, 1);
-
-  m_scene->GetComponent<CameraComponent>(m_front_camera_entity).active = cam == 0;
-  m_scene->GetComponent<CameraComponent>(m_oblique_camera_entity).active = cam == 1;
-
-  ImGui::End();
+  //  ImGui::Begin("Settings");
+  //
+  //  static int cam = 0;
+  //  ImGui::RadioButton("Front camera", &cam, 0);
+  //  ImGui::RadioButton("Oblique camera", &cam, 1);
+  //
+  //  m_scene->GetComponent<CameraComponent>(m_front_camera_entity).active = cam == 0;
+  //  m_scene->GetComponent<CameraComponent>(m_oblique_camera_entity).active = cam == 1;
+  //
+  //  ImGui::End();
 
   //  ImGui::Begin("Settings");
   //  ImGui::SliderFloat("AmbientStrength", &m_ambient_str, 0, 1);

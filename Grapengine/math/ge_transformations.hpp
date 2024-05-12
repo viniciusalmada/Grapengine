@@ -34,6 +34,9 @@ namespace GE::Transform
 
   Mat4 Perspective(f32 fovDegrees, f32 aspectRatio, f32 near = FRUSTUM_NEAR, f32 far = FRUSTUM_FAR);
 
+  Mat4
+  Ortho(f32 left, f32 right, f32 bottom, f32 top, f32 near = FRUSTUM_NEAR, f32 far = FRUSTUM_FAR);
+
   Mat4 Identity();
 }
 

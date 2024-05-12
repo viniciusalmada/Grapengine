@@ -131,3 +131,14 @@ void Scene::EachEntity(const std::function<void(Entity)>& fun) const
 {
   m_registry.Each(fun);
 }
+
+void Scene::UpdateActiveCamera(Entity activeCamera)
+{
+  auto cameras = m_registry.Group({ CompType::CAMERA });
+  for (Entity ent : cameras)
+  {
+    if (ent == activeCamera)
+      continue;
+    m_registry.GetComponent<CameraComponent>(ent).active = false;
+  }
+}
