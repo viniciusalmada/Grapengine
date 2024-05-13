@@ -14,7 +14,7 @@ void EditorLayer::OnAttach()
 
   m_front_camera_entity = m_scene->CreateEntity("Front Camera");
   m_scene->AddComponent<CameraComponent>(m_front_camera_entity,
-                                         Vec3{ 0, 0, -10 },
+                                         Vec3{ 0, 0, 10 },
                                          Vec3{ 0, 0, 0 },
                                          true,
                                          false);
@@ -36,11 +36,16 @@ void EditorLayer::OnAttach()
   //  m_scene->AddComponent<CameraComponent>(camera_ent, cam);
 
   Ref<IShaderProgram> simple_shader = MakeRef<PosAndTex2DShader>();
-  Ref<Cube> cube = Cube::Make(Colors::BLUE, simple_shader, Texture2D::Make());
-  auto cube_ent = m_scene->CreateEntity("Cube");
-  m_scene->AddComponent<PrimitiveComponent>(cube_ent, cube->GetVAO());
-  m_scene->AddComponent<TranslateScaleComponent>(cube_ent, Vec3{}, Vec3{ 1, 1, 1 });
-  m_scene->AddComponent<ColorOnlyComponent>(cube_ent, simple_shader);
+  Ref<Cube> cube_1 = Cube::Make(Colors::BLUE, simple_shader, Texture2D::Make());
+  Ref<Cube> cube_2 = Cube::Make(Colors::RED, simple_shader, Texture2D::Make());
+  auto cube_1_ent = m_scene->CreateEntity("Cube Blue");
+  auto cube_2_ent = m_scene->CreateEntity("Cube Red");
+  m_scene->AddComponent<PrimitiveComponent>(cube_1_ent, cube_1->GetVAO());
+  m_scene->AddComponent<PrimitiveComponent>(cube_2_ent, cube_2->GetVAO());
+  m_scene->AddComponent<TranslateScaleComponent>(cube_1_ent, Vec3{ 1, 1, 1 }, Vec3{ 1, 1, 1 });
+  m_scene->AddComponent<TranslateScaleComponent>(cube_2_ent, Vec3{ 0, 0, 0 }, Vec3{ 1, 1, 1 });
+  m_scene->AddComponent<ColorOnlyComponent>(cube_1_ent, simple_shader);
+  m_scene->AddComponent<ColorOnlyComponent>(cube_2_ent, simple_shader);
 
   m_scene->AddComponent<NativeScriptComponent>(m_front_camera_entity).Bind<CamController>();
   //  m_scene->AddComponent<NativeScriptComponent>(m_oblique_camera_entity).Bind<CamController>();

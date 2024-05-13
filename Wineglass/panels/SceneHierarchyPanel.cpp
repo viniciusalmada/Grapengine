@@ -94,7 +94,6 @@ void SceneHierarchyPanel::DrawComponents(Entity ent)
                           "CameraComponent"))
     {
       auto& comp = m_scene_context->GetComponent<CameraComponent>(ent);
-      GE_DEBUG("Camera {} is {}", (i32)ent, comp.active);
 
       if (ImGui::Checkbox("Active", &comp.active))
       {
