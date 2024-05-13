@@ -26,10 +26,10 @@ void PosAndTex2DShader::Deactivate()
   m_shader->Unbind();
 }
 
-void PosAndTex2DShader::UpdateModelMatrix(Mat4 data)
+void PosAndTex2DShader::UpdateModelMatrix(Mat4 model)
 {
   Activate();
-  m_shader->UploadMat4F("u_M", data);
+  m_shader->UploadMat4F("u_M", model);
 }
 
 void PosAndTex2DShader::UpdateViewProjectionMatrix(Mat4 viewProj)

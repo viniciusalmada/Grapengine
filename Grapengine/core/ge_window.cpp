@@ -37,10 +37,13 @@ Window::Window(const WindowProps& props, const EventCallbackFn& cb) :
   //                           static_cast<i32>(props.width),
   //                           static_cast<i32>(props.height));
 
-  GLFWimage image;
-  image.pixels = stbi_load(props.icon_path.c_str(), &image.width, &image.height, nullptr, 4);
-  glfwSetWindowIcon(m_window, 1, &image);
-  stbi_image_free(image.pixels);
+  if (!props.icon_path.empty())
+  {
+    GLFWimage image;
+    image.pixels = stbi_load(props.icon_path.c_str(), &image.width, &image.height, nullptr, 4);
+    glfwSetWindowIcon(m_window, 1, &image);
+    stbi_image_free(image.pixels);
+  }
 
   glfwSetWindowUserPointer(m_window, this);
 

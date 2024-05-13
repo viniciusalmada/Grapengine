@@ -1,6 +1,9 @@
 #ifndef GRAPENGINE_TEXTURE_2D_HPP
 #define GRAPENGINE_TEXTURE_2D_HPP
 
+#include "ge_renderer_id.hpp"
+#include "utils/ge_dimension.hpp"
+
 #include <filesystem>
 
 namespace GE
@@ -18,9 +21,8 @@ namespace GE
 
   private:
     std::filesystem::path m_path;
-    u32 m_width = 0;
-    u32 m_height = 0;
-    u32 m_renderer_ID = 0;
+    Dimension m_dim;
+    RendererID m_renderer_ID;
   };
 }
 

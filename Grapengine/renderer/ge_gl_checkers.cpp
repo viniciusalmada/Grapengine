@@ -11,8 +11,6 @@ bool GE::IsVAOBound(u32 vaoID)
     return false;
 
   const bool is_vao_bound = current_VAO == i32(vaoID);
-  if (!is_vao_bound)
-    return false;
 
-  return true;
+  return is_vao_bound;
 }

@@ -10,7 +10,7 @@ using namespace GE;
 
 namespace
 {
-  enum class ShaderType
+  enum class ShaderType : u8
   {
     VERTEX,
     FRAGMENT
@@ -42,7 +42,7 @@ namespace
 
   std::tuple<u32, bool> Compile(const std::string& src, ShaderType type)
   {
-    u32 shader = glCreateShader(GetGLShaderType(type));
+    const u32 shader = glCreateShader(GetGLShaderType(type));
     const char* chars = src.c_str();
     glShaderSource(shader, 1, &chars, nullptr);
 
@@ -50,7 +50,7 @@ namespace
 
     i32 success = 0;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-    if (!success)
+    if (success == 0)
     {
       i32 max_length = 0;
       glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &max_length);
@@ -59,7 +59,7 @@ namespace
       info_log.reserve(static_cast<u32>(max_length));
       glGetShaderInfoLog(shader, max_length, &max_length, info_log.data());
 
-      std::string shader_name = GetGLShaderName(type);
+      const std::string shader_name = GetGLShaderName(type);
       std::stringstream ss;
       ss << "Failure at compiling the " << shader_name << " shader\n";
       ss << info_log.data();
@@ -70,7 +70,7 @@ namespace
     return std::tuple<u32, bool>{ shader, success == 1 };
   }
 
-  u32 CreateProgram(const std::string& vertexSrc, const std::string& fragmentSrc)
+  RendererID CreateProgram(const std::string& vertexSrc, const std::string& fragmentSrc)
   {
     auto [vertex_shader, vertex_ok] = Compile(vertexSrc, ShaderType::VERTEX);
     if (!vertex_ok)
@@ -92,7 +92,7 @@ namespace
 
     i32 is_linked = 0;
     glGetProgramiv(renderer_id, GL_LINK_STATUS, &is_linked);
-    if (!is_linked)
+    if (is_linked == 0)
     {
       i32 max_length = 0;
       glGetProgramiv(renderer_id, GL_INFO_LOG_LENGTH, &max_length);
@@ -120,21 +120,22 @@ namespace
   }
 }
 
-Shader::Shader(const std::string& vertexSrc, const std::string& fragmentSrc)
+Shader::Shader(const std::string& vertexSrc, const std::string& fragmentSrc) :
+    m_renderer_id(CreateProgram(vertexSrc, fragmentSrc))
 {
-  m_renderer_id = CreateProgram(vertexSrc, fragmentSrc);
 }
 
-Shader::Shader(const std::filesystem::path& vertexPath, const std::filesystem::path& fragPath)
+Shader::Shader(const std::filesystem::path& vertexPath, const std::filesystem::path& fragPath) :
+    m_renderer_id(0)
 {
   auto vertex_src = IO::ReadFileToString(vertexPath);
   auto frag_src = IO::ReadFileToString(fragPath);
   m_renderer_id = CreateProgram(vertex_src, frag_src);
 }
 
-void Shader::Bind()
+void Shader::Bind() const
 {
-  glUseProgram(m_renderer_id);
+  glUseProgram(u32(m_renderer_id));
 }
 
 Shader::~Shader() = default;
@@ -182,7 +183,7 @@ void GE::Shader::UploadFloatArray(const std::string& name, const std::vector<f32
 
 [[maybe_unused]] bool Shader::IsValid() const
 {
-  return bool(glIsProgram(m_renderer_id));
+  return bool(glIsProgram(u32(m_renderer_id)));
 }
 
 bool Shader::IsBound() const
@@ -192,7 +193,7 @@ bool Shader::IsBound() const
   if (curr_program <= 0)
     return false;
 
-  return static_cast<decltype(m_renderer_id)>(curr_program) == m_renderer_id;
+  return static_cast<decltype(m_renderer_id)>(u32(curr_program)) == m_renderer_id;
 }
 
 void Shader::Unbind() const
@@ -210,13 +211,12 @@ i32 Shader::RetrieveUniform(const std::string& name)
 {
   GE_ASSERT(IsBound(), "Shader not bound")
 
-check:
   if (m_uniforms.contains(name))
     return m_uniforms[name];
 
-  i32 location = glGetUniformLocation(m_renderer_id, name.c_str());
+  const i32 location = glGetUniformLocation(u32(m_renderer_id), name.c_str());
   GE_ASSERT(location != -1, "Invalid uniform name")
 
   m_uniforms[name] = location;
-  goto check;
+  return location;
 }

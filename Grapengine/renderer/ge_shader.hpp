@@ -1,6 +1,7 @@
 #ifndef GRAPENGINE_SHADER_HPP
 #define GRAPENGINE_SHADER_HPP
 
+#include "ge_renderer_id.hpp"
 #include "math/ge_vector.hpp"
 
 #include <filesystem>
@@ -19,12 +20,12 @@ namespace GE
     [[nodiscard]] bool IsValid() const;
     [[nodiscard]] bool IsBound() const;
 
-    void Bind();
+    void Bind() const;
     void Unbind() const;
 
     void UploadMat4F(const std::string& name, const Mat4& mat);
 
-    void UploadMat4F(const std::string& name, const f32* mat);
+    void UploadMat4F(const std::string& name, const f32* data);
 
     void UploadInt(const std::string& name, i32 i);
 
@@ -38,7 +39,7 @@ namespace GE
   private:
     i32 RetrieveUniform(const std::string& name);
 
-    u32 m_renderer_id{ 0 };
+    RendererID m_renderer_id;
     std::unordered_map<std::string, i32> m_uniforms;
   };
 }

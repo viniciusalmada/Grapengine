@@ -15,7 +15,7 @@ std::string IO::ReadFileToString(const std::filesystem::path& path)
     if (!std::filesystem::is_regular_file(path))
       throw std::runtime_error("File is not regular");
 
-    std::ifstream stream(path, std::ios ::in | std::ios ::binary);
+    const std::ifstream stream(path, std::ios ::in | std::ios ::binary);
     if (!stream.is_open())
       throw std::runtime_error("Failed to open file for reading: " + path.string());
 

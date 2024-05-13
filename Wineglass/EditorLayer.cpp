@@ -1,35 +1,57 @@
 #include "EditorLayer.hpp"
 
+#include "nativescripts/CamController.hpp"
+
 static constexpr const auto CLEAR_COLOR = 0x222222FF;
 
-namespace
+using namespace GE;
+
+EditorLayer::EditorLayer() : Layer("EditorLayer"), m_scene_panel(nullptr) {}
+
+void EditorLayer::OnAttach()
 {
-  DISABLE_WARNING_PUSH
-  WARN_CONVERSION_OF_GREATER_SIZE
-  void* SafeConversion(u32 i)
-  {
-    return reinterpret_cast<void*>(i);
-  }
-  DISABLE_WARNING_POP
-}
-
-GE::EditorLayer::EditorLayer() : Layer("EditorLayer") {}
-
-void GE::EditorLayer::OnAttach()
-{
-
   m_scene = Scene::Make();
 
-  Ref<EditorCamera> cam = MakeRef<EditorCamera>(45.0f, 1280.0f / 720.0f);
-  auto camera_ent = m_scene->CreateEntity("Camera");
-  m_scene->AddComponent<EditorCameraComponent>(camera_ent, cam);
+  m_front_camera_entity = m_scene->CreateEntity("Front Camera");
+  m_scene->AddComponent<CameraComponent>(m_front_camera_entity,
+                                         Vec3{ 0, 0, 10 },
+                                         Vec3{ 0, 0, 0 },
+                                         true,
+                                         false);
+  //  m_scene->AddComponent<TransformComponent>(
+  //    m_front_camera_entity,
+  //    Transform::LookAt({ 0, 0, -10 }, { 0, 0, 0 }, { 0, 1, 0 }));
+
+  m_oblique_camera_entity = m_scene->CreateEntity("Oblique Camera");
+  m_scene->AddComponent<CameraComponent>(m_oblique_camera_entity,
+                                         Vec3{ 10, 10, -10 },
+                                         Vec3{ 0, 0, 0 },
+                                         false,
+                                         false);
+  //  m_scene->AddComponent<TransformComponent>(
+  //    m_oblique_camera_entity,
+  //    Transform::LookAt({ 10, 10, -10 }, { 0, 0, 0 }, { 0, 1, 0 }));
+
+  //  auto camera_ent = m_scene->CreateEntity("Camera");
+  //  m_scene->AddComponent<CameraComponent>(camera_ent, cam);
 
   Ref<IShaderProgram> simple_shader = MakeRef<PosAndTex2DShader>();
-  Ref<WorldReference> world_reference = MakeRef<WorldReference>(simple_shader, 20);
-  auto world_ref_ent = m_scene->CreateEntity("Platform");
-  m_scene->AddComponent<PrimitiveComponent>(world_ref_ent, world_reference->GetVAO());
-  m_scene->AddComponent<TransformComponent>(world_ref_ent, world_reference->GetModelMatrix());
-  m_scene->AddComponent<ColorOnlyComponent>(world_ref_ent, simple_shader);
+  Ref<Cube> cube_1 = Cube::Make(Colors::BLUE, simple_shader, Texture2D::Make());
+  Ref<Cube> cube_2 = Cube::Make(Colors::RED, simple_shader, Texture2D::Make());
+  auto cube_1_ent = m_scene->CreateEntity("Cube Blue");
+  auto cube_2_ent = m_scene->CreateEntity("Cube Red");
+  m_scene->AddComponent<PrimitiveComponent>(cube_1_ent, cube_1->GetVAO());
+  m_scene->AddComponent<PrimitiveComponent>(cube_2_ent, cube_2->GetVAO());
+  m_scene->AddComponent<TranslateScaleComponent>(cube_1_ent, Vec3{ 1, 1, 1 }, Vec3{ 1, 1, 1 });
+  m_scene->AddComponent<TranslateScaleComponent>(cube_2_ent, Vec3{ 0, 0, 0 }, Vec3{ 1, 1, 1 });
+  m_scene->AddComponent<ColorOnlyComponent>(cube_1_ent, simple_shader);
+  m_scene->AddComponent<ColorOnlyComponent>(cube_2_ent, simple_shader);
+
+  m_scene->AddComponent<NativeScriptComponent>(m_front_camera_entity).Bind<CamController>();
+  //  m_scene->AddComponent<NativeScriptComponent>(m_oblique_camera_entity).Bind<CamController>();
+
+  m_scene_panel.SetContext(m_scene);
+
   //
   //
   //  m_simple_shader = MakeRef<PosAndTex2DShader>();
@@ -40,16 +62,15 @@ void GE::EditorLayer::OnAttach()
   //  m_light_2->SetScale(0.5, 0.5, 0.5);
   //  m_world_ref = MakeRef<WorldReference>(m_simple_shader, 20);
   //  m_mesh = MakeRef<Mesh>("assets/objs/teapot.obj", m_mat_shader);
-  m_fb = Framebuffer::Make(FBSpecs{ 1280, 720, 1, true });
+  m_fb = Framebuffer::Make({ 1280, 720 });
 }
 
-void GE::EditorLayer::OnUpdate(GE::TimeStep ts)
+void EditorLayer::OnUpdate(TimeStep ts)
 {
-  const auto& spec = m_fb->GetSpec();
-  if (spec.width != i32(m_viewport_width) || spec.height != i32(m_viewport_height))
+  if (m_fb->GetDimension() != m_viewport_dimension)
   {
-    m_fb->Resize(static_cast<i32>(m_viewport_width), static_cast<i32>(m_viewport_height));
-    m_scene->OnResize(m_viewport_width, m_viewport_height);
+    m_fb->Resize(m_viewport_dimension);
+    m_scene->OnViewportResize(m_viewport_dimension);
   }
 
   m_fb->Bind();
@@ -57,8 +78,8 @@ void GE::EditorLayer::OnUpdate(GE::TimeStep ts)
   //  if (/*m_viewport_focused &&*/ m_viewport_hovered)
   //    m_cam.OnUpdate(ts);
 
-  GE::Renderer::SetClearColor(GE::Color{ CLEAR_COLOR }.ToVec4());
-  GE::Renderer::Clear();
+  Renderer::SetClearColor(Color{ CLEAR_COLOR }.ToVec4());
+  Renderer::Clear();
 
   m_scene->OnUpdate(ts);
 
@@ -90,7 +111,7 @@ void GE::EditorLayer::OnUpdate(GE::TimeStep ts)
   m_fb->Unbind();
 }
 
-void GE::EditorLayer::OnImGuiUpdate()
+void EditorLayer::OnImGuiUpdate()
 {
   static ImGuiDockNodeFlags dock_node_flags = ImGuiDockNodeFlags_None;
 
@@ -139,21 +160,32 @@ void GE::EditorLayer::OnImGuiUpdate()
 
   ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 0 });
 
-  ImGui::ShowDemoWindow();
+  m_scene_panel.OnImGuiRender();
+
+  //  ImGui::Begin("Settings");
+  //
+  //  static int cam = 0;
+  //  ImGui::RadioButton("Front camera", &cam, 0);
+  //  ImGui::RadioButton("Oblique camera", &cam, 1);
+  //
+  //  m_scene->GetComponent<CameraComponent>(m_front_camera_entity).active = cam == 0;
+  //  m_scene->GetComponent<CameraComponent>(m_oblique_camera_entity).active = cam == 1;
+  //
+  //  ImGui::End();
 
   //  ImGui::Begin("Settings");
   //  ImGui::SliderFloat("AmbientStrength", &m_ambient_str, 0, 1);
   //  ImGui::SliderFloat3("LightPos1", &m_light_pos_1.x, -10, 10);
   //  {
-  //    GE::Vec3 light_color = m_light_color_1.ToVec3();
+  //    Vec3 light_color = m_light_color_1.ToVec3();
   //    ImGui::ColorEdit3("LightColor1", &light_color.x);
-  //    m_light_color_1 = GE::Color(light_color);
+  //    m_light_color_1 = Color(light_color);
   //  }
   //  ImGui::SliderFloat3("LightPos2", &m_light_pos_2.x, -10, 10);
   //  {
-  //    GE::Vec3 light_color = m_light_color_2.ToVec3();
+  //    Vec3 light_color = m_light_color_2.ToVec3();
   //    ImGui::ColorEdit3("LightColor2", &light_color.x);
-  //    m_light_color_2 = GE::Color(light_color);
+  //    m_light_color_2 = Color(light_color);
   //  }
   //  ImGui::SliderFloat("LightStrength", &m_light_strength, 0, 10);
   //  ImGui::End();
@@ -163,20 +195,20 @@ void GE::EditorLayer::OnImGuiUpdate()
   //  m_viewport_focused = ImGui::IsWindowFocused();
   m_viewport_hovered = ImGui::IsWindowHovered();
   Ctrl::App::AllowImGuiEvents(/*!m_viewport_focused ||*/ !m_viewport_hovered);
-  auto vp_size = ImGui::GetContentRegionAvail();
-  m_viewport_width = u32(vp_size.x);
-  m_viewport_height = u32(vp_size.y);
-  u32 tex = m_fb->GetColorAttachmentID();
-  const auto [w, h] = m_fb->GetSize();
+  ImVec2 vp_size = ImGui::GetContentRegionAvail();
+  m_viewport_dimension.width = u32(vp_size.x);
+  m_viewport_dimension.height = u32(vp_size.y);
+  RendererID tex = m_fb->GetColorAttachmentID();
+  const auto [w, h] = m_fb->GetDimension();
   ImVec2 size{ f32(w), f32(h) };
-  ImGui::Image(SafeConversion(tex), size, { 0, 1 }, { 1, 0 });
+  ImGui::Image(TypeUtils::ToVoidPtr(u32(tex)), size, { 0, 1 }, { 1, 0 });
   ImGui::End();
   ImGui::PopStyleVar();
 
   ImGui::End();
 }
 
-void GE::EditorLayer::OnEvent(GE::Event& e)
+void EditorLayer::OnEvent(Event& e)
 {
   m_scene->OnEvent(e);
   //  m_cam.OnEvent(e);

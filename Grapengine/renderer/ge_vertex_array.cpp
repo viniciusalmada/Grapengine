@@ -68,17 +68,20 @@ namespace
 
 VertexArray::VertexArray() : id(0), vertex_buffer(nullptr), index_buffer(nullptr)
 {
-  glCreateVertexArrays(1, &id);
+  u32 v_id = 0;
+  glCreateVertexArrays(1, &v_id);
+  id = RendererID{ v_id };
 }
 
 VertexArray::~VertexArray()
 {
-  glDeleteVertexArrays(1, &id);
+  const u32 v_id = u32(id);
+  glDeleteVertexArrays(1, &v_id);
 }
 
 void VertexArray::Bind() const
 {
-  glBindVertexArray(id);
+  glBindVertexArray(u32(id));
   if (vertex_buffer)
     vertex_buffer->Bind();
   if (index_buffer)
@@ -88,20 +91,21 @@ void VertexArray::Bind() const
 void VertexArray::SetVertexBuffer(const Ref<VertexBuffer>& vertexBuffer,
                                   Ref<const BufferLayout> layout)
 {
-  GE_ASSERT(IsVAOBound(id), "The associated VAO lacks a binding")
+  GE_ASSERT(IsVAOBound(u32(id)), "The associated VAO lacks a binding")
 
   u32 attrib_index = 0;
   layout->ForEachElement(
     [&](auto&& elem)
     {
       glEnableVertexAttribArray(attrib_index);
-      std::size_t offset = elem.offset;
-      glVertexAttribPointer(attrib_index,
-                            GetComponentCount(elem),
-                            ShaderDataTypeToOpenGLBaseType(elem.type),
-                            elem.normalized,
-                            static_cast<i32>(layout->GetStride()),
-                            reinterpret_cast<void*>(offset));
+      const std::size_t offset = elem.offset;
+      glVertexAttribPointer(
+        attrib_index,
+        GetComponentCount(elem),
+        ShaderDataTypeToOpenGLBaseType(elem.type),
+        elem.normalized,
+        static_cast<i32>(layout->GetStride()),
+        reinterpret_cast<void*>(offset)); // NOLINT(*-pro-type-reinterpret-cast, *-no-int-to-ptr)
       attrib_index++;
     });
   this->vertex_buffer = vertexBuffer;
@@ -114,11 +118,11 @@ void VertexArray::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer)
 
 bool VertexArray::IsValid() const
 {
-  return bool(glIsVertexArray(this->id));
+  return bool(glIsVertexArray(u32(id)));
 }
 
 void VertexArray::Unbind() const
 {
-  if (IsVAOBound(id))
+  if (IsVAOBound(u32(id)))
     glBindVertexArray(0);
 }

@@ -31,11 +31,11 @@ namespace GE
     [[nodiscard]] Mat4 GetModelMatrix() const;
 
   private:
-    Color m_color{ 0 };
+    Color m_color;
     Ref<DrawingObject> m_draw_primitive;
     Ref<IShaderProgram> m_shader;
-    Mat4 m_scale_mat{};
-    Mat4 m_translate_mat{};
+    Mat4 m_scale_mat;
+    Mat4 m_translate_mat;
     Ref<Texture2D> m_texture;
   };
 }

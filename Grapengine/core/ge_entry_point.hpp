@@ -8,10 +8,13 @@
 
 extern GE::Ref<GE::Application> CreateApplication();
 
-int main(int /*argc*/, char* argv[])
+// NOLINT(*-definitions-in-headers)
+int main(int argc, char* argv[])
 {
+  auto args = std::span(argv, u64(argc));
+
   GE::Logger::Init();
-  GE_DEBUG("----------Startup at <{}>----------", argv[0])
+  GE_DEBUG("----------Startup at <{}>----------", args.front())
   auto app = CreateApplication();
   GE::Ctrl::App::Init(app);
 

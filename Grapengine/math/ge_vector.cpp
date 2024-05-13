@@ -99,7 +99,7 @@ f32 Vec3::Dot(const Vec3& other) const
 
 f32 Vec3::Distance(const Vec3& other) const
 {
-  Vec3 diff = *this - other;
+  const Vec3 diff = *this - other;
   return diff.Length();
 }
 
@@ -119,10 +119,10 @@ Mat4::Mat4(const std::array<f32, 4>& row0,
 {
   for (u32 i = 0; i < 4; ++i)
   {
-    data[i][0] = row0[i];
-    data[i][1] = row1[i];
-    data[i][2] = row2[i];
-    data[i][3] = row3[i];
+    data.at(i).at(0) = row0.at(i);
+    data.at(i).at(1) = row1.at(i);
+    data.at(i).at(2) = row2.at(i);
+    data.at(i).at(3) = row3.at(i);
   }
 }
 
@@ -152,12 +152,12 @@ Mat4 Mat4::operator*(const Mat4& other) const
 
 f32& Mat4::operator()(u32 row, u32 col)
 {
-  return data[col][row];
+  return data.at(col).at(row);
 }
 
 const f32& Mat4::operator()(u32 row, u32 col) const
 {
-  return data[col][row];
+  return data.at(col).at(row);
 }
 
 const f32* Mat4::ValuePtr() const

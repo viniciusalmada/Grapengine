@@ -8,7 +8,7 @@
 
 namespace GE
 {
-  enum class EvType
+  enum class EvType : u8
   {
     NONE,
     WINDOW_CLOSE,

@@ -16,16 +16,22 @@ void OpenGLDebuggerFunc(GLenum source,
                         const char* message,
                         const void* userParam);
 
-void OpenGLDebuggerFunc(GLenum, GLenum, u32 id, GLenum, GLsizei, const char* message, const void*)
+// NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
+void OpenGLDebuggerFunc([[maybe_unused]] GLenum source,
+                        [[maybe_unused]] GLenum type,
+                        [[maybe_unused]] u32 id,
+                        [[maybe_unused]] GLenum severity,
+                        [[maybe_unused]] GLsizei len,
+                        [[maybe_unused]] const char* message,
+                        [[maybe_unused]] const void* param)
 {
-  // ignore non-significant error/warning codes
-  if (id == 131169 || id == 131185 || id == 131218 || id == 131204)
+  constexpr auto BUFFER_INFO_ID = 0x20071;
+  if (id == BUFFER_INFO_ID)
     return;
 
   std::stringstream ss;
-  ss << "OpenGL Error:" << std::endl;
-  ss << "  (0x" << std::setfill('0') << std::setw(4) << std::hex << id << "): " << message
-     << std::endl;
+  ss << "OpenGL Error:\n";
+  ss << "  (0x" << std::setfill('0') << std::setw(4) << std::hex << id << "): " << message << '\n';
   GE_ASSERT(false, ss.str().c_str())
 }
 

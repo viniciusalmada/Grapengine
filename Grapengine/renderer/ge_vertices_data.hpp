@@ -23,8 +23,8 @@ namespace GE
     }
 
   private:
-    std::vector<bool> m_validator{};
-    std::vector<ShaderDataType> m_types{};
+    std::vector<bool> m_validator;
+    std::vector<ShaderDataType> m_types;
   };
 
   class VerticesData

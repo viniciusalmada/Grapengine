@@ -16,7 +16,6 @@ namespace GE
   public:
     EditorCamera();
     EditorCamera(f32 fov, f32 aspectRatio);
-    ~EditorCamera();
 
     void OnUpdate(TimeStep ts);
     void OnEvent(Event& event);
@@ -37,10 +36,10 @@ namespace GE
 
     f32 m_field_of_view;
     f32 m_aspect_ratio;
-    Mat4 m_projection_mat{};
-    Mat4 m_view_mat{};
-    Vec3 m_eye{ 2.5f, 2.5f, 12.0f };
-    Vec3 m_focal_point{ 2.5f, 2.5f, 2.5f };
+    Mat4 m_projection_mat;
+    Mat4 m_view_mat;
+    Vec3 m_eye;
+    Vec3 m_focal_point;
     Vec2 m_mouse_init_pos{};
     bool m_can_rotate = false;
     bool m_can_pan = false;
