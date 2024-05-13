@@ -220,3 +220,11 @@
 //{
 //   m_pimpl->UpdateZ(diffY);
 // }
+
+#include "ge_camera.hpp"
+
+using namespace GE;
+
+Camera::Camera() = default;
+
+Camera::~Camera() = default;

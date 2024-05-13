@@ -10,6 +10,7 @@ namespace GE
   {
   public:
     ScriptableEntity(Entity ent, Scene& scene);
+    virtual ~ScriptableEntity();
 
     virtual void OnCreate() {}
     virtual void OnDestroy() {}

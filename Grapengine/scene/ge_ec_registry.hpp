@@ -23,7 +23,7 @@ namespace GE
 
     /**
      * Add a component to registry and associate to its entity
-     * @tparam Comp type of component
+     * @tparam Component type of component
      * @tparam Args argument list to construct the component
      * @param ent entity that is associated of component
      * @param args argument list to construct the component
@@ -42,7 +42,7 @@ namespace GE
 
     /**
      * Retrieve the component of type Comp associated with entity
-     * @tparam Comp component type to be got
+     * @tparam Component component type to be got
      * @param ent entity that is associated with component
      * @return associated component
      */
@@ -59,7 +59,7 @@ namespace GE
 
     /**
      * Retrieve the component of type Comp associated with entity
-     * @tparam Comp component type to be got
+     * @tparam Component component type to be got
      * @param ent entity that is associated with component
      * @return associated component
      */
@@ -103,7 +103,7 @@ namespace GE
 
     /**
      * Retrieve list of entities that has all passed components
-     * @tparam Comps list of components used to query the entities
+     * @param comps list of components used to query the entities
      * @return set of entities that has all given components in common
      */
     [[nodiscard]] std::vector<Entity> Group(const std::initializer_list<CompType>&& comps) const;

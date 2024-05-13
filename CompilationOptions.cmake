@@ -22,11 +22,11 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL GNU)
   target_compile_definitions(GrapengineCompileOptions INTERFACE GE_GCC_COMPILER)
   target_compile_options(GrapengineCompileOptions INTERFACE
+    $<$<CONFIG:Release>:-Werror> # Treat warnings as errors
     -Wall                       # Enable most common warnings
     -Wextra                     # Enable extra warnings
     -Wempty-body
     -Wpedantic                  # Issue all the warnings demanded by strict ISO C and ISO C++
-    $<$<CONFIG:Release>:-Werror> # Treat warnings as errors
     -Wconversion                # Warn for implicit conversions that may change the value
     -Wsign-conversion           # Warn for signed-to-unsigned conversion
     -Wunreachable-code          # Warn if the compiler detects code that will never be executed
@@ -39,28 +39,19 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL GNU)
     -Wmaybe-uninitialized       # Warn about variables that may be uninitialized
     -Wunused-label              # Warn when a label is declared but not used
     -Wsuggest-override          # Warn if a function could be marked override
-    -Wnon-virtual-dtor          # Warn when a class has a non-virtual destructor
   )
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL Clang)
   if (CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "MSVC" OR CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "GNU")
     target_compile_definitions(GrapengineCompileOptions INTERFACE GE_CLANG_COMPILER)
     target_compile_options(GrapengineCompileOptions INTERFACE
       $<$<CONFIG:Release>:-Werror> # Treat warnings as errors
-      -Wall                       # Enable most warning messages
-      -Wextra                     # Enable some extra warning messages
-      -Wpedantic                  # Warn about non-portable constructs
-      -Wshadow                    # Warn whenever a local variable shadows another local variable
-      -Wconversion                # Warn for implicit conversions that may change the value
-      -Wsign-conversion           # Warn for implicit conversions that may change the sign
-      -Wformat=2                  # Check printf/scanf format strings
-      -Wundef                     # Warn if an undefined identifier is evaluated in an #if directive
-      -Wunreachable-code          # Warn if code will never be executed
-      -Wunused                    # Warn about unused functions, variables, etc.
-      -Wunused-private-field
-      -Warray-bounds
+      -Weverything
+      -Wnon-virtual-dtor
       -Wno-c++98-compat
       -Wno-c++98-compat-pedantic
       -Wno-exit-time-destructors
+      -Wno-padded
+      -Wno-header-hygiene
     )
   else ()
     message(FATAL_ERROR "Unsupported CLANG frontend (CMAKE_CXX_COMPILER_FRONTEND_VARIANT = ${CMAKE_CXX_COMPILER_FRONTEND_VARIANT})")

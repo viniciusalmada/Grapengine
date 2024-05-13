@@ -2,7 +2,6 @@
 #define GRAPENGINE_APPLICATION_HPP
 
 #include "ge_config.hpp"
-#include "ge_macros.hpp"
 #include "ge_type_aliases.hpp"
 #include "layer/ge_imgui_layer.hpp"
 

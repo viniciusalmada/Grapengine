@@ -1,7 +1,6 @@
 #ifndef GRAPENGINE_GE_MESH_HPP
 #define GRAPENGINE_GE_MESH_HPP
 
-#include "core/ge_macros.hpp"
 #include "drawables/ge_cube.hpp"
 #include "drawables/ge_cylinder.hpp"
 #include "drawables/ge_drawable.hpp"

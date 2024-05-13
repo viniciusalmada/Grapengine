@@ -41,7 +41,6 @@ using namespace std::string_literals;
 #include "core/ge_config.hpp"
 #include "core/ge_type_aliases.hpp"
 #include "core/ge_memory.hpp"
-#include "core/ge_macros.hpp"
 // clang-format on
 
 #endif

@@ -9,6 +9,7 @@ class CamController final : public ScriptableEntity
 {
 public:
   CamController(Entity e, Scene& s) : ScriptableEntity(e, s), xy_cam({}) {}
+  ~CamController() override;
 
   void OnCreate() override
   {
@@ -47,5 +48,7 @@ public:
 private:
   Vec2 xy_cam;
 };
+
+CamController::~CamController() = default;
 
 #endif // GRAPENGINE_CAMCONTROLLER_HPP

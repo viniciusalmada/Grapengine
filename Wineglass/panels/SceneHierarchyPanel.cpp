@@ -29,7 +29,7 @@ void SceneHierarchyPanel::OnImGuiRender()
 
 void SceneHierarchyPanel::DrawEntityNode(Entity ent)
 {
-  void* node_id = TypeUtils::ToVoidPtr((i32)ent);
+  void* node_id = TypeUtils::ToVoidPtr(i32(ent));
   const int is_selected = ent == m_selected_entity ? ImGuiTreeNodeFlags_Selected : 0;
   const int flags = is_selected | ImGuiTreeNodeFlags_OpenOnArrow;
 
@@ -103,7 +103,7 @@ void SceneHierarchyPanel::DrawComponents(Entity ent)
       ImGui::Checkbox("Fixed AR", &comp.fixed_ratio);
 
       const std::array TITLES{ "Perspective"s, "Orthographic"s };
-      u8 current_mode = (u8)comp.camera.GetProjectionMode();
+      u8 current_mode = u8(comp.camera.GetProjectionMode());
       const char* preview_value = TITLES.at(current_mode).c_str();
       if (ImGui::BeginCombo("Projection", preview_value))
       {
@@ -112,8 +112,8 @@ void SceneHierarchyPanel::DrawComponents(Entity ent)
           const bool is_selected = (current_mode == n);
           if (ImGui::Selectable(TITLES.at(n).c_str(), is_selected))
           {
-            current_mode = (u8)n;
-            comp.camera.SetProjectionMode((ProjectionMode)current_mode);
+            current_mode = u8(n);
+            comp.camera.SetProjectionMode(ProjectionMode(current_mode));
           }
 
           if (is_selected)

@@ -51,8 +51,8 @@ namespace GE
     f32 z;
 
     constexpr Vec3() : x(0), y(0), z(0) {}
-    constexpr Vec3(f32 x, f32 y, f32 z) : x(x), y(y), z(z) {}
-    Vec3(Vec2 xy, f32 z) : x(xy.x), y(xy.y), z(z) {}
+    constexpr Vec3(f32 xx, f32 yy, f32 zz) : x(xx), y(yy), z(zz) {}
+    Vec3(Vec2 xy, f32 zz) : x(xy.x), y(xy.y), z(zz) {}
 
     Vec3 operator+(const Vec3& other) const;
     Vec3 operator-(const Vec3& other) const;

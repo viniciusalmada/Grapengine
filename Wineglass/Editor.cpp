@@ -16,6 +16,8 @@ GE::Editor::Editor() :
   Application::AddLayer(editor_layer);
 }
 
+GE::Editor::~Editor() = default;
+
 GE::Ref<GE::Application> CreateApplication()
 {
   return GE::MakeRef<GE::Editor>();

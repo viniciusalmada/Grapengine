@@ -12,34 +12,33 @@ namespace GE
 {
   struct BaseComponent
   {
-    virtual ~BaseComponent() = default;
-    [[nodiscard]] virtual CompType Type() const { return CompType::BASE; };
+    BaseComponent() = default;
+    BaseComponent(const BaseComponent&) = delete;
+    virtual ~BaseComponent();
+    [[nodiscard]] virtual CompType Type() const;
   };
 
   struct TagComponent final : public BaseComponent
   {
     std::string tag;
-    [[nodiscard]] CompType Type() const final { return CompType::TAG; }
+    [[nodiscard]] CompType Type() const final;
 
-    TagComponent(const char* t) : tag(t) {}
+    TagComponent(const char* t);
   };
 
   struct TransformComponent : public BaseComponent
   {
     Mat4 transform;
-    [[nodiscard]] CompType Type() const final { return CompType::TRANF; }
-    TransformComponent(const Mat4& transf) : transform(transf) {}
+    [[nodiscard]] CompType Type() const final;
+    TransformComponent(const Mat4& transf);
   };
 
   struct TranslateScaleComponent : public BaseComponent
   {
     Vec3 position_values;
     Vec3 scale_values;
-    [[nodiscard]] CompType Type() const final { return CompType::TRANSL_SCALE; }
-    TranslateScaleComponent(const Vec3& pos, const Vec3& scale) :
-        position_values(pos), scale_values(scale)
-    {
-    }
+    [[nodiscard]] CompType Type() const final;
+    TranslateScaleComponent(const Vec3& pos, const Vec3& scale);
     [[nodiscard]] Mat4 GetModelMat() const
     {
       return Transform::Translate(position_values) * Transform::Scale(scale_values);
@@ -50,21 +49,23 @@ namespace GE
   struct PrimitiveComponent : public BaseComponent
   {
     Ref<DrawingObject> drawing_obj;
-    PrimitiveComponent(const Ref<DrawingObject>& drawObj) : drawing_obj(drawObj) {}
-    [[nodiscard]] CompType Type() const final { return CompType::PRIMITIVE; }
+    PrimitiveComponent(const Ref<DrawingObject>& drawObj);
+    PrimitiveComponent(const PrimitiveComponent&);
+    [[nodiscard]] CompType Type() const final;
   };
 
   struct MaterialComponent : public BaseComponent
   {
     Ref<IShaderProgram> shader;
-    [[nodiscard]] CompType Type() const final { return CompType::MATERIAL; }
+    [[nodiscard]] CompType Type() const final;
   };
 
   struct ColorOnlyComponent : public BaseComponent
   {
     Ref<IShaderProgram> shader;
-    [[nodiscard]] CompType Type() const final { return CompType::COLOR_ONLY; }
-    ColorOnlyComponent(Ref<IShaderProgram> s) : shader(std::move(s)) {}
+    [[nodiscard]] CompType Type() const final;
+    ColorOnlyComponent(Ref<IShaderProgram> s);
+    ColorOnlyComponent(const ColorOnlyComponent&);
   };
 
   struct CameraComponent : public BaseComponent
@@ -73,12 +74,8 @@ namespace GE
     bool active;
     bool fixed_ratio;
 
-    [[nodiscard]] CompType Type() const final { return CompType::CAMERA; }
-    CameraComponent(const Vec3& eye, const Vec3& target, bool act, bool fixedRatio) :
-        active(act), fixed_ratio(fixedRatio)
-    {
-      camera.SetView(eye, target);
-    }
+    [[nodiscard]] CompType Type() const final;
+    CameraComponent(const Vec3& eye, const Vec3& target, bool act, bool fixedRatio);
   };
 
   class ScriptableEntity;
@@ -90,16 +87,16 @@ namespace GE
     std::function<void(Entity, Scene&)> instantiateFun;
     std::function<void()> destroyFun;
 
-    explicit NativeScriptComponent() : instance(nullptr), instantiateFun({}), destroyFun({}) {}
+    explicit NativeScriptComponent();
 
-    [[nodiscard]] CompType Type() const final { return CompType::NATIVE_SCRIPT; }
+    [[nodiscard]] CompType Type() const final;
     template <typename T>
     void Bind()
     {
       instantiateFun = [this](Entity e, Scene& s) { instance = new T(e, std::ref(s)); };
       destroyFun = [this]()
       {
-        delete (T*)instance;
+        delete static_cast<T*>(instance);
         instance = nullptr;
       };
     }

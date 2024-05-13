@@ -81,3 +81,5 @@ void SceneCamera::SetFov(f32 fov)
   m_fov = fov;
   RecalculateProjection();
 }
+
+SceneCamera::~SceneCamera() = default;

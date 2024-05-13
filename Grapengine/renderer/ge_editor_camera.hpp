@@ -1,7 +1,6 @@
 #ifndef GE_EDITOR_CAMERA_HPP
 #define GE_EDITOR_CAMERA_HPP
 
-#include "core/ge_macros.hpp"
 #include "events/ge_event_type.hpp"
 
 #include <math/ge_vector.hpp>

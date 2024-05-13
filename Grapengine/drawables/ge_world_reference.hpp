@@ -1,7 +1,6 @@
 #ifndef GRAPENGINE_GE_WORLD_REFERENCE_HPP
 #define GRAPENGINE_GE_WORLD_REFERENCE_HPP
 
-#include "core/ge_macros.hpp"
 #include "core/ge_type_aliases.hpp"
 #include "drawables/ge_cube.hpp"
 #include "drawables/ge_drawing_object.hpp"

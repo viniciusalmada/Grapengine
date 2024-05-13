@@ -2,7 +2,6 @@
 #define GRAPENGINE_WINDOW_HPP
 
 #include "GLFW/glfw3.h"
-#include "core/ge_macros.hpp"
 #include "drawables/ge_color.hpp"
 #include "events/ge_event.hpp"
 #include "ge_context.hpp"

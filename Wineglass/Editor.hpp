@@ -5,10 +5,11 @@
 
 namespace GE
 {
-  class Editor : public Application
+  class Editor final : public Application
   {
   public:
     Editor();
+    ~Editor() override;
   };
 }
 

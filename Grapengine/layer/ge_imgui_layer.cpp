@@ -20,8 +20,10 @@ ImGuiLayer::ImGuiLayer(Ref<Window> window) : Layer(IMGUI_LAYER), m_window(std::m
 
 ImGuiLayer::~ImGuiLayer() = default;
 
-DISABLE_WARNING_PUSH
-WARN_UNSAFE_BUFFER
+#if defined(GE_CLANG_COMPILER) && defined(GE_PLATFORM_LINUX)
+  #pragma clang diagnostic push
+  #pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
 void ImGuiLayer::OnAttach()
 {
   GE_INFO("ImGui initialization")
@@ -79,7 +81,9 @@ void ImGuiLayer::OnAttach()
   ImGui_ImplGlfw_InitForOpenGL(std::any_cast<GLFWwindow*>(m_window->GetNativeHandler()), true);
   ImGui_ImplOpenGL3_Init();
 }
-DISABLE_WARNING_POP
+#if defined(GE_CLANG_COMPILER) && defined(GE_PLATFORM_LINUX)
+  #pragma clang diagnostic pop
+#endif
 
 void ImGuiLayer::OnDetach()
 {

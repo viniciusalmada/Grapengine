@@ -19,7 +19,7 @@ namespace GE
   public:
     SceneCamera();
     SceneCamera(const SceneCamera&) = delete;
-    ~SceneCamera() override = default;
+    ~SceneCamera() override;
 
     [[nodiscard]] Mat4 GetViewProjection() const;
     [[nodiscard]] Vec3 GetPosition() const { return m_position; }

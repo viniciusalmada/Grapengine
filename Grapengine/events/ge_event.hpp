@@ -2,7 +2,6 @@
 #define GRAPENGINE_EVENT_HPP
 
 #include "core/ge_config.hpp"
-#include "core/ge_macros.hpp"
 #include "ge_event_type.hpp"
 
 #include <functional>
