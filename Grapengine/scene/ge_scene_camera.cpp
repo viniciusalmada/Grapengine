@@ -8,23 +8,21 @@ using namespace GE;
 namespace
 {
   constexpr auto DEFAULT_Z = 10;
+  constexpr auto DEFAULT_FOV = 45.0f;
+  constexpr auto DEFAULT_ORTHO_SIZE = 10.0f;
 }
 
 SceneCamera::SceneCamera() :
     m_position(Vec3{ 0, 0, DEFAULT_Z }),
     m_target(Vec3{ 0, 0, 0 }),
     m_viewport({ 1, 1 }),
-    m_fov(45.0f),
-    m_orthographic_size(10.0f),
+    m_fov(DEFAULT_FOV),
+    m_orthographic_size(DEFAULT_ORTHO_SIZE),
     m_projection_mode(ProjectionMode::PERSPECTIVE)
 {
   RecalculateProjection();
 }
 
-SceneCamera::SceneCamera(const SceneCamera& other) :
-    m_position(other.m_position), m_target(other.m_target), m_viewport(other.m_viewport)
-{
-}
 
 void SceneCamera::SetView(Vec3 position, Vec3 target)
 {

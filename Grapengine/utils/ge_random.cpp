@@ -32,7 +32,6 @@ Random& Random::Get()
 }
 
 Random::Random() :
-    m_rd(),
     m_engine(m_rd()),
     m_int_dist(std::uniform_int_distribution<u32>{ 0, 0 }),
     m_real_dist(std::uniform_real_distribution<f32>{ 0, 0 })

@@ -18,7 +18,7 @@ namespace GE
   {
   public:
     SceneCamera();
-    SceneCamera(const SceneCamera&);
+    SceneCamera(const SceneCamera&) = delete;
     ~SceneCamera() override = default;
 
     [[nodiscard]] Mat4 GetViewProjection() const;

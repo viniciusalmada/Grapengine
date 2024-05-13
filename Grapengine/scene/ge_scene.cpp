@@ -102,7 +102,7 @@ Opt<Entity> Scene::GetActiveCamera() const
   if (std::ranges::none_of(camera_group,
                            [&](Entity ent)
                            {
-                             const auto cc = m_registry.GetComponent<CameraComponent>(ent);
+                             const auto& cc = m_registry.GetComponent<CameraComponent>(ent);
                              return cc.active;
                            }))
   {
@@ -135,7 +135,7 @@ void Scene::EachEntity(const std::function<void(Entity)>& fun) const
 void Scene::UpdateActiveCamera(Entity activeCamera)
 {
   auto cameras = m_registry.Group({ CompType::CAMERA });
-  for (Entity ent : cameras)
+  for (const Entity& ent : cameras)
   {
     if (ent == activeCamera)
       continue;
