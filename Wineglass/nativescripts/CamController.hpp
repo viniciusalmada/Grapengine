@@ -22,7 +22,10 @@ public:
     constexpr f32 speed = 0.01f;
     const f32 incr = speed * ts.f();
 
-    auto& transform_comp = m_scene.GetComponent<TransformComponent>(m_entity);
+    auto& camera_comp = m_scene.GetComponent<CameraComponent>(m_entity);
+    if (!camera_comp.active)
+      return;
+
     if (Input::IsKeyPressed(KeyCode::A))
       xy_cam.x -= incr;
     else if (Input::IsKeyPressed(KeyCode::D))
@@ -32,8 +35,13 @@ public:
     else if (Input::IsKeyPressed(KeyCode::S))
       xy_cam.y += incr;
 
-    transform_comp.transform =
-      Transform::LookAt(Vec3{ 0, 0, -10 }, Vec3{ xy_cam, 0 }, Vec3{ 0, 1, 0 });
+    auto camera_pos = camera_comp.camera.GetPosition();
+    auto camera_tar = camera_comp.camera.GetTarget();
+    camera_pos.x = xy_cam.x;
+    camera_pos.y = xy_cam.y;
+    camera_tar.x = xy_cam.x;
+    camera_tar.y = xy_cam.y;
+    camera_comp.camera.SetView(camera_pos, camera_tar);
   }
 
 private:
