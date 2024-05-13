@@ -49,6 +49,4 @@ private:
   Vec2 xy_cam;
 };
 
-CamController::~CamController() = default;
-
 #endif // GRAPENGINE_CAMCONTROLLER_HPP
