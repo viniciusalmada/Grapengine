@@ -55,6 +55,7 @@
     },
     {
       "name": "microsoft-cl-debug",
+      "displayName": "Debug build with MSVC compiler",
       "inherits": [
         "h_default",
         "h_debug",
@@ -66,6 +67,7 @@
     },
     {
       "name": "microsoft-cl-release",
+      "displayName": "Optimized build with MSVC compiler",
       "inherits": [
         "h_default",
         "h_release",
@@ -77,6 +79,7 @@
     },
     {
       "name": "llvm-clang-cl-debug",
+      "displayName": "Debug build with Clang compiler as MSVC frontend",
       "inherits": [
         "h_default",
         "h_debug",
@@ -88,6 +91,7 @@
     },
     {
       "name": "llvm-clang-cl-release",
+      "displayName": "Optimized build with Clang compiler as MSVC frontend",
       "inherits": [
         "h_default",
         "h_release",
@@ -99,6 +103,7 @@
     },
     {
       "name": "llvm-clang-gcc-debug",
+      "displayName": "Debug build with Clang compiler as GCC frontend",
       "inherits": [
         "h_default",
         "h_debug",
@@ -110,6 +115,7 @@
     },
     {
       "name": "llvm-clang-gcc-release",
+      "displayName": "Optimized build with Clang compiler as GCC frontend",
       "inherits": [
         "h_default",
         "h_release",
@@ -121,6 +127,7 @@
     },
     {
       "name": "gnu-gcc-debug",
+      "displayName": "Debug build with GCC compiler",
       "inherits": [
         "h_default",
         "h_debug",
@@ -132,7 +139,7 @@
     },
     {
       "name": "gnu-gcc-release",
-      "hidden": false,
+      "displayName": "Optmized build with GCC compiler",
       "inherits": [
         "h_default",
         "h_release",

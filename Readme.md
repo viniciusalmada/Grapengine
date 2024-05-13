@@ -1,12 +1,57 @@
-# Grapengine
-A 3D Graphics Engine made with C++ and OpenGL core profile.
+# Grapengine 🍇
 
-### Build
+A 3D Graphics Engine made with C++20 and OpenGL core profile.
 
-This project use `CMakelists` and `VCPKG` as package manager.
+### Configure
 
-To configure you must have the path for vcpkg _toolchain_ (`${VCPKG_TOOLCHAIN}`).
+This project use `CMake`, `VCPKG` as package manager and a `CMakePresets.json` file.
+
+The `VCPKG` is set up as git submodule.
+
+Clone with:
 
 ```shell
-cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE="${VCPKG_TOOLCHAIN}"
+## SSH
+git clone --recursive git@github.com:viniciusalmada/Grapengine.git
+## HTTPS
+git clone --recursive https://github.com/viniciusalmada/Grapengine.git
 ```
+
+There is also ImGui (https://github.com/ocornut/imgui.git) configured as submodule, it is being used to develop the
+engine editor (**Wineglass 🍷**).
+
+## Build
+
+To build the project, only call `cmake` with the desired preset.
+
+At this point there are 3 supported compilers and 2 differents platforms:
+
+* For Microsoft Windows platform:
+    * LLVM/Clang-cl (v16)
+    * MSVC cl (2022)
+* For any Linux distribution:
+    * GNU GCC (v13)
+    * LLVM/Clang (v16)
+
+The list of presets are following:
+
+* `microsoft-cl-debug`- Debug build with MSVC compiler
+* `microsoft-cl-release`- Optimized build with MSVC compiler
+* `llvm-clang-cl-debug`- Debug build with Clang compiler as MSVC frontend
+* `llvm-clang-cl-release`- Optimized build with Clang compiler as MSVC frontend
+* `llvm-clang-gcc-debug`- Debug build with Clang compiler as GCC frontend
+* `llvm-clang-gcc-release`- Optimized build with Clang compiler as GCC frontend
+* `gnu-gcc-debug`- Debug build with GCC compiler
+* `gnu-gcc-release`- Optmized build with GCC compiler
+
+Just call `cmake --preset <preset-name>`, this will create a folder `build-<preset-name>` with the necessary files to
+compile the project.
+After this, to build, call `cmake --build build-<preset-name>`.
+
+### Structure
+
+The project is organized by its root `CMakeLists.txt` file, essentially there are 3 targets in it:
+
+* **Grapengine**: The library itself
+* **Wine**: The engine editor
+* **Tests**: The library unit tests with gtest framework
