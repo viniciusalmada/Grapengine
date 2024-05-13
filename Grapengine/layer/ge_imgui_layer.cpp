@@ -20,7 +20,7 @@ ImGuiLayer::ImGuiLayer(Ref<Window> window) : Layer(IMGUI_LAYER), m_window(std::m
 
 ImGuiLayer::~ImGuiLayer() = default;
 
-#if defined(GE_CLANG_COMPILER) && defined(GE_PLATFORM_LINUX)
+#if defined(GE_CLANG_COMPILER)
   #pragma clang diagnostic push
   #pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
 #endif
