@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
 
 if (NOT DEFINED ${CMAKE_TOOLCHAIN_FILE})
-  message(STATUS "Defining vcpkg as toolchain file")
+  message(STATUS "GRAPENGINE: Defining vcpkg as toolchain file")
   set(CMAKE_TOOLCHAIN_FILE ${CMAKE_SOURCE_DIR}/vendor/vcpkg/scripts/buildsystems/vcpkg.cmake)
   message(STATUS ${CMAKE_TOOLCHAIN_FILE})
 endif ()

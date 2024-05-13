@@ -1,23 +1,31 @@
 add_library(GrapengineCompileOptions INTERFACE)
 
-message(STATUS "GRAPENGINE: Setting up compiler flags = ${CMAKE_CXX_COMPILER_ID}:${CMAKE_CXX_COMPILER_FRONTEND_VARIANT}")
+message(STATUS "GRAPENGINE: Setting up platform = ${CMAKE_CXXSYSTEM_NAME}")
+if (CMAKE_SYSTEM_NAME STREQUAL Windows)
+  target_compile_definitions(Grapengine PUBLIC GE_PLATFORM_WINDOWS)
+elseif (CMAKE_SYSTEM_NAME STREQUAL Linux)
+  target_compile_definitions(Grapengine PUBLIC GE_PLATFORM_LINUX)
+else ()
+  message(FATAL_ERROR "Unsupported platform")
+endif ()
+
+message(STATUS "GRAPENGINE: Setting up compiler flags for ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION} (${CMAKE_CXX_COMPILER_FRONTEND_VARIANT})")
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   target_compile_definitions(GrapengineCompileOptions INTERFACE GE_MSVC_COMPILER)
   target_compile_options(GrapengineCompileOptions INTERFACE
-    /Wall                       # Enable most common warnings
-    /W4                         # Set warning level 4 (highest warning level)
-    /wd4625 # Copy constructor implicitly deleted
-    /wd4626 # Copy assignment operator implicitly deleted
-    /wd5026 # Move constructor operator implicitly deleted
-    /wd5027 # Move assignment operator implicitly deleted
-    /wd4820 # bytes padding
-    /wd4711 # inline expansion
-    /wd4710 # not inlined (??)
-    /wd5039 # extern C
-    /wd4061 # explicitly handled by case
-    /wd4868 # enforce left-to-right
-    /wd5045 # insert Spectre mitigation
-    $<$<CONFIG:Release>:/WX>     # Treat warnings as errors
+    $<$<CONFIG:Release>:/WX> # Treat warnings as errors
+    /Wall                    # Enable most common warnings
+    /W4                      # Set warning level 4 (highest warning level)
+    /wd4711                  # The compiler performed inlining on the given function
+    /wd4820                  # Bytes padding added after
+    /wd4625                  # Copy constructor implicitly deleted
+    /wd4626                  # Copy assignment operator implicitly deleted
+    /wd5026                  # Move constructor operator implicitly deleted
+    /wd5027                  # Move assignment operator implicitly deleted
+    /wd5039                  # extern C function
+    /wd4710                  # not inlined (??)
+    /wd4868                  # enforce left-to-right
+    /wd5045                  # insert Spectre mitigation
   )
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL GNU)
   target_compile_definitions(GrapengineCompileOptions INTERFACE GE_GCC_COMPILER)

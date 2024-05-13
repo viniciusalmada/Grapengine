@@ -43,15 +43,6 @@ target_compile_definitions(Grapengine PRIVATE
   GRAPENGINE_CORE
 )
 
-message(STATUS "GRAPENGINE: Setting up platform = ${CMAKE_SYSTEM_NAME}")
-if (CMAKE_SYSTEM_NAME STREQUAL Windows)
-  target_compile_definitions(Grapengine PUBLIC GE_PLATFORM_WINDOWS)
-elseif (CMAKE_SYSTEM_NAME STREQUAL Linux)
-  target_compile_definitions(Grapengine PUBLIC GE_PLATFORM_LINUX)
-else ()
-  message(FATAL_ERROR "Unsupported platform")
-endif ()
-
 target_link_libraries(Grapengine PRIVATE GrapengineCompileOptions)
 
 ##############################################################################
