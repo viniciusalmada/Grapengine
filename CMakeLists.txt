@@ -1,6 +1,14 @@
 cmake_minimum_required(VERSION 3.22)
 
 if (NOT DEFINED ${CMAKE_TOOLCHAIN_FILE})
+  if (CMAKE_HOST_SYSTEM_NAME STREQUAL Windows)
+    set(VCPKG_TARGET_TRIPLET x64-windows-static)
+  elseif (CMAKE_HOST_SYSTEM_NAME STREQUAL Linux)
+    set(VCPKG_TARGET_TRIPLET x64-linux-static)
+  else ()
+    message(FATAL_ERROR "GRAPENGINE: Unsupported platform")
+  endif ()
+
   message(STATUS "GRAPENGINE: Defining vcpkg as toolchain file")
   set(CMAKE_TOOLCHAIN_FILE ${CMAKE_SOURCE_DIR}/vendor/vcpkg/scripts/buildsystems/vcpkg.cmake)
   message(STATUS ${CMAKE_TOOLCHAIN_FILE})
