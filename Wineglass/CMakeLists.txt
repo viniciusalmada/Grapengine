@@ -17,3 +17,13 @@ target_include_directories(Wine PRIVATE SYSTEM
 target_link_libraries(Wine PRIVATE Grapengine)
 target_link_libraries(Wine PRIVATE NativeScripts)
 target_link_libraries(Wine PRIVATE GrapengineCompileOptions)
+
+add_custom_command(
+  TARGET Wine POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/assets
+  COMMAND ${CMAKE_COMMAND} -E copy_directory
+  ${CMAKE_SOURCE_DIR}/Wineglass/assets/
+  ${CMAKE_CURRENT_BINARY_DIR}/assets
+  COMMENT "Copying assets to binary directory"
+)
+
