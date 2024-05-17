@@ -5,7 +5,10 @@
 #include "core/ge_type_aliases.hpp"
 
 #include <array>
-#include <format>
+#include <iomanip>
+#if __cpp_lib_format
+  #include <format>
+#endif
 #include <ostream>
 
 namespace GE
@@ -28,7 +31,11 @@ namespace GE
 
     friend std::ostream& operator<<(std::ostream& os, const Vec2& vec)
     {
+#if __cpp_lib_format
       os << std::format("{:1.2f},{:1.2f}", vec.x, vec.y);
+#else
+      os << std::setprecision(2) << vec.x << "," << vec.y;
+#endif
       return os;
     }
     bool operator==(const Vec2& rhs) const;
@@ -66,7 +73,11 @@ namespace GE
 
     friend std::ostream& operator<<(std::ostream& os, const Vec3& vec3)
     {
+#if __cpp_lib_format
       os << std::format("{:1.2f},{:1.2f},{:1.2f}", vec3.x, vec3.y, vec3.z);
+#else
+      os << std::setprecision(2) << vec3.x << "," << vec3.y << "," << vec3.z;
+#endif
       return os;
     }
     [[nodiscard]] f32 Length() const;

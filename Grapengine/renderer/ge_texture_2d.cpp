@@ -1,9 +1,16 @@
 #include "renderer/ge_texture_2d.hpp"
 
 #include <glad/glad.h>
+
+// clang-format off
 #define STB_IMAGE_IMPLEMENTATION
-#include <core/ge_assert.hpp>
+#if defined(GE_GCC_COMPILER) && (__GNUC__ <= 12)
+#define STBI_NO_SIMD
+#endif
 #include <stb_image.h>
+// clang-format on
+
+#include "core/ge_assert.hpp"
 
 using namespace GE;
 

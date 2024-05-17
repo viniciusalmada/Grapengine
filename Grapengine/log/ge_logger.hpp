@@ -9,7 +9,9 @@
   #define NOGDI
 #endif
 #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
-#define SPDLOG_USE_STD_FORMAT
+#ifdef __cpp_lib_format
+  #define SPDLOG_USE_STD_FORMAT
+#endif
 #include <spdlog/spdlog.h>
 #if defined(GE_PLATFORM_WINDOWS)
   #undef far

@@ -11,7 +11,9 @@
 #include <ctime>
 #include <exception>
 #include <filesystem>
-#include <format>
+#if __has_include(<format>)
+  #include <format>
+#endif
 #include <fstream>
 #include <functional>
 #include <iomanip>
