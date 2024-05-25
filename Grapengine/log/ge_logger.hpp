@@ -9,7 +9,7 @@
   #define NOGDI
 #endif
 #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
-#ifdef __cpp_lib_format
+#if !(defined(GE_GCC_COMPILER) && __GNUC__ <= 12)
   #define SPDLOG_USE_STD_FORMAT
 #endif
 #include <spdlog/spdlog.h>

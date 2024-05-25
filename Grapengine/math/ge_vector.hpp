@@ -6,7 +6,7 @@
 
 #include <array>
 #include <iomanip>
-#if __cpp_lib_format
+#if !(defined(GE_GCC_COMPILER) && __GNUC__ <= 12)
   #include <format>
 #endif
 #include <ostream>
