@@ -11,6 +11,7 @@
 // clang-format on
 
 #include "core/ge_assert.hpp"
+#include "profiling/ge_profiler.hpp"
 
 using namespace GE;
 
@@ -21,6 +22,7 @@ namespace
 
 Texture2D::Texture2D(const std::filesystem::path& path) : m_dim(), m_renderer_ID(0)
 {
+  GE_PROFILE;
   stbi_uc* data = nullptr;
   stbi_set_flip_vertically_on_load(1);
   i32 w{};
@@ -63,6 +65,7 @@ Texture2D::Texture2D(const std::filesystem::path& path) : m_dim(), m_renderer_ID
 
 Texture2D::Texture2D() : m_dim(), m_renderer_ID(0)
 {
+  GE_PROFILE;
   const uint32_t internal_format = GL_RGBA8;
   const uint32_t format = GL_RGBA;
 

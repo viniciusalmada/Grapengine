@@ -1,5 +1,6 @@
 #include "renderer/shader_programs/ge_pos_tex_shader.hpp"
 
+#include "profiling/ge_profiler.hpp"
 #include "renderer/ge_buffer_layout.hpp"
 #include "renderer/ge_shader_data_types.hpp"
 
@@ -10,6 +11,7 @@ using namespace GE;
 
 PosAndTex2DShader::PosAndTex2DShader()
 {
+  GE_PROFILE;
   m_shader = Shader::Make("assets/shaders/PositionAndTex2D.vshader.glsl",
                           "assets/shaders/PositionAndTex2D.fshader.glsl");
 }

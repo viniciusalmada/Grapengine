@@ -148,6 +148,26 @@
       "cacheVariables": {
         "CMAKE_CXX_COMPILER": "g++"
       }
+    },
+    {
+      "name": "gcc-tracy",
+      "inherits": [
+        "gcc-release"
+      ],
+      "cacheVariables": {
+        "USE_TRACY_PROFILER": "ON",
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      }
+    },
+    {
+      "name": "clang-linux-tracy",
+      "inherits": [
+        "clang-linux-release"
+      ],
+      "cacheVariables": {
+        "USE_TRACY_PROFILER": "ON",
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      }
     }
   ]
 }

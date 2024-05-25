@@ -5,26 +5,36 @@
 #include "core/ge_application.hpp"
 #include "core/ge_memory.hpp"
 #include "ge_assert.hpp"
+#include "profiling/ge_profiler.hpp"
 
 extern GE::Ref<GE::Application> CreateApplication();
 
 // NOLINT(*-definitions-in-headers)
 int main(int argc, char* argv[])
 {
-  auto args = std::span(argv, u64(argc));
+  GE::Ref<GE::Application> app = nullptr;
+  {
+    ZoneScopedN("Main init");
+    GE::Logger::Init();
+    auto args = std::span(argv, u64(argc));
+    GE_DEBUG("----------Startup at <{}>----------", args.front())
+    app = CreateApplication();
+    GE::Ctrl::App::Init(app);
+  }
 
-  GE::Logger::Init();
-  GE_DEBUG("----------Startup at <{}>----------", args.front())
-  auto app = CreateApplication();
-  GE::Ctrl::App::Init(app);
-
-  GE_DEBUG("----------Running----------")
-  app->Run();
+  {
+    ZoneScopedN("Main running");
+    GE_DEBUG("----------Running----------")
+    app->Run();
+  }
 
   GE_DEBUG("----------Shutdown----------")
-  GE::Ctrl::App::Shutdown();
-  app.reset();
-  GE::Logger::Shutdown();
+  {
+    ZoneScopedN("Main Shutdown");
+    GE::Ctrl::App::Shutdown();
+    app.reset();
+    GE::Logger::Shutdown();
+  }
 }
 
 #endif // GE_ENTRY_POINT_HPP

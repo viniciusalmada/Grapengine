@@ -7,13 +7,21 @@
 #include "input/ge_input.hpp"
 #include "layer/ge_imgui_layer.hpp"
 #include "layer/ge_layer.hpp"
+#include "profiling/ge_profiler.hpp"
 #include "renderer/ge_renderer.hpp"
 #include "renderer/ge_texture_2d.hpp"
 
 using namespace GE;
 
+namespace
+{
+  constexpr auto IMGUI_FRAME = "IMGUI_FRAME";
+  constexpr auto LAYERS_FRAME = "LAYERS_FRAME";
+}
+
 Application::Application(std::string_view title, Dimension dim, std::string_view icon)
 {
+  GE_PROFILE;
   GE_INFO("Application creation")
 
   Init(title, dim, icon, [this](auto&& e) { OnEvent(e); });
@@ -24,6 +32,7 @@ Application::Application(std::string_view title, Dimension dim, std::string_view
 
 Application::~Application()
 {
+  GE_PROFILE;
   OnDestroy();
 
   GE_INFO("Application shutdown")
@@ -34,6 +43,7 @@ void Application::Init(std::string_view title,
                        std::string_view icon,
                        const EventCallbackFn& cb)
 {
+  GE_PROFILE;
   m_window = MakeScope<Window>(WindowProps{ title, dim, icon }, cb);
   Input::Initialize(m_window);
   m_imgui_layer = ImGuiLayer::Make(m_window);
@@ -42,11 +52,13 @@ void Application::Init(std::string_view title,
 
 void Application::Finish()
 {
+  GE_PROFILE;
   m_running = false;
 }
 
 void Application::OnDestroy()
 {
+  GE_PROFILE;
   Input::Shutdown();
   m_imgui_layer->OnDetach();
   std::ranges::for_each(m_layers, [](auto&& l) { l->OnDetach(); });
@@ -54,6 +66,8 @@ void Application::OnDestroy()
 
 void Application::Run()
 {
+  GE_PROFILE;
+
   while (m_running)
   {
     const u64 time_ms = Platform::GetCurrentTimeMS();
@@ -62,19 +76,25 @@ void Application::Run()
 
     if (!m_minimized)
     {
+      GE_PROFILE_FRAME_START(LAYERS_FRAME);
       std::ranges::for_each(m_layers, [&](auto&& l) { l->OnUpdate(step); });
+      GE_PROFILE_FRAME_END(LAYERS_FRAME);
 
+      GE_PROFILE_FRAME_START(IMGUI_FRAME);
       m_imgui_layer->Begin();
       std::ranges::for_each(m_layers, [&](auto&& l) { l->OnImGuiUpdate(); });
       m_imgui_layer->End();
+      GE_PROFILE_FRAME_END(IMGUI_FRAME);
     }
 
     m_window->OnUpdate();
+    GE_PROFILE_FRAME;
   }
 }
 
 void GE::Application::OnEvent(Event& event)
 {
+  GE_PROFILE;
   m_imgui_layer->OnEvent(event);
 
   for (const auto& layer : m_layers | std::views::reverse)
@@ -91,12 +111,14 @@ void GE::Application::OnEvent(Event& event)
 
 void GE::Application::AddLayer(const Ref<Layer>& layer)
 {
+  GE_PROFILE;
   m_layers.push_back(layer);
   layer->OnAttach();
 }
 
 void GE::Application::Close()
 {
+  GE_PROFILE;
   Finish();
 }
 

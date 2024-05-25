@@ -1,9 +1,9 @@
 #include "renderer/ge_renderer.hpp"
 
 #include "core/ge_assert.hpp"
+#include "drawables/ge_drawing_object.hpp"
 #include "renderer/ge_vertex_array.hpp"
 
-#include <drawables/ge_drawing_object.hpp>
 #include <glad/glad.h>
 
 using namespace GE;

@@ -2,6 +2,7 @@
 
 #include "core/ge_platform.hpp"
 #include "math/ge_transformations.hpp"
+#include "profiling/ge_profiler.hpp"
 
 using namespace GE;
 
@@ -20,24 +21,27 @@ SceneCamera::SceneCamera() :
     m_orthographic_size(DEFAULT_ORTHO_SIZE),
     m_projection_mode(ProjectionMode::PERSPECTIVE)
 {
+  GE_PROFILE;
   RecalculateProjection();
 }
 
-
 void SceneCamera::SetView(Vec3 position, Vec3 target)
 {
+  GE_PROFILE;
   m_position = position;
   m_target = target;
   RecalculateProjection();
 }
 void SceneCamera::SetViewport(Dimension vp)
 {
+  GE_PROFILE;
   m_viewport = vp;
   RecalculateProjection();
 }
 
 void SceneCamera::RecalculateProjection()
 {
+  GE_PROFILE;
   const f32 ar = f32(m_viewport.width) / f32(m_viewport.height);
   if (m_projection_mode == ProjectionMode::PERSPECTIVE)
   {
@@ -61,23 +65,27 @@ void SceneCamera::RecalculateProjection()
 
 Mat4 SceneCamera::GetViewProjection() const
 {
+  GE_PROFILE;
   return m_projection * Transform::LookAt(m_position, m_target);
 }
 
 void SceneCamera::SetProjectionMode(ProjectionMode mode)
 {
+  GE_PROFILE;
   m_projection_mode = mode;
   RecalculateProjection();
 }
 
 void SceneCamera::SetOrthographicSize(f32 size)
 {
+  GE_PROFILE;
   m_orthographic_size = size;
   RecalculateProjection();
 }
 
 void SceneCamera::SetFov(f32 fov)
 {
+  GE_PROFILE;
   m_fov = fov;
   RecalculateProjection();
 }

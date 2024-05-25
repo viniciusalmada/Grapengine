@@ -1,6 +1,7 @@
 #include "renderer/ge_shader.hpp"
 
 #include "core/ge_assert.hpp"
+#include "profiling/ge_profiler.hpp"
 #include "utils/ge_io.hpp"
 
 #include <core/ge_platform.hpp>
@@ -72,6 +73,7 @@ namespace
 
   RendererID CreateProgram(const std::string& vertexSrc, const std::string& fragmentSrc)
   {
+    GE_PROFILE;
     auto [vertex_shader, vertex_ok] = Compile(vertexSrc, ShaderType::VERTEX);
     if (!vertex_ok)
       return 0;
@@ -123,11 +125,13 @@ namespace
 Shader::Shader(const std::string& vertexSrc, const std::string& fragmentSrc) :
     m_renderer_id(CreateProgram(vertexSrc, fragmentSrc))
 {
+  GE_PROFILE;
 }
 
 Shader::Shader(const std::filesystem::path& vertexPath, const std::filesystem::path& fragPath) :
     m_renderer_id(0)
 {
+  GE_PROFILE;
   auto vertex_src = IO::ReadFileToString(vertexPath);
   auto frag_src = IO::ReadFileToString(fragPath);
   m_renderer_id = CreateProgram(vertex_src, frag_src);

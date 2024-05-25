@@ -4,6 +4,7 @@
 #include "drawables/ge_cube.hpp"
 #include "drawables/ge_cylinder.hpp"
 #include "drawables/ge_drawing_object.hpp"
+#include "profiling/ge_profiler.hpp"
 #include "renderer/ge_vertices_data.hpp"
 
 using namespace GE;
@@ -18,7 +19,7 @@ namespace
 GE::Mesh::Mesh(std::string_view path, const GE::Ref<GE::IShaderProgram>& shader) :
     Drawable(shader), m_shader(shader)
 {
-
+  GE_PROFILE;
   m_texture = Texture2D::Make();
 
   std::ifstream file{ std::string{ path } };
@@ -152,6 +153,7 @@ Mesh::~Mesh() = default;
 
 void GE::Mesh::Draw() const
 {
+  GE_PROFILE;
   m_texture->Bind(0);
   m_shader->UpdateTexture(0);
   m_shader->UpdateModelMatrix(Mat4{});

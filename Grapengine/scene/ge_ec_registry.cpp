@@ -1,9 +1,12 @@
 #include "scene/ge_ec_registry.hpp"
 
+#include "profiling/ge_profiler.hpp"
+
 using namespace GE;
 
 Entity ECRegistry::Create()
 {
+  GE_PROFILE;
   Entity e{ m_entity_next_id++ };
   m_entities.insert(e);
   return e;
@@ -16,6 +19,7 @@ void ECRegistry::Each(const std::function<void(Entity)>& action) const
 
 std::vector<Entity> ECRegistry::Group(const std::initializer_list<CompType>&& comps) const
 {
+  GE_PROFILE;
 #ifdef DEBUG_ECSREGISTRY
   GE_DEBUG("BEGIN: Getting group of: ")
   (..., [] { GE_DEBUG("{}", typeid(Comps).name()); }());
