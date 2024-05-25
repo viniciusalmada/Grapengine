@@ -2,7 +2,7 @@
 #define GRAPENGINE_GE_PROFILER_HPP
 
 #if defined(USE_TRACY_PROFILER)
-
+#define PROFILING_ENABLED
   #if defined(GE_CLANG_COMPILER) || defined(GE_GCC_COMPILER)
     #define TracyFunction __PRETTY_FUNCTION__
   #elif defined(GE_MSVC_COMPILER)
@@ -21,6 +21,15 @@
 
   #define GE_ALLOC(ptr, count) TracyAllocS(ptr, count, 12);
   #define GE_FREE(ptr) TracyFreeS(ptr, 12);
+#else
+  #define GE_PROFILE
+  #define GE_PROFILE_FRAME
+  #define GE_PROFILE_FRAME_START(...)
+  #define GE_PROFILE_FRAME_END(...)
+  #define GE_PROFILE_SECTION(...)
+
+  #define GE_ALLOC(...)
+  #define GE_FREE(...)
 #endif
 
 #endif // GRAPENGINE_GE_PROFILER_HPP

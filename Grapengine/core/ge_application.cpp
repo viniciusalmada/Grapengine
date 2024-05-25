@@ -15,8 +15,10 @@ using namespace GE;
 
 namespace
 {
+#if defined(PROFILING_ENABLED)
   constexpr auto IMGUI_FRAME = "IMGUI_FRAME";
   constexpr auto LAYERS_FRAME = "LAYERS_FRAME";
+#endif
 }
 
 Application::Application(std::string_view title, Dimension dim, std::string_view icon)

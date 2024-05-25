@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
 {
   GE::Ref<GE::Application> app = nullptr;
   {
-    ZoneScopedN("Main init");
+    GE_PROFILE_SECTION("Main init");
     GE::Logger::Init();
     auto args = std::span(argv, u64(argc));
     GE_DEBUG("----------Startup at <{}>----------", args.front())
@@ -23,14 +23,14 @@ int main(int argc, char* argv[])
   }
 
   {
-    ZoneScopedN("Main running");
+    GE_PROFILE_SECTION("Main running");
     GE_DEBUG("----------Running----------")
     app->Run();
   }
 
   GE_DEBUG("----------Shutdown----------")
   {
-    ZoneScopedN("Main Shutdown");
+    GE_PROFILE_SECTION("Main Shutdown");
     GE::Ctrl::App::Shutdown();
     app.reset();
     GE::Logger::Shutdown();
