@@ -1,5 +1,6 @@
 #include "renderer/shader_programs/ge_material_shader.hpp"
 
+#include "profiling/ge_profiler.hpp"
 #include "renderer/ge_buffer_layout.hpp"
 #include "renderer/ge_shader_data_types.hpp"
 
@@ -10,6 +11,7 @@ using namespace GE;
 
 MaterialShader::MaterialShader()
 {
+  GE_PROFILE;
   m_shader =
     Shader::Make("assets/shaders/Material.vshader.glsl", "assets/shaders/Material.fshader.glsl");
 }

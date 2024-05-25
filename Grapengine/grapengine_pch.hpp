@@ -39,8 +39,8 @@ using namespace std::string_literals;
 // clang-format off
 #include "log/ge_logger.hpp"
 
-#include "core/ge_assert.hpp"
 #include "core/ge_config.hpp"
+#include "core/ge_assert.hpp"
 #include "core/ge_type_aliases.hpp"
 #include "core/ge_memory.hpp"
 // clang-format on

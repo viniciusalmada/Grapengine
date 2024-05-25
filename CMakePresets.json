@@ -54,7 +54,7 @@
       }
     },
     {
-      "name": "microsoft-cl-debug",
+      "name": "msvc-debug",
       "displayName": "Debug build with MSVC compiler",
       "inherits": [
         "h_default",
@@ -66,7 +66,7 @@
       }
     },
     {
-      "name": "microsoft-cl-release",
+      "name": "msvc-release",
       "displayName": "Optimized build with MSVC compiler",
       "inherits": [
         "h_default",
@@ -78,7 +78,7 @@
       }
     },
     {
-      "name": "llvm-clang-cl-debug",
+      "name": "clang-win-debug",
       "displayName": "Debug build with Clang compiler as MSVC frontend",
       "inherits": [
         "h_default",
@@ -90,7 +90,7 @@
       }
     },
     {
-      "name": "llvm-clang-cl-release",
+      "name": "clang-win-release",
       "displayName": "Optimized build with Clang compiler as MSVC frontend",
       "inherits": [
         "h_default",
@@ -102,7 +102,7 @@
       }
     },
     {
-      "name": "llvm-clang-gcc-debug",
+      "name": "clang-linux-debug",
       "displayName": "Debug build with Clang compiler as GCC frontend",
       "inherits": [
         "h_default",
@@ -114,7 +114,7 @@
       }
     },
     {
-      "name": "llvm-clang-gcc-release",
+      "name": "clang-linux-release",
       "displayName": "Optimized build with Clang compiler as GCC frontend",
       "inherits": [
         "h_default",
@@ -126,7 +126,7 @@
       }
     },
     {
-      "name": "gnu-gcc-debug",
+      "name": "gcc-debug",
       "displayName": "Debug build with GCC compiler",
       "inherits": [
         "h_default",
@@ -138,7 +138,7 @@
       }
     },
     {
-      "name": "gnu-gcc-release",
+      "name": "gcc-release",
       "displayName": "Optmized build with GCC compiler",
       "inherits": [
         "h_default",
@@ -148,13 +148,26 @@
       "cacheVariables": {
         "CMAKE_CXX_COMPILER": "g++"
       }
-    }
-  ],
-  "buildPresets": [
+    },
     {
-      "name": "debug-clang-linux",
-      "configurePreset": "llvm-clang-gcc-debug",
-      "jobs": 24
+      "name": "gcc-tracy",
+      "inherits": [
+        "gcc-release"
+      ],
+      "cacheVariables": {
+        "USE_TRACY_PROFILER": "ON",
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      }
+    },
+    {
+      "name": "clang-linux-tracy",
+      "inherits": [
+        "clang-linux-release"
+      ],
+      "cacheVariables": {
+        "USE_TRACY_PROFILER": "ON",
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      }
     }
   ]
 }

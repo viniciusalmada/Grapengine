@@ -29,18 +29,21 @@ namespace GE
     template <typename Component, typename... Args>
     Component& AddComponent(const Entity& ent, Args&&... args)
     {
+      GE_PROFILE;
       return m_registry.AddComponent<Component>(ent, std::forward<Args>(args)...);
     }
 
     template <typename Component>
     Component& GetComponent(const Entity& ent)
     {
+      GE_PROFILE;
       return m_registry.GetComponent<Component>(ent);
     }
 
     template <typename Component>
     [[nodiscard]] bool HasComponent(const Entity& ent)
     {
+      GE_PROFILE;
       return m_registry.Has<Component>(ent);
     }
 

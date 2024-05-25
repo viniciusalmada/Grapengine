@@ -4,6 +4,7 @@
 #include "ge_comp_types.hpp"
 #include "ge_components.hpp"
 #include "ge_entity.hpp"
+#include "profiling/ge_profiler.hpp"
 
 #include <list>
 #include <map>
@@ -31,6 +32,7 @@ namespace GE
     template <typename Component, typename... Args>
     Component& AddComponent(const Entity& ent, Args... args)
     {
+      GE_PROFILE;
       GE_ASSERT(!Has<Component>(ent), "Entity already has this component!")
 
       auto& added = m_components[ent].emplace_back(MakeRef<Component>(std::forward<Args>(args)...));
@@ -49,6 +51,7 @@ namespace GE
     template <typename Component>
     Component& GetComponent(const Entity& ent)
     {
+      GE_PROFILE;
       GE_ASSERT(Has<Component>(ent), "Entity does not have this component!")
 
       auto found =
@@ -66,6 +69,7 @@ namespace GE
     template <typename Component>
     [[nodiscard]] const Component& GetComponent(const Entity& ent) const
     {
+      GE_PROFILE;
       GE_ASSERT(Has<Component>(ent), "Entity does not have this component!")
 
       auto found =
@@ -83,6 +87,7 @@ namespace GE
     template <typename Comp>
     [[nodiscard]] bool Has(const Entity& ent) const
     {
+      GE_PROFILE;
       if (!m_entities.contains(ent))
         return false;
 

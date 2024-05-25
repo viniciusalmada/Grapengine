@@ -1,5 +1,7 @@
 #include "drawables/ge_world_reference.hpp"
 
+#include "profiling/ge_profiler.hpp"
+
 #include <drawables/ge_cube.hpp>
 #include <drawables/ge_cylinder.hpp>
 #include <renderer/ge_texture_2d.hpp>
@@ -17,6 +19,7 @@ namespace
 GE::WorldReference::WorldReference(const Ref<IShaderProgram>& shader, u64 platformSize) :
     m_shader(shader), m_platform_side_size(platformSize)
 {
+  GE_PROFILE;
   const f32 SIDE_SIZE = static_cast<f32>(m_platform_side_size);
   m_blank_texture = MakeRef<Texture2D>();
   m_platform = MakeRef<Cube>(PLATFORM_COLOR, m_shader, m_blank_texture);
@@ -48,6 +51,7 @@ GE::WorldReference::WorldReference(const Ref<IShaderProgram>& shader, u64 platfo
 
 void WorldReference::DrawBatch() const
 {
+  GE_PROFILE;
   m_shader->Activate();
 
   if (m_show_platform)

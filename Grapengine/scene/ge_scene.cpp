@@ -4,6 +4,7 @@
 #include "ge_ec_registry.hpp"
 #include "math/ge_transformations.hpp"
 #include "math/ge_vector.hpp"
+#include "profiling/ge_profiler.hpp"
 #include "renderer/ge_renderer.hpp"
 #include "scene/ge_components.hpp"
 #include "scene/ge_scriptable_entity.hpp"
@@ -14,6 +15,7 @@ Scene::Scene() : m_registry({}), m_viewport(Dimension{ 1, 1 }) {}
 
 void Scene::OnUpdate(TimeStep ts)
 {
+  GE_PROFILE;
   {
     const std::vector<Entity> g = m_registry.Group({ CompType::NATIVE_SCRIPT });
 
@@ -56,6 +58,7 @@ void Scene::OnUpdate(TimeStep ts)
 
 Entity Scene::CreateEntity(const char* name)
 {
+  GE_PROFILE;
   Entity ent = m_registry.Create();
   GE_INFO("Creating entity \'{}\' with id={}", name, ent.handle)
   AddComponent<TagComponent>(ent, name);
@@ -92,6 +95,7 @@ void Scene::OnViewportResize(Dimension dim)
 
 Opt<Entity> Scene::GetActiveCamera() const
 {
+  GE_PROFILE;
   std::vector<Entity> camera_group = m_registry.Group({ CompType::CAMERA });
   if (camera_group.empty())
   {
@@ -129,11 +133,13 @@ Opt<Entity> Scene::GetActiveCamera() const
 
 void Scene::EachEntity(const std::function<void(Entity)>& fun) const
 {
+  GE_PROFILE;
   m_registry.Each(fun);
 }
 
 void Scene::UpdateActiveCamera(Entity activeCamera)
 {
+  GE_PROFILE;
   auto cameras = m_registry.Group({ CompType::CAMERA });
   for (const Entity& ent : cameras)
   {

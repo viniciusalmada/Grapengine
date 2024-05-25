@@ -1,5 +1,6 @@
 #include "drawables/ge_drawing_object.hpp"
 
+#include "profiling/ge_profiler.hpp"
 #include "renderer/ge_index_buffer.hpp"
 #include "renderer/ge_renderer.hpp"
 #include "renderer/ge_vertex_array.hpp"
@@ -12,6 +13,7 @@ DrawingObject::DrawingObject(const Ref<VerticesData>& vertices,
                              const Ref<std::vector<u32>>& indices) :
     m_triangles_count(indices->size() / 3UL)
 {
+  GE_PROFILE;
   m_vao = MakeRef<VertexArray>();
 
   m_vao->Bind();
@@ -27,11 +29,13 @@ DrawingObject::~DrawingObject() = default;
 
 void DrawingObject::Draw() const
 {
+  GE_PROFILE;
   Renderer::DrawIndexed(m_vao, static_cast<i32>(m_triangles_count * 3));
 }
 
 void DrawingObject::UpdateVerticesData(const Ref<VerticesData>& data)
 {
+  GE_PROFILE;
   m_vao->Bind();
   m_vbo->UpdateData(data->GetPtr(), data->GetSize());
 }

@@ -1,5 +1,7 @@
 #include "layer/ge_imgui_layer.hpp"
 
+#include "profiling/ge_profiler.hpp"
+
 #include <GLFW/glfw3.h>
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
@@ -26,6 +28,7 @@ ImGuiLayer::~ImGuiLayer() = default;
 #endif
 void ImGuiLayer::OnAttach()
 {
+  GE_PROFILE;
   GE_INFO("ImGui initialization")
 
   Layer::OnAttach();
@@ -87,6 +90,7 @@ void ImGuiLayer::OnAttach()
 
 void ImGuiLayer::OnDetach()
 {
+  GE_PROFILE;
   GE_INFO("ImGui shutdown")
 
   Layer::OnDetach();
@@ -97,6 +101,7 @@ void ImGuiLayer::OnDetach()
 }
 void ImGuiLayer::Begin()
 {
+  GE_PROFILE;
   if (m_window == nullptr)
     return;
   ImGui_ImplOpenGL3_NewFrame();
@@ -111,6 +116,7 @@ Ref<ImGuiLayer> ImGuiLayer::Make(Ref<Window> window)
 
 void ImGuiLayer::End()
 {
+  GE_PROFILE;
   auto& io = ImGui::GetIO();
   const Dimension win_dim = m_window->GetDimension();
   io.DisplaySize = ImVec2(static_cast<f32>(win_dim.width), static_cast<float>(win_dim.height));

@@ -2,6 +2,7 @@
 
 #include "drawables/ge_drawing_object.hpp"
 #include "math/ge_transformations.hpp"
+#include "profiling/ge_profiler.hpp"
 #include "renderer/ge_ishader_program.hpp"
 #include "renderer/ge_texture_2d.hpp"
 #include "renderer/ge_vertices_data.hpp"
@@ -82,7 +83,7 @@ namespace
 Cube::Cube(Color color, const Ref<IShaderProgram>& shader, Ref<Texture2D> texture) :
     Drawable(shader), m_color(color), m_shader(shader), m_texture(std::move(texture))
 {
-
+  GE_PROFILE;
   auto layout = shader->GetLayout();
 
   const auto positions = GetCubeVerticesPositions(layout, color);
@@ -101,6 +102,7 @@ Cube::Cube(Color color, const Ref<IShaderProgram>& shader, Ref<Texture2D> textur
 }
 void Cube::Draw() const
 {
+  GE_PROFILE;
   m_shader->Activate();
   m_texture->Bind(0);
   m_texture->Bind(0);

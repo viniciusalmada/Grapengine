@@ -2,6 +2,7 @@
 
 #include "drawables/ge_color.hpp"
 #include "drawables/ge_drawing_object.hpp"
+#include "profiling/ge_profiler.hpp"
 #include "renderer/ge_buffer_layout.hpp"
 #include "renderer/ge_texture_2d.hpp"
 #include "renderer/ge_vertices_data.hpp"
@@ -22,6 +23,7 @@ Cylinder::Cylinder(const Ref<IShaderProgram>& shader,
                    Ref<Texture2D> texture2D) :
     Drawable(shader), m_color(color), m_shader(shader), m_texture(std::move(texture2D))
 {
+  GE_PROFILE;
   const Ref<const BufferLayout> layout = shader->GetLayout();
 
   const Vec3 normal = direction.Normalize();
@@ -82,6 +84,7 @@ Cylinder::~Cylinder() = default;
 
 void Cylinder::Draw() const
 {
+  GE_PROFILE;
   m_texture->Bind(0);
   m_shader->UpdateModelMatrix(Mat4{});
   m_shader->UpdateTexture(0);

@@ -1,6 +1,7 @@
 #include "core/ge_window.hpp"
 
 #include "core/ge_assert.hpp"
+#include "profiling/ge_profiler.hpp"
 
 #include <GLFW/glfw3.h>
 #include <stb_image.h>
@@ -18,8 +19,7 @@ namespace
 Window::Window(const WindowProps& props, const EventCallbackFn& cb) :
     m_window_props(props), m_vsync(true)
 {
-  //  GE_INFO("Window creation")
-
+  GE_PROFILE;
   GE_INFO("GLFW initialization")
   const bool success = bool(glfwInit());
   if (!success)
@@ -58,6 +58,7 @@ Window::Window(const WindowProps& props, const EventCallbackFn& cb) :
 
 Window::~Window()
 {
+  GE_PROFILE;
   GE_INFO("Window destroy")
 
   glfwDestroyWindow(m_window);
@@ -87,6 +88,7 @@ void Window::SetVsync(bool enabled)
 
 void Window::OnUpdate()
 {
+  GE_PROFILE;
   glfwPollEvents();
   m_context.SwapBuffers();
 }
@@ -98,6 +100,7 @@ std::any Window::GetNativeHandler() const
 
 void Window::SetupCallbacks(const EventCallbackFn& cb)
 {
+  GE_PROFILE;
   GE_INFO("Window callbacks setup")
 
   m_event_callback = cb;

@@ -1,5 +1,7 @@
 #include "renderer/ge_framebuffer.hpp"
 
+#include "profiling/ge_profiler.hpp"
+
 #include <core/ge_assert.hpp>
 #include <glad/glad.h>
 
@@ -24,22 +26,26 @@ namespace
 
 Ref<Framebuffer> Framebuffer::Make(const Dimension& dimension)
 {
+  GE_PROFILE;
   return MakeRef<Framebuffer>(dimension);
 }
 
 Framebuffer::Framebuffer(const Dimension& dimension) :
     m_dimension(dimension), m_id(0), m_color_attachment(0), m_depth_attachment(0)
 {
+  GE_PROFILE;
   Invalidate();
 }
 
 GE::Framebuffer::~Framebuffer()
 {
+  GE_PROFILE;
   Clear();
 }
 
 void Framebuffer::Invalidate()
 {
+  GE_PROFILE;
   if (!glIsTexture(u32(m_id)))
   {
     Clear();
@@ -100,12 +106,14 @@ void Framebuffer::Invalidate()
 
 void Framebuffer::Bind() const
 {
+  GE_PROFILE;
   glBindFramebuffer(GL_FRAMEBUFFER, u32(m_id));
   glViewport(0, 0, i32(m_dimension.width), i32(m_dimension.height));
 }
 
 void Framebuffer::Unbind() const
 {
+  GE_PROFILE;
   GE_ASSERT(IsFramebufferBound(m_id), "Framebuffer not bound")
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
@@ -130,6 +138,7 @@ void GE::Framebuffer::Resize(Dimension dim)
 
 void Framebuffer::Clear()
 {
+  GE_PROFILE;
   {
     const u32 i = u32(m_id);
     glDeleteFramebuffers(1, &i);
