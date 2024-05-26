@@ -22,6 +22,8 @@ namespace GE
      */
     Entity Create();
 
+    void Destroy(Entity ent);
+
     /**
      * Add a component to registry and associate to its entity
      * @tparam Component type of component

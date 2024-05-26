@@ -148,3 +148,9 @@ void Scene::UpdateActiveCamera(Entity activeCamera)
     m_registry.GetComponent<CameraComponent>(ent).active = false;
   }
 }
+
+void Scene::DestroyEntity(Entity ent)
+{
+  GE_PROFILE;
+  m_registry.Destroy(ent);
+}

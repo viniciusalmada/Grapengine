@@ -16,6 +16,8 @@ namespace GE
 
     Entity CreateEntity(const char* name);
 
+    void DestroyEntity(Entity ent);
+
     void OnUpdate(TimeStep ts);
 
     void OnEvent(Event&);

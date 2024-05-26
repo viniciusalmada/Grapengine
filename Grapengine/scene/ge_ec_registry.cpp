@@ -36,3 +36,9 @@ std::vector<Entity> ECRegistry::Group(const std::initializer_list<CompType>&& co
   }
   return entities;
 }
+
+void ECRegistry::Destroy(Entity ent)
+{
+  m_entities.erase(ent);
+  m_components.erase(ent);
+}
