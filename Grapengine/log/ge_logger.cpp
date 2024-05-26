@@ -35,12 +35,12 @@ void Logger::Init()
   GE_INFO("Logger initialized")
 }
 
-Ref<spdlog::logger>& GE::Logger::GetLibLogger()
+Ptr<spdlog::logger>& GE::Logger::GetLibLogger()
 {
   return Logger::GetInstance().m_library_logger;
 }
 
-Ref<spdlog::logger>& GE::Logger::GetClientLogger()
+Ptr<spdlog::logger>& GE::Logger::GetClientLogger()
 {
   return Logger::GetInstance().m_client_logger;
 }

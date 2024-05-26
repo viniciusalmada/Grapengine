@@ -4,7 +4,7 @@
 
 using namespace GE;
 
-void Ctrl::App::Init(const Ref<Application>& app)
+void Ctrl::App::Init(const Ptr<Application>& app)
 {
   Get().m_application = app;
 }

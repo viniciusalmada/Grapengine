@@ -8,7 +8,7 @@ namespace GE::Ctrl
   class App
   {
   public:
-    static void Init(const Ref<Application>& app);
+    static void Init(const Ptr<Application>& app);
     static void Shutdown();
 
     static void Close();
@@ -20,7 +20,7 @@ namespace GE::Ctrl
 
     static App& Get();
 
-    Ref<Application> m_application = nullptr;
+    Ptr<Application> m_application = nullptr;
   };
 }
 #endif // GRAPENGINE_GE_APP_CONTROLLER_HPP

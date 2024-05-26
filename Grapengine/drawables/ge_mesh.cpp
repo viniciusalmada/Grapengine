@@ -16,7 +16,7 @@ namespace
   constexpr auto TWO = 2.0f;
 }
 
-GE::Mesh::Mesh(std::string_view path, const GE::Ref<GE::IShaderProgram>& shader) :
+GE::Mesh::Mesh(std::string_view path, const GE::Ptr<GE::IShaderProgram>& shader) :
     Drawable(shader), m_shader(shader)
 {
   GE_PROFILE;
@@ -89,7 +89,7 @@ GE::Mesh::Mesh(std::string_view path, const GE::Ref<GE::IShaderProgram>& shader)
                                        m_texture));
   }
 
-  const Ref<std::vector<u32>> indices = MakeRef<std::vector<u32>>();
+  const Ptr<std::vector<u32>> indices = MakeRef<std::vector<u32>>();
   indices->reserve(m_faces.size() * 3);
   for (const IVec3 face : m_faces //
                             | std::views::transform([](auto&& f) { return f.indices; }))
@@ -100,7 +100,7 @@ GE::Mesh::Mesh(std::string_view path, const GE::Ref<GE::IShaderProgram>& shader)
   }
   const std::set<u32> indices_set{ indices->begin(), indices->end() };
 
-  const Ref<VerticesData> vertices_data = MakeRef<VerticesData>(shader->GetLayout());
+  const Ptr<VerticesData> vertices_data = MakeRef<VerticesData>(shader->GetLayout());
 
   auto get_normal = [&](u64 idx)
   {

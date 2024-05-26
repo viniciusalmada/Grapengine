@@ -11,7 +11,7 @@ namespace GE
   class Input
   {
   public:
-    static void Initialize(Ref<Window> window);
+    static void Initialize(Ptr<Window> window);
     static void Shutdown();
 
     [[nodiscard]] static bool IsKeyPressed(KeyCode keyCode);
@@ -21,7 +21,7 @@ namespace GE
   private:
     static Input& Get();
 
-    Ref<Window> m_windows;
+    Ptr<Window> m_windows;
   };
 }
 

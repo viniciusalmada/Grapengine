@@ -14,9 +14,9 @@ namespace GE
   class Cube : public Drawable
   {
   public:
-    static Ref<Cube> Make(Color color, const Ref<IShaderProgram>& shader, Ref<Texture2D> texture);
+    static Ptr<Cube> Make(Color color, const Ptr<IShaderProgram>& shader, Ptr<Texture2D> texture);
 
-    Cube(Color color, const Ref<IShaderProgram>& shader, Ref<Texture2D> texture);
+    Cube(Color color, const Ptr<IShaderProgram>& shader, Ptr<Texture2D> texture);
 
     ~Cube() override;
 
@@ -27,16 +27,16 @@ namespace GE
     void SetTranslate(f32 x, f32 y, f32 z);
     void SetTranslate(Vec3 xyz);
 
-    [[nodiscard]] Ref<DrawingObject> GetVAO() const;
+    [[nodiscard]] Ptr<DrawingObject> GetVAO() const;
     [[nodiscard]] Mat4 GetModelMatrix() const;
 
   private:
     Color m_color;
-    Ref<DrawingObject> m_draw_primitive;
-    Ref<IShaderProgram> m_shader;
+    Ptr<DrawingObject> m_draw_primitive;
+    Ptr<IShaderProgram> m_shader;
     Mat4 m_scale_mat;
     Mat4 m_translate_mat;
-    Ref<Texture2D> m_texture;
+    Ptr<Texture2D> m_texture;
   };
 }
 

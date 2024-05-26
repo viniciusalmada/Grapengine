@@ -15,7 +15,7 @@ namespace
   constexpr auto HALF = 0.5f;
   constexpr auto THIRD = 0.333333334f;
 
-  auto GetCubeVerticesPositions(const Ref<const BufferLayout>& layout, Color color)
+  auto GetCubeVerticesPositions(const Ptr<const BufferLayout>& layout, Color color)
   {
     auto position = VerticesData::Make(layout);
     if (layout->HasNormal())
@@ -80,7 +80,7 @@ namespace
   }
 }
 
-Cube::Cube(Color color, const Ref<IShaderProgram>& shader, Ref<Texture2D> texture) :
+Cube::Cube(Color color, const Ptr<IShaderProgram>& shader, Ptr<Texture2D> texture) :
     Drawable(shader), m_color(color), m_shader(shader), m_texture(std::move(texture))
 {
   GE_PROFILE;
@@ -88,7 +88,7 @@ Cube::Cube(Color color, const Ref<IShaderProgram>& shader, Ref<Texture2D> textur
 
   const auto positions = GetCubeVerticesPositions(layout, color);
   // NOLINTBEGIN(*-magic-numbers)
-  const Ref<std::vector<u32>> indices = MakeRef<std::vector<u32>>(std::initializer_list<u32>{
+  const Ptr<std::vector<u32>> indices = MakeRef<std::vector<u32>>(std::initializer_list<u32>{
     0,  1,  2,  2,  3,  0,  // Front face
     4,  5,  6,  6,  7,  4,  // Right face
     8,  9,  10, 10, 11, 8,  // Back face
@@ -121,7 +121,7 @@ void GE::Cube::SetTranslate(f32 x, f32 y, f32 z)
   m_translate_mat = Transform::Translate(x, y, z);
 }
 
-Ref<Cube> GE::Cube::Make(Color color, const Ref<IShaderProgram>& shader, Ref<Texture2D> texture)
+Ptr<Cube> GE::Cube::Make(Color color, const Ptr<IShaderProgram>& shader, Ptr<Texture2D> texture)
 {
   return MakeRef<Cube>(color, shader, std::move(texture));
 }
@@ -138,7 +138,7 @@ void GE::Cube::SetColor(Color color)
   m_draw_primitive->UpdateVerticesData(positions);
 }
 
-Ref<DrawingObject> GE::Cube::GetVAO() const
+Ptr<DrawingObject> GE::Cube::GetVAO() const
 {
   return m_draw_primitive;
 }

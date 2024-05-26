@@ -28,7 +28,7 @@ namespace GE
    * Pointer that acts as reference
    */
   template <class T>
-  using Ref = std::shared_ptr<T>;
+  using Ptr = std::shared_ptr<T>;
 
   /**
    *

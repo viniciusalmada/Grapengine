@@ -46,7 +46,7 @@ void MaterialShader::UpdateTexture(int id)
   m_shader->UploadInt("u_texture", id);
 }
 
-Ref<const BufferLayout> GE::MaterialShader::GetLayout() const
+Ptr<const BufferLayout> GE::MaterialShader::GetLayout() const
 {
   auto buffer_elements = BufferLayout::BuildElementsList( //
     {

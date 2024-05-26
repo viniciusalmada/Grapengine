@@ -34,7 +34,7 @@ namespace GE
   class Window
   {
   public:
-    static Ref<Window> Make(const WindowProps& props, const EventCallbackFn& cb);
+    static Ptr<Window> Make(const WindowProps& props, const EventCallbackFn& cb);
 
     explicit Window(const WindowProps& props, const EventCallbackFn& cb);
     ~Window();

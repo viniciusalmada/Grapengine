@@ -70,7 +70,7 @@ void Renderer::Clear()
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Renderer::DrawIndexed(const Ref<VertexArray>& vao, i32 count)
+void Renderer::DrawIndexed(const Ptr<VertexArray>& vao, i32 count)
 {
   vao->Bind();
   glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
@@ -81,7 +81,7 @@ void Renderer::SetWireframeRenderMode(bool enabled)
   glPolygonMode(GL_FRONT_AND_BACK, u32(enabled ? GL_LINE : GL_FILL));
 }
 
-void Renderer::DrawObject(const Ref<DrawingObject>& primitive)
+void Renderer::DrawObject(const Ptr<DrawingObject>& primitive)
 {
   primitive->Bind();
   glDrawElements(GL_TRIANGLES, primitive->IndicesCount(), GL_UNSIGNED_INT, nullptr);

@@ -98,7 +98,7 @@ namespace GE
         return false;
 
       auto found = std::ranges::find_if(m_components.at(ent),
-                                        [&](const Ref<BaseComponent>& anyComp)
+                                        [&](const Ptr<BaseComponent>& anyComp)
                                         {
                                           [[maybe_unused]] auto& comp_ref = *anyComp;
                                           return typeid(comp_ref) == typeid(Comp);
@@ -118,7 +118,7 @@ namespace GE
   private:
     static bool
     FilterComponentsFromEntities(const std::initializer_list<CompType>& comps,
-                                 const std::pair<Entity, std::list<Ref<BaseComponent>>>& ent_comps)
+                                 const std::pair<Entity, std::list<Ptr<BaseComponent>>>& ent_comps)
     {
 #ifdef DEBUG_ECSREGISTRY
       GE_DEBUG("BEGIN: Getting group of: ")
@@ -142,7 +142,7 @@ namespace GE
 
     u32 m_entity_next_id = 0;
     std::set<Entity> m_entities;
-    std::map<Entity, std::list<Ref<BaseComponent>>> m_components;
+    std::map<Entity, std::list<Ptr<BaseComponent>>> m_components;
   };
 } // GE
 

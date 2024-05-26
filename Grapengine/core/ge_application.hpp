@@ -20,7 +20,7 @@ namespace GE
     Application(std::string_view title, Dimension dim, std::string_view icon);
     virtual ~Application();
 
-    void AddLayer(const Ref<Layer>& layer);
+    void AddLayer(const Ptr<Layer>& layer);
 
     void Run();
 
@@ -28,7 +28,7 @@ namespace GE
 
     void OnEvent(Event& e);
 
-    [[nodiscard]] Ref<ImGuiLayer> GetImGuiLayer() const;
+    [[nodiscard]] Ptr<ImGuiLayer> GetImGuiLayer() const;
 
   private:
     void
@@ -38,12 +38,12 @@ namespace GE
 
     void Finish();
 
-    Ref<Window> m_window;
+    Ptr<Window> m_window;
     bool m_running = true;
     bool m_minimized = false;
     u64 m_last_frame_time{ 0 };
-    std::vector<Ref<Layer>> m_layers;
-    Ref<ImGuiLayer> m_imgui_layer;
+    std::vector<Ptr<Layer>> m_layers;
+    Ptr<ImGuiLayer> m_imgui_layer;
   };
 }
 

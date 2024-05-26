@@ -8,7 +8,7 @@ namespace GE
   class Drawable
   {
   public:
-    explicit Drawable(const Ref<IShaderProgram>& /*shader*/);
+    explicit Drawable(const Ptr<IShaderProgram>& /*shader*/);
 
     virtual ~Drawable();
 

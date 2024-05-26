@@ -46,7 +46,7 @@ void PosAndTex2DShader::UpdateTexture(int id)
   m_shader->UploadInt("u_texture", id);
 }
 
-Ref<const BufferLayout> GE::PosAndTex2DShader::GetLayout() const
+Ptr<const BufferLayout> GE::PosAndTex2DShader::GetLayout() const
 {
   auto buffer_elements = BufferLayout::BuildElementsList( //
     {

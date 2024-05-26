@@ -14,30 +14,30 @@ namespace GE
   class Cylinder : public Drawable
   {
   public:
-    static Ref<Cylinder> Make(const Ref<IShaderProgram>& shader,
+    static Ptr<Cylinder> Make(const Ptr<IShaderProgram>& shader,
                               const Vec3& basePoint,
                               f32 radius,
                               const Vec3& direction,
                               f32 height,
                               Color color,
-                              const Ref<Texture2D>& texture2D);
+                              const Ptr<Texture2D>& texture2D);
 
-    Cylinder(const Ref<IShaderProgram>& shader,
+    Cylinder(const Ptr<IShaderProgram>& shader,
              const Vec3& basePoint,
              f32 radius,
              const Vec3& direction,
              f32 height,
              Color color,
-             Ref<Texture2D> texture2D);
+             Ptr<Texture2D> texture2D);
     ~Cylinder() override;
 
     void Draw() const override;
 
   private:
     Color m_color{ 0 };
-    Ref<DrawingObject> m_draw_primitive;
-    Ref<IShaderProgram> m_shader;
-    Ref<Texture2D> m_texture;
+    Ptr<DrawingObject> m_draw_primitive;
+    Ptr<IShaderProgram> m_shader;
+    Ptr<Texture2D> m_texture;
   };
 }
 

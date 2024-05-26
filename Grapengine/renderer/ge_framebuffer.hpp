@@ -10,7 +10,7 @@ namespace GE
   class Framebuffer
   {
   public:
-    static Ref<Framebuffer> Make(const Dimension& dimension);
+    static Ptr<Framebuffer> Make(const Dimension& dimension);
 
     explicit Framebuffer(const Dimension& dimension);
     ~Framebuffer();

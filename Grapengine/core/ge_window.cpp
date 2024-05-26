@@ -180,7 +180,7 @@ void Window::SetupCallbacks(const EventCallbackFn& cb)
   };
   glfwSetScrollCallback(m_window, mouse_scroll);
 }
-Ref<Window> Window::Make(const WindowProps& props, const EventCallbackFn& cb)
+Ptr<Window> Window::Make(const WindowProps& props, const EventCallbackFn& cb)
 {
   return MakeRef<Window>(props, cb);
 }

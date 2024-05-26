@@ -27,7 +27,7 @@ TranslateScaleComponent::TranslateScaleComponent(const Vec3& pos, const Vec3& sc
     position_values(pos), scale_values(scale)
 {
 }
-PrimitiveComponent::PrimitiveComponent(const Ref<DrawingObject>& drawObj) : drawing_obj(drawObj) {}
+PrimitiveComponent::PrimitiveComponent(const Ptr<DrawingObject>& drawObj) : drawing_obj(drawObj) {}
 CompType PrimitiveComponent::Type() const
 {
   return CompType::PRIMITIVE;
@@ -44,7 +44,7 @@ CompType ColorOnlyComponent::Type() const
 {
   return CompType::COLOR_ONLY;
 }
-ColorOnlyComponent::ColorOnlyComponent(Ref<IShaderProgram> s) : shader(std::move(s)) {}
+ColorOnlyComponent::ColorOnlyComponent(Ptr<IShaderProgram> s) : shader(std::move(s)) {}
 ColorOnlyComponent::ColorOnlyComponent(const ColorOnlyComponent& other) :
     ColorOnlyComponent(other.shader)
 {

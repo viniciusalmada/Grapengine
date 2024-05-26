@@ -28,10 +28,10 @@ namespace GE
     void UpdateLightColor(std::vector<Color> color);
     void UpdateLightStrength(const std::vector<f32>& strength);
 
-    [[nodiscard]] Ref<const BufferLayout> GetLayout() const override;
+    [[nodiscard]] Ptr<const BufferLayout> GetLayout() const override;
 
   private:
-    Ref<Shader> m_shader;
+    Ptr<Shader> m_shader;
   };
 }
 #endif // GRAPENGINE_MATERIAL_SHADER_HPP

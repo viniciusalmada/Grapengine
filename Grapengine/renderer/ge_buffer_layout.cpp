@@ -87,7 +87,7 @@ std::list<BufferElem> GE::BufferLayout::BuildElementsList(
   }
   return elems;
 }
-Ref<BufferLayout> GE::BufferLayout::Make(std::list<BufferElem> list)
+Ptr<BufferLayout> GE::BufferLayout::Make(std::list<BufferElem> list)
 {
   return MakeRef<BufferLayout>(std::move(list));
 }

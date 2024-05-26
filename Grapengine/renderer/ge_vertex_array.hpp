@@ -19,15 +19,15 @@ namespace GE
     void Bind() const;
     void Unbind() const;
 
-    void SetVertexBuffer(const Ref<VertexBuffer>& vertexBuffer, Ref<const BufferLayout> layout);
-    void SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer);
+    void SetVertexBuffer(const Ptr<VertexBuffer>& vertexBuffer, Ptr<const BufferLayout> layout);
+    void SetIndexBuffer(const Ptr<IndexBuffer>& indexBuffer);
 
     [[nodiscard]] u32 GetID() const { return u32(id); }
 
   private:
     RendererID id;
-    Ref<VertexBuffer> vertex_buffer;
-    Ref<IndexBuffer> index_buffer;
+    Ptr<VertexBuffer> vertex_buffer;
+    Ptr<IndexBuffer> index_buffer;
   };
 }
 

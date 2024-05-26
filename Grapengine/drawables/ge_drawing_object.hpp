@@ -12,21 +12,21 @@ namespace GE
   class DrawingObject
   {
   public:
-    DrawingObject(const Ref<VerticesData>& vertices, const Ref<std::vector<u32>>& indices);
+    DrawingObject(const Ptr<VerticesData>& vertices, const Ptr<std::vector<u32>>& indices);
     ~DrawingObject();
 
     [[deprecated]] void Draw() const;
 
-    void UpdateVerticesData(const Ref<VerticesData>& data);
+    void UpdateVerticesData(const Ptr<VerticesData>& data);
 
     void Bind() const;
 
     [[nodiscard]] i32 IndicesCount() const;
 
   private:
-    Ref<VertexArray> m_vao = nullptr;
-    Ref<VertexBuffer> m_vbo = nullptr;
-    Ref<IndexBuffer> m_ibo = nullptr;
+    Ptr<VertexArray> m_vao = nullptr;
+    Ptr<VertexBuffer> m_vbo = nullptr;
+    Ptr<IndexBuffer> m_ibo = nullptr;
     u64 m_triangles_count = 0;
   };
 }

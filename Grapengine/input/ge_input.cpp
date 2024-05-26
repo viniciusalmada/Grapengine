@@ -30,7 +30,7 @@ Vec2 GE::Input::GetMouseXY()
   return Vec2{ f32(x), f32(y) };
 }
 
-void GE::Input::Initialize(Ref<Window> window)
+void GE::Input::Initialize(Ptr<Window> window)
 {
   GE_INFO("Input polling creation")
 

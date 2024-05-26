@@ -17,20 +17,20 @@ namespace GE
   class Mesh : public Drawable
   {
   public:
-    Mesh(std::string_view path, const Ref<IShaderProgram>& shader);
+    Mesh(std::string_view path, const Ptr<IShaderProgram>& shader);
 
     ~Mesh() override;
     void Draw() const override;
 
   private:
     Color m_color = Colors::MAGENTA;
-    Ref<DrawingObject> m_draw_primitive;
-    Ref<Cube> m_bbox;
-    Ref<IShaderProgram> m_shader;
-    Ref<Texture2D> m_texture;
+    Ptr<DrawingObject> m_draw_primitive;
+    Ptr<Cube> m_bbox;
+    Ptr<IShaderProgram> m_shader;
+    Ptr<Texture2D> m_texture;
     std::vector<Vec3> m_vertices;
     std::vector<Face> m_faces;
-    std::vector<Ref<Cylinder>> m_normals;
+    std::vector<Ptr<Cylinder>> m_normals;
   };
 }
 

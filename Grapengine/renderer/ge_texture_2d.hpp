@@ -11,7 +11,7 @@ namespace GE
   class Texture2D
   {
   public:
-    static Ref<Texture2D> Make();
+    static Ptr<Texture2D> Make();
 
     explicit Texture2D();
     explicit Texture2D(const std::filesystem::path& path);

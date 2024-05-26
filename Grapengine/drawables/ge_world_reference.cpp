@@ -16,7 +16,7 @@ namespace
   constexpr auto PLATFORM_MULTIPLIER = 10;
 }
 
-GE::WorldReference::WorldReference(const Ref<IShaderProgram>& shader, u64 platformSize) :
+GE::WorldReference::WorldReference(const Ptr<IShaderProgram>& shader, u64 platformSize) :
     m_shader(shader), m_platform_side_size(platformSize)
 {
   GE_PROFILE;
@@ -66,7 +66,7 @@ void GE::WorldReference::ShowPlatform(bool show)
   m_show_platform = show;
 }
 
-Ref<DrawingObject> GE::WorldReference::GetVAO() const
+Ptr<DrawingObject> GE::WorldReference::GetVAO() const
 {
   return m_platform->GetVAO();
 }

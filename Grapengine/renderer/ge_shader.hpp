@@ -10,7 +10,7 @@ namespace GE
   class Shader
   {
   public:
-    static Ref<Shader> Make(const std::filesystem::path& vertexPath,
+    static Ptr<Shader> Make(const std::filesystem::path& vertexPath,
                             const std::filesystem::path& fragPath);
 
     Shader(const std::filesystem::path& vertexPath, const std::filesystem::path& fragPath);

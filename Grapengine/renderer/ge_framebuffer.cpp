@@ -24,7 +24,7 @@ namespace
 
 }
 
-Ref<Framebuffer> Framebuffer::Make(const Dimension& dimension)
+Ptr<Framebuffer> Framebuffer::Make(const Dimension& dimension)
 {
   GE_PROFILE;
   return MakeRef<Framebuffer>(dimension);

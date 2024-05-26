@@ -35,9 +35,9 @@ void EditorLayer::OnAttach()
   //  auto camera_ent = m_scene->CreateEntity("Camera");
   //  m_scene->AddComponent<CameraComponent>(camera_ent, cam);
 
-  Ref<IShaderProgram> simple_shader = MakeRef<PosAndTex2DShader>();
-  Ref<Cube> cube_1 = Cube::Make(Colors::BLUE, simple_shader, Texture2D::Make());
-  Ref<Cube> cube_2 = Cube::Make(Colors::RED, simple_shader, Texture2D::Make());
+  Ptr<IShaderProgram> simple_shader = MakeRef<PosAndTex2DShader>();
+  Ptr<Cube> cube_1 = Cube::Make(Colors::BLUE, simple_shader, Texture2D::Make());
+  Ptr<Cube> cube_2 = Cube::Make(Colors::RED, simple_shader, Texture2D::Make());
   auto cube_1_ent = m_scene->CreateEntity("Cube Blue");
   auto cube_2_ent = m_scene->CreateEntity("Cube Red");
   m_scene->AddComponent<PrimitiveComponent>(cube_1_ent, cube_1->GetVAO());

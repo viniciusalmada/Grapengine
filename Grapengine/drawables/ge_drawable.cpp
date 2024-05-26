@@ -2,6 +2,6 @@
 
 using namespace GE;
 
-Drawable::Drawable(const Ref<IShaderProgram>&) {}
+Drawable::Drawable(const Ptr<IShaderProgram>&) {}
 
 Drawable::~Drawable() = default;

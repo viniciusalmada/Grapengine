@@ -21,9 +21,9 @@ namespace GE
 
     static void Clear();
 
-    static void DrawIndexed(const Ref<VertexArray>& vao, i32 count);
+    static void DrawIndexed(const Ptr<VertexArray>& vao, i32 count);
 
-    static void DrawObject(const Ref<DrawingObject>& primitive);
+    static void DrawObject(const Ptr<DrawingObject>& primitive);
   };
 }
 

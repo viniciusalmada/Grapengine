@@ -14,17 +14,17 @@ using namespace GE;
 constexpr auto SLICES = 20ul;
 // constexpr auto STACKS = 8;
 
-Cylinder::Cylinder(const Ref<IShaderProgram>& shader,
+Cylinder::Cylinder(const Ptr<IShaderProgram>& shader,
                    const Vec3& basePoint,
                    const f32 radius,
                    const Vec3& direction,
                    const f32 height,
                    Color color,
-                   Ref<Texture2D> texture2D) :
+                   Ptr<Texture2D> texture2D) :
     Drawable(shader), m_color(color), m_shader(shader), m_texture(std::move(texture2D))
 {
   GE_PROFILE;
-  const Ref<const BufferLayout> layout = shader->GetLayout();
+  const Ptr<const BufferLayout> layout = shader->GetLayout();
 
   const Vec3 normal = direction.Normalize();
   const Vec3 ref_random{ Random::GenFloat(0, 1), Random::GenFloat(0, 1), Random::GenFloat(0, 1) };
@@ -42,7 +42,7 @@ Cylinder::Cylinder(const Ref<IShaderProgram>& shader,
     final_pts.push_back(pt_final);
   }
 
-  const Ref<VerticesData> positions = MakeRef<VerticesData>(layout);
+  const Ptr<VerticesData> positions = MakeRef<VerticesData>(layout);
   for (u32 i = 0; i < base_pts.size(); ++i)
   {
     if (layout->HasNormal())
@@ -90,13 +90,13 @@ void Cylinder::Draw() const
   m_shader->UpdateTexture(0);
   //  m_draw_primitive->Draw();
 }
-Ref<Cylinder> GE::Cylinder::Make(const Ref<IShaderProgram>& shader,
+Ptr<Cylinder> GE::Cylinder::Make(const Ptr<IShaderProgram>& shader,
                                  const Vec3& basePoint,
                                  f32 radius,
                                  const Vec3& direction,
                                  f32 height,
                                  Color color,
-                                 const Ref<Texture2D>& texture2D)
+                                 const Ptr<Texture2D>& texture2D)
 {
   return MakeRef<Cylinder>(shader, basePoint, radius, direction, height, color, texture2D);
 }

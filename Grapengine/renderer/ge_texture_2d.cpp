@@ -111,7 +111,7 @@ void Texture2D::Bind(u32 slot) const
   glBindTextureUnit(slot, u32(m_renderer_ID));
 }
 
-Ref<Texture2D> GE::Texture2D::Make()
+Ptr<Texture2D> GE::Texture2D::Make()
 {
   return GE::MakeRef<Texture2D>();
 }

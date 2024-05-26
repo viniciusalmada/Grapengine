@@ -111,7 +111,7 @@ void GE::Application::OnEvent(Event& event)
     .Then([this] { Finish(); });
 }
 
-void GE::Application::AddLayer(const Ref<Layer>& layer)
+void GE::Application::AddLayer(const Ptr<Layer>& layer)
 {
   GE_PROFILE;
   m_layers.push_back(layer);
@@ -124,7 +124,7 @@ void GE::Application::Close()
   Finish();
 }
 
-Ref<ImGuiLayer> GE::Application::GetImGuiLayer() const
+Ptr<ImGuiLayer> GE::Application::GetImGuiLayer() const
 {
   return m_imgui_layer;
 }

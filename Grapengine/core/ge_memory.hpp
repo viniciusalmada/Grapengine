@@ -6,13 +6,13 @@
 namespace GE
 {
   template <class T, class... Args>
-  Ref<T> MakeRef(Args... args)
+  Ptr<T> MakeRef(Args... args)
   {
     return std::make_shared<T>(std::forward<Args>(args)...);
   }
 
   template <class T>
-  Weak<T> MakeWeak(Ref<T> ref)
+  Weak<T> MakeWeak(Ptr<T> ref)
   {
     return std::weak_ptr<T>(ref);
   }

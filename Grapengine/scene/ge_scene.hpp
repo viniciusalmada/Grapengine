@@ -10,7 +10,7 @@ namespace GE
   class Scene
   {
   public:
-    static Ref<Scene> Make();
+    static Ptr<Scene> Make();
 
     Scene();
 

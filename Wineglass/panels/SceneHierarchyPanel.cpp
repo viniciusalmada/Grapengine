@@ -3,9 +3,9 @@
 using namespace std::string_literals;
 using namespace GE;
 
-SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& scene) : m_scene_context(scene) {}
+SceneHierarchyPanel::SceneHierarchyPanel(const Ptr<Scene>& scene) : m_scene_context(scene) {}
 
-void SceneHierarchyPanel::SetContext(const Ref<Scene>& scene)
+void SceneHierarchyPanel::SetContext(const Ptr<Scene>& scene)
 {
   m_scene_context = scene;
 }

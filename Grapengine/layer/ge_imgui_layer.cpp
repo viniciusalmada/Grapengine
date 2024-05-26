@@ -18,7 +18,7 @@ namespace
   constexpr std::string_view IMGUI_LAYER = "IMGUI_LAYER";
 }
 
-ImGuiLayer::ImGuiLayer(Ref<Window> window) : Layer(IMGUI_LAYER), m_window(std::move(window)) {}
+ImGuiLayer::ImGuiLayer(Ptr<Window> window) : Layer(IMGUI_LAYER), m_window(std::move(window)) {}
 
 ImGuiLayer::~ImGuiLayer() = default;
 
@@ -109,7 +109,7 @@ void ImGuiLayer::Begin()
   ImGui::NewFrame();
 }
 
-Ref<ImGuiLayer> ImGuiLayer::Make(Ref<Window> window)
+Ptr<ImGuiLayer> ImGuiLayer::Make(Ptr<Window> window)
 {
   return MakeRef<ImGuiLayer>(std::move(window));
 }

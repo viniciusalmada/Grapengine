@@ -15,23 +15,23 @@ namespace GE
   class WorldReference
   {
   public:
-    WorldReference(const Ref<IShaderProgram>& shader, u64 platformSize);
+    WorldReference(const Ptr<IShaderProgram>& shader, u64 platformSize);
     ~WorldReference();
 
     void DrawBatch() const;
 
     void ShowPlatform(bool show);
 
-    [[nodiscard]] Ref<DrawingObject> GetVAO() const;
+    [[nodiscard]] Ptr<DrawingObject> GetVAO() const;
     [[nodiscard]] Mat4 GetModelMatrix() const;
 
   private:
-    Ref<IShaderProgram> m_shader;
-    Ref<Texture2D> m_blank_texture;
-    Ref<Cube> m_platform;
-    Ref<Cylinder> m_x_axis;
-    Ref<Cylinder> m_y_axis;
-    Ref<Cylinder> m_z_axis;
+    Ptr<IShaderProgram> m_shader;
+    Ptr<Texture2D> m_blank_texture;
+    Ptr<Cube> m_platform;
+    Ptr<Cylinder> m_x_axis;
+    Ptr<Cylinder> m_y_axis;
+    Ptr<Cylinder> m_z_axis;
     bool m_show_platform = true;
     u64 m_platform_side_size;
   };

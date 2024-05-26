@@ -28,14 +28,14 @@ namespace GE
     static void Init();
     static Logger& GetInstance();
 
-    static Ref<spdlog::logger>& GetLibLogger();
-    static Ref<spdlog::logger>& GetClientLogger();
+    static Ptr<spdlog::logger>& GetLibLogger();
+    static Ptr<spdlog::logger>& GetClientLogger();
 
     static void Shutdown();
 
   private:
-    Ref<spdlog::logger> m_library_logger;
-    Ref<spdlog::logger> m_client_logger;
+    Ptr<spdlog::logger> m_library_logger;
+    Ptr<spdlog::logger> m_client_logger;
   };
 }
 

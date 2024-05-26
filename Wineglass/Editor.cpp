@@ -18,7 +18,7 @@ GE::Editor::Editor() :
 
 GE::Editor::~Editor() = default;
 
-GE::Ref<GE::Application> CreateApplication()
+GE::Ptr<GE::Application> CreateApplication()
 {
   return GE::MakeRef<GE::Editor>();
 }

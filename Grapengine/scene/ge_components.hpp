@@ -48,23 +48,23 @@ namespace GE
   class DrawingObject;
   struct PrimitiveComponent : public BaseComponent
   {
-    Ref<DrawingObject> drawing_obj;
-    PrimitiveComponent(const Ref<DrawingObject>& drawObj);
+    Ptr<DrawingObject> drawing_obj;
+    PrimitiveComponent(const Ptr<DrawingObject>& drawObj);
     PrimitiveComponent(const PrimitiveComponent&);
     [[nodiscard]] CompType Type() const final;
   };
 
   struct MaterialComponent : public BaseComponent
   {
-    Ref<IShaderProgram> shader;
+    Ptr<IShaderProgram> shader;
     [[nodiscard]] CompType Type() const final;
   };
 
   struct ColorOnlyComponent : public BaseComponent
   {
-    Ref<IShaderProgram> shader;
+    Ptr<IShaderProgram> shader;
     [[nodiscard]] CompType Type() const final;
-    ColorOnlyComponent(Ref<IShaderProgram> s);
+    ColorOnlyComponent(Ptr<IShaderProgram> s);
     ColorOnlyComponent(const ColorOnlyComponent&);
   };
 

@@ -6,11 +6,11 @@
 #include "core/ge_memory.hpp"
 #include "profiling/ge_profiler.hpp"
 
-extern GE::Ref<GE::Application> CreateApplication();
+extern GE::Ptr<GE::Application> CreateApplication();
 
 namespace
 {
-  GE::Ref<GE::Application> Start(int argc, char* argv[]) noexcept
+  GE::Ptr<GE::Application> Start(int argc, char* argv[]) noexcept
   {
     GE_PROFILE_SECTION("Main init");
     GE::Logger::Init();
@@ -21,14 +21,14 @@ namespace
     return app;
   }
 
-  void Run(GE::Ref<GE::Application>& app) noexcept
+  void Run(GE::Ptr<GE::Application>& app) noexcept
   {
     GE_PROFILE_SECTION("Main running");
     GE_DEBUG("Main: Running")
     app->Run();
   }
 
-  void Shutdown(GE::Ref<GE::Application>& app) noexcept
+  void Shutdown(GE::Ptr<GE::Application>& app) noexcept
   {
     GE_PROFILE_SECTION("Main: Shutdown");
     GE_DEBUG("Shutdown")
@@ -41,7 +41,7 @@ namespace
 // NOLINT(*-definitions-in-headers)
 int main(int argc, char* argv[])
 {
-  GE::Ref<GE::Application> app = Start(argc, argv);
+  GE::Ptr<GE::Application> app = Start(argc, argv);
   Run(app);
   Shutdown(app);
 }

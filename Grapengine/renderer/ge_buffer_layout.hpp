@@ -16,7 +16,7 @@ namespace GE
   class BufferLayout
   {
   public:
-    static Ref<BufferLayout> Make(std::list<BufferElem> list);
+    static Ptr<BufferLayout> Make(std::list<BufferElem> list);
 
     explicit BufferLayout(std::list<BufferElem> list = {});
     ~BufferLayout();

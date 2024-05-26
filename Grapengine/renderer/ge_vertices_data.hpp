@@ -30,18 +30,18 @@ namespace GE
   class VerticesData
   {
   public:
-    static Ref<VerticesData> Make(const Ref<const BufferLayout>& layout)
+    static Ptr<VerticesData> Make(const Ptr<const BufferLayout>& layout)
     {
       return MakeRef<VerticesData>(layout);
     }
 
-    explicit VerticesData(Ref<const BufferLayout> layout) : m_layout(std::move(layout)) {}
+    explicit VerticesData(Ptr<const BufferLayout> layout) : m_layout(std::move(layout)) {}
 
     [[nodiscard]] u64 GetSize() const { return m_data.size(); }
 
     [[nodiscard]] const void* GetPtr() const { return m_data.data(); }
 
-    [[nodiscard]] Ref<const BufferLayout> GetLayout() const { return m_layout; }
+    [[nodiscard]] Ptr<const BufferLayout> GetLayout() const { return m_layout; }
 
     template <class... T>
     void PushData(T... args);
@@ -53,7 +53,7 @@ namespace GE
     template <class T>
     void PushBytes(T arg);
 
-    Ref<const BufferLayout> m_layout;
+    Ptr<const BufferLayout> m_layout;
     std::vector<std::byte> m_data;
   };
 

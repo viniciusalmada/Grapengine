@@ -9,9 +9,9 @@ namespace GE
   class SceneHierarchyPanel
   {
   public:
-    SceneHierarchyPanel(const Ref<Scene>& scene);
+    SceneHierarchyPanel(const Ptr<Scene>& scene);
 
-    void SetContext(const Ref<Scene>& scene);
+    void SetContext(const Ptr<Scene>& scene);
 
     void OnImGuiRender();
 
@@ -19,7 +19,7 @@ namespace GE
     void DrawEntityNode(Entity ent);
     void DrawComponents(Entity ent);
 
-    Ref<Scene> m_scene_context;
+    Ptr<Scene> m_scene_context;
     Entity m_selected_entity;
   };
 

@@ -9,8 +9,8 @@
 
 using namespace GE;
 
-DrawingObject::DrawingObject(const Ref<VerticesData>& vertices,
-                             const Ref<std::vector<u32>>& indices) :
+DrawingObject::DrawingObject(const Ptr<VerticesData>& vertices,
+                             const Ptr<std::vector<u32>>& indices) :
     m_triangles_count(indices->size() / 3UL)
 {
   GE_PROFILE;
@@ -33,7 +33,7 @@ void DrawingObject::Draw() const
   Renderer::DrawIndexed(m_vao, static_cast<i32>(m_triangles_count * 3));
 }
 
-void DrawingObject::UpdateVerticesData(const Ref<VerticesData>& data)
+void DrawingObject::UpdateVerticesData(const Ptr<VerticesData>& data)
 {
   GE_PROFILE;
   m_vao->Bind();

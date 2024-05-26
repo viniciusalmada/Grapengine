@@ -9,8 +9,8 @@ namespace GE
   class ImGuiLayer : public Layer
   {
   public:
-    static Ref<ImGuiLayer> Make(Ref<Window> window);
-    explicit ImGuiLayer(Ref<Window> window);
+    static Ptr<ImGuiLayer> Make(Ptr<Window> window);
+    explicit ImGuiLayer(Ptr<Window> window);
     ~ImGuiLayer() override;
 
     void Begin();
@@ -22,7 +22,7 @@ namespace GE
     void AllowMouseAndKeyboardEvents(bool allow);
 
   private:
-    Ref<Window> m_window = nullptr;
+    Ptr<Window> m_window = nullptr;
     bool m_allow_imgui_events = false;
   };
 }

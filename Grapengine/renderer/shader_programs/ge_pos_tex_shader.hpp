@@ -21,10 +21,10 @@ namespace GE
     void UpdateViewProjectionMatrix(Mat4 viewProj) override;
     void UpdateTexture(int id) override;
 
-    [[nodiscard]] Ref<const BufferLayout> GetLayout() const override;
+    [[nodiscard]] Ptr<const BufferLayout> GetLayout() const override;
 
   private:
-    Ref<Shader> m_shader;
+    Ptr<Shader> m_shader;
   };
 }
 #endif // GRAPENGINE_POS_TEX_SHADER_HPP

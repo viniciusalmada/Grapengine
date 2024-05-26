@@ -65,7 +65,7 @@ Entity Scene::CreateEntity(const char* name)
   return ent;
 }
 
-Ref<Scene> Scene::Make()
+Ptr<Scene> Scene::Make()
 {
   return MakeRef<Scene>();
 }
