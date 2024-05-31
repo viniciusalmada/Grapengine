@@ -88,3 +88,21 @@ TEST(Mat4, Mat4Multiply)
   ASSERT_EQ(prod(3, 2), 542);
   ASSERT_EQ(prod(3, 3), 600);
 }
+
+TEST(Mat4, Mat4MultiplyVec3)
+{
+  Mat4 m1{
+    { 1, 2, 3, 4 },
+    { 5, 6, 7, 8 },
+    { 9, 10, 11, 12 },
+    { 13, 14, 15, 16 },
+  };
+
+  Vec3 v3{ 1, 2, 3 };
+
+  auto prod = m1 * v3;
+
+  ASSERT_EQ(prod.x, 18);
+  ASSERT_EQ(prod.y, 46);
+  ASSERT_EQ(prod.z, 74);
+}

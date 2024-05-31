@@ -197,6 +197,24 @@ bool Mat4::operator==(const Mat4& other) const
   return true;
 }
 
+Vec4 Mat4::operator*(const Vec4& other) const
+{
+  Vec4 res{ 0, 0, 0, 0 };
+  const Mat4& m = *this;
+  res.x0 = m(0, 0) * other.x0 + m(0, 1) * other.x1 + m(0, 2) * other.x2 + m(0, 3) * other.x3;
+  res.x1 = m(1, 0) * other.x0 + m(1, 1) * other.x1 + m(1, 2) * other.x2 + m(1, 3) * other.x3;
+  res.x2 = m(2, 0) * other.x0 + m(2, 1) * other.x1 + m(2, 2) * other.x2 + m(2, 3) * other.x3;
+  res.x3 = m(3, 0) * other.x0 + m(3, 1) * other.x1 + m(3, 2) * other.x2 + m(3, 3) * other.x3;
+  return res;
+}
+
+Vec3 Mat4::operator*(const Vec3& other) const
+{
+  Vec4 vec{ other };
+  auto res = this->operator*(vec);
+  return { res.x0, res.x1, res.x2 };
+}
+
 bool IVec3::operator<(const IVec3& other) const
 {
   if (x < other.x)
