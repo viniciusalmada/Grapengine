@@ -7,7 +7,6 @@
 #include <backends/imgui_impl_opengl3.h>
 #include <core/ge_time_step.hpp>
 #include <imgui.h>
-#include <utility>
 
 #define USE_MULTIPLE_VIEWPORTS
 

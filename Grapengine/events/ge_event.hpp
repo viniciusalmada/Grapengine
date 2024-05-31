@@ -4,8 +4,6 @@
 #include "core/ge_config.hpp"
 #include "ge_event_type.hpp"
 
-#include <functional>
-
 namespace GE
 {
   class EventHandler

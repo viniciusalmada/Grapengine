@@ -3,8 +3,6 @@
 
 #include "ge_vector.hpp"
 
-#include <string>
-
 namespace GE::Transform
 {
   constexpr f32 FRUSTUM_NEAR = 0.1f;

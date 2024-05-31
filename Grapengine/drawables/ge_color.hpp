@@ -3,8 +3,6 @@
 
 #include "math/ge_vector.hpp"
 
-#include <numeric>
-
 namespace GE
 {
   constexpr auto MAX_U8 = std::numeric_limits<u8>::max();

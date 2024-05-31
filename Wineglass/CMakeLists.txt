@@ -9,6 +9,8 @@ add_executable(Wine
   panels/SceneHierarchyPanel.hpp
 )
 
+target_precompile_headers(Wine PRIVATE WineglassPCH.hpp)
+
 #add_executable(Wine main.cpp)
 target_include_directories(Wine PRIVATE SYSTEM
   ${CMAKE_SOURCE_DIR}/Grapengine

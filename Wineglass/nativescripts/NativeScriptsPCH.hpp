@@ -1,0 +1,18 @@
+#ifndef GRAPENGINE_NATIVESCRIPTSPCH_HPP
+#define GRAPENGINE_NATIVESCRIPTSPCH_HPP
+
+#include <any>
+#include <array>
+#include <cstdint>
+#include <functional>
+#include <list>
+#include <map>
+#include <memory>
+#include <numeric>
+#include <optional>
+#include <random>
+#include <ranges>
+#include <set>
+#include <variant>
+
+#endif // GRAPENGINE_NATIVESCRIPTSPCH_HPP

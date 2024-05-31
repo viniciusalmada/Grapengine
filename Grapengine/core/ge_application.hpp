@@ -5,9 +5,6 @@
 #include "ge_type_aliases.hpp"
 #include "layer/ge_imgui_layer.hpp"
 
-#include <functional>
-#include <string>
-
 namespace GE
 {
   class Window;

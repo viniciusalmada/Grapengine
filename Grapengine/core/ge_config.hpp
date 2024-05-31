@@ -6,7 +6,6 @@
 #endif
 
 #if defined(USE_TRACY_PROFILER)
-  #include <cstddef>
 
 void* operator new(std::size_t count);
 

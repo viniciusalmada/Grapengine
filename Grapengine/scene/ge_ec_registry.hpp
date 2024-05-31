@@ -6,11 +6,6 @@
 #include "ge_entity.hpp"
 #include "profiling/ge_profiler.hpp"
 
-#include <list>
-#include <map>
-#include <ranges>
-#include <set>
-
 namespace GE
 {
   class ECRegistry
