@@ -35,14 +35,14 @@ At this point there are 3 supported compilers and 2 differents platforms:
 
 The list of presets are following:
 
-* `microsoft-cl-debug`- Debug build with MSVC compiler
-* `microsoft-cl-release`- Optimized build with MSVC compiler
-* `llvm-clang-cl-debug`- Debug build with Clang compiler as MSVC frontend
-* `llvm-clang-cl-release`- Optimized build with Clang compiler as MSVC frontend
-* `llvm-clang-gcc-debug`- Debug build with Clang compiler as GCC frontend
-* `llvm-clang-gcc-release`- Optimized build with Clang compiler as GCC frontend
-* `gnu-gcc-debug`- Debug build with GCC compiler
-* `gnu-gcc-release`- Optmized build with GCC compiler
+* `msvc-debug`- Debug build with MSVC compiler
+* `msvc-release`- Optimized build with MSVC compiler
+* `clang-win-debug`- Debug build with Clang compiler as MSVC frontend
+* `clang-win-release`- Optimized build with Clang compiler as MSVC frontend
+* `clang-linux-debug`- Debug build with Clang compiler as GCC frontend
+* `clang-linux-release`- Optimized build with Clang compiler as GCC frontend
+* `gcc-debug`- Debug build with GCC compiler
+* `gcc-release`- Optmized build with GCC compiler
 
 Just call `cmake --preset <preset-name>`, this will create a folder `build-<preset-name>` with the necessary files to
 compile the project.
