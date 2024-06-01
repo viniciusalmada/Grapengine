@@ -28,9 +28,9 @@ public:
       return;
 
     if (Input::IsKeyPressed(KeyCode::A))
-      xy_cam.x -= incr;
-    else if (Input::IsKeyPressed(KeyCode::D))
       xy_cam.x += incr;
+    else if (Input::IsKeyPressed(KeyCode::D))
+      xy_cam.x -= incr;
     else if (Input::IsKeyPressed(KeyCode::W))
       xy_cam.y -= incr;
     else if (Input::IsKeyPressed(KeyCode::S))
