@@ -6,6 +6,13 @@
 
 using namespace GE;
 
+struct Face
+{
+  IVec3 indices;
+  Vec3 center;
+  Vec3 normal;
+};
+
 GE::Mesh::Mesh(std::string_view path)
 {
   GE_PROFILE;

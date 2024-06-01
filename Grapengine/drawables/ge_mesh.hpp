@@ -1,19 +1,10 @@
 #ifndef GRAPENGINE_GE_MESH_HPP
 #define GRAPENGINE_GE_MESH_HPP
 
-#include "drawables/ge_cube.hpp"
-#include "drawables/ge_cylinder.hpp"
 #include "drawables/ge_drawable.hpp"
 
 namespace GE
 {
-  struct Face
-  {
-    IVec3 indices;
-    Vec3 center;
-    Vec3 normal;
-  };
-
   class Mesh : public Drawable
   {
   public:
