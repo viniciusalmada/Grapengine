@@ -32,10 +32,10 @@ void EditorLayer::OnAttach()
   auto cube_2_ent = m_scene->CreateEntity("Cube Red");
   auto cube_3_ent = m_scene->CreateEntity("Cube Green");
   auto cube_4_ent = m_scene->CreateEntity("Cube Yellow");
-  m_scene->AddComponent<CubeComponent>(cube_1_ent, Colors::BLUE);
-  m_scene->AddComponent<CubeComponent>(cube_2_ent, Colors::RED);
-  m_scene->AddComponent<CubeComponent>(cube_3_ent, Colors::GREEN);
-  m_scene->AddComponent<CubeComponent>(cube_4_ent, Colors::YELLOW);
+  m_scene->AddComponent<PrimitiveComponent>(cube_1_ent, Cube::Make(), Colors::BLUE);
+  m_scene->AddComponent<PrimitiveComponent>(cube_2_ent, Cube::Make(), Colors::RED);
+  m_scene->AddComponent<PrimitiveComponent>(cube_3_ent, Cube::Make(), Colors::GREEN);
+  m_scene->AddComponent<PrimitiveComponent>(cube_4_ent, Cube::Make(), Colors::YELLOW);
   m_scene->AddComponent<TranslateScaleComponent>(cube_1_ent, Vec3{ 0, 0, 0 }, Vec3{ 1, 1, 1 });
   m_scene->AddComponent<TranslateScaleComponent>(cube_2_ent, Vec3{ 1, 1, 1 }, Vec3{ 1, 1, 1 });
   m_scene->AddComponent<TranslateScaleComponent>(cube_3_ent, Vec3{ 2, 2, 2 }, Vec3{ 1, 1, 1 });

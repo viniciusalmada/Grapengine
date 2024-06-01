@@ -2,7 +2,6 @@
 
 #include "math/ge_transformations.hpp"
 #include "renderer/ge_vertices_data.hpp"
-#include "renderer/shader_programs/ge_pos_tex_shader.hpp"
 
 using namespace GE;
 
@@ -60,15 +59,20 @@ namespace
 }
 
 //-------------------------------------------------------------------------
-Cube::Cube(Color color) : m_color(color) {}
+Cube::Cube() {}
 
-VerticesData Cube::GetVerticesData() const
+VerticesData Cube::GetVerticesData(Color color) const
 {
-  VerticesData vd = GetCubeVerticesPositions(m_color);
+  VerticesData vd = GetCubeVerticesPositions(color);
   return vd;
 }
 
 const std::vector<u32>& Cube::GetIndicesData() const
 {
   return GetIndices();
+}
+
+Ptr<Cube> Cube::Make()
+{
+  return MakeRef<Cube>();
 }

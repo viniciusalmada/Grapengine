@@ -21,15 +21,11 @@ namespace GE
 
     ~Mesh() override;
 
-    VerticesData GetVerticesData() const override;
+    VerticesData GetVerticesData(Color color) const override;
     const std::vector<u32>& GetIndicesData() const override;
 
   private:
     Color m_color = Colors::MAGENTA;
-    //    Ptr<DrawingObject> m_draw_primitive;
-    //    Ptr<Cube> m_bbox;
-    //    Ptr<IShaderProgram> m_shader;
-    //    Ptr<Texture2D> m_texture;
     VerticesData m_vertices_data;
     std::vector<u32> m_indices;
   };

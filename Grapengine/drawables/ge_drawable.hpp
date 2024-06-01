@@ -1,6 +1,7 @@
 #ifndef GRAPENGINE_DRAWABLE_HPP
 #define GRAPENGINE_DRAWABLE_HPP
 
+#include "drawables/ge_color.hpp"
 #include "renderer/ge_vertices_data.hpp"
 
 namespace GE
@@ -10,7 +11,7 @@ namespace GE
   public:
     virtual ~Drawable();
 
-    virtual VerticesData GetVerticesData() const = 0;
+    virtual VerticesData GetVerticesData(Color color) const = 0;
     virtual const std::vector<u32>& GetIndicesData() const = 0;
   };
 }

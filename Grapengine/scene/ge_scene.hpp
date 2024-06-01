@@ -52,6 +52,8 @@ namespace GE
     void EachEntity(const std::function<void(Entity)>& fun) const;
 
   private:
+    void UpdateNativeScripts(TimeStep& ts);
+
     [[nodiscard]] Opt<Entity> GetActiveCamera() const;
 
     ECRegistry m_registry;

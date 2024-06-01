@@ -116,7 +116,7 @@ GE::Mesh::Mesh(std::string_view path)
 
 Mesh::~Mesh() = default;
 
-VerticesData Mesh::GetVerticesData() const
+VerticesData Mesh::GetVerticesData(Color /*color*/) const
 {
   return m_vertices_data;
 }

@@ -27,17 +27,15 @@ TranslateScaleComponent::TranslateScaleComponent(const Vec3& pos, const Vec3& sc
     position_values(pos), scale_values(scale)
 {
 }
-PrimitiveComponent::PrimitiveComponent(const Ptr<VerticesData>& verticesData,
-                                       const std::vector<u32>& indicesData) :
-    vertices_data(verticesData), indices_data(indicesData)
-{
-}
+PrimitiveComponent::PrimitiveComponent(Ptr<Drawable> dra, Color c) : drawable(dra), color(c) {}
+
 CompType PrimitiveComponent::Type() const
 {
   return CompType::PRIMITIVE;
 }
+
 PrimitiveComponent::PrimitiveComponent(const PrimitiveComponent& other) :
-    PrimitiveComponent(other.vertices_data, other.indices_data)
+    PrimitiveComponent(other.drawable, other.color)
 {
 }
 CompType MaterialComponent::Type() const
@@ -73,9 +71,3 @@ CompType NativeScriptComponent::Type() const
 {
   return CompType::NATIVE_SCRIPT;
 }
-
-CompType CubeComponent::Type() const
-{
-  return CompType::CUBE;
-}
-CubeComponent::CubeComponent(Color color) : cube(color) {}

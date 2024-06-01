@@ -14,13 +14,14 @@ namespace GE
   class Cube final : public Drawable
   {
   public:
-    Cube(Color color);
+    static Ptr<Cube> Make();
 
-    [[nodiscard]] VerticesData GetVerticesData() const override;
+    Cube();
+
+    [[nodiscard]] VerticesData GetVerticesData(Color color) const override;
     [[nodiscard]] const std::vector<u32>& GetIndicesData() const override;
 
   private:
-    Color m_color;
     Ptr<Texture2D> m_texture;
   };
 }

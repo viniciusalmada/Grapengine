@@ -53,17 +53,10 @@ namespace GE
   class DrawingObject;
   struct PrimitiveComponent : public BaseComponent
   {
-    Ptr<VerticesData> vertices_data;
-    std::vector<u32> indices_data;
-    PrimitiveComponent(const Ptr<VerticesData>& verticesData, const std::vector<u32>& indicesData);
+    Ptr<Drawable> drawable;
+    Color color;
+    PrimitiveComponent(Ptr<Drawable> drawable, Color color = Colors::WHITE);
     PrimitiveComponent(const PrimitiveComponent&);
-    [[nodiscard]] CompType Type() const final;
-  };
-
-  struct CubeComponent : public BaseComponent
-  {
-    Cube cube;
-    CubeComponent(Color color);
     CompType Type() const override;
   };
 

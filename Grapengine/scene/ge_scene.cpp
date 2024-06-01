@@ -14,22 +14,7 @@ Scene::Scene() : m_registry({}), m_viewport(Dimension{ 1, 1 }) {}
 void Scene::OnUpdate(TimeStep ts)
 {
   GE_PROFILE;
-  {
-    const std::vector<Entity> g = m_registry.Group({ CompType::NATIVE_SCRIPT });
-
-    // Move to Scene::OnScenePlay
-    for (auto ent : g)
-    {
-      const auto& nsc = m_registry.GetComponent<NativeScriptComponent>(ent);
-      if (nsc.instance == nullptr)
-      {
-        nsc.instantiateFun(ent, *this);
-        nsc.instance->OnCreate();
-      }
-
-      nsc.instance->OnUpdate(ts);
-    }
-  }
+  UpdateNativeScripts(ts);
 
   const Entity active_camera = GetActiveCamera().value_or(Entity{});
   if (!active_camera)
@@ -38,10 +23,10 @@ void Scene::OnUpdate(TimeStep ts)
   const CameraComponent& cam_component = m_registry.GetComponent<CameraComponent>(active_camera);
 
   const std::vector<Entity> gcolor =
-    m_registry.Group({ CompType::TRANSL_SCALE, CompType::CUBE, CompType::COLOR_ONLY });
+    m_registry.Group({ CompType::TRANSL_SCALE, CompType::PRIMITIVE, CompType::COLOR_ONLY });
 
   const std::vector<Entity> gmat =
-    m_registry.Group({ CompType::TRANSL_SCALE, CompType::CUBE, CompType::MATERIAL });
+    m_registry.Group({ CompType::TRANSL_SCALE, CompType::PRIMITIVE, CompType::MATERIAL });
 
   Renderer::Batch::Begin();
   for (auto ent : gcolor)
@@ -54,9 +39,9 @@ void Scene::OnUpdate(TimeStep ts)
       m_registry.GetComponent<TranslateScaleComponent>(ent);
     //    shader.shader->UpdateModelMatrix(transl_scale_comp.GetModelMat());
 
-    const CubeComponent& cube = m_registry.GetComponent<CubeComponent>(ent);
-    auto vertices = cube.cube.GetVerticesData();
-    auto indices = cube.cube.GetIndicesData();
+    const PrimitiveComponent& primitive = m_registry.GetComponent<PrimitiveComponent>(ent);
+    auto vertices = primitive.drawable->GetVerticesData(primitive.color);
+    auto indices = primitive.drawable->GetIndicesData();
 
     Renderer::Batch::PushObject(shader.shader,
                                 std::move(vertices),
@@ -72,9 +57,9 @@ void Scene::OnUpdate(TimeStep ts)
     const TranslateScaleComponent& transl_scale_comp =
       m_registry.GetComponent<TranslateScaleComponent>(ent);
 
-    const CubeComponent& cube = m_registry.GetComponent<CubeComponent>(ent);
-    auto vertices = cube.cube.GetVerticesData();
-    auto indices = cube.cube.GetIndicesData();
+    const PrimitiveComponent& primitive = m_registry.GetComponent<PrimitiveComponent>(ent);
+    auto vertices = primitive.drawable->GetVerticesData(primitive.color);
+    auto indices = primitive.drawable->GetIndicesData();
 
     Renderer::Batch::PushObject(shader.shader,
                                 std::move(vertices),
@@ -82,6 +67,24 @@ void Scene::OnUpdate(TimeStep ts)
                                 transl_scale_comp.GetModelMat());
   }
   Renderer::Batch::End();
+}
+
+void Scene::UpdateNativeScripts(TimeStep& ts)
+{
+  const std::vector<Entity> g = m_registry.Group({ CompType::NATIVE_SCRIPT });
+
+  // Move to Scene::OnScenePlay
+  for (auto ent : g)
+  {
+    const auto& nsc = m_registry.GetComponent<NativeScriptComponent>(ent);
+    if (nsc.instance == nullptr)
+    {
+      nsc.instantiateFun(ent, *this);
+      nsc.instance->OnCreate();
+    }
+
+    nsc.instance->OnUpdate(ts);
+  }
 }
 
 Entity Scene::CreateEntity(const char* name)

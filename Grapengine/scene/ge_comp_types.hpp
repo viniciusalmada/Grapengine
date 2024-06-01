@@ -12,7 +12,6 @@ namespace GE
     TRANF,
     TRANSL_SCALE,
     PRIMITIVE,
-    CUBE,
     MATERIAL,
     COLOR_ONLY,
     CAMERA,

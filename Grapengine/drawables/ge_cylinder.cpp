@@ -70,7 +70,7 @@ Cylinder::Cylinder(const GE::Vec3& basePoint,
 
 Cylinder::~Cylinder() = default;
 
-VerticesData Cylinder::GetVerticesData() const
+VerticesData Cylinder::GetVerticesData(Color /*color*/) const
 {
   return m_vertices;
 }
