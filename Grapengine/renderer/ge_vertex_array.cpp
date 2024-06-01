@@ -1,6 +1,7 @@
 #include "renderer/ge_vertex_array.hpp"
 
 #include "core/ge_assert.hpp"
+#include "core/ge_platform.hpp"
 #include "renderer/ge_buffer_layout.hpp"
 #include "renderer/ge_gl_checkers.hpp"
 #include "renderer/ge_index_buffer.hpp"
@@ -14,55 +15,30 @@ namespace
 {
   i32 GetComponentCount(const BufferElem& e)
   {
-    switch (e.type)
+    switch (e.purpose)
     {
-    case ShaderDataType::Float:
-    case ShaderDataType::Int:
-    case ShaderDataType::Bool:
-      return 1;
-    case ShaderDataType::Float2:
-    case ShaderDataType::Int2:
-      return 2;
-    case ShaderDataType::Float3:
-    case ShaderDataType::Int3:
+    case DataPurpose::POSITION_F3:
+    case DataPurpose::NORMAL_F3:
       return 3;
-    case ShaderDataType::Float4:
-    case ShaderDataType::Int4:
+    case DataPurpose::COLOR_F4:
       return 4;
-    case ShaderDataType::Mat3:
-      return 3 * 3;
-    case ShaderDataType::Mat4:
-      return 4 * 4;
-    case ShaderDataType::None:
-      return 0;
+    case DataPurpose::TEXTURE_COORDINATE_F2:
+      return 2;
     }
-
-    return 0;
+    Platform::Unreachable();
   }
 
-  u32 ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
+  u32 ShaderDataTypeToOpenGLBaseType(DataPurpose type)
   {
     switch (type)
     {
-    case ShaderDataType::Float:
-    case ShaderDataType::Float2:
-    case ShaderDataType::Float3:
-    case ShaderDataType::Float4:
-    case ShaderDataType::Mat3:
-    case ShaderDataType::Mat4:
+    case DataPurpose::POSITION_F3:
+    case DataPurpose::COLOR_F4:
+    case DataPurpose::TEXTURE_COORDINATE_F2:
+    case DataPurpose::NORMAL_F3:
       return GL_FLOAT;
-    case ShaderDataType::Int:
-    case ShaderDataType::Int2:
-    case ShaderDataType::Int3:
-    case ShaderDataType::Int4:
-      return GL_INT;
-    case ShaderDataType::Bool:
-      return GL_BOOL;
-    case ShaderDataType::None:
-      return 0;
     }
-
-    return 0;
+    Platform::Unreachable();
   }
 }
 
@@ -88,13 +64,12 @@ void VertexArray::Bind() const
     index_buffer->Bind();
 }
 
-void VertexArray::SetVertexBuffer(const Ptr<VertexBuffer>& vertexBuffer,
-                                  Ptr<const BufferLayout> layout)
+void VertexArray::SetVertexBuffer(const Ptr<VertexBuffer>& vertexBuffer, BufferLayout layout)
 {
   GE_ASSERT(IsVAOBound(u32(id)), "The associated VAO lacks a binding")
 
   u32 attrib_index = 0;
-  layout->ForEachElement(
+  layout.ForEachElement(
     [&](auto&& elem)
     {
       glEnableVertexAttribArray(attrib_index);
@@ -102,9 +77,9 @@ void VertexArray::SetVertexBuffer(const Ptr<VertexBuffer>& vertexBuffer,
       glVertexAttribPointer(
         attrib_index,
         GetComponentCount(elem),
-        ShaderDataTypeToOpenGLBaseType(elem.type),
+        ShaderDataTypeToOpenGLBaseType(elem.purpose),
         elem.normalized,
-        static_cast<i32>(layout->GetStride()),
+        static_cast<i32>(layout.GetStride()),
         reinterpret_cast<void*>(offset)); // NOLINT(*-pro-type-reinterpret-cast, *-no-int-to-ptr)
       attrib_index++;
     });
@@ -125,4 +100,9 @@ void VertexArray::Unbind() const
 {
   if (IsVAOBound(u32(id)))
     glBindVertexArray(0);
+}
+
+Ptr<VertexArray> VertexArray::Make()
+{
+  return MakeRef<VertexArray>();
 }

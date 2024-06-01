@@ -5,6 +5,7 @@ file(GLOB_RECURSE TestsSources ${CMAKE_SOURCE_DIR}/tests/*.cpp)
 add_executable(EngineTests
         ${TestsSources}
 )
+target_precompile_headers(EngineTests PRIVATE tests_pch.hpp)
 find_package(GTest CONFIG REQUIRED)
 target_link_libraries(EngineTests PRIVATE GTest::gtest GTest::gtest_main GTest::gmock GTest::gmock_main)
 

@@ -4,13 +4,6 @@
 #include "core/ge_config.hpp"
 #include "core/ge_type_aliases.hpp"
 
-#include <array>
-#include <iomanip>
-#if !(defined(GE_GCC_COMPILER) && __GNUC__ <= 12)
-  #include <format>
-#endif
-#include <ostream>
-
 namespace GE
 {
   struct IVec2
@@ -29,15 +22,7 @@ namespace GE
     [[nodiscard]] f32 Length() const noexcept;
     [[nodiscard]] f32 Dot(Vec2 other) const noexcept;
 
-    friend std::ostream& operator<<(std::ostream& os, const Vec2& vec)
-    {
-#if __cpp_lib_format
-      os << std::format("{:1.2f},{:1.2f}", vec.x, vec.y);
-#else
-      os << std::setprecision(2) << vec.x << "," << vec.y;
-#endif
-      return os;
-    }
+    friend std::ostream& operator<<(std::ostream& os, const Vec2& vec);
     bool operator==(const Vec2& rhs) const;
     bool operator!=(const Vec2& rhs) const;
   };
@@ -71,15 +56,7 @@ namespace GE
     [[nodiscard]] f32 Dot(const Vec3& other) const;
     [[nodiscard]] f32 Distance(const Vec3& other) const;
 
-    friend std::ostream& operator<<(std::ostream& os, const Vec3& vec3)
-    {
-#if __cpp_lib_format
-      os << std::format("{:1.2f},{:1.2f},{:1.2f}", vec3.x, vec3.y, vec3.z);
-#else
-      os << std::setprecision(2) << vec3.x << "," << vec3.y << "," << vec3.z;
-#endif
-      return os;
-    }
+    friend std::ostream& operator<<(std::ostream& os, const Vec3& vec3);
     [[nodiscard]] f32 Length() const;
   };
 
@@ -89,6 +66,9 @@ namespace GE
     f32 x1;
     f32 x2;
     f32 x3;
+
+    Vec4(f32 xx0, f32 xx1, f32 xx2, f32 xx3) : x0(xx0), x1(xx1), x2(xx2), x3(xx3) {}
+    Vec4(const Vec3& v3, f32 w = 1.0f) : x0(v3.x), x1(v3.y), x2(v3.z), x3(w) {}
   };
 
   class Mat4
@@ -103,6 +83,9 @@ namespace GE
 
     bool operator==(const Mat4& other) const;
     Mat4 operator*(const Mat4& other) const;
+
+    Vec4 operator*(const Vec4& other) const;
+    Vec3 operator*(const Vec3& other) const;
 
     f32& operator()(u32 row, u32 col);
     const f32& operator()(u32 row, u32 col) const;

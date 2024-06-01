@@ -17,7 +17,6 @@ namespace GE
     void Activate() override;
     void Deactivate() override;
 
-    void UpdateModelMatrix(Mat4 model) override;
     void UpdateViewProjectionMatrix(Mat4 viewProj) override;
     void UpdateTexture(int id) override;
 
@@ -27,8 +26,6 @@ namespace GE
     void UpdateLightPosition(const std::vector<Vec3>& pos);
     void UpdateLightColor(std::vector<Color> color);
     void UpdateLightStrength(const std::vector<f32>& strength);
-
-    [[nodiscard]] Ptr<const BufferLayout> GetLayout() const override;
 
   private:
     Ptr<Shader> m_shader;

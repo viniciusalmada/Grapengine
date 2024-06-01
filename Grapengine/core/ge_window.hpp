@@ -9,10 +9,6 @@
 #include "math/ge_vector.hpp"
 #include "utils/ge_dimension.hpp"
 
-#include <any>
-#include <functional>
-#include <string>
-
 namespace GE
 {
   using EventCallbackFn = std::function<void(Event&)>;

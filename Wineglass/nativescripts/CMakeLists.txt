@@ -5,6 +5,8 @@ add_library(NativeScripts STATIC
   CamController.cpp
 )
 
+target_precompile_headers(NativeScripts PRIVATE NativeScriptsPCH.hpp)
+
 target_include_directories(NativeScripts PRIVATE SYSTEM
   ${CMAKE_SOURCE_DIR}/Grapengine
 )

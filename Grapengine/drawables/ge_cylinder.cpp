@@ -14,17 +14,14 @@ using namespace GE;
 constexpr auto SLICES = 20ul;
 // constexpr auto STACKS = 8;
 
-Cylinder::Cylinder(const Ptr<IShaderProgram>& shader,
-                   const Vec3& basePoint,
+Cylinder::Cylinder(const GE::Vec3& basePoint,
                    const f32 radius,
-                   const Vec3& direction,
+                   const GE::Vec3& direction,
                    const f32 height,
-                   Color color,
-                   Ptr<Texture2D> texture2D) :
-    Drawable(shader), m_color(color), m_shader(shader), m_texture(std::move(texture2D))
+                   GE::Color color) :
+    m_color(color)
 {
   GE_PROFILE;
-  const Ptr<const BufferLayout> layout = shader->GetLayout();
 
   const Vec3 normal = direction.Normalize();
   const Vec3 ref_random{ Random::GenFloat(0, 1), Random::GenFloat(0, 1), Random::GenFloat(0, 1) };
@@ -42,61 +39,42 @@ Cylinder::Cylinder(const Ptr<IShaderProgram>& shader,
     final_pts.push_back(pt_final);
   }
 
-  const Ptr<VerticesData> positions = MakeRef<VerticesData>(layout);
+  const Ptr<VerticesData> positions = MakeRef<VerticesData>();
   for (u32 i = 0; i < base_pts.size(); ++i)
   {
-    if (layout->HasNormal())
-    {
-      positions->PushData(base_pts[i], Vec2{ 1, 1 }, color.ToVec4(), -direction.Normalize());
-      positions->PushData(final_pts[i], Vec2{ 1, 1 }, color.ToVec4(), direction.Normalize());
-    }
-    else
-    {
-      positions->PushData(base_pts[i], Vec2{ 1, 1 }, color.ToVec4());
-      positions->PushData(final_pts[i], Vec2{ 1, 1 }, color.ToVec4());
-    }
+    positions->PushVerticesData(
+      { base_pts[i], Vec2{ 1, 1 }, color.ToVec4(), -direction.Normalize() });
+    positions->PushVerticesData(
+      { final_pts[i], Vec2{ 1, 1 }, color.ToVec4(), direction.Normalize() });
   }
 
   // NOLINTBEGIN(*-magic-numbers)
-  const auto indices = MakeRef<std::vector<u32>>();
   for (int i = 0; i < static_cast<int>(SLICES * 2); i += 2)
   {
-    indices->emplace_back(0 + i);
-    indices->emplace_back(1 + i);
-    indices->emplace_back(2 + i);
+    m_indices.emplace_back(0 + i);
+    m_indices.emplace_back(1 + i);
+    m_indices.emplace_back(2 + i);
 
-    indices->emplace_back(2 + i);
-    indices->emplace_back(1 + i);
-    indices->emplace_back(3 + i);
+    m_indices.emplace_back(2 + i);
+    m_indices.emplace_back(1 + i);
+    m_indices.emplace_back(3 + i);
   }
-  (*indices)[indices->size() - 6] = static_cast<u32>(SLICES * 2 - 2);
-  (*indices)[indices->size() - 5] = 3;
-  (*indices)[indices->size() - 4] = 0;
-  (*indices)[indices->size() - 3] = 0;
-  (*indices)[indices->size() - 2] = static_cast<u32>(SLICES * 2 - 1);
-  (*indices)[indices->size() - 1] = 1;
+  m_indices[m_indices.size() - 6] = static_cast<u32>(SLICES * 2 - 2);
+  m_indices[m_indices.size() - 5] = 3;
+  m_indices[m_indices.size() - 4] = 0;
+  m_indices[m_indices.size() - 3] = 0;
+  m_indices[m_indices.size() - 2] = static_cast<u32>(SLICES * 2 - 1);
+  m_indices[m_indices.size() - 1] = 1;
   // NOLINTEND(*-magic-numbers)
-
-  m_draw_primitive = MakeRef<DrawingObject>(positions, indices);
 }
 
 Cylinder::~Cylinder() = default;
 
-void Cylinder::Draw() const
+VerticesData Cylinder::GetVerticesData() const
 {
-  GE_PROFILE;
-  m_texture->Bind(0);
-  m_shader->UpdateModelMatrix(Mat4{});
-  m_shader->UpdateTexture(0);
-  //  m_draw_primitive->Draw();
+  return m_vertices;
 }
-Ptr<Cylinder> GE::Cylinder::Make(const Ptr<IShaderProgram>& shader,
-                                 const Vec3& basePoint,
-                                 f32 radius,
-                                 const Vec3& direction,
-                                 f32 height,
-                                 Color color,
-                                 const Ptr<Texture2D>& texture2D)
+const std::vector<u32>& Cylinder::GetIndicesData() const
 {
-  return MakeRef<Cylinder>(shader, basePoint, radius, direction, height, color, texture2D);
+  return m_indices;
 }

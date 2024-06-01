@@ -4,8 +4,6 @@
 #include "core/ge_type_aliases.hpp"
 #include "input/ge_key_codes.hpp"
 
-#include <variant>
-
 namespace GE
 {
   enum class EvType : u8

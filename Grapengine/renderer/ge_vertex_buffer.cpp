@@ -27,8 +27,19 @@ void VertexBuffer::Bind() const
   glBindBuffer(GL_ARRAY_BUFFER, u32(m_id));
 }
 
-void VertexBuffer::UpdateData(const void* data, u64 size) const
+void VertexBuffer::UpdateData(const void* data, const u64 size) const
 {
   Bind();
-  glBufferSubData(GL_ARRAY_BUFFER, 0, i64(size), data);
+  // Get current size
+  i32 curr_size = 0;
+  glGetBufferParameteriv(GL_ARRAY_BUFFER, GL_BUFFER_SIZE, &curr_size);
+  if (size > u32(curr_size))
+    glBufferData(GL_ARRAY_BUFFER, static_cast<i64>(size), data, GL_DYNAMIC_DRAW);
+  else
+    glBufferSubData(GL_ARRAY_BUFFER, 0, i64(size), data);
+}
+
+Ptr<VertexBuffer> VertexBuffer::Make(const void* ptr, u64 verticesSize, RendererID parent)
+{
+  return MakeRef<VertexBuffer>(ptr, verticesSize, parent);
 }

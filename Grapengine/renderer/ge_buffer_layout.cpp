@@ -1,40 +1,22 @@
 #include "renderer/ge_buffer_layout.hpp"
 
-#include <core/ge_assert.hpp>
-#include <core/ge_platform.hpp>
+#include "core/ge_platform.hpp"
 
 using namespace GE;
 
 namespace
 {
-  u64 GetShaderDataTypeSize(ShaderDataType t)
+  u64 GetShaderDataTypeSize(DataPurpose t)
   {
     switch (t)
     {
-    case ShaderDataType::None:
-      return 0;
-    case ShaderDataType::Float:
-      return sizeof(f32);
-    case ShaderDataType::Float2:
-      return sizeof(f32) * 2;
-    case ShaderDataType::Float3:
+    case DataPurpose::POSITION_F3:
+    case DataPurpose::NORMAL_F3:
       return sizeof(f32) * 3;
-    case ShaderDataType::Float4:
+    case DataPurpose::COLOR_F4:
       return sizeof(f32) * 4;
-    case ShaderDataType::Mat3:
-      return sizeof(f32) * 3 * 3;
-    case ShaderDataType::Mat4:
-      return sizeof(f32) * 4 * 4;
-    case ShaderDataType::Int:
-      return sizeof(int);
-    case ShaderDataType::Int2:
-      return sizeof(int) * 2;
-    case ShaderDataType::Int3:
-      return sizeof(int) * 3;
-    case ShaderDataType::Int4:
-      return sizeof(int) * 4;
-    case ShaderDataType::Bool:
-      return 1;
+    case DataPurpose::TEXTURE_COORDINATE_F2:
+      return sizeof(f32) * 2;
     }
     Platform::Unreachable();
   }
@@ -53,20 +35,9 @@ BufferLayout::BufferLayout(std::list<BufferElem> list) : m_stride(0)
   }
 }
 
-std::vector<ShaderDataType> BufferLayout::GetTypesSortedList() const
-{
-  std::vector<ShaderDataType> sorted_list;
-  sorted_list.reserve(m_elements.size());
-  for (const BufferElem& e : m_elements)
-    sorted_list.push_back(e.type);
-
-  return sorted_list;
-}
-
 void BufferLayout::ForEachElement(const std::function<void(BufferElem)>& action) const
 {
-  for (const BufferElem& e : m_elements)
-    action(e);
+  std::ranges::for_each(m_elements, action);
 }
 
 u64 BufferLayout::GetStride() const
@@ -74,28 +45,17 @@ u64 BufferLayout::GetStride() const
   return m_stride;
 }
 
-std::list<BufferElem> GE::BufferLayout::BuildElementsList(
-  std::initializer_list<std::pair<DataPurpose, ShaderDataType>> types)
+std::list<BufferElem> GE::BufferLayout::BuildElementsList(std::initializer_list<DataPurpose> types)
 {
   std::list<BufferElem> elems{};
   u64 offset = 0;
-  for (const auto& [purpose, type] : types)
+  for (const auto& purpose : types)
   {
-    auto size = GetShaderDataTypeSize(type);
-    elems.emplace_back(purpose, type, size, offset, false);
+    auto size = GetShaderDataTypeSize(purpose);
+    elems.emplace_back(purpose, size, offset, false);
     offset += size;
   }
   return elems;
-}
-Ptr<BufferLayout> GE::BufferLayout::Make(std::list<BufferElem> list)
-{
-  return MakeRef<BufferLayout>(std::move(list));
-}
-
-bool GE::BufferLayout::HasNormal() const
-{
-  return std::ranges::any_of(m_elements,
-                             [&](const BufferElem& e) { return e.purpose == DataPurpose::NORMAL; });
 }
 
 BufferLayout::~BufferLayout() = default;

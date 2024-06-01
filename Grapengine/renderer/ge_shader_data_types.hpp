@@ -22,10 +22,10 @@ namespace GE
 
   enum class DataPurpose : u8
   {
-    POSITION,
-    COLOR,
-    TEXTURE_COORDINATE,
-    NORMAL
+    POSITION_F3,
+    COLOR_F4,
+    TEXTURE_COORDINATE_F2,
+    NORMAL_F3
   };
 }
 

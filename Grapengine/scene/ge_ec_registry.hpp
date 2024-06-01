@@ -6,11 +6,6 @@
 #include "ge_entity.hpp"
 #include "profiling/ge_profiler.hpp"
 
-#include <list>
-#include <map>
-#include <ranges>
-#include <set>
-
 namespace GE
 {
   class ECRegistry
@@ -51,7 +46,7 @@ namespace GE
      * @return associated component
      */
     template <typename Component>
-    Component& GetComponent(const Entity& ent)
+    [[nodiscard]] Component& GetComponent(const Entity& ent)
     {
       GE_PROFILE;
       GE_ASSERT(Has<Component>(ent), "Entity does not have this component!")

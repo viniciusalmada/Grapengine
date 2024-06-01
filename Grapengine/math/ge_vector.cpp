@@ -40,6 +40,16 @@ bool Vec2::operator!=(const Vec2& rhs) const
   return !(rhs == *this);
 }
 
+std::ostream& GE::operator<<(std::ostream& os, const Vec2& vec)
+{
+#if __cpp_lib_format
+  os << std::format("{:1.2f},{:1.2f}", vec.x, vec.y);
+#else
+  os << std::setprecision(2) << vec.x << "," << vec.y;
+#endif
+  return os;
+}
+
 Vec3 Vec3::operator+(const Vec3& other) const
 {
   return { x + other.x, y + other.y, z + other.z };
@@ -106,6 +116,16 @@ f32 Vec3::Distance(const Vec3& other) const
 f32 Vec3::Length() const
 {
   return std::sqrt(x * x + y * y + z * z);
+}
+
+std::ostream& GE::operator<<(std::ostream& os, const Vec3& vec3)
+{
+#if __cpp_lib_format
+  os << std::format("{:1.2f},{:1.2f},{:1.2f}", vec3.x, vec3.y, vec3.z);
+#else
+  os << std::setprecision(2) << vec3.x << "," << vec3.y << "," << vec3.z;
+#endif
+  return os;
 }
 
 Mat4::Mat4() : Mat4({ { 1, 0, 0, 0 } }, { { 0, 1, 0, 0 } }, { { 0, 0, 1, 0 } }, { { 0, 0, 0, 1 } })
@@ -176,6 +196,24 @@ bool Mat4::operator==(const Mat4& other) const
     }
   }
   return true;
+}
+
+Vec4 Mat4::operator*(const Vec4& other) const
+{
+  Vec4 res{ 0, 0, 0, 0 };
+  const Mat4& m = *this;
+  res.x0 = m(0, 0) * other.x0 + m(0, 1) * other.x1 + m(0, 2) * other.x2 + m(0, 3) * other.x3;
+  res.x1 = m(1, 0) * other.x0 + m(1, 1) * other.x1 + m(1, 2) * other.x2 + m(1, 3) * other.x3;
+  res.x2 = m(2, 0) * other.x0 + m(2, 1) * other.x1 + m(2, 2) * other.x2 + m(2, 3) * other.x3;
+  res.x3 = m(3, 0) * other.x0 + m(3, 1) * other.x1 + m(3, 2) * other.x2 + m(3, 3) * other.x3;
+  return res;
+}
+
+Vec3 Mat4::operator*(const Vec3& other) const
+{
+  Vec4 vec{ other };
+  auto res = this->operator*(vec);
+  return { res.x0, res.x1, res.x2 };
 }
 
 bool IVec3::operator<(const IVec3& other) const

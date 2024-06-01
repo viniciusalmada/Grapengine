@@ -1,12 +1,17 @@
 #ifndef GRAPENGINE_GE_COMPONENTS_HPP
 #define GRAPENGINE_GE_COMPONENTS_HPP
 
+#include "drawables/ge_color.hpp"
+#include "drawables/ge_cube.hpp"
 #include "ge_comp_types.hpp"
 #include "ge_entity.hpp"
 #include "ge_scene_camera.hpp"
 #include "math/ge_transformations.hpp"
 #include "math/ge_vector.hpp"
-#include "renderer/ge_ishader_program.hpp"
+#include "renderer/ge_texture_2d.hpp"
+#include "renderer/ge_vertices_data.hpp"
+#include "renderer/shader_programs/ge_material_shader.hpp"
+#include "renderer/shader_programs/ge_pos_tex_shader.hpp"
 
 namespace GE
 {
@@ -48,23 +53,32 @@ namespace GE
   class DrawingObject;
   struct PrimitiveComponent : public BaseComponent
   {
-    Ptr<DrawingObject> drawing_obj;
-    PrimitiveComponent(const Ptr<DrawingObject>& drawObj);
+    Ptr<VerticesData> vertices_data;
+    std::vector<u32> indices_data;
+    PrimitiveComponent(const Ptr<VerticesData>& verticesData, const std::vector<u32>& indicesData);
     PrimitiveComponent(const PrimitiveComponent&);
     [[nodiscard]] CompType Type() const final;
   };
 
+  struct CubeComponent : public BaseComponent
+  {
+    Cube cube;
+    CubeComponent(Color color);
+    CompType Type() const override;
+  };
+
   struct MaterialComponent : public BaseComponent
   {
-    Ptr<IShaderProgram> shader;
+    Ptr<MaterialShader> shader;
+    MaterialComponent(Ptr<MaterialShader> shader);
     [[nodiscard]] CompType Type() const final;
   };
 
   struct ColorOnlyComponent : public BaseComponent
   {
-    Ptr<IShaderProgram> shader;
+    Ptr<PosAndTex2DShader> shader;
     [[nodiscard]] CompType Type() const final;
-    ColorOnlyComponent(Ptr<IShaderProgram> s);
+    ColorOnlyComponent(Ptr<PosAndTex2DShader> s);
     ColorOnlyComponent(const ColorOnlyComponent&);
   };
 

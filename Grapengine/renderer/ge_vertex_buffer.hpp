@@ -6,6 +6,8 @@ namespace GE
   class VertexBuffer
   {
   public:
+    static Ptr<VertexBuffer> Make(const void* ptr, u64 verticesSize, RendererID parent);
+
     VertexBuffer(const void* ptr, u64 verticesSize, RendererID parent);
 
     void Bind() const;

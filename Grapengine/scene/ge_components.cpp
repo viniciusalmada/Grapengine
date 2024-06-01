@@ -27,24 +27,31 @@ TranslateScaleComponent::TranslateScaleComponent(const Vec3& pos, const Vec3& sc
     position_values(pos), scale_values(scale)
 {
 }
-PrimitiveComponent::PrimitiveComponent(const Ptr<DrawingObject>& drawObj) : drawing_obj(drawObj) {}
+PrimitiveComponent::PrimitiveComponent(const Ptr<VerticesData>& verticesData,
+                                       const std::vector<u32>& indicesData) :
+    vertices_data(verticesData), indices_data(indicesData)
+{
+}
 CompType PrimitiveComponent::Type() const
 {
   return CompType::PRIMITIVE;
 }
 PrimitiveComponent::PrimitiveComponent(const PrimitiveComponent& other) :
-    PrimitiveComponent(other.drawing_obj)
+    PrimitiveComponent(other.vertices_data, other.indices_data)
 {
 }
 CompType MaterialComponent::Type() const
 {
   return CompType::MATERIAL;
 }
+
+MaterialComponent::MaterialComponent(Ptr<MaterialShader> s) : shader(s) {}
+
 CompType ColorOnlyComponent::Type() const
 {
   return CompType::COLOR_ONLY;
 }
-ColorOnlyComponent::ColorOnlyComponent(Ptr<IShaderProgram> s) : shader(std::move(s)) {}
+ColorOnlyComponent::ColorOnlyComponent(Ptr<PosAndTex2DShader> s) : shader(std::move(s)) {}
 ColorOnlyComponent::ColorOnlyComponent(const ColorOnlyComponent& other) :
     ColorOnlyComponent(other.shader)
 {
@@ -66,3 +73,9 @@ CompType NativeScriptComponent::Type() const
 {
   return CompType::NATIVE_SCRIPT;
 }
+
+CompType CubeComponent::Type() const
+{
+  return CompType::CUBE;
+}
+CubeComponent::CubeComponent(Color color) : cube(color) {}
