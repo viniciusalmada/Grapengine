@@ -69,3 +69,9 @@ CompType NativeScriptComponent::Type() const
 {
   return CompType::NATIVE_SCRIPT;
 }
+
+CompType CubeComponent::Type() const
+{
+  return CompType::CUBE;
+}
+CubeComponent::CubeComponent(Color color) : cube(color) {}

@@ -1,6 +1,8 @@
 #ifndef GRAPENGINE_GE_COMPONENTS_HPP
 #define GRAPENGINE_GE_COMPONENTS_HPP
 
+#include "drawables/ge_color.hpp"
+#include "drawables/ge_cube.hpp"
 #include "ge_comp_types.hpp"
 #include "ge_entity.hpp"
 #include "ge_scene_camera.hpp"
@@ -52,6 +54,13 @@ namespace GE
     PrimitiveComponent(const Ptr<DrawingObject>& drawObj);
     PrimitiveComponent(const PrimitiveComponent&);
     [[nodiscard]] CompType Type() const final;
+  };
+
+  struct CubeComponent : public BaseComponent
+  {
+    Cube cube;
+    CubeComponent(Color color);
+    CompType Type() const override;
   };
 
   struct MaterialComponent : public BaseComponent

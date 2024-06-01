@@ -4,18 +4,17 @@
 #include "renderer/ge_index_buffer.hpp"
 #include "renderer/ge_vertex_array.hpp"
 #include "renderer/ge_vertex_buffer.hpp"
+#include "renderer/ge_vertices_data.hpp"
 
 namespace GE
 {
-  class VerticesData;
-
   class DrawingObject
   {
   public:
-    DrawingObject(const Ptr<VerticesData>& vertices, const Ptr<std::vector<u32>>& indices);
-    ~DrawingObject();
+    explicit DrawingObject();
 
-    [[deprecated]] void Draw() const;
+    void SetVerticesData(const Ptr<VerticesData>& data);
+    void SetIndicesData(const std::vector<u32>& indices);
 
     void UpdateVerticesData(const Ptr<VerticesData>& data);
 

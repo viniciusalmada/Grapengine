@@ -11,31 +11,16 @@
 
 namespace GE
 {
-  class Cube : public Drawable
+  class Cube final : public Drawable
   {
   public:
-    static Ptr<Cube> Make(Color color, const Ptr<IShaderProgram>& shader, Ptr<Texture2D> texture);
+    Cube(Color color);
 
-    Cube(Color color, const Ptr<IShaderProgram>& shader, Ptr<Texture2D> texture);
-
-    ~Cube() override;
-
-    void SetColor(Color color);
-    void Draw() const override;
-
-    void SetScale(f32 x, f32 y, f32 z);
-    void SetTranslate(f32 x, f32 y, f32 z);
-    void SetTranslate(Vec3 xyz);
-
-    [[nodiscard]] Ptr<DrawingObject> GetVAO() const;
-    [[nodiscard]] Mat4 GetModelMatrix() const;
+    [[nodiscard]] VerticesData GetVerticesData() const override;
+    [[nodiscard]] const std::vector<u32>& GetIndicesData() const override;
 
   private:
     Color m_color;
-    Ptr<DrawingObject> m_draw_primitive;
-    Ptr<IShaderProgram> m_shader;
-    Mat4 m_scale_mat;
-    Mat4 m_translate_mat;
     Ptr<Texture2D> m_texture;
   };
 }

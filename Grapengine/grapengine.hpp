@@ -18,7 +18,6 @@
 // Drawables
 #include "drawables/ge_cube.hpp"
 #include "drawables/ge_mesh.hpp"
-#include "drawables/ge_world_reference.hpp"
 
 // Utilities
 #include "utils/ge_dimension.hpp"
