@@ -121,6 +121,16 @@ void EditorLayer::OnImGuiUpdate()
 
   m_scene_panel.OnImGuiRender();
 
+  ImGui::Begin("Stats");
+  {
+    const auto& stats = Renderer::GetStats();
+    ImGui::Text("Renderer stats:");
+    ImGui::Text("Draw calls: %05lu", stats.draw_calls);
+    ImGui::Text("Vertices count: %lu", stats.vertices_count);
+    ImGui::Text("Indices count: %lu", stats.indices_count);
+  }
+  ImGui::End();
+
   ImGui::Begin("Viewport");
 
   //  m_viewport_focused = ImGui::IsWindowFocused();

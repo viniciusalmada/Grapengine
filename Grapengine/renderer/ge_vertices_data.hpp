@@ -19,6 +19,8 @@ namespace GE
 
     [[nodiscard]] u64 GetSize() const;
 
+    [[nodiscard]] u64 GetCount() const;
+
     [[nodiscard]] const VertexStruct* GetPtr() const;
 
     void RawPushData(VerticesData&& data);

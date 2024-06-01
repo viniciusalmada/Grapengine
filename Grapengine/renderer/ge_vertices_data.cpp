@@ -46,3 +46,8 @@ void VerticesData::PushVerticesData(VertexStruct&& vs)
 {
   m_data.emplace_back(vs);
 }
+
+u64 VerticesData::GetCount() const
+{
+  return m_data.size();
+}

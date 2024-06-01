@@ -37,6 +37,11 @@ void OpenGLDebuggerFunc([[maybe_unused]] GLenum source,
   GE_ASSERT(false, ss.str().c_str())
 }
 
+namespace
+{
+  Renderer::Statistics s_stats{};
+}
+
 void Renderer::Init()
 {
   glEnable(GL_DEBUG_OUTPUT);
@@ -89,6 +94,11 @@ void Renderer::DrawObject(const Ptr<DrawingObject>& primitive)
   glDrawElements(GL_TRIANGLES, primitive->IndicesCount(), GL_UNSIGNED_INT, nullptr);
 }
 
+const Renderer::Statistics& Renderer::GetStats()
+{
+  return s_stats;
+}
+
 //--------------------------------------------------------------------------------------------------
 static BatchRenderer& GetBatchRenderer()
 {
@@ -98,12 +108,15 @@ static BatchRenderer& GetBatchRenderer()
 
 void Renderer::Batch::Begin()
 {
+  s_stats.vertices_count = 0;
+  s_stats.indices_count = 0;
   GetBatchRenderer().Begin();
 }
 
 void Renderer::Batch::End()
 {
   GetBatchRenderer().End();
+  s_stats.draw_calls++;
 }
 
 void Renderer::Batch::PushObject(Ptr<IShaderProgram> shader,
@@ -111,5 +124,7 @@ void Renderer::Batch::PushObject(Ptr<IShaderProgram> shader,
                                  const std::vector<u32>& indices,
                                  const Mat4& modelMat)
 {
+  s_stats.vertices_count += vd.GetCount();
+  s_stats.indices_count += indices.size();
   GetBatchRenderer().PushObject(shader, std::move(vd), indices, modelMat);
 }

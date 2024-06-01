@@ -40,6 +40,15 @@ namespace GE
                              const std::vector<u32>& indices,
                              const Mat4& modelMat);
     };
+
+    struct Statistics
+    {
+      u64 draw_calls = 0;
+      u64 vertices_count = 0;
+      u64 indices_count = 0;
+    };
+
+    static const Statistics& GetStats();
   };
 }
 
