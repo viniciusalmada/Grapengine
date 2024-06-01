@@ -18,8 +18,6 @@ namespace GE
     virtual void UpdateModelMatrix(Mat4 model) = 0;
     virtual void UpdateViewProjectionMatrix(Mat4 viewProj) = 0;
     virtual void UpdateTexture(int id) = 0;
-
-    [[nodiscard]] virtual Ptr<const BufferLayout> GetLayout() const = 0;
   };
 }
 

@@ -56,15 +56,16 @@ namespace GE
 
   struct MaterialComponent : public BaseComponent
   {
-    Ptr<IShaderProgram> shader;
+    Ptr<MaterialShader> shader;
+    MaterialComponent(Ptr<MaterialShader> shader);
     [[nodiscard]] CompType Type() const final;
   };
 
   struct ColorOnlyComponent : public BaseComponent
   {
-    Ptr<IShaderProgram> shader;
+    Ptr<PosAndTex2DShader> shader;
     [[nodiscard]] CompType Type() const final;
-    ColorOnlyComponent(Ptr<IShaderProgram> s);
+    ColorOnlyComponent(Ptr<PosAndTex2DShader> s);
     ColorOnlyComponent(const ColorOnlyComponent&);
   };
 

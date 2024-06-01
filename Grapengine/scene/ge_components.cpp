@@ -40,11 +40,14 @@ CompType MaterialComponent::Type() const
 {
   return CompType::MATERIAL;
 }
+
+MaterialComponent::MaterialComponent(Ptr<MaterialShader> s) : shader(s) {}
+
 CompType ColorOnlyComponent::Type() const
 {
   return CompType::COLOR_ONLY;
 }
-ColorOnlyComponent::ColorOnlyComponent(Ptr<IShaderProgram> s) : shader(std::move(s)) {}
+ColorOnlyComponent::ColorOnlyComponent(Ptr<PosAndTex2DShader> s) : shader(std::move(s)) {}
 ColorOnlyComponent::ColorOnlyComponent(const ColorOnlyComponent& other) :
     ColorOnlyComponent(other.shader)
 {

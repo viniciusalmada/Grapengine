@@ -14,6 +14,16 @@ MaterialShader::MaterialShader()
   GE_PROFILE;
   m_shader =
     Shader::Make("assets/shaders/Material.vshader.glsl", "assets/shaders/Material.fshader.glsl");
+
+  { // TODO: Only for test
+    Activate();
+    UpdateAmbientColor(Colors::WHITE);
+    UpdateAmbientStrength(0.25f);
+
+    UpdateLightPosition({ Vec3{}, Vec3{ 5, 5, 5 } });
+    UpdateLightColor({ Colors::WHITE, Colors::WHITE });
+    UpdateLightStrength({ 1.0f, 1.0f });
+  }
 }
 
 MaterialShader::~MaterialShader() = default;
@@ -28,12 +38,6 @@ void MaterialShader::Deactivate()
   m_shader->Unbind();
 }
 
-void MaterialShader::UpdateModelMatrix(Mat4 model)
-{
-  Activate();
-  m_shader->UploadMat4F("u_M", model);
-}
-
 void MaterialShader::UpdateViewProjectionMatrix(Mat4 viewProj)
 {
   Activate();
@@ -44,19 +48,6 @@ void MaterialShader::UpdateTexture(int id)
 {
   Activate();
   m_shader->UploadInt("u_texture", id);
-}
-
-Ptr<const BufferLayout> GE::MaterialShader::GetLayout() const
-{
-  auto buffer_elements = BufferLayout::BuildElementsList( //
-    {
-      std::make_pair(DataPurpose::POSITION, ShaderDataType::Float3),           // position
-      std::make_pair(DataPurpose::TEXTURE_COORDINATE, ShaderDataType::Float2), // texture
-      std::make_pair(DataPurpose::COLOR, ShaderDataType::Float4),              // color
-      std::make_pair(DataPurpose::NORMAL, ShaderDataType::Float3),             // normal
-    });
-
-  return BufferLayout::Make(buffer_elements);
 }
 
 void GE::MaterialShader::UpdateAmbientColor(Color color)
