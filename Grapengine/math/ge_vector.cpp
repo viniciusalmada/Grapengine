@@ -117,6 +117,7 @@ f32 Vec3::Length() const
 {
   return std::sqrt(x * x + y * y + z * z);
 }
+
 std::ostream& GE::operator<<(std::ostream& os, const Vec3& vec3)
 {
 #if __cpp_lib_format

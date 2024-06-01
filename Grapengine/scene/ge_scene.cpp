@@ -1,8 +1,6 @@
 #include "ge_scene.hpp"
 
 #include "events/ge_event.hpp"
-#include "ge_ec_registry.hpp"
-#include "math/ge_transformations.hpp"
 #include "math/ge_vector.hpp"
 #include "profiling/ge_profiler.hpp"
 #include "renderer/ge_renderer.hpp"
@@ -39,21 +37,51 @@ void Scene::OnUpdate(TimeStep ts)
 
   const CameraComponent& cam_component = m_registry.GetComponent<CameraComponent>(active_camera);
 
-  const std::vector<Entity> g =
-    m_registry.Group({ CompType::TRANSL_SCALE, CompType::PRIMITIVE, CompType::COLOR_ONLY });
-  for (auto ent : g)
+  const std::vector<Entity> gcolor =
+    m_registry.Group({ CompType::TRANSL_SCALE, CompType::CUBE, CompType::COLOR_ONLY });
+
+  const std::vector<Entity> gmat =
+    m_registry.Group({ CompType::TRANSL_SCALE, CompType::CUBE, CompType::MATERIAL });
+
+  Renderer::Batch::Begin();
+  for (auto ent : gcolor)
   {
-    const ColorOnlyComponent shader = m_registry.GetComponent<ColorOnlyComponent>(ent);
+    const ColorOnlyComponent& shader = m_registry.GetComponent<ColorOnlyComponent>(ent);
     shader.shader->Activate();
     shader.shader->UpdateViewProjectionMatrix(cam_component.camera.GetViewProjection());
 
     const TranslateScaleComponent& transl_scale_comp =
       m_registry.GetComponent<TranslateScaleComponent>(ent);
-    shader.shader->UpdateModelMatrix(transl_scale_comp.GetModelMat());
+    //    shader.shader->UpdateModelMatrix(transl_scale_comp.GetModelMat());
 
-    const PrimitiveComponent primitive = m_registry.GetComponent<PrimitiveComponent>(ent);
-    Renderer::DrawObject(primitive.drawing_obj);
+    const CubeComponent& cube = m_registry.GetComponent<CubeComponent>(ent);
+    auto vertices = cube.cube.GetVerticesData();
+    auto indices = cube.cube.GetIndicesData();
+
+    Renderer::Batch::PushObject(shader.shader,
+                                std::move(vertices),
+                                indices,
+                                transl_scale_comp.GetModelMat());
   }
+  for (auto ent : gmat)
+  {
+    const MaterialComponent& shader = m_registry.GetComponent<MaterialComponent>(ent);
+    shader.shader->Activate();
+    shader.shader->UpdateViewProjectionMatrix(cam_component.camera.GetViewProjection());
+
+    const TranslateScaleComponent& transl_scale_comp =
+      m_registry.GetComponent<TranslateScaleComponent>(ent);
+
+    const CubeComponent& cube = m_registry.GetComponent<CubeComponent>(ent);
+    auto vertices = cube.cube.GetVerticesData();
+    auto indices = cube.cube.GetIndicesData();
+
+    Renderer::Batch::PushObject(shader.shader,
+                                std::move(vertices),
+                                indices,
+                                transl_scale_comp.GetModelMat());
+  }
+  Renderer::Batch::End();
 }
 
 Entity Scene::CreateEntity(const char* name)

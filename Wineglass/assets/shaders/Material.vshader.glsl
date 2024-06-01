@@ -10,13 +10,12 @@ out vec4 out_color;
 out vec3 out_normal;
 out vec3 out_frag_pos;
 
-uniform mat4 u_M;
 uniform mat4 u_VP;
 
 void main()
 {
-  gl_Position = (u_VP) * u_M * vec4(in_position, 1.0);
-  out_frag_pos = vec3(u_M * vec4(in_position, 1.0));
+  gl_Position = u_VP * vec4(in_position, 1.0);
+  out_frag_pos = in_position;
   out_texture_coords = in_texture_coord;
   out_color = in_color;
   out_normal = in_normal;

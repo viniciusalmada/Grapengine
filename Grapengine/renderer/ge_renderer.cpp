@@ -2,6 +2,7 @@
 
 #include "core/ge_assert.hpp"
 #include "drawables/ge_drawing_object.hpp"
+#include "ge_batch_renderer.hpp"
 #include "renderer/ge_vertex_array.hpp"
 
 #include <glad/glad.h>
@@ -26,7 +27,8 @@ void OpenGLDebuggerFunc([[maybe_unused]] GLenum source,
                         [[maybe_unused]] const void* param)
 {
   constexpr auto BUFFER_INFO_ID = 0x20071;
-  if (id == BUFFER_INFO_ID)
+  constexpr auto SHADER_RECOMPILED = 0x20092;
+  if (id == BUFFER_INFO_ID || id == SHADER_RECOMPILED)
     return;
 
   std::stringstream ss;
@@ -85,4 +87,29 @@ void Renderer::DrawObject(const Ptr<DrawingObject>& primitive)
 {
   primitive->Bind();
   glDrawElements(GL_TRIANGLES, primitive->IndicesCount(), GL_UNSIGNED_INT, nullptr);
+}
+
+//--------------------------------------------------------------------------------------------------
+static BatchRenderer& GetBatchRenderer()
+{
+  static BatchRenderer batch_renderer;
+  return batch_renderer;
+}
+
+void Renderer::Batch::Begin()
+{
+  GetBatchRenderer().Begin();
+}
+
+void Renderer::Batch::End()
+{
+  GetBatchRenderer().End();
+}
+
+void Renderer::Batch::PushObject(Ptr<IShaderProgram> shader,
+                                 VerticesData&& vd,
+                                 const std::vector<u32>& indices,
+                                 const Mat4& modelMat)
+{
+  GetBatchRenderer().PushObject(shader, std::move(vd), indices, modelMat);
 }

@@ -2,7 +2,10 @@
 #define GRAPENGINE_RENDERER_HPP
 
 #include "math/ge_vector.hpp"
+#include "renderer/ge_ishader_program.hpp"
+#include "renderer/ge_vertices_data.hpp"
 #include "utils/ge_dimension.hpp"
+
 namespace GE
 {
   class VertexArray;
@@ -24,6 +27,19 @@ namespace GE
     static void DrawIndexed(const Ptr<VertexArray>& vao, i32 count);
 
     static void DrawObject(const Ptr<DrawingObject>& primitive);
+
+    class Batch
+    {
+    public:
+      static void Begin();
+
+      static void End();
+
+      static void PushObject(Ptr<IShaderProgram> shader,
+                             VerticesData&& vd,
+                             const std::vector<u32>& indices,
+                             const Mat4& modelMat);
+    };
   };
 }
 
