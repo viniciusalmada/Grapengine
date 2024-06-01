@@ -23,10 +23,10 @@ void Scene::OnUpdate(TimeStep ts)
   const CameraComponent& cam_component = m_registry.GetComponent<CameraComponent>(active_camera);
 
   const std::vector<Entity> gcolor =
-    m_registry.Group({ CompType::TRANSL_SCALE, CompType::PRIMITIVE, CompType::COLOR_ONLY });
+    m_registry.Group({ CompType::TRANF, CompType::PRIMITIVE, CompType::COLOR_ONLY });
 
   const std::vector<Entity> gmat =
-    m_registry.Group({ CompType::TRANSL_SCALE, CompType::PRIMITIVE, CompType::MATERIAL });
+    m_registry.Group({ CompType::TRANF, CompType::PRIMITIVE, CompType::MATERIAL });
 
   Renderer::Batch::Begin();
   for (auto ent : gcolor)
@@ -35,9 +35,7 @@ void Scene::OnUpdate(TimeStep ts)
     shader.shader->Activate();
     shader.shader->UpdateViewProjectionMatrix(cam_component.camera.GetViewProjection());
 
-    const TranslateScaleComponent& transl_scale_comp =
-      m_registry.GetComponent<TranslateScaleComponent>(ent);
-    //    shader.shader->UpdateModelMatrix(transl_scale_comp.GetModelMat());
+    const TransformComponent& transl_scale_comp = m_registry.GetComponent<TransformComponent>(ent);
 
     const PrimitiveComponent& primitive = m_registry.GetComponent<PrimitiveComponent>(ent);
     auto vertices = primitive.drawable->GetVerticesData(primitive.color);
@@ -54,8 +52,7 @@ void Scene::OnUpdate(TimeStep ts)
     shader.shader->Activate();
     shader.shader->UpdateViewProjectionMatrix(cam_component.camera.GetViewProjection());
 
-    const TranslateScaleComponent& transl_scale_comp =
-      m_registry.GetComponent<TranslateScaleComponent>(ent);
+    const TransformComponent& transl_scale_comp = m_registry.GetComponent<TransformComponent>(ent);
 
     const PrimitiveComponent& primitive = m_registry.GetComponent<PrimitiveComponent>(ent);
     auto vertices = primitive.drawable->GetVerticesData(primitive.color);

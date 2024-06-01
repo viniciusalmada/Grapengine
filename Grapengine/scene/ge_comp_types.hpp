@@ -10,7 +10,6 @@ namespace GE
     BASE,
     TAG,
     TRANF,
-    TRANSL_SCALE,
     PRIMITIVE,
     MATERIAL,
     COLOR_ONLY,

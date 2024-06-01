@@ -36,10 +36,10 @@ void EditorLayer::OnAttach()
   m_scene->AddComponent<PrimitiveComponent>(cube_2_ent, Cube::Make(), Colors::RED);
   m_scene->AddComponent<PrimitiveComponent>(cube_3_ent, Cube::Make(), Colors::GREEN);
   m_scene->AddComponent<PrimitiveComponent>(cube_4_ent, Cube::Make(), Colors::YELLOW);
-  m_scene->AddComponent<TranslateScaleComponent>(cube_1_ent, Vec3{ 0, 0, 0 }, Vec3{ 1, 1, 1 });
-  m_scene->AddComponent<TranslateScaleComponent>(cube_2_ent, Vec3{ 1, 1, 1 }, Vec3{ 1, 1, 1 });
-  m_scene->AddComponent<TranslateScaleComponent>(cube_3_ent, Vec3{ 2, 2, 2 }, Vec3{ 1, 1, 1 });
-  m_scene->AddComponent<TranslateScaleComponent>(cube_4_ent, Vec3{ 3, 3, 3 }, Vec3{ 1, 1, 1 });
+  m_scene->AddComponent<TransformComponent>(cube_1_ent, Vec3{ 0, 0, 0 }, Vec3{ 1, 1, 1 });
+  m_scene->AddComponent<TransformComponent>(cube_2_ent, Vec3{ 1, 1, 1 }, Vec3{ 1, 1, 1 });
+  m_scene->AddComponent<TransformComponent>(cube_3_ent, Vec3{ 2, 2, 2 }, Vec3{ 1, 1, 1 });
+  m_scene->AddComponent<TransformComponent>(cube_4_ent, Vec3{ 3, 3, 3 }, Vec3{ 1, 1, 1 });
   m_scene->AddComponent<ColorOnlyComponent>(cube_1_ent, simple_shader);
   m_scene->AddComponent<MaterialComponent>(cube_2_ent, material_shader);
   m_scene->AddComponent<MaterialComponent>(cube_3_ent, material_shader);

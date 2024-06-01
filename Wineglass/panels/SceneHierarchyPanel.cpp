@@ -71,17 +71,19 @@ void SceneHierarchyPanel::DrawComponents(Entity ent)
     }
   }
 
-  if (m_scene_context->HasComponent<TranslateScaleComponent>(ent))
+  if (m_scene_context->HasComponent<TransformComponent>(ent))
   {
-    if (ImGui::TreeNodeEx(TypeUtils::ToVoidPtr(typeid(TranslateScaleComponent).hash_code()),
+    if (ImGui::TreeNodeEx(TypeUtils::ToVoidPtr(typeid(TransformComponent).hash_code()),
                           ImGuiTreeNodeFlags_DefaultOpen,
                           "TranslateAndScale"))
     {
-      auto& pos = m_scene_context->GetComponent<TranslateScaleComponent>(ent).position_values;
-      auto& scale = m_scene_context->GetComponent<TranslateScaleComponent>(ent).scale_values;
+      auto& pos = m_scene_context->GetComponent<TransformComponent>(ent).position_values;
+      auto& scale = m_scene_context->GetComponent<TransformComponent>(ent).scale_values;
+      auto& rotate = m_scene_context->GetComponent<TransformComponent>(ent).rotate_values;
 
       ImGui::DragFloat3("Position", &pos.x, 0.01f);
       ImGui::DragFloat3("Scale", &scale.x, 0.01f);
+      ImGui::DragFloat3("Rotate", &rotate.x, 0.1f);
 
       ImGui::TreePop();
     }

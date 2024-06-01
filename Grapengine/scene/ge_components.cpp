@@ -18,12 +18,7 @@ CompType TransformComponent::Type() const
 {
   return CompType::TRANF;
 }
-TransformComponent::TransformComponent(const Mat4& transf) : transform(transf) {}
-CompType TranslateScaleComponent::Type() const
-{
-  return CompType::TRANSL_SCALE;
-}
-TranslateScaleComponent::TranslateScaleComponent(const Vec3& pos, const Vec3& scale) :
+TransformComponent::TransformComponent(const Vec3& pos, const Vec3& scale) :
     position_values(pos), scale_values(scale)
 {
 }

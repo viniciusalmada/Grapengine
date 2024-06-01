@@ -33,20 +33,18 @@ namespace GE
 
   struct TransformComponent : public BaseComponent
   {
-    Mat4 transform;
-    [[nodiscard]] CompType Type() const final;
-    TransformComponent(const Mat4& transf);
-  };
-
-  struct TranslateScaleComponent : public BaseComponent
-  {
+    Vec3 rotate_values{ 0, 0, 0 };
     Vec3 position_values;
     Vec3 scale_values;
     [[nodiscard]] CompType Type() const final;
-    TranslateScaleComponent(const Vec3& pos, const Vec3& scale);
+    TransformComponent(const Vec3& pos, const Vec3& scale);
     [[nodiscard]] Mat4 GetModelMat() const
     {
-      return Transform::Translate(position_values) * Transform::Scale(scale_values);
+      auto rotate = Transform::Rotate(rotate_values.x, { 1, 0, 0 }) *
+                    Transform::Rotate(rotate_values.y, { 0, 1, 0 }) *
+                    Transform::Rotate(rotate_values.z, { 0, 0, 1 });
+
+      return Transform::Translate(position_values) * rotate * Transform::Scale(scale_values);
     }
   };
 
