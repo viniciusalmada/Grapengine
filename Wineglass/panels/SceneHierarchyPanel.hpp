@@ -5,7 +5,6 @@
 
 namespace GE
 {
-
   class SceneHierarchyPanel
   {
   public:

@@ -30,6 +30,14 @@ namespace GE
     {
     }
 
+    explicit Color(Vec4 rgb) :
+        R(static_cast<u8>(rgb.x0 * MAX_U8)),
+        G(static_cast<u8>(rgb.x1 * MAX_U8)),
+        B(static_cast<u8>(rgb.x2 * MAX_U8)),
+        A(static_cast<u8>(rgb.x3 * MAX_U8))
+    {
+    }
+
     [[nodiscard]] Vec4 ToVec4() const
     {
       return {

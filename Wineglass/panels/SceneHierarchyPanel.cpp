@@ -87,6 +87,18 @@ void SceneHierarchyPanel::DrawComponents(Entity ent)
     }
   }
 
+  if (m_scene_context->HasComponent<PrimitiveComponent>(ent))
+  {
+    auto& cube_color = m_scene_context->GetComponent<PrimitiveComponent>(ent).color;
+
+    static Vec4 imgui_color{};
+    imgui_color = cube_color.ToVec4();
+
+    ImGui::ColorEdit4("Color", &imgui_color.x0);
+
+    cube_color = Color(imgui_color);
+  }
+
   if (m_scene_context->HasComponent<CameraComponent>(ent))
   {
     if (ImGui::TreeNodeEx(TypeUtils::ToVoidPtr(typeid(CameraComponent).hash_code()),

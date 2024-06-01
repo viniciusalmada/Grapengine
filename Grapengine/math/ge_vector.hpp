@@ -67,6 +67,7 @@ namespace GE
     f32 x2;
     f32 x3;
 
+    Vec4() : x0(0), x1(0), x2(0), x3(0) {}
     Vec4(f32 xx0, f32 xx1, f32 xx2, f32 xx3) : x0(xx0), x1(xx1), x2(xx2), x3(xx3) {}
     Vec4(const Vec3& v3, f32 w = 1.0f) : x0(v3.x), x1(v3.y), x2(v3.z), x3(w) {}
   };
