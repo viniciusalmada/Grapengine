@@ -18,9 +18,6 @@ void EditorLayer::OnAttach()
                                          Vec3{ 0, 0, 0 },
                                          true,
                                          false);
-  //  m_scene->AddComponent<TransformComponent>(
-  //    m_front_camera_entity,
-  //    Transform::LookAt({ 0, 0, -10 }, { 0, 0, 0 }, { 0, 1, 0 }));
 
   m_oblique_camera_entity = m_scene->CreateEntity("Oblique Camera");
   m_scene->AddComponent<CameraComponent>(m_oblique_camera_entity,
@@ -28,40 +25,30 @@ void EditorLayer::OnAttach()
                                          Vec3{ 0, 0, 0 },
                                          false,
                                          false);
-  //  m_scene->AddComponent<TransformComponent>(
-  //    m_oblique_camera_entity,
-  //    Transform::LookAt({ 10, 10, -10 }, { 0, 0, 0 }, { 0, 1, 0 }));
 
-  //  auto camera_ent = m_scene->CreateEntity("Camera");
-  //  m_scene->AddComponent<CameraComponent>(camera_ent, cam);
-
-  Ptr<IShaderProgram> simple_shader = MakeRef<PosAndTex2DShader>();
-  Ptr<Cube> cube_1 = Cube::Make(Colors::BLUE, simple_shader, Texture2D::Make());
-  Ptr<Cube> cube_2 = Cube::Make(Colors::RED, simple_shader, Texture2D::Make());
+  auto simple_shader = MakeRef<PosAndTex2DShader>();
+  auto material_shader = MakeRef<MaterialShader>();
   auto cube_1_ent = m_scene->CreateEntity("Cube Blue");
   auto cube_2_ent = m_scene->CreateEntity("Cube Red");
-  m_scene->AddComponent<PrimitiveComponent>(cube_1_ent, cube_1->GetVAO());
-  m_scene->AddComponent<PrimitiveComponent>(cube_2_ent, cube_2->GetVAO());
-  m_scene->AddComponent<TranslateScaleComponent>(cube_1_ent, Vec3{ 1, 1, 1 }, Vec3{ 1, 1, 1 });
-  m_scene->AddComponent<TranslateScaleComponent>(cube_2_ent, Vec3{ 0, 0, 0 }, Vec3{ 1, 1, 1 });
+  auto cube_3_ent = m_scene->CreateEntity("Cube Green");
+  auto cube_4_ent = m_scene->CreateEntity("Cube Yellow");
+  m_scene->AddComponent<CubeComponent>(cube_1_ent, Colors::BLUE);
+  m_scene->AddComponent<CubeComponent>(cube_2_ent, Colors::RED);
+  m_scene->AddComponent<CubeComponent>(cube_3_ent, Colors::GREEN);
+  m_scene->AddComponent<CubeComponent>(cube_4_ent, Colors::YELLOW);
+  m_scene->AddComponent<TranslateScaleComponent>(cube_1_ent, Vec3{ 0, 0, 0 }, Vec3{ 1, 1, 1 });
+  m_scene->AddComponent<TranslateScaleComponent>(cube_2_ent, Vec3{ 1, 1, 1 }, Vec3{ 1, 1, 1 });
+  m_scene->AddComponent<TranslateScaleComponent>(cube_3_ent, Vec3{ 2, 2, 2 }, Vec3{ 1, 1, 1 });
+  m_scene->AddComponent<TranslateScaleComponent>(cube_4_ent, Vec3{ 3, 3, 3 }, Vec3{ 1, 1, 1 });
   m_scene->AddComponent<ColorOnlyComponent>(cube_1_ent, simple_shader);
-  m_scene->AddComponent<ColorOnlyComponent>(cube_2_ent, simple_shader);
+  m_scene->AddComponent<MaterialComponent>(cube_2_ent, material_shader);
+  m_scene->AddComponent<MaterialComponent>(cube_3_ent, material_shader);
+  m_scene->AddComponent<MaterialComponent>(cube_4_ent, material_shader);
 
   m_scene->AddComponent<NativeScriptComponent>(m_front_camera_entity).Bind<CamController>();
-  //  m_scene->AddComponent<NativeScriptComponent>(m_oblique_camera_entity).Bind<CamController>();
 
   m_scene_panel.SetContext(m_scene);
 
-  //
-  //
-  //  m_simple_shader = MakeRef<PosAndTex2DShader>();
-  //  m_mat_shader = MakeRef<MaterialShader>();
-  //  m_light_1 = Cube::Make(Colors::WHITE, m_simple_shader, Texture2D::Make());
-  //  m_light_1->SetScale(0.5, 0.5, 0.5);
-  //  m_light_2 = Cube::Make(Colors::WHITE, m_simple_shader, Texture2D::Make());
-  //  m_light_2->SetScale(0.5, 0.5, 0.5);
-  //  m_world_ref = MakeRef<WorldReference>(m_simple_shader, 20);
-  //  m_mesh = MakeRef<Mesh>("assets/objs/teapot.obj", m_mat_shader);
   m_fb = Framebuffer::Make({ 1280, 720 });
 }
 
@@ -75,38 +62,10 @@ void EditorLayer::OnUpdate(TimeStep ts)
 
   m_fb->Bind();
 
-  //  if (/*m_viewport_focused &&*/ m_viewport_hovered)
-  //    m_cam.OnUpdate(ts);
-
   Renderer::SetClearColor(Color{ CLEAR_COLOR }.ToVec4());
   Renderer::Clear();
 
   m_scene->OnUpdate(ts);
-
-  //  m_simple_shader->Activate();
-  //  m_simple_shader->UpdateViewProjectionMatrix(m_cam.GetViewProjection());
-  //  m_mat_shader->Activate();
-  //  m_mat_shader->UpdateViewProjectionMatrix(m_cam.GetViewProjection());
-  //
-  //  m_world_ref->DrawBatch();
-  //
-  //  // Draw 'light' cube
-  //  m_light_1->SetColor(m_light_color_1);
-  //  m_light_1->SetTranslate(m_light_pos_1);
-  //  m_light_1->Draw();
-  //  m_light_2->SetColor(m_light_color_2);
-  //  m_light_2->SetTranslate(m_light_pos_2);
-  //  m_light_2->Draw();
-  //
-  //  // Set default ambient light setup
-  //  m_mat_shader->Activate();
-  //  m_mat_shader->UpdateAmbientColor(m_ambient_color);
-  //  m_mat_shader->UpdateAmbientStrength(m_ambient_str);
-  //  m_mat_shader->UpdateLightPosition({ m_light_pos_1, m_light_pos_2 });
-  //  m_mat_shader->UpdateLightColor({ m_light_color_1, m_light_color_2 });
-  //  m_mat_shader->UpdateLightStrength({ m_light_strength, m_light_strength });
-  //
-  //  m_mesh->Draw();
 
   m_fb->Unbind();
 }
@@ -162,34 +121,6 @@ void EditorLayer::OnImGuiUpdate()
 
   m_scene_panel.OnImGuiRender();
 
-  //  ImGui::Begin("Settings");
-  //
-  //  static int cam = 0;
-  //  ImGui::RadioButton("Front camera", &cam, 0);
-  //  ImGui::RadioButton("Oblique camera", &cam, 1);
-  //
-  //  m_scene->GetComponent<CameraComponent>(m_front_camera_entity).active = cam == 0;
-  //  m_scene->GetComponent<CameraComponent>(m_oblique_camera_entity).active = cam == 1;
-  //
-  //  ImGui::End();
-
-  //  ImGui::Begin("Settings");
-  //  ImGui::SliderFloat("AmbientStrength", &m_ambient_str, 0, 1);
-  //  ImGui::SliderFloat3("LightPos1", &m_light_pos_1.x, -10, 10);
-  //  {
-  //    Vec3 light_color = m_light_color_1.ToVec3();
-  //    ImGui::ColorEdit3("LightColor1", &light_color.x);
-  //    m_light_color_1 = Color(light_color);
-  //  }
-  //  ImGui::SliderFloat3("LightPos2", &m_light_pos_2.x, -10, 10);
-  //  {
-  //    Vec3 light_color = m_light_color_2.ToVec3();
-  //    ImGui::ColorEdit3("LightColor2", &light_color.x);
-  //    m_light_color_2 = Color(light_color);
-  //  }
-  //  ImGui::SliderFloat("LightStrength", &m_light_strength, 0, 10);
-  //  ImGui::End();
-
   ImGui::Begin("Viewport");
 
   //  m_viewport_focused = ImGui::IsWindowFocused();
@@ -211,5 +142,4 @@ void EditorLayer::OnImGuiUpdate()
 void EditorLayer::OnEvent(Event& e)
 {
   m_scene->OnEvent(e);
-  //  m_cam.OnEvent(e);
 }

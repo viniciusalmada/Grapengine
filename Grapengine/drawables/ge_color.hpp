@@ -57,6 +57,7 @@ namespace GE
     [[maybe_unused]] constexpr Color RED{ 0xFF3333FF };
     [[maybe_unused]] constexpr Color BLUE{ 0x3333FFFF };
     [[maybe_unused]] constexpr Color GREEN{ 0x33FF33FF };
+    [[maybe_unused]] constexpr Color YELLOW{ 0xFFFF33FF };
     [[maybe_unused]] constexpr Color MAGENTA{ 0xFF33FFFF };
   }
 }
