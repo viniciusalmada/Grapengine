@@ -1,7 +1,10 @@
-#include <fstream>
 #include <grapengine.hpp>
 #include <gtest/gtest.h>
 #include <utils/ge_io.hpp>
+
+#if defined(GE_CLANG_COMPILER)
+  #pragma clang diagnostic ignored "-Wglobal-constructors"
+#endif
 
 constexpr auto RANDOM_NUMBERS_COUNT = 128;
 

@@ -3,6 +3,10 @@
 
 #include <gtest/gtest.h>
 
+#if defined(GE_CLANG_COMPILER)
+  #pragma clang diagnostic ignored "-Wglobal-constructors"
+#endif
+
 using namespace GE;
 
 TEST(Window, Initialization)

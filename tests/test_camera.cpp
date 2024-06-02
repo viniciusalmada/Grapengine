@@ -1,6 +1,10 @@
 #include <gtest/gtest.h>
 #include <math/ge_transformations.hpp>
 
+#if defined(GE_CLANG_COMPILER)
+  #pragma clang diagnostic ignored "-Wglobal-constructors"
+#endif
+
 TEST(Camera, EyeAndDir)
 {
   //  {

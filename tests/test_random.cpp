@@ -6,6 +6,10 @@
 
 using namespace GE;
 
+#if defined(GE_CLANG_COMPILER)
+  #pragma clang diagnostic ignored "-Wglobal-constructors"
+#endif
+
 TEST(Random, Int)
 {
   constexpr u32 OPTIONS = 10;

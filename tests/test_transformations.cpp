@@ -4,6 +4,10 @@
 #include <gtest/gtest.h>
 #include <numbers>
 
+#if defined(GE_CLANG_COMPILER)
+  #pragma clang diagnostic ignored "-Wglobal-constructors"
+#endif
+
 using namespace GE;
 
 TEST(Transform, Deg2Rad)
