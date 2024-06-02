@@ -146,6 +146,29 @@ Mat4::Mat4(const std::array<f32, 4>& row0,
   }
 }
 
+Mat4::Mat4(const Vec4& col0, const Vec4& col1, const Vec4& col2, const Vec4& col3)
+{
+  data.at(0).at(0) = col0.x0;
+  data.at(0).at(1) = col0.x1;
+  data.at(0).at(2) = col0.x2;
+  data.at(0).at(3) = col0.x3;
+
+  data.at(1).at(0) = col1.x0;
+  data.at(1).at(1) = col1.x1;
+  data.at(1).at(2) = col1.x2;
+  data.at(1).at(3) = col1.x3;
+
+  data.at(2).at(0) = col2.x0;
+  data.at(2).at(1) = col2.x1;
+  data.at(2).at(2) = col2.x2;
+  data.at(2).at(3) = col2.x3;
+
+  data.at(3).at(0) = col3.x0;
+  data.at(3).at(1) = col3.x1;
+  data.at(3).at(2) = col3.x2;
+  data.at(3).at(3) = col3.x3;
+}
+
 Mat4 Mat4::operator*(const Mat4& other) const
 {
   auto prod = [m1 = *this, m2 = other](u32 r, unsigned c)
@@ -216,6 +239,132 @@ Vec3 Mat4::operator*(const Vec3& other) const
   return { res.x0, res.x1, res.x2 };
 }
 
+Mat4 Mat4::Inverse() const
+{
+  const f32 det = this->Determinant();
+  const Mat4 res = this->Adjoint() / det;
+  return res;
+}
+
+Vec4 Mat4::operator()(u32 col) const
+{
+  return Vec4(data.at(col).at(0), data.at(col).at(1), data.at(col).at(2), data.at(col).at(3));
+}
+
+Mat4 Mat4::operator*(f32 other) const
+{
+  Mat4 res{};
+  for (u32 row = 0; row < 4; row++)
+    for (u32 col = 0; col < 4; col++)
+      res(row, col) = operator()(row, col) * other;
+  return res;
+}
+
+Mat4 Mat4::Transpose() const
+{
+  Mat4 res{};
+  for (u32 row = 0; row < 4; row++)
+    for (u32 col = 0; col < 4; col++)
+      res(row, col) = operator()(col, row);
+  return res;
+}
+
+Mat3 Mat4::ToMat3() const
+{
+  const auto& m = *this;
+  return Mat3(std::array{ m(0, 0), m(0, 1), m(0, 2) }, //
+              std::array{ m(1, 0), m(1, 1), m(1, 2) }, //
+              std::array{ m(2, 0), m(2, 1), m(2, 2) }  //
+  );
+}
+
+f32 Mat4::Determinant() const
+{
+  const auto& m = *this;
+  const Mat3 m0{
+    { m(1, 1), m(1, 2), m(1, 3) },
+    { m(2, 1), m(2, 2), m(2, 3) },
+    { m(3, 1), m(3, 2), m(3, 3) },
+  };
+
+  const Mat3 m1{
+    { m(1, 0), m(1, 2), m(1, 3) },
+    { m(2, 0), m(2, 2), m(2, 3) },
+    { m(3, 0), m(3, 2), m(3, 3) },
+  };
+
+  const Mat3 m2{
+    { m(1, 0), m(1, 1), m(1, 3) },
+    { m(2, 0), m(2, 1), m(2, 3) },
+    { m(3, 0), m(3, 1), m(3, 3) },
+  };
+
+  const Mat3 m3{
+    { m(1, 0), m(1, 1), m(1, 2) },
+    { m(2, 0), m(2, 1), m(2, 2) },
+    { m(3, 0), m(3, 1), m(3, 2) },
+  };
+
+  return                         //
+    m(0, 0) * m0.Determinant()   //
+    - m(0, 1) * m1.Determinant() //
+    + m(0, 2) * m2.Determinant() //
+    - m(0, 3) * m3.Determinant();
+}
+
+Mat4 Mat4::Adjoint() const
+{
+  const auto& m = *this;
+  // clang-format off
+  const f32 d00 = +Mat3{{ m(1, 1), m(1, 2), m(1, 3) }, { m(2, 1), m(2, 2), m(2, 3) }, { m(3, 1), m(3, 2), m(3, 3) }}.Determinant();
+  const f32 d01 = -Mat3{{ m(1, 0), m(1, 2), m(1, 3) }, { m(2, 0), m(2, 2), m(2, 3) }, { m(3, 0), m(3, 2), m(3, 3) }}.Determinant();
+  const f32 d02 = +Mat3{{ m(1, 0), m(1, 1), m(1, 3) }, { m(2, 0), m(2, 1), m(2, 3) }, { m(3, 0), m(3, 1), m(3, 3) }}.Determinant();
+  const f32 d03 = -Mat3{{ m(1, 0), m(1, 1), m(1, 2) }, { m(2, 0), m(2, 1), m(2, 2) }, { m(3, 0), m(3, 1), m(3, 2) }}.Determinant();
+  const f32 d10 = -Mat3{{ m(0, 1), m(0, 2), m(0, 3) }, { m(2, 1), m(2, 2), m(2, 3) }, { m(3, 1), m(3, 2), m(3, 3) }}.Determinant();
+  const f32 d11 = +Mat3{{ m(0, 0), m(0, 2), m(0, 3) }, { m(2, 0), m(2, 2), m(2, 3) }, { m(3, 0), m(3, 2), m(3, 3) }}.Determinant();
+  const f32 d12 = -Mat3{{ m(0, 0), m(0, 1), m(0, 3) }, { m(2, 0), m(2, 1), m(2, 3) }, { m(3, 0), m(3, 1), m(3, 3) }}.Determinant();
+  const f32 d13 = +Mat3{{ m(0, 0), m(0, 1), m(0, 2) }, { m(2, 0), m(2, 1), m(2, 2) }, { m(3, 0), m(3, 1), m(3, 2) }}.Determinant();
+  const f32 d20 = +Mat3{{ m(0, 1), m(0, 2), m(0, 3) }, { m(1, 1), m(1, 2), m(1, 3) }, { m(3, 1), m(3, 2), m(3, 3) }}.Determinant();
+  const f32 d21 = -Mat3{{ m(0, 0), m(0, 2), m(0, 3) }, { m(1, 0), m(1, 2), m(1, 3) }, { m(3, 0), m(3, 2), m(3, 3) }}.Determinant();
+  const f32 d22 = +Mat3{{ m(0, 0), m(0, 1), m(0, 3) }, { m(1, 0), m(1, 1), m(1, 3) }, { m(3, 0), m(3, 1), m(3, 3) }}.Determinant();
+  const f32 d23 = -Mat3{{ m(0, 0), m(0, 1), m(0, 2) }, { m(1, 0), m(1, 1), m(1, 2) }, { m(3, 0), m(3, 1), m(3, 2) }}.Determinant();
+  const f32 d30 = -Mat3{{ m(0, 1), m(0, 2), m(0, 3) }, { m(1, 1), m(1, 2), m(1, 3) }, { m(2, 1), m(2, 2), m(2, 3) }}.Determinant();
+  const f32 d31 = +Mat3{{ m(0, 0), m(0, 2), m(0, 3) }, { m(1, 0), m(1, 2), m(1, 3) }, { m(2, 0), m(2, 2), m(2, 3) }}.Determinant();
+  const f32 d32 = -Mat3{{ m(0, 0), m(0, 1), m(0, 3) }, { m(1, 0), m(1, 1), m(1, 3) }, { m(2, 0), m(2, 1), m(2, 3) }}.Determinant();
+  const f32 d33 = +Mat3{{ m(0, 0), m(0, 1), m(0, 2) }, { m(1, 0), m(1, 1), m(1, 2) }, { m(2, 0), m(2, 1), m(2, 2) }}.Determinant();
+  // clang-format on
+  return Mat4({
+                std::array{ d00, d01, d02, d03 },
+                std::array{ d10, d11, d12, d13 },
+                std::array{ d20, d21, d22, d23 },
+                std::array{ d30, d31, d32, d33 },
+              })
+    .Transpose();
+}
+
+Mat4& Mat4::operator/(f32 div)
+{
+  GE_ASSERT(div != 0.0f, "Division by zero")
+
+  data.at(0).at(0) /= div;
+  data.at(0).at(1) /= div;
+  data.at(0).at(2) /= div;
+  data.at(0).at(3) /= div;
+  data.at(1).at(0) /= div;
+  data.at(1).at(1) /= div;
+  data.at(1).at(2) /= div;
+  data.at(1).at(3) /= div;
+  data.at(2).at(0) /= div;
+  data.at(2).at(1) /= div;
+  data.at(2).at(2) /= div;
+  data.at(2).at(3) /= div;
+  data.at(3).at(0) /= div;
+  data.at(3).at(1) /= div;
+  data.at(3).at(2) /= div;
+  data.at(3).at(3) /= div;
+  return *this;
+}
+
 bool IVec3::operator<(const IVec3& other) const
 {
   if (x < other.x)
@@ -233,4 +382,124 @@ bool IVec3::operator<(const IVec3& other) const
     }
   }
   return false;
+}
+
+Vec4 Vec4::operator*(const Vec4& other) const
+{
+  return Vec4(x0 * other.x0, x1 * other.x1, x2 * other.x2, x3 * other.x3);
+}
+
+Vec4 Vec4::operator+(const Vec4& other) const
+{
+  return Vec4(x0 + other.x0, x1 + other.x1, x2 + other.x2, x3 + other.x3);
+}
+
+Vec4 Vec4::operator-(const Vec4& other) const
+{
+  return Vec4(x0 - other.x0, x1 - other.x1, x2 - other.x2, x3 - other.x3);
+}
+
+Mat3::Mat3() : Mat3({ { 1, 0, 0 } }, { { 0, 1, 0 } }, { { 0, 0, 1 } }) {}
+
+Mat3::Mat3(const std::array<f32, 3>& row0,
+           const std::array<f32, 3>& row1,
+           const std::array<f32, 3>& row2)
+{
+  for (u32 i = 0; i < 3; ++i)
+  {
+    data.at(i).at(0) = row0.at(i);
+    data.at(i).at(1) = row1.at(i);
+    data.at(i).at(2) = row2.at(i);
+  }
+}
+
+Vec3 Mat3::operator*(const Vec3& other) const
+{
+  Vec3 res{ 0, 0, 0 };
+  const auto& m = *this;
+  res.x = m(0, 0) * other.x + m(0, 1) * other.y + m(0, 2) * other.z;
+  res.y = m(1, 0) * other.x + m(1, 1) * other.y + m(1, 2) * other.z;
+  res.z = m(2, 0) * other.x + m(2, 1) * other.y + m(2, 2) * other.z;
+  return res;
+}
+
+f32& Mat3::operator()(u32 row, u32 col)
+{
+  return data.at(col).at(row);
+}
+
+const f32& Mat3::operator()(u32 row, u32 col) const
+{
+  return data.at(col).at(row);
+}
+
+f32 Mat3::Determinant() const
+{
+  const auto& a = operator()(0, 0);
+  const auto& b = operator()(0, 1);
+  const auto& c = operator()(0, 2);
+  const auto& d = operator()(1, 0);
+  const auto& e = operator()(1, 1);
+  const auto& f = operator()(1, 2);
+  const auto& g = operator()(2, 0);
+  const auto& h = operator()(2, 1);
+  const auto& i = operator()(2, 2);
+
+  return a * (e * i - f * h) - b * (d * i - f * g) + c * (d * h - e * g);
+}
+
+Mat3 Mat3::Adjoint() const
+{
+  // A_ij = (-1)^(i+j) det(M_ij)
+
+  const auto& m = *this;
+
+  f32 cof00 = +(m(1, 1) * m(2, 2) - m(2, 1) * m(1, 2));
+  f32 cof10 = -(m(0, 1) * m(2, 2) - m(2, 1) * m(0, 2));
+  f32 cof20 = +(m(0, 1) * m(1, 2) - m(1, 1) * m(0, 2));
+  f32 cof01 = -(m(1, 0) * m(2, 2) - m(2, 0) * m(1, 2));
+  f32 cof11 = +(m(0, 0) * m(2, 2) - m(2, 0) * m(0, 2));
+  f32 cof21 = -(m(0, 0) * m(1, 2) - m(1, 0) * m(0, 2));
+  f32 cof02 = +(m(1, 0) * m(2, 1) - m(2, 0) * m(1, 1));
+  f32 cof12 = -(m(0, 0) * m(2, 1) - m(2, 0) * m(0, 1));
+  f32 cof22 = +(m(0, 0) * m(1, 1) - m(1, 0) * m(0, 1));
+
+  return Mat3({ cof00, cof01, cof02 }, //
+              { cof10, cof11, cof12 }, //
+              { cof20, cof21, cof22 }  //
+              )
+    .Transpose();
+}
+
+Mat3 Mat3::Inverse() const
+{
+  const f32 det = this->Determinant();
+  const Mat3 res = this->Adjoint() / det;
+  return res;
+}
+
+Mat3& Mat3::operator/(f32 div)
+{
+  GE_ASSERT(div != 0.0f, "Division by zero")
+
+  data.at(0).at(0) /= div;
+  data.at(0).at(1) /= div;
+  data.at(0).at(2) /= div;
+  data.at(1).at(0) /= div;
+  data.at(1).at(1) /= div;
+  data.at(1).at(2) /= div;
+  data.at(2).at(0) /= div;
+  data.at(2).at(1) /= div;
+  data.at(2).at(2) /= div;
+
+  return *this;
+}
+
+Mat3 Mat3::Transpose() const
+{
+  Mat3 res{};
+  for (u32 row = 0; row < 3; row++)
+    for (u32 col = 0; col < 3; col++)
+      res(row, col) = operator()(col, row);
+  return res;
 }

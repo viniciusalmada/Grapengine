@@ -33,5 +33,6 @@ TEST(Scene, AddComponents)
   auto& transf = scene->AddComponent<GE::TransformComponent>(second_ent);
   transf.position_values = GE::Vec3{};
 
-  ASSERT_EQ(scene->GetComponent<GE::TransformComponent>(second_ent).transform, GE::Mat4{});
+  ASSERT_EQ(scene->GetComponent<GE::TransformComponent>(second_ent).position_values.x,
+            GE::Vec3{}.x);
 }

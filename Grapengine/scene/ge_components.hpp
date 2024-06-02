@@ -34,10 +34,12 @@ namespace GE
   struct TransformComponent : public BaseComponent
   {
     Vec3 rotate_values{ 0, 0, 0 };
-    Vec3 position_values;
-    Vec3 scale_values;
+    Vec3 position_values{ 0, 0, 0 };
+    Vec3 scale_values{ 1, 1, 1 };
     [[nodiscard]] CompType Type() const final;
-    TransformComponent(const Vec3& pos, const Vec3& scale);
+    TransformComponent(const Vec3& pos = Vec3{ 0, 0, 0 },
+                       const Vec3& scale = Vec3{ 1, 1, 1 },
+                       const Vec3& rotate = Vec3{ 0, 0, 0 });
     [[nodiscard]] Mat4 GetModelMat() const
     {
       auto rotate = Transform::Rotate(rotate_values.x, { 1, 0, 0 }) *

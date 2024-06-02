@@ -36,7 +36,7 @@ Ptr<IndexBuffer> IndexBuffer::Make(const std::vector<u32>& indices, RendererID p
 
 void IndexBuffer::UpdateData(const std::vector<u32>& indices)
 {
-  GE_PROFILE
+  GE_PROFILE;
   Bind();
   i32 curr_size = 0;
   glGetBufferParameteriv(GL_ELEMENT_ARRAY_BUFFER, GL_BUFFER_SIZE, &curr_size);

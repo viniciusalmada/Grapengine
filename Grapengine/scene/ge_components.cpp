@@ -18,8 +18,8 @@ CompType TransformComponent::Type() const
 {
   return CompType::TRANF;
 }
-TransformComponent::TransformComponent(const Vec3& pos, const Vec3& scale) :
-    position_values(pos), scale_values(scale)
+TransformComponent::TransformComponent(const Vec3& pos, const Vec3& scale, const Vec3& rot) :
+    rotate_values(rot), position_values(pos), scale_values(scale)
 {
 }
 PrimitiveComponent::PrimitiveComponent(Ptr<Drawable> dra, Color c) : drawable(dra), color(c) {}
