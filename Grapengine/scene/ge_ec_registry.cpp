@@ -17,22 +17,15 @@ void ECRegistry::Each(const std::function<void(Entity)>& action) const
   std::ranges::for_each(m_entities, action);
 }
 
-std::vector<Entity> ECRegistry::Group(const std::initializer_list<CompType>&& comps) const
+std::vector<Entity> ECRegistry::Group(const std::set<CompType>&& comps) const
 {
   GE_PROFILE;
-#ifdef DEBUG_ECSREGISTRY
-  GE_DEBUG("BEGIN: Getting group of: ")
-  (..., [] { GE_DEBUG("{}", typeid(Comps).name()); }());
-  GE_DEBUG("END")
-#endif
 
   std::vector<Entity> entities;
-  for (const Entity& e :
-       m_components                                                                             //
-         | std::views::filter([&](auto&& p) { return FilterComponentsFromEntities(comps, p); }) //
-         | std::views::keys)
+  for (const auto& [ent, its_comps] : m_entities_with_components)
   {
-    entities.push_back(e);
+    if (std::ranges::includes(its_comps, comps))
+      entities.push_back(ent);
   }
   return entities;
 }
@@ -41,4 +34,5 @@ void ECRegistry::Destroy(Entity ent)
 {
   m_entities.erase(ent);
   m_components.erase(ent);
+  m_entities_with_components.erase(ent);
 }
