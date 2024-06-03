@@ -9,16 +9,24 @@
 
 using namespace GE;
 
-Scene::Scene() : m_registry({}), m_viewport(Dimension{ 1, 1 }) {}
+Scene::Scene() : m_registry({}), m_active_camera(std::nullopt), m_viewport(Dimension{ 1, 1 }) {}
 
 void Scene::OnUpdate(TimeStep ts)
 {
   GE_PROFILE;
   UpdateNativeScripts(ts);
 
-  const Entity active_camera = GetActiveCamera().value_or(Entity{});
-  if (!active_camera)
-    return;
+  if (!m_active_camera)
+  {
+    m_active_camera = RetrieveActiveCamera();
+  }
+
+  UpdateDrawableEntities(ts);
+}
+
+void Scene::UpdateDrawableEntities(TimeStep& /*ts*/)
+{
+  const auto& active_camera = m_active_camera.value();
 
   const CameraComponent& cam_component = m_registry.GetComponent<CameraComponent>(active_camera);
 
@@ -68,6 +76,7 @@ void Scene::OnUpdate(TimeStep ts)
 
 void Scene::UpdateNativeScripts(TimeStep& ts)
 {
+  GE_PROFILE;
   const std::vector<Entity> g = m_registry.Group({ CompType::NATIVE_SCRIPT });
 
   // Move to Scene::OnScenePlay
@@ -84,7 +93,7 @@ void Scene::UpdateNativeScripts(TimeStep& ts)
   }
 }
 
-Entity Scene::CreateEntity(const char* name)
+Entity Scene::CreateEntity(std::string&& name)
 {
   GE_PROFILE;
   Entity ent = m_registry.Create();
@@ -121,7 +130,7 @@ void Scene::OnViewportResize(Dimension dim)
   }
 }
 
-Opt<Entity> Scene::GetActiveCamera() const
+Opt<Entity> Scene::RetrieveActiveCamera() const
 {
   GE_PROFILE;
   std::vector<Entity> camera_group = m_registry.Group({ CompType::CAMERA });
@@ -175,6 +184,7 @@ void Scene::UpdateActiveCamera(Entity activeCamera)
       continue;
     m_registry.GetComponent<CameraComponent>(ent).active = false;
   }
+  m_active_camera = activeCamera;
 }
 
 void Scene::DestroyEntity(Entity ent)

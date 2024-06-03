@@ -26,24 +26,28 @@ void EditorLayer::OnAttach()
                                          false,
                                          false);
 
+  constexpr auto CUBE_COUNT = 1'0;
+  constexpr auto LIM = 4.0f;
+
   auto simple_shader = MakeRef<PosAndTex2DShader>();
   auto material_shader = MakeRef<MaterialShader>();
-  auto cube_1_ent = m_scene->CreateEntity("Cube Blue");
-  auto cube_2_ent = m_scene->CreateEntity("Cube Red");
-  auto cube_3_ent = m_scene->CreateEntity("Cube Green");
-  auto cube_4_ent = m_scene->CreateEntity("Cube Yellow");
-  m_scene->AddComponent<PrimitiveComponent>(cube_1_ent, Cube::Make(), Colors::BLUE);
-  m_scene->AddComponent<PrimitiveComponent>(cube_2_ent, Cube::Make(), Colors::RED);
-  m_scene->AddComponent<PrimitiveComponent>(cube_3_ent, Cube::Make(), Colors::GREEN);
-  m_scene->AddComponent<PrimitiveComponent>(cube_4_ent, Cube::Make(), Colors::YELLOW);
-  m_scene->AddComponent<TransformComponent>(cube_1_ent, Vec3{ 0, 0, 0 }, Vec3{ 1, 1, 1 });
-  m_scene->AddComponent<TransformComponent>(cube_2_ent, Vec3{ 1, 1, 1 }, Vec3{ 1, 1, 1 });
-  m_scene->AddComponent<TransformComponent>(cube_3_ent, Vec3{ 2, 2, 2 }, Vec3{ 1, 1, 1 });
-  m_scene->AddComponent<TransformComponent>(cube_4_ent, Vec3{ 3, 3, 3 }, Vec3{ 1, 1, 1 });
-  m_scene->AddComponent<ColorOnlyComponent>(cube_1_ent, simple_shader);
-  m_scene->AddComponent<MaterialComponent>(cube_2_ent, material_shader);
-  m_scene->AddComponent<MaterialComponent>(cube_3_ent, material_shader);
-  m_scene->AddComponent<MaterialComponent>(cube_4_ent, material_shader);
+
+  bool use_solid_color = true;
+  for (u32 i = 0; i < CUBE_COUNT; i++)
+  {
+    std::string name{ "Cube " + std::to_string(i) };
+    auto cube_ent = m_scene->CreateEntity(name.c_str());
+    m_scene->AddComponent<PrimitiveComponent>(cube_ent, Cube::Make(), Colors::RandomColor());
+    m_scene->AddComponent<TransformComponent>(cube_ent,
+                                              Vec3{ Random::GenFloat(-LIM, LIM),
+                                                    Random::GenFloat(-LIM, LIM),
+                                                    Random::GenFloat(-LIM, LIM) });
+    if (use_solid_color)
+      m_scene->AddComponent<ColorOnlyComponent>(cube_ent, simple_shader);
+    else
+      m_scene->AddComponent<MaterialComponent>(cube_ent, material_shader);
+    use_solid_color = !use_solid_color;
+  }
 
   m_scene->AddComponent<NativeScriptComponent>(m_front_camera_entity).Bind<CamController>();
 

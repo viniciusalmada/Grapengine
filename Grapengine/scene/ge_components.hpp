@@ -28,7 +28,7 @@ namespace GE
     std::string tag;
     [[nodiscard]] CompType Type() const final;
 
-    TagComponent(const char* t);
+    TagComponent(std::string&& t);
   };
 
   struct TransformComponent : public BaseComponent

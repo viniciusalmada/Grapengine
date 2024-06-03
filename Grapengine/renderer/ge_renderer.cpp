@@ -3,6 +3,7 @@
 #include "core/ge_assert.hpp"
 #include "drawables/ge_drawing_object.hpp"
 #include "ge_batch_renderer.hpp"
+#include "profiling/ge_profiler.hpp"
 #include "renderer/ge_vertex_array.hpp"
 
 #include <glad/glad.h>
@@ -108,6 +109,7 @@ static BatchRenderer& GetBatchRenderer()
 
 void Renderer::Batch::Begin()
 {
+  GE_PROFILE;
   s_stats.vertices_count = 0;
   s_stats.indices_count = 0;
   GetBatchRenderer().Begin();
@@ -115,6 +117,7 @@ void Renderer::Batch::Begin()
 
 void Renderer::Batch::End()
 {
+  GE_PROFILE;
   GetBatchRenderer().End();
   s_stats.draw_calls++;
 }
@@ -124,6 +127,7 @@ void Renderer::Batch::PushObject(Ptr<IShaderProgram> shader,
                                  const std::vector<u32>& indices,
                                  const Mat4& modelMat)
 {
+  GE_PROFILE;
   s_stats.vertices_count += vd.GetCount();
   s_stats.indices_count += indices.size();
   GetBatchRenderer().PushObject(shader, std::move(vd), indices, modelMat);

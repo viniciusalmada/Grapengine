@@ -13,7 +13,7 @@ CompType TagComponent::Type() const
   return CompType::TAG;
 }
 
-TagComponent::TagComponent(const char* t) : tag(t) {}
+TagComponent::TagComponent(std::string&& t) : tag(t) {}
 CompType TransformComponent::Type() const
 {
   return CompType::TRANF;

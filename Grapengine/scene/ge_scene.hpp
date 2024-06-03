@@ -14,7 +14,7 @@ namespace GE
 
     Scene();
 
-    Entity CreateEntity(const char* name);
+    Entity CreateEntity(std::string&& name);
 
     void DestroyEntity(Entity ent);
 
@@ -53,10 +53,12 @@ namespace GE
 
   private:
     void UpdateNativeScripts(TimeStep& ts);
+    void UpdateDrawableEntities(TimeStep& ts);
 
-    [[nodiscard]] Opt<Entity> GetActiveCamera() const;
+    [[nodiscard]] Opt<Entity> RetrieveActiveCamera() const;
 
     ECRegistry m_registry;
+    Opt<Entity> m_active_camera;
     Dimension m_viewport;
   };
 
