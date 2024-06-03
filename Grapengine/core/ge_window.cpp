@@ -17,7 +17,7 @@ namespace
 }
 
 Window::Window(const WindowProps& props, const EventCallbackFn& cb) :
-    m_window_props(props), m_vsync(true)
+    m_window_props(props), m_vsync(false)
 {
   GE_PROFILE;
   GE_INFO("GLFW initialization")
