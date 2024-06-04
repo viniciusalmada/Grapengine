@@ -19,7 +19,7 @@ namespace GE
 
     virtual void OnUpdate(TimeStep);
 
-    virtual void OnImGuiUpdate();
+    virtual void OnImGuiUpdate(TimeStep);
 
     virtual void OnEvent(Event&);
 

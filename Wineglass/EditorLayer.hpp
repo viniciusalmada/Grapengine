@@ -17,7 +17,7 @@ namespace GE
 
     void OnUpdate(TimeStep ts) override;
 
-    void OnImGuiUpdate() override;
+    void OnImGuiUpdate(TimeStep ts) override;
 
     void OnEvent(Event& ev) override;
 

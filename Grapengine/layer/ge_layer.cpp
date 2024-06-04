@@ -24,4 +24,4 @@ const std::string& Layer::GetName() const
 {
   return m_name;
 }
-void Layer::OnImGuiUpdate() {}
+void Layer::OnImGuiUpdate(TimeStep /*ts*/) {}

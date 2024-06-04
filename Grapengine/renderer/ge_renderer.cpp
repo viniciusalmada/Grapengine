@@ -1,6 +1,7 @@
 #include "renderer/ge_renderer.hpp"
 
 #include "core/ge_assert.hpp"
+#include "core/ge_platform.hpp"
 #include "drawables/ge_drawing_object.hpp"
 #include "ge_batch_renderer.hpp"
 #include "profiling/ge_profiler.hpp"
@@ -107,11 +108,14 @@ static BatchRenderer& GetBatchRenderer()
   return batch_renderer;
 }
 
+static u64 s_timing = 0;
+
 void Renderer::Batch::Begin()
 {
   GE_PROFILE;
   s_stats.vertices_count = 0;
   s_stats.indices_count = 0;
+  s_timing = Platform::GetCurrentTimeMS();
   GetBatchRenderer().Begin();
 }
 
@@ -120,6 +124,7 @@ void Renderer::Batch::End()
   GE_PROFILE;
   GetBatchRenderer().End();
   s_stats.draw_calls++;
+  s_stats.time_spent = Platform::GetCurrentTimeMS() - s_timing;
 }
 
 void Renderer::Batch::PushObject(Ptr<IShaderProgram> shader,

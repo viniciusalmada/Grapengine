@@ -15,6 +15,8 @@ namespace GE::Ctrl
 
     static void AllowImGuiEvents(bool value);
 
+    static f32 GetFPS();
+
   private:
     App() = default;
 

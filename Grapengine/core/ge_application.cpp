@@ -75,6 +75,7 @@ void Application::Run()
     const u64 time_ms = Platform::GetCurrentTimeMS();
     TimeStep step{ time_ms - m_last_frame_time };
     m_last_frame_time = time_ms;
+    m_current_fps = 1'000 / step.f();
 
     if (!m_minimized)
     {
@@ -84,7 +85,7 @@ void Application::Run()
 
       GE_PROFILE_FRAME_START(IMGUI_FRAME);
       m_imgui_layer->Begin();
-      std::ranges::for_each(m_layers, [&](auto&& l) { l->OnImGuiUpdate(); });
+      std::ranges::for_each(m_layers, [&](auto&& l) { l->OnImGuiUpdate(step); });
       m_imgui_layer->End();
       GE_PROFILE_FRAME_END(IMGUI_FRAME);
     }

@@ -34,3 +34,8 @@ Ctrl::App& Ctrl::App::Get()
   static App app;
   return app;
 }
+
+f32 Ctrl::App::GetFPS()
+{
+  return Get().m_application->GetFPS();
+}

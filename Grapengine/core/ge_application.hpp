@@ -27,6 +27,8 @@ namespace GE
 
     [[nodiscard]] Ptr<ImGuiLayer> GetImGuiLayer() const;
 
+    f32 GetFPS() const { return m_current_fps; }
+
   private:
     void
     Init(std::string_view title, Dimension dim, std::string_view icon, const EventCallbackFn& cb);
@@ -39,6 +41,7 @@ namespace GE
     bool m_running = true;
     bool m_minimized = false;
     u64 m_last_frame_time{ 0 };
+    f32 m_current_fps;
     std::vector<Ptr<Layer>> m_layers;
     Ptr<ImGuiLayer> m_imgui_layer;
   };
