@@ -26,13 +26,13 @@ void EditorLayer::OnAttach()
                                          false,
                                          false);
 
-  constexpr auto CUBE_COUNT = 1'0;
-  constexpr auto LIM = 4.0f;
+  constexpr auto CUBE_COUNT = 1'000;
+  constexpr auto LIM = 20.0f;
 
-  auto simple_shader = MakeRef<PosAndTex2DShader>();
+  //  auto simple_shader = MakeRef<PosAndTex2DShader>();
   auto material_shader = MakeRef<MaterialShader>();
 
-  bool use_solid_color = true;
+  //  bool use_solid_color = true;
   for (u32 i = 0; i < CUBE_COUNT; i++)
   {
     std::string name{ "Cube " + std::to_string(i) };
@@ -42,11 +42,11 @@ void EditorLayer::OnAttach()
                                               Vec3{ Random::GenFloat(-LIM, LIM),
                                                     Random::GenFloat(-LIM, LIM),
                                                     Random::GenFloat(-LIM, LIM) });
-    if (use_solid_color)
-      m_scene->AddComponent<ColorOnlyComponent>(cube_ent, simple_shader);
-    else
-      m_scene->AddComponent<MaterialComponent>(cube_ent, material_shader);
-    use_solid_color = !use_solid_color;
+    //    if (use_solid_color)
+    //      m_scene->AddComponent<ColorOnlyComponent>(cube_ent, simple_shader);
+    //    else
+    m_scene->AddComponent<MaterialComponent>(cube_ent, material_shader);
+    //    use_solid_color = !use_solid_color;
   }
 
   m_scene->AddComponent<NativeScriptComponent>(m_front_camera_entity).Bind<CamController>();
@@ -74,7 +74,9 @@ void EditorLayer::OnUpdate(TimeStep ts)
   m_fb->Unbind();
 }
 
-void EditorLayer::OnImGuiUpdate()
+static u64 s_timer_checker = 0;
+
+void EditorLayer::OnImGuiUpdate(TimeStep ts)
 {
   static ImGuiDockNodeFlags dock_node_flags = ImGuiDockNodeFlags_None;
 
@@ -127,11 +129,22 @@ void EditorLayer::OnImGuiUpdate()
 
   ImGui::Begin("Stats");
   {
-    const auto& stats = Renderer::GetStats();
+    static Renderer::Statistics stats{};
+    static f64 fps{};
+    if (s_timer_checker > 1'000)
+    {
+      stats = Renderer::GetStats();
+      fps = static_cast<double>(Ctrl::App::GetFPS());
+      s_timer_checker = 0;
+    }
     ImGui::Text("Renderer stats:");
     ImGui::Text("Draw calls: %05lu", stats.draw_calls);
     ImGui::Text("Vertices count: %lu", stats.vertices_count);
     ImGui::Text("Indices count: %lu", stats.indices_count);
+    ImGui::Text("Time spent to batch: %lums", stats.time_spent);
+    ImGui::Text("Batches per second: %lu", 1'000 / stats.time_spent);
+    ImGui::Text("FPS %.2f", fps);
+    s_timer_checker += ts.u();
   }
   ImGui::End();
 

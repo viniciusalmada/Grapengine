@@ -60,6 +60,8 @@ namespace GE
     ECRegistry m_registry;
     Opt<Entity> m_active_camera;
     Dimension m_viewport;
+    std::vector<std::pair<f32, u32>> m_randoms;
+    //    u64 m_random_id = 0;
   };
 
 } // GE
