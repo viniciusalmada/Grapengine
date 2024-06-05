@@ -124,7 +124,7 @@ void Renderer::Batch::End()
   GE_PROFILE;
   GetBatchRenderer().End();
   s_stats.draw_calls++;
-  s_stats.time_spent = Platform::GetCurrentTimeMS() - s_timing;
+  s_stats.time_spent = (Platform::GetCurrentTimeMS() - s_timing) + 1;
 }
 
 void Renderer::Batch::PushObject(Ptr<IShaderProgram> shader,
