@@ -31,7 +31,7 @@ void Scene::OnUpdate(TimeStep ts)
   UpdateDrawableEntities(ts);
 }
 
-void Scene::UpdateDrawableEntities(TimeStep& /*ts*/)
+void Scene::UpdateDrawableEntities(TimeStep& ts)
 {
   GE_PROFILE;
   const auto& active_camera = m_active_camera.value();
@@ -56,21 +56,13 @@ void Scene::UpdateDrawableEntities(TimeStep& /*ts*/)
       TransformComponent& transl_scale_comp = m_registry.GetComponent<TransformComponent>(ent);
       {
         auto& rand_data = m_randoms.at(Random::GenInt(0, 99));
-        if (rand_data.second == 0)
-        {
-          transl_scale_comp.rotate_values.x += rand_data.first;
-          transl_scale_comp.scale_values.x += rand_data.first * 0.001f;
-        }
-        else if (rand_data.second == 1)
-        {
-          transl_scale_comp.rotate_values.y += rand_data.first;
-          transl_scale_comp.scale_values.y += rand_data.first * 0.001f;
-        }
-        else
-        {
-          transl_scale_comp.rotate_values.z += rand_data.first;
-          transl_scale_comp.scale_values.z += rand_data.first * 0.001f;
-        }
+        auto& coord = rand_data.second == 0 ?                                     //
+                        transl_scale_comp.rotate_values.x                         //
+                                            : rand_data.second == 1               //
+                                                ?                                 //
+                                                transl_scale_comp.rotate_values.y //
+                                                : transl_scale_comp.rotate_values.z;
+        coord += rand_data.first * ts.f() * 0.01f;
       }
 
       const PrimitiveComponent& primitive = m_registry.GetComponent<PrimitiveComponent>(ent);
@@ -90,22 +82,14 @@ void Scene::UpdateDrawableEntities(TimeStep& /*ts*/)
 
       TransformComponent& transl_scale_comp = m_registry.GetComponent<TransformComponent>(ent);
       {
-        auto& rand_data = m_randoms.at(Random::GenInt(0, 100'000 - 1));
-        if (rand_data.second == 0)
-        {
-          transl_scale_comp.rotate_values.x += rand_data.first;
-          transl_scale_comp.scale_values.x += rand_data.first * 0.0001f;
-        }
-        else if (rand_data.second == 1)
-        {
-          transl_scale_comp.rotate_values.y += rand_data.first;
-          transl_scale_comp.scale_values.y += rand_data.first * 0.0001f;
-        }
-        else
-        {
-          transl_scale_comp.rotate_values.z += rand_data.first;
-          transl_scale_comp.scale_values.z += rand_data.first * 0.0001f;
-        }
+        auto& rand_data = m_randoms.at(Random::GenInt(0, 99));
+        auto& coord = rand_data.second == 0 ?                                     //
+                        transl_scale_comp.rotate_values.x                         //
+                                            : rand_data.second == 1               //
+                                                ?                                 //
+                                                transl_scale_comp.rotate_values.y //
+                                                : transl_scale_comp.rotate_values.z;
+        coord += rand_data.first * ts.f() * 0.01f;
       }
 
       const PrimitiveComponent& primitive = m_registry.GetComponent<PrimitiveComponent>(ent);
