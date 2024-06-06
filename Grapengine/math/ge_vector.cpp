@@ -234,7 +234,7 @@ Vec4 Mat4::operator*(const Vec4& other) const
 
 Vec3 Mat4::operator*(const Vec3& other) const
 {
-  Vec4 vec{ other };
+  const Vec4 vec{ other };
   auto res = this->operator*(vec);
   return { res.x0, res.x1, res.x2 };
 }
@@ -248,7 +248,7 @@ Mat4 Mat4::Inverse() const
 
 Vec4 Mat4::operator()(u32 col) const
 {
-  return Vec4(data.at(col).at(0), data.at(col).at(1), data.at(col).at(2), data.at(col).at(3));
+  return { data.at(col).at(0), data.at(col).at(1), data.at(col).at(2), data.at(col).at(3) };
 }
 
 Mat4 Mat4::operator*(f32 other) const
@@ -386,17 +386,17 @@ bool IVec3::operator<(const IVec3& other) const
 
 Vec4 Vec4::operator*(const Vec4& other) const
 {
-  return Vec4(x0 * other.x0, x1 * other.x1, x2 * other.x2, x3 * other.x3);
+  return { x0 * other.x0, x1 * other.x1, x2 * other.x2, x3 * other.x3 };
 }
 
 Vec4 Vec4::operator+(const Vec4& other) const
 {
-  return Vec4(x0 + other.x0, x1 + other.x1, x2 + other.x2, x3 + other.x3);
+  return { x0 + other.x0, x1 + other.x1, x2 + other.x2, x3 + other.x3 };
 }
 
 Vec4 Vec4::operator-(const Vec4& other) const
 {
-  return Vec4(x0 - other.x0, x1 - other.x1, x2 - other.x2, x3 - other.x3);
+  return { x0 - other.x0, x1 - other.x1, x2 - other.x2, x3 - other.x3 };
 }
 
 Mat3::Mat3() : Mat3({ { 1, 0, 0 } }, { { 0, 1, 0 } }, { { 0, 0, 1 } }) {}
@@ -454,15 +454,15 @@ Mat3 Mat3::Adjoint() const
 
   const auto& m = *this;
 
-  f32 cof00 = +(m(1, 1) * m(2, 2) - m(2, 1) * m(1, 2));
-  f32 cof10 = -(m(0, 1) * m(2, 2) - m(2, 1) * m(0, 2));
-  f32 cof20 = +(m(0, 1) * m(1, 2) - m(1, 1) * m(0, 2));
-  f32 cof01 = -(m(1, 0) * m(2, 2) - m(2, 0) * m(1, 2));
-  f32 cof11 = +(m(0, 0) * m(2, 2) - m(2, 0) * m(0, 2));
-  f32 cof21 = -(m(0, 0) * m(1, 2) - m(1, 0) * m(0, 2));
-  f32 cof02 = +(m(1, 0) * m(2, 1) - m(2, 0) * m(1, 1));
-  f32 cof12 = -(m(0, 0) * m(2, 1) - m(2, 0) * m(0, 1));
-  f32 cof22 = +(m(0, 0) * m(1, 1) - m(1, 0) * m(0, 1));
+  const f32 cof00 = +(m(1, 1) * m(2, 2) - m(2, 1) * m(1, 2));
+  const f32 cof10 = -(m(0, 1) * m(2, 2) - m(2, 1) * m(0, 2));
+  const f32 cof20 = +(m(0, 1) * m(1, 2) - m(1, 1) * m(0, 2));
+  const f32 cof01 = -(m(1, 0) * m(2, 2) - m(2, 0) * m(1, 2));
+  const f32 cof11 = +(m(0, 0) * m(2, 2) - m(2, 0) * m(0, 2));
+  const f32 cof21 = -(m(0, 0) * m(1, 2) - m(1, 0) * m(0, 2));
+  const f32 cof02 = +(m(1, 0) * m(2, 1) - m(2, 0) * m(1, 1));
+  const f32 cof12 = -(m(0, 0) * m(2, 1) - m(2, 0) * m(0, 1));
+  const f32 cof22 = +(m(0, 0) * m(1, 1) - m(1, 0) * m(0, 1));
 
   return Mat3({ cof00, cof01, cof02 }, //
               { cof10, cof11, cof12 }, //

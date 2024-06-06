@@ -22,7 +22,7 @@ namespace GE
                     const Mat4& modelMat);
 
   private:
-    void Draw(const DrawingObject& drawingObject);
+    void Draw(const Ptr<IShaderProgram>& shader) const;
 
     //    std::set<Ptr<IShaderProgram>> m_shaders;
     std::map<Ptr<IShaderProgram>, DrawingObject> m_drawing_objects;

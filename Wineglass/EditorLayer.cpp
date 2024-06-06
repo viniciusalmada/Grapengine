@@ -6,27 +6,29 @@ static constexpr const auto CLEAR_COLOR = 0x222222FF;
 
 using namespace GE;
 
-EditorLayer::EditorLayer() : Layer("EditorLayer"), m_scene_panel(nullptr) {}
+EditorLayer::EditorLayer() :
+    Layer("EditorLayer"),
+    m_scene(Scene::Make()),
+    m_front_camera_entity(m_scene->CreateEntity("Front Camera")),
+    m_oblique_camera_entity(m_scene->CreateEntity("Oblique Camera")),
+    m_scene_panel(nullptr)
+{
+}
 
 void EditorLayer::OnAttach()
 {
-  m_scene = Scene::Make();
-
-  m_front_camera_entity = m_scene->CreateEntity("Front Camera");
   m_scene->AddComponent<CameraComponent>(m_front_camera_entity,
                                          Vec3{ 0, 0, 10 },
                                          Vec3{ 0, 0, 0 },
                                          true,
                                          false);
-
-  m_oblique_camera_entity = m_scene->CreateEntity("Oblique Camera");
   m_scene->AddComponent<CameraComponent>(m_oblique_camera_entity,
                                          Vec3{ 10, 10, -10 },
                                          Vec3{ 0, 0, 0 },
                                          false,
                                          false);
 
-  constexpr auto CUBE_COUNT = 1'000;
+  constexpr auto CUBE_COUNT = 1'00;
   constexpr auto LIM = 20.0f;
 
   //  auto simple_shader = MakeRef<PosAndTex2DShader>();

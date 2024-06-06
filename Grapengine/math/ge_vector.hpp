@@ -119,7 +119,7 @@ namespace GE
     Vec4 operator*(const Vec4& other) const;
     Vec3 operator*(const Vec3& other) const;
     Mat4 operator*(f32 other) const;
-    Mat4& operator/(f32 other);
+    Mat4& operator/(f32 div);
 
     f32& operator()(u32 row, u32 col);
     const f32& operator()(u32 row, u32 col) const;

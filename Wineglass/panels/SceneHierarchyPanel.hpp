@@ -16,10 +16,10 @@ namespace GE
 
   private:
     void DrawEntityNode(Entity ent);
-    void DrawComponents(Entity ent);
+    void DrawComponents(Opt<Entity> ent);
 
     Ptr<Scene> m_scene_context;
-    Entity m_selected_entity;
+    Opt<Entity> m_selected_entity;
   };
 
 } // GE

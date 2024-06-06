@@ -41,7 +41,7 @@ namespace GE
     bool m_running = true;
     bool m_minimized = false;
     u64 m_last_frame_time{ 0 };
-    f32 m_current_fps;
+    f32 m_current_fps{ 0 };
     std::vector<Ptr<Layer>> m_layers;
     Ptr<ImGuiLayer> m_imgui_layer;
   };

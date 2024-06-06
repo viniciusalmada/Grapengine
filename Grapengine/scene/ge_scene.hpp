@@ -24,7 +24,7 @@ namespace GE
 
     void OnViewportResize(Dimension dim);
 
-    void UpdateActiveCamera(Entity activeCamera);
+    void UpdateActiveCamera(Opt<Entity> activeCamera);
 
     // Registry wrappers functions
 
@@ -40,6 +40,13 @@ namespace GE
     {
       GE_PROFILE;
       return m_registry.GetComponent<Component>(ent);
+    }
+
+    template <typename Component>
+    [[nodiscard]] bool HasComponent(const Opt<Entity>& ent)
+    {
+      GE_PROFILE;
+      return ent ? m_registry.Has<Component>(ent.value()) : false;
     }
 
     template <typename Component>
@@ -60,8 +67,6 @@ namespace GE
     ECRegistry m_registry;
     Opt<Entity> m_active_camera;
     Dimension m_viewport;
-    std::vector<std::pair<f32, u32>> m_randoms;
-    //    u64 m_random_id = 0;
   };
 
 } // GE

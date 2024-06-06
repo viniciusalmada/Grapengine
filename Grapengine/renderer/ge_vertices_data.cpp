@@ -9,10 +9,12 @@ Ptr<VerticesData> VerticesData::Make()
 
 void VerticesData::RawPushData(VerticesData&& data)
 {
-  m_data.insert(m_data.end(), data.m_data.begin(), data.m_data.end());
+  m_data.insert(m_data.end(),
+                std::make_move_iterator(data.m_data.begin()),
+                std::make_move_iterator(data.m_data.end()));
 }
 
-VerticesData::VerticesData() {}
+VerticesData::VerticesData() = default;
 
 u64 VerticesData::GetSize() const
 {
@@ -44,7 +46,7 @@ void VerticesData::Clear()
 
 void VerticesData::PushVerticesData(VertexStruct&& vs)
 {
-  m_data.emplace_back(vs);
+  m_data.emplace_back(std::move(vs));
 }
 
 u64 VerticesData::GetCount() const

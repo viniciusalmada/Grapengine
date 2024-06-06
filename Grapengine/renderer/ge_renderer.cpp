@@ -11,6 +11,22 @@
 
 using namespace GE;
 
+namespace
+{
+  //--------------------------------------------------------------------------------------------------
+  BatchRenderer& GetBatchRenderer()
+  {
+    static BatchRenderer batch_renderer;
+    return batch_renderer;
+  }
+
+  u64& GetTiming()
+  {
+    static u64 timing = 0;
+    return timing;
+  };
+}
+
 void OpenGLDebuggerFunc(GLenum source,
                         GLenum type,
                         u32 id,
@@ -37,11 +53,6 @@ void OpenGLDebuggerFunc([[maybe_unused]] GLenum source,
   ss << "OpenGL Error:\n";
   ss << "  (0x" << std::setfill('0') << std::setw(4) << std::hex << id << "): " << message << '\n';
   GE_ASSERT(false, ss.str().c_str())
-}
-
-namespace
-{
-  Renderer::Statistics s_stats{};
 }
 
 void Renderer::Init()
@@ -96,26 +107,18 @@ void Renderer::DrawObject(const Ptr<DrawingObject>& primitive)
   glDrawElements(GL_TRIANGLES, primitive->IndicesCount(), GL_UNSIGNED_INT, nullptr);
 }
 
-const Renderer::Statistics& Renderer::GetStats()
+Renderer::Statistics& Renderer::GetStats()
 {
+  static Renderer::Statistics s_stats{};
   return s_stats;
 }
-
-//--------------------------------------------------------------------------------------------------
-static BatchRenderer& GetBatchRenderer()
-{
-  static BatchRenderer batch_renderer;
-  return batch_renderer;
-}
-
-static u64 s_timing = 0;
 
 void Renderer::Batch::Begin()
 {
   GE_PROFILE;
-  s_stats.vertices_count = 0;
-  s_stats.indices_count = 0;
-  s_timing = Platform::GetCurrentTimeMS();
+  GetStats().vertices_count = 0;
+  GetStats().indices_count = 0;
+  GetTiming() = Platform::GetCurrentTimeMS();
   GetBatchRenderer().Begin();
 }
 
@@ -123,17 +126,17 @@ void Renderer::Batch::End()
 {
   GE_PROFILE;
   GetBatchRenderer().End();
-  s_stats.draw_calls++;
-  s_stats.time_spent = (Platform::GetCurrentTimeMS() - s_timing) + 1;
+  GetStats().draw_calls++;
+  GetStats().time_spent = (Platform::GetCurrentTimeMS() - GetTiming()) + 1;
 }
 
-void Renderer::Batch::PushObject(Ptr<IShaderProgram> shader,
+void Renderer::Batch::PushObject(const Ptr<IShaderProgram>& shader,
                                  VerticesData&& vd,
                                  const std::vector<u32>& indices,
                                  const Mat4& modelMat)
 {
   GE_PROFILE;
-  s_stats.vertices_count += vd.GetCount();
-  s_stats.indices_count += indices.size();
+  GetStats().vertices_count += vd.GetCount();
+  GetStats().indices_count += indices.size();
   GetBatchRenderer().PushObject(shader, std::move(vd), indices, modelMat);
 }

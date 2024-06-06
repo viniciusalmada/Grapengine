@@ -14,7 +14,7 @@ namespace GE
 
     void Bind() const;
 
-    void UpdateData(const std::vector<u32>& indices);
+    void UpdateData(const std::vector<u32>& indices) const;
 
   private:
     RendererID m_id;

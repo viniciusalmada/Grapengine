@@ -9,6 +9,12 @@
 
 using namespace GE;
 
+namespace
+{
+  constexpr auto LIGHT_STRENGHT = 0.25f;
+  constexpr auto LIGHT_POS = 5;
+}
+
 MaterialShader::MaterialShader()
 {
   GE_PROFILE;
@@ -18,9 +24,9 @@ MaterialShader::MaterialShader()
   { // TODO: Only for test
     Activate();
     UpdateAmbientColor(Colors::WHITE);
-    UpdateAmbientStrength(0.25f);
+    UpdateAmbientStrength(LIGHT_STRENGHT);
 
-    UpdateLightPosition({ Vec3{}, Vec3{ 5, 5, 5 } });
+    UpdateLightPosition({ Vec3{}, Vec3{ LIGHT_POS, LIGHT_POS, LIGHT_POS } });
     UpdateLightColor({ Colors::WHITE, Colors::WHITE });
     UpdateLightStrength({ 1.0f, 1.0f });
   }

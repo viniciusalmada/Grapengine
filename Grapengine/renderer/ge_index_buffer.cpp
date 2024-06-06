@@ -34,7 +34,7 @@ Ptr<IndexBuffer> IndexBuffer::Make(const std::vector<u32>& indices, RendererID p
   return MakeRef<IndexBuffer>(indices, indices.size(), parent);
 }
 
-void IndexBuffer::UpdateData(const std::vector<u32>& indices)
+void IndexBuffer::UpdateData(const std::vector<u32>& indices) const
 {
   GE_PROFILE;
   Bind();

@@ -16,7 +16,7 @@ void SceneHierarchyPanel::OnImGuiRender()
   m_scene_context->EachEntity([&](Entity ent) { DrawEntityNode(ent); });
 
   if (ImGui::IsMouseDown(ImGuiMouseButton_Left) && ImGui::IsWindowHovered())
-    m_selected_entity = {};
+    m_selected_entity = std::nullopt;
 
   ImGui::End();
 
@@ -53,11 +53,11 @@ void SceneHierarchyPanel::DrawEntityNode(Entity ent)
   }
 }
 
-void SceneHierarchyPanel::DrawComponents(Entity ent)
+void SceneHierarchyPanel::DrawComponents(Opt<Entity> ent)
 {
   if (m_scene_context->HasComponent<TagComponent>(ent))
   {
-    auto& tag = m_scene_context->GetComponent<TagComponent>(ent).tag;
+    auto& tag = m_scene_context->GetComponent<TagComponent>(ent.value()).tag;
 
     constexpr auto BUFFER_SIZE = 256;
     std::array<char, BUFFER_SIZE> buffer{ '\0' };
@@ -77,9 +77,9 @@ void SceneHierarchyPanel::DrawComponents(Entity ent)
                           ImGuiTreeNodeFlags_DefaultOpen,
                           "TranslateAndScale"))
     {
-      auto& pos = m_scene_context->GetComponent<TransformComponent>(ent).position_values;
-      auto& scale = m_scene_context->GetComponent<TransformComponent>(ent).scale_values;
-      auto& rotate = m_scene_context->GetComponent<TransformComponent>(ent).rotate_values;
+      auto& pos = m_scene_context->GetComponent<TransformComponent>(ent.value()).position_values;
+      auto& scale = m_scene_context->GetComponent<TransformComponent>(ent.value()).scale_values;
+      auto& rotate = m_scene_context->GetComponent<TransformComponent>(ent.value()).rotate_values;
 
       ImGui::DragFloat3("Position", &pos.x, 0.01f);
       ImGui::DragFloat3("Scale", &scale.x, 0.01f);
@@ -91,7 +91,7 @@ void SceneHierarchyPanel::DrawComponents(Entity ent)
 
   if (m_scene_context->HasComponent<PrimitiveComponent>(ent))
   {
-    auto& cube_color = m_scene_context->GetComponent<PrimitiveComponent>(ent).color;
+      auto& cube_color = m_scene_context->GetComponent<PrimitiveComponent>(ent.value()).color;
 
     static Vec4 imgui_color{};
     imgui_color = cube_color.ToVec4();
@@ -107,7 +107,7 @@ void SceneHierarchyPanel::DrawComponents(Entity ent)
                           ImGuiTreeNodeFlags_DefaultOpen,
                           "CameraComponent"))
     {
-      auto& comp = m_scene_context->GetComponent<CameraComponent>(ent);
+      auto& comp = m_scene_context->GetComponent<CameraComponent>(ent.value());
 
       if (ImGui::Checkbox("Active", &comp.active))
       {

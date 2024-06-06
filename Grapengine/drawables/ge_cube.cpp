@@ -59,7 +59,7 @@ namespace
 }
 
 //-------------------------------------------------------------------------
-Cube::Cube() {}
+Cube::Cube() = default;
 
 VerticesData Cube::GetVerticesData(Color color) const
 {

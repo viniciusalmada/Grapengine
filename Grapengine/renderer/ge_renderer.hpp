@@ -35,7 +35,7 @@ namespace GE
 
       static void End();
 
-      static void PushObject(Ptr<IShaderProgram> shader,
+      static void PushObject(const Ptr<IShaderProgram>& shader,
                              VerticesData&& vd,
                              const std::vector<u32>& indices,
                              const Mat4& modelMat);
@@ -49,7 +49,7 @@ namespace GE
       u64 time_spent = 1;
     };
 
-    static const Statistics& GetStats();
+    static Statistics& GetStats();
   };
 }
 

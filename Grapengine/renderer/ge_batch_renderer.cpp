@@ -6,7 +6,7 @@
 
 using namespace GE;
 
-BatchRenderer::BatchRenderer() : m_drawing_objects(), m_vertices_data({}) {}
+BatchRenderer::BatchRenderer() : m_vertices_data({}) {}
 
 void BatchRenderer::PushObject(Ptr<IShaderProgram> shader,
                                VerticesData&& vd,
@@ -21,7 +21,7 @@ void BatchRenderer::PushObject(Ptr<IShaderProgram> shader,
 
   auto& vertices_pair = m_vertices_data.at(shader);
 
-  Ptr<VerticesData> shader_vertices_data = vertices_pair.first;
+  const Ptr<VerticesData> shader_vertices_data = vertices_pair.first;
   BufferHandler::UpdatePosition(vd, modelMat);
   shader_vertices_data->RawPushData(std::move(vd));
 
@@ -53,12 +53,13 @@ void BatchRenderer::End()
 
     m_drawing_objects.at(shader).SetVerticesData(vertices_pair.first);
     m_drawing_objects.at(shader).SetIndicesData(vertices_pair.second);
-    Draw(m_drawing_objects.at(shader));
+    Draw(shader);
   }
 }
 
-void BatchRenderer::Draw(const DrawingObject& drawingObject)
+void BatchRenderer::Draw(const Ptr<IShaderProgram>& shader) const
 {
-  drawingObject.Bind();
-  glDrawElements(GL_TRIANGLES, drawingObject.IndicesCount(), GL_UNSIGNED_INT, nullptr);
+  const DrawingObject& obj = m_drawing_objects.at(shader);
+  obj.Bind();
+  glDrawElements(GL_TRIANGLES, obj.IndicesCount(), GL_UNSIGNED_INT, nullptr);
 }

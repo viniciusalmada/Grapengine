@@ -13,7 +13,7 @@ CompType TagComponent::Type() const
   return CompType::TAG;
 }
 
-TagComponent::TagComponent(std::string&& t) : tag(t) {}
+TagComponent::TagComponent(std::string&& t) : tag(std::move(t)) {}
 CompType TransformComponent::Type() const
 {
   return CompType::TRANF;
@@ -22,7 +22,10 @@ TransformComponent::TransformComponent(const Vec3& pos, const Vec3& scale, const
     rotate_values(rot), position_values(pos), scale_values(scale)
 {
 }
-PrimitiveComponent::PrimitiveComponent(Ptr<Drawable> dra, Color c) : drawable(dra), color(c) {}
+PrimitiveComponent::PrimitiveComponent(Ptr<Drawable> dra, Color c) :
+    drawable(std::move(dra)), color(c)
+{
+}
 
 CompType PrimitiveComponent::Type() const
 {
@@ -38,7 +41,7 @@ CompType MaterialComponent::Type() const
   return CompType::MATERIAL;
 }
 
-MaterialComponent::MaterialComponent(Ptr<MaterialShader> s) : shader(s) {}
+MaterialComponent::MaterialComponent(Ptr<MaterialShader> s) : shader(std::move(s)) {}
 
 CompType ColorOnlyComponent::Type() const
 {
