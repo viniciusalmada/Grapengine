@@ -1,13 +1,90 @@
 #include "SceneHierarchyPanel.hpp"
 
+#include <imgui_internal.h>
+
 using namespace std::string_literals;
 using namespace GE;
 
+namespace
+{
+  struct C
+  {
+    f32 c;
+    C(u8 u) : c(f32(u) / 255.0f) {}
+  };
+
+  void DrawVec3Control(const std::string& label, Vec3& values, float resetValue = 0.0f)
+  {
+    ImGui::PushID(label.c_str());
+
+    constexpr float columnWidth = 100.0f;
+    ImGui::Columns(2);
+    ImGui::SetColumnWidth(0, columnWidth);
+    ImGui::Text("%s", label.c_str());
+    ImGui::NextColumn();
+
+    ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
+
+    const f32 line_height = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+    ImVec2 button_size{ line_height + 3.0f, line_height };
+
+    {
+      ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ C(0xB2).c, C(0x0F).c, C(0x0F).c, 1.0f });
+      ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 1.0f });
+      ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+      if (ImGui::Button("x", button_size))
+        values.x = resetValue;
+      ImGui::PopStyleColor(3);
+
+      ImGui::SameLine();
+      ImGui::DragFloat("##X", &values.x, 0.1f);
+      ImGui::PopItemWidth();
+      ImGui::SameLine();
+    }
+    {
+      ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.8f, 0.2f, 1.0f });
+      ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.1f, 0.8f, 0.1f, 1.0f });
+      ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.8f, 0.25f, 1.0f });
+      if (ImGui::Button("y", button_size))
+        values.y = resetValue;
+      ImGui::PopStyleColor(3);
+
+      ImGui::SameLine();
+      ImGui::DragFloat("##Y", &values.y, 0.1f);
+      ImGui::PopItemWidth();
+      ImGui::SameLine();
+    }
+    {
+      ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.1f, 0.8f, 1.0f });
+      ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.2f, 0.9f, 1.0f });
+      ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.15f, 0.8f, 1.0f });
+      if (ImGui::Button("z", button_size))
+        values.z = resetValue;
+      ImGui::PopStyleColor(3);
+
+      ImGui::SameLine();
+      ImGui::DragFloat("##Z", &values.z, 0.1f);
+      ImGui::PopItemWidth();
+    }
+    ImGui::PopStyleVar();
+
+    ImGui::Columns(1);
+
+    ImGui::PopID();
+  }
+}
+
+//--------------------------------------------------------------------------------------------------
 SceneHierarchyPanel::SceneHierarchyPanel(const Ptr<Scene>& scene) : m_scene_context(scene) {}
 
 void SceneHierarchyPanel::SetContext(const Ptr<Scene>& scene)
 {
   m_scene_context = scene;
+
+  { // TODO: Remove later
+    m_selected_entity = Entity{ 2 };
+  }
 }
 
 void SceneHierarchyPanel::OnImGuiRender()
@@ -24,7 +101,7 @@ void SceneHierarchyPanel::OnImGuiRender()
   DrawComponents(m_selected_entity);
   ImGui::End();
 
-  ImGui::ShowDemoWindow(nullptr);
+  //  ImGui::ShowDemoWindow(nullptr);
 }
 
 void SceneHierarchyPanel::DrawEntityNode(Entity ent)
@@ -75,15 +152,18 @@ void SceneHierarchyPanel::DrawComponents(Opt<Entity> ent)
   {
     if (ImGui::TreeNodeEx(TypeUtils::ToVoidPtr(typeid(TransformComponent).hash_code()),
                           ImGuiTreeNodeFlags_DefaultOpen,
-                          "TranslateAndScale"))
+                          "Transform"))
     {
       auto& pos = m_scene_context->GetComponent<TransformComponent>(ent.value()).position_values;
       auto& scale = m_scene_context->GetComponent<TransformComponent>(ent.value()).scale_values;
       auto& rotate = m_scene_context->GetComponent<TransformComponent>(ent.value()).rotate_values;
 
-      ImGui::DragFloat3("Position", &pos.x, 0.01f);
-      ImGui::DragFloat3("Scale", &scale.x, 0.01f);
-      ImGui::DragFloat3("Rotate", &rotate.x, 0.1f);
+      DrawVec3Control("Position", pos);
+      DrawVec3Control("Scale", scale, 1.0f);
+      scale.x = scale.x == 0.0f ? 1.0f : scale.x;
+      scale.y = scale.y == 0.0f ? 1.0f : scale.y;
+      scale.z = scale.z == 0.0f ? 1.0f : scale.z;
+      DrawVec3Control("Rotate", rotate);
 
       ImGui::TreePop();
     }
@@ -91,14 +171,20 @@ void SceneHierarchyPanel::DrawComponents(Opt<Entity> ent)
 
   if (m_scene_context->HasComponent<PrimitiveComponent>(ent))
   {
+    if (ImGui::TreeNodeEx(TypeUtils::ToVoidPtr(typeid(TransformComponent).hash_code()),
+                          ImGuiTreeNodeFlags_DefaultOpen,
+                          "Color"))
+    {
       auto& cube_color = m_scene_context->GetComponent<PrimitiveComponent>(ent.value()).color;
 
-    static Vec4 imgui_color{};
-    imgui_color = cube_color.ToVec4();
+      static Vec4 imgui_color{};
+      imgui_color = cube_color.ToVec4();
 
-    ImGui::ColorEdit4("Color", &imgui_color.x0);
+      ImGui::ColorEdit4("Color", &imgui_color.x0);
 
-    cube_color = Color(imgui_color);
+      cube_color = Color(imgui_color);
+      ImGui::TreePop();
+    }
   }
 
   if (m_scene_context->HasComponent<CameraComponent>(ent))
