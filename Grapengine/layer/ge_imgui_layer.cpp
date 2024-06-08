@@ -45,6 +45,7 @@ void ImGuiLayer::OnAttach()
 #endif
 
   ImGuiStyle& style = ImGui::GetStyle();
+  style.IndentSpacing = 2.0f;
   // NOLINTBEGIN(*-magic-numbers)
   if (bool(io.ConfigFlags & ImGuiConfigFlags_DockingEnable))
   {
