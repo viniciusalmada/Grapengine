@@ -82,32 +82,32 @@ void EditorLayer::OnImGuiUpdate(TimeStep ts)
 {
   static ImGuiDockNodeFlags dock_node_flags = ImGuiDockNodeFlags_None;
 
-  ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
   ImGuiViewport* vp = ImGui::GetMainViewport();
   ImGui::SetNextWindowPos(vp->Pos);
   ImGui::SetNextWindowSize(vp->Size);
   ImGui::SetNextWindowViewport(vp->ID);
-  ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0);
-  ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0);
-  window_flags |= ImGuiWindowFlags_NoTitleBar              //
-                  | ImGuiWindowFlags_NoCollapse            //
-                  | ImGuiWindowFlags_NoResize              //
-                  | ImGuiWindowFlags_NoMove                //
-                  | ImGuiWindowFlags_NoBringToFrontOnFocus //
-                  | ImGuiWindowFlags_NoNavFocus;
+  ImGuiWindowFlags window_flags = ImGuiWindowFlags_None                    //
+                                  | ImGuiWindowFlags_MenuBar               //
+                                  | ImGuiWindowFlags_NoDocking             //
+                                  | ImGuiWindowFlags_NoTitleBar            //
+                                  | ImGuiWindowFlags_NoCollapse            //
+                                  | ImGuiWindowFlags_NoResize              //
+                                  | ImGuiWindowFlags_NoMove                //
+                                  | ImGuiWindowFlags_NoBringToFrontOnFocus //
+                                  | ImGuiWindowFlags_NoNavFocus;
 
-  if (dock_node_flags & ImGuiDockNodeFlags_PassthruCentralNode)
-    window_flags |= ImGuiWindowFlags_NoBackground;
+  //  if (dock_node_flags & ImGuiDockNodeFlags_PassthruCentralNode)
+  //    window_flags |= ImGuiWindowFlags_NoBackground;
 
   static auto dockspace_open = true;
+  ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0);
+  ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0);
   ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-  ImGui::Begin("Dockspace demo", &dockspace_open, window_flags);
-  ImGui::PopStyleVar();
-
-  ImGui::PopStyleVar(2);
+  ImGui::Begin("Dockspace", &dockspace_open, window_flags);
+  ImGui::PopStyleVar(3);
 
   ImGuiIO& io = ImGui::GetIO();
-  //  io.IniFilename = nullptr;
+  io.ConfigDockingWithShift = true;
   if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
   {
     ImGuiID dock_id = ImGui::GetID("MyDock");

@@ -8,7 +8,7 @@
 #include <core/ge_time_step.hpp>
 #include <imgui.h>
 
-#define USE_MULTIPLE_VIEWPORTS
+#undef USE_MULTIPLE_VIEWPORTS
 
 using namespace GE;
 
@@ -38,13 +38,15 @@ void ImGuiLayer::OnAttach()
   ImGuiIO& io = ImGui::GetIO();
   io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
   io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+  io.IniFilename = nullptr;
+  ImGui::LoadIniSettingsFromDisk("imgui.ini");
 #ifdef USE_MULTIPLE_VIEWPORTS
   io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 #endif
 
   ImGuiStyle& style = ImGui::GetStyle();
   // NOLINTBEGIN(*-magic-numbers)
-  if (bool(io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable))
+  if (bool(io.ConfigFlags & ImGuiConfigFlags_DockingEnable))
   {
     style.WindowRounding = 0;
     style.Alpha = 1.0f;
@@ -83,7 +85,7 @@ void ImGuiLayer::OnAttach()
   ImGui_ImplGlfw_InitForOpenGL(std::any_cast<GLFWwindow*>(m_window->GetNativeHandler()), true);
   ImGui_ImplOpenGL3_Init();
 }
-#if defined(GE_CLANG_COMPILER) && defined(GE_PLATFORM_LINUX)
+#if defined(GE_CLANG_COMPILER)
   #pragma clang diagnostic pop
 #endif
 

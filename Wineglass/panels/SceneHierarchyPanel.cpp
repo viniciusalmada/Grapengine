@@ -89,7 +89,7 @@ void SceneHierarchyPanel::SetContext(const Ptr<Scene>& scene)
 
 void SceneHierarchyPanel::OnImGuiRender()
 {
-  ImGui::Begin("Scene Hierarchy");
+  ImGui::Begin("Scene Entities");
   m_scene_context->EachEntity([&](Entity ent) { DrawEntityNode(ent); });
 
   if (ImGui::IsMouseDown(ImGuiMouseButton_Left) && ImGui::IsWindowHovered())
@@ -97,7 +97,7 @@ void SceneHierarchyPanel::OnImGuiRender()
 
   ImGui::End();
 
-  ImGui::Begin("Properties");
+  ImGui::Begin("Entity Properties");
   DrawComponents(m_selected_entity);
   ImGui::End();
 
