@@ -39,15 +39,17 @@ bool Vec2::operator!=(const Vec2& rhs) const
 {
   return !(rhs == *this);
 }
-
-std::ostream& GE::operator<<(std::ostream& os, const Vec2& vec)
+namespace GE
 {
+  std::ostream& operator<<(std::ostream& os, const Vec2& vec)
+  {
 #if __cpp_lib_format
-  os << std::format("{:1.2f},{:1.2f}", vec.x, vec.y);
+    os << std::format("{:1.2f},{:1.2f}", vec.x, vec.y);
 #else
-  os << std::setprecision(2) << vec.x << "," << vec.y;
+    os << std::setprecision(2) << vec.x << "," << vec.y;
 #endif
-  return os;
+    return os;
+  }
 }
 
 Vec3 Vec3::operator+(const Vec3& other) const
@@ -118,14 +120,17 @@ f32 Vec3::Length() const
   return std::sqrt(x * x + y * y + z * z);
 }
 
-std::ostream& GE::operator<<(std::ostream& os, const Vec3& vec3)
+namespace GE
 {
+  std::ostream& operator<<(std::ostream& os, const Vec3& vec3)
+  {
 #if __cpp_lib_format
-  os << std::format("{:1.2f},{:1.2f},{:1.2f}", vec3.x, vec3.y, vec3.z);
+    os << std::format("{:1.2f},{:1.2f},{:1.2f}", vec3.x, vec3.y, vec3.z);
 #else
-  os << std::setprecision(2) << vec3.x << "," << vec3.y << "," << vec3.z;
+    os << std::setprecision(2) << vec3.x << "," << vec3.y << "," << vec3.z;
 #endif
-  return os;
+    return os;
+  }
 }
 
 Mat4::Mat4() : Mat4({ { 1, 0, 0, 0 } }, { { 0, 1, 0, 0 } }, { { 0, 0, 1, 0 } }, { { 0, 0, 0, 1 } })
@@ -343,7 +348,7 @@ Mat4 Mat4::Adjoint() const
 
 Mat4& Mat4::operator/(f32 div)
 {
-  GE_ASSERT(div != 0.0f, "Division by zero")
+  GE_ASSERT(!Arithmetic::IsEqual(div, 0.0f), "Division by zero")
 
   data.at(0).at(0) /= div;
   data.at(0).at(1) /= div;
@@ -480,7 +485,7 @@ Mat3 Mat3::Inverse() const
 
 Mat3& Mat3::operator/(f32 div)
 {
-  GE_ASSERT(div != 0.0f, "Division by zero")
+  GE_ASSERT(!Arithmetic::IsEqual(div, 0.0f), "Division by zero")
 
   data.at(0).at(0) /= div;
   data.at(0).at(1) /= div;

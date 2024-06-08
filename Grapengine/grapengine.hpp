@@ -25,6 +25,7 @@
 #include "utils/ge_type_utils.hpp"
 
 // Math
+#include "math/ge_arithmetic.hpp"
 #include "math/ge_transformations.hpp"
 
 // Renderer

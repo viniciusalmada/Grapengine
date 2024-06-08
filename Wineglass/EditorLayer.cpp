@@ -140,11 +140,11 @@ void EditorLayer::OnImGuiUpdate(TimeStep ts)
       s_timer_checker = 0;
     }
     ImGui::Text("Renderer stats:");
-    ImGui::Text("Draw calls: %05llu", stats.draw_calls);
-    ImGui::Text("Vertices count: %llu", stats.vertices_count);
-    ImGui::Text("Indices count: %llu", stats.indices_count);
-    ImGui::Text("Time spent to batch: %llums", stats.time_spent);
-    ImGui::Text("Batches per second: %llu", 1'000 / stats.time_spent);
+    ImGui::Text("Draw calls: %05" PRIu64, stats.draw_calls);
+    ImGui::Text("Vertices count: %" PRIu64, stats.vertices_count);
+    ImGui::Text("Indices count: %" PRIu64, stats.indices_count);
+    ImGui::Text("Time spent to batch: %" PRIu64 "ms", stats.time_spent);
+    ImGui::Text("Batches per second: %" PRIu64, 1'000 / stats.time_spent);
     ImGui::Text("FPS %.2f", fps);
     s_timer_checker += ts.u();
   }
