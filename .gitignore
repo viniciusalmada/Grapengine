@@ -1,6 +1,5 @@
 build*/
 cmake-build-*/
-*.ini
 .idea/
 .vscode/
 .cache/
