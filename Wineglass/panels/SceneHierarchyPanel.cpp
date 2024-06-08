@@ -133,8 +133,6 @@ void SceneHierarchyPanel::OnImGuiRender()
   ImGui::Begin("Entity Properties");
   DrawComponents(m_selected_entity);
   ImGui::End();
-
-  //  ImGui::ShowDemoWindow(nullptr);
 }
 
 void SceneHierarchyPanel::DrawEntityNode(Entity ent)

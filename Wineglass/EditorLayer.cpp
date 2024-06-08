@@ -114,12 +114,16 @@ void EditorLayer::OnImGuiUpdate(TimeStep ts)
     ImGui::DockSpace(dock_id, ImVec2{ 0, 0 }, dock_node_flags);
   }
 
+  static bool show_demo = false;
   if (ImGui::BeginMenuBar())
   {
     if (ImGui::BeginMenu("File"))
     {
       if (ImGui::MenuItem("Exit"))
         Ctrl::App::Close();
+      if (ImGui::MenuItem("Show demo", nullptr, &show_demo))
+      {
+      }
       ImGui::EndMenu();
     }
     ImGui::EndMenuBar();
@@ -166,6 +170,9 @@ void EditorLayer::OnImGuiUpdate(TimeStep ts)
   ImGui::PopStyleVar();
 
   ImGui::End();
+
+  if (show_demo)
+    ImGui::ShowDemoWindow(nullptr);
 }
 
 void EditorLayer::OnEvent(Event& e)
