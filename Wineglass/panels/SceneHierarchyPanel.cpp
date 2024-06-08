@@ -47,7 +47,7 @@ namespace
   {
     ImGui::PushID(label.c_str());
 
-    constexpr float columnWidth = 100.0f;
+    constexpr float columnWidth = 65.0f;
     ImGui::Columns(2);
     ImGui::SetColumnWidth(0, columnWidth);
     ImGui::Text("%s", label.c_str());
@@ -57,8 +57,8 @@ namespace
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
 
     const f32 line_height = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
-    constexpr auto HEIGHT_GAP = 3.0f;
-    ImVec2 button_size{ line_height + HEIGHT_GAP, line_height };
+    constexpr auto HEIGHT_GAP = 1.0f;
+    const ImVec2 button_size{ line_height + HEIGHT_GAP, line_height };
 
     constexpr auto SPEED = 0.1f;
 
@@ -71,7 +71,7 @@ namespace
       ImGui::PopStyleColor(3);
 
       ImGui::SameLine();
-      ImGui::DragFloat("##X", &values.x, SPEED);
+      ImGui::DragFloat("##X", &values.x, SPEED, 0, 0, "%2.2f");
       ImGui::PopItemWidth();
       ImGui::SameLine();
     }
@@ -84,7 +84,7 @@ namespace
       ImGui::PopStyleColor(3);
 
       ImGui::SameLine();
-      ImGui::DragFloat("##Y", &values.y, SPEED);
+      ImGui::DragFloat("##Y", &values.y, SPEED, 0, 0, "%2.2f");
       ImGui::PopItemWidth();
       ImGui::SameLine();
     }
@@ -97,7 +97,7 @@ namespace
       ImGui::PopStyleColor(3);
 
       ImGui::SameLine();
-      ImGui::DragFloat("##Z", &values.z, SPEED);
+      ImGui::DragFloat("##Z", &values.z, SPEED, 0, 0, "%2.2f");
       ImGui::PopItemWidth();
     }
     ImGui::PopStyleVar();
@@ -253,7 +253,7 @@ void SceneHierarchyPanel::DrawCamera(Opt<Entity>& ent) const
 }
 void SceneHierarchyPanel::DrawPrimitive(Opt<Entity>& ent) const
 {
-  if (ImGui::TreeNodeEx(TypeUtils::ToVoidPtr(typeid(TransformComponent).hash_code()),
+  if (ImGui::TreeNodeEx(TypeUtils::ToVoidPtr(typeid(PrimitiveComponent).hash_code()),
                         ImGuiTreeNodeFlags_DefaultOpen,
                         "Color"))
   {
