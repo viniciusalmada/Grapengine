@@ -9,9 +9,11 @@ if (NOT DEFINED ${CMAKE_TOOLCHAIN_FILE})
     message(FATAL_ERROR "GRAPENGINE: Unsupported platform")
   endif ()
 
+  set(VCPKG_INSTALL_OPTIONS "--no-print-usage")
+
   message(STATUS "GRAPENGINE: Defining vcpkg as toolchain file")
   set(CMAKE_TOOLCHAIN_FILE ${CMAKE_SOURCE_DIR}/vendor/vcpkg/scripts/buildsystems/vcpkg.cmake)
-  message(STATUS ${CMAKE_TOOLCHAIN_FILE})
+  message(STATUS "GRAPENGINE: CMAKE_TOOLCHAIN_FILE = ${CMAKE_TOOLCHAIN_FILE}")
 endif ()
 
 project(Grapengine CXX)

@@ -85,6 +85,11 @@
         "h_debug",
         "h_toolchain-clang"
       ],
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "CLANG-CL"
+        }
+      },
       "cacheVariables": {
         "CMAKE_CXX_COMPILER": "clang-cl"
       }
@@ -97,6 +102,11 @@
         "h_release",
         "h_toolchain-clang"
       ],
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "CLANG-CL"
+        }
+      },
       "cacheVariables": {
         "CMAKE_CXX_COMPILER": "clang-cl"
       }

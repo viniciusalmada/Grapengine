@@ -8,7 +8,7 @@
 
 using namespace GE;
 
-IndexBuffer::IndexBuffer(const std::vector<u32>& indices, u32 count, RendererID parent) :
+IndexBuffer::IndexBuffer(const std::vector<u32>& indices, u64 count, RendererID parent) :
     m_id(0), m_parent(parent)
 {
   GE_PROFILE;

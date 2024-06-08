@@ -35,8 +35,9 @@ file(GLOB_RECURSE GRAPES_HEADERS
 add_library(Grapengine STATIC ${GRAPES_HEADERS} ${GRAPES_SOURCES})
 
 if (DEFINED USE_TRACY_PROFILER)
+  message(STATUS "GRAPENGINE: Enabling tracy profiler")
   target_compile_definitions(Grapengine PUBLIC USE_TRACY_PROFILER TRACY_ENABLE TRACY_NO_SYSTEM_TRACING)
-  target_include_directories(Grapengine SYSTEM PUBLIC  ${CMAKE_SOURCE_DIR}/vendor/tracy)
+  target_include_directories(Grapengine SYSTEM PUBLIC ${CMAKE_SOURCE_DIR}/vendor/tracy)
 endif ()
 
 target_precompile_headers(Grapengine PRIVATE ${CMAKE_SOURCE_DIR}/Grapengine/grapengine_pch.hpp)

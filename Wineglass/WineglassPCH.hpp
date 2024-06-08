@@ -2,6 +2,7 @@
 #define GRAPENGINE_WINEGLASSPCH_HPP
 
 #include <any>
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>

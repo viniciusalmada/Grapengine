@@ -61,6 +61,7 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL Clang)
       -Wno-exit-time-destructors
       -Wno-padded
       -Wno-header-hygiene
+      -Wno-switch-default
     )
   else ()
     message(FATAL_ERROR "Unsupported CLANG frontend (CMAKE_CXX_COMPILER_FRONTEND_VARIANT = ${CMAKE_CXX_COMPILER_FRONTEND_VARIANT})")

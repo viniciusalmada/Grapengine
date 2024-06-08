@@ -10,7 +10,7 @@ namespace GE
   public:
     static Ptr<IndexBuffer> Make(const std::vector<u32>& indices, RendererID parent);
 
-    IndexBuffer(const std::vector<u32>& indices, u32 count, RendererID parent);
+    IndexBuffer(const std::vector<u32>& indices, u64 count, RendererID parent);
 
     void Bind() const;
 
