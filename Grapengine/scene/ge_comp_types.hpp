@@ -11,8 +11,6 @@ namespace GE
     TAG,
     TRANF,
     PRIMITIVE,
-    MATERIAL,
-    COLOR_ONLY,
     CAMERA,
     NATIVE_SCRIPT,
   };

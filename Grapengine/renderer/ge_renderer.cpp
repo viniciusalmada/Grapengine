@@ -24,7 +24,7 @@ namespace
   {
     static u64 timing = 0;
     return timing;
-  };
+  }
 }
 
 void OpenGLDebuggerFunc(GLenum source,
@@ -113,13 +113,13 @@ Renderer::Statistics& Renderer::GetStats()
   return s_stats;
 }
 
-void Renderer::Batch::Begin()
+void Renderer::Batch::Begin(const Mat4& cameraMatrix)
 {
   GE_PROFILE;
   GetStats().vertices_count = 0;
   GetStats().indices_count = 0;
   GetTiming() = Platform::GetCurrentTimeMS();
-  GetBatchRenderer().Begin();
+  GetBatchRenderer().Begin(cameraMatrix);
 }
 
 void Renderer::Batch::End()
@@ -130,13 +130,12 @@ void Renderer::Batch::End()
   GetStats().time_spent = (Platform::GetCurrentTimeMS() - GetTiming()) + 1;
 }
 
-void Renderer::Batch::PushObject(const Ptr<IShaderProgram>& shader,
-                                 VerticesData&& vd,
+void Renderer::Batch::PushObject(VerticesData&& vd,
                                  const std::vector<u32>& indices,
                                  const Mat4& modelMat)
 {
   GE_PROFILE;
   GetStats().vertices_count += vd.GetCount();
   GetStats().indices_count += indices.size();
-  GetBatchRenderer().PushObject(shader, std::move(vd), indices, modelMat);
+  GetBatchRenderer().PushObject(std::move(vd), indices, modelMat);
 }

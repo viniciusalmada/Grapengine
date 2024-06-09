@@ -1,31 +1,27 @@
 #include "ge_batch_renderer.hpp"
 
 #include "ge_buffer_handler.hpp"
+#include "renderer/shader_programs/ge_material_shader.hpp"
 
 #include <glad/glad.h>
 
 using namespace GE;
 
-BatchRenderer::BatchRenderer() : m_vertices_data({}) {}
+BatchRenderer::BatchRenderer() :
+    m_shader(MaterialShader::Make()),
+    m_vertices_data(std::make_pair(VerticesData::Make(), std::vector<u32>{}))
+{
+}
 
-void BatchRenderer::PushObject(Ptr<IShaderProgram> shader,
-                               VerticesData&& vd,
+void BatchRenderer::PushObject(VerticesData&& vd,
                                const std::vector<u32>& indices,
                                const Mat4& modelMat)
 {
-  if (!m_vertices_data.contains(shader))
-  {
-    m_vertices_data.emplace(shader, std::make_pair(VerticesData::Make(), std::vector<u32>{}));
-    m_drawing_objects.emplace(shader, DrawingObject{});
-  }
-
-  auto& vertices_pair = m_vertices_data.at(shader);
-
-  const Ptr<VerticesData> shader_vertices_data = vertices_pair.first;
+  const Ptr<VerticesData> shader_vertices_data = m_vertices_data.first;
   BufferHandler::UpdatePosition(vd, modelMat);
   shader_vertices_data->RawPushData(std::move(vd));
 
-  std::vector<u32>& indices_data = vertices_pair.second;
+  std::vector<u32>& indices_data = m_vertices_data.second;
   if (indices_data.empty())
   {
     indices_data.insert(indices_data.end(), indices.begin(), indices.end());
@@ -36,30 +32,26 @@ void BatchRenderer::PushObject(Ptr<IShaderProgram> shader,
   std::ranges::for_each(indices, [&](u32 i) { indices_data.push_back(i + current_max_id + 1); });
 }
 
-void BatchRenderer::Begin()
+void BatchRenderer::Begin(const Mat4& cameraMatrix)
 {
-  for (auto& [shader, vertices_pair] : m_vertices_data)
-  {
-    vertices_pair.first->Clear();
-    vertices_pair.second.clear();
-  }
+  m_vertices_data.first->Clear();
+  m_vertices_data.second.clear();
+  m_shader->Activate();
+  m_shader->UpdateViewProjectionMatrix(cameraMatrix);
 }
 
 void BatchRenderer::End()
 {
-  for (auto& [shader, vertices_pair] : m_vertices_data)
-  {
-    shader->Activate();
+  m_shader->Activate();
 
-    m_drawing_objects.at(shader).SetVerticesData(vertices_pair.first);
-    m_drawing_objects.at(shader).SetIndicesData(vertices_pair.second);
-    Draw(shader);
-  }
+  m_drawing_object.SetVerticesData(m_vertices_data.first);
+  m_drawing_object.SetIndicesData(m_vertices_data.second);
+
+  Draw();
 }
 
-void BatchRenderer::Draw(const Ptr<IShaderProgram>& shader) const
+void BatchRenderer::Draw() const
 {
-  const DrawingObject& obj = m_drawing_objects.at(shader);
-  obj.Bind();
-  glDrawElements(GL_TRIANGLES, obj.IndicesCount(), GL_UNSIGNED_INT, nullptr);
+  m_drawing_object.Bind();
+  glDrawElements(GL_TRIANGLES, m_drawing_object.IndicesCount(), GL_UNSIGNED_INT, nullptr);
 }

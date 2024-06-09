@@ -31,10 +31,6 @@ void EditorLayer::OnAttach()
   constexpr auto CUBE_COUNT = 1'00;
   constexpr auto LIM = 20.0f;
 
-  //  auto simple_shader = MakeRef<PosAndTex2DShader>();
-  auto material_shader = MakeRef<MaterialShader>();
-
-  //  bool use_solid_color = true;
   for (u32 i = 0; i < CUBE_COUNT; i++)
   {
     std::string name{ "Cube " + std::to_string(i) };
@@ -44,11 +40,6 @@ void EditorLayer::OnAttach()
                                               Vec3{ Random::GenFloat(-LIM, LIM),
                                                     Random::GenFloat(-LIM, LIM),
                                                     Random::GenFloat(-LIM, LIM) });
-    //    if (use_solid_color)
-    //      m_scene->AddComponent<ColorOnlyComponent>(cube_ent, simple_shader);
-    //    else
-    m_scene->AddComponent<MaterialComponent>(cube_ent, material_shader);
-    //    use_solid_color = !use_solid_color;
   }
 
   m_scene->AddComponent<NativeScriptComponent>(m_front_camera_entity).Bind<CamController>();

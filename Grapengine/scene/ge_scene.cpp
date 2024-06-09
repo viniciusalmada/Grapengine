@@ -57,39 +57,13 @@ void Scene::UpdateDrawableEntities(TimeStep& /*ts*/)
 
   const CameraComponent& cam_component = m_registry.GetComponent<CameraComponent>(active_camera);
 
-  const std::vector<Entity> gcolor =
-    m_registry.Group({ CompType::TRANF, CompType::PRIMITIVE, CompType::COLOR_ONLY });
-
-  const std::vector<Entity> gmat =
-    m_registry.Group({ CompType::TRANF, CompType::PRIMITIVE, CompType::MATERIAL });
+  const std::vector<Entity> gmat = m_registry.Group({ CompType::TRANF, CompType::PRIMITIVE });
 
   {
     GE_PROFILE_SECTION("Batch renderer");
-    Renderer::Batch::Begin();
-    for (auto ent : gcolor)
-    {
-      const ColorOnlyComponent& shader = m_registry.GetComponent<ColorOnlyComponent>(ent);
-      shader.shader->Activate();
-      shader.shader->UpdateViewProjectionMatrix(cam_component.camera.GetViewProjection());
-
-      const TransformComponent& transl_scale_comp =
-        m_registry.GetComponent<TransformComponent>(ent);
-
-      const PrimitiveComponent& primitive = m_registry.GetComponent<PrimitiveComponent>(ent);
-      auto vertices = primitive.drawable->GetVerticesData(primitive.color);
-      auto indices = primitive.drawable->GetIndicesData();
-
-      Renderer::Batch::PushObject(shader.shader,
-                                  std::move(vertices),
-                                  indices,
-                                  transl_scale_comp.GetModelMat());
-    }
+    Renderer::Batch::Begin(cam_component.camera.GetViewProjection());
     for (auto ent : gmat)
     {
-      const MaterialComponent& shader = m_registry.GetComponent<MaterialComponent>(ent);
-      shader.shader->Activate();
-      shader.shader->UpdateViewProjectionMatrix(cam_component.camera.GetViewProjection());
-
       const TransformComponent& transl_scale_comp =
         m_registry.GetComponent<TransformComponent>(ent);
 
@@ -97,10 +71,7 @@ void Scene::UpdateDrawableEntities(TimeStep& /*ts*/)
       auto vertices = primitive.drawable->GetVerticesData(primitive.color);
       auto indices = primitive.drawable->GetIndicesData();
 
-      Renderer::Batch::PushObject(shader.shader,
-                                  std::move(vertices),
-                                  indices,
-                                  transl_scale_comp.GetModelMat());
+      Renderer::Batch::PushObject(std::move(vertices), indices, transl_scale_comp.GetModelMat());
     }
     Renderer::Batch::End();
   }
@@ -200,7 +171,7 @@ void Scene::UpdateActiveCamera(Opt<Entity> activeCamera)
   m_active_camera = activeCamera;
 }
 
-void Scene::DestroyEntity(Entity ent)
+void Scene::DestroyEntity(Opt<Entity> ent)
 {
   GE_PROFILE;
   m_registry.Destroy(ent);

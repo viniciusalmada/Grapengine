@@ -31,14 +31,12 @@ namespace GE
     class Batch
     {
     public:
-      static void Begin();
+      static void Begin(const Mat4& cameraMatrix);
 
       static void End();
 
-      static void PushObject(const Ptr<IShaderProgram>& shader,
-                             VerticesData&& vd,
-                             const std::vector<u32>& indices,
-                             const Mat4& modelMat);
+      static void
+      PushObject(VerticesData&& vd, const std::vector<u32>& indices, const Mat4& modelMat);
     };
 
     struct Statistics

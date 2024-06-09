@@ -36,22 +36,7 @@ PrimitiveComponent::PrimitiveComponent(const PrimitiveComponent& other) :
     PrimitiveComponent(other.drawable, other.color)
 {
 }
-CompType MaterialComponent::Type() const
-{
-  return CompType::MATERIAL;
-}
 
-MaterialComponent::MaterialComponent(Ptr<MaterialShader> s) : shader(std::move(s)) {}
-
-CompType ColorOnlyComponent::Type() const
-{
-  return CompType::COLOR_ONLY;
-}
-ColorOnlyComponent::ColorOnlyComponent(Ptr<PosAndTex2DShader> s) : shader(std::move(s)) {}
-ColorOnlyComponent::ColorOnlyComponent(const ColorOnlyComponent& other) :
-    ColorOnlyComponent(other.shader)
-{
-}
 CompType CameraComponent::Type() const
 {
   return CompType::CAMERA;

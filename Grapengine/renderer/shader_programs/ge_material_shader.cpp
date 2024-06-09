@@ -44,7 +44,7 @@ void MaterialShader::Deactivate()
   m_shader->Unbind();
 }
 
-void MaterialShader::UpdateViewProjectionMatrix(Mat4 viewProj)
+void MaterialShader::UpdateViewProjectionMatrix(const Mat4& viewProj)
 {
   Activate();
   m_shader->UploadMat4F("u_VP", viewProj);
@@ -83,4 +83,9 @@ void GE::MaterialShader::UpdateLightColor(std::vector<Color> color)
 void GE::MaterialShader::UpdateLightStrength(const std::vector<f32>& strength)
 {
   m_shader->UploadFloatArray("u_lightStrength", strength);
+}
+
+Ptr<MaterialShader> MaterialShader::Make()
+{
+  return MakeRef<MaterialShader>();
 }

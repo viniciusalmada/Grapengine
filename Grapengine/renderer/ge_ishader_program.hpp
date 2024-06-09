@@ -21,7 +21,7 @@ namespace GE
     virtual void Activate() = 0;
     virtual void Deactivate() = 0;
 
-    virtual void UpdateViewProjectionMatrix(Mat4 viewProj) = 0;
+    virtual void UpdateViewProjectionMatrix(const Mat4& viewProj) = 0;
     virtual void UpdateTexture(int id) = 0;
   };
 }

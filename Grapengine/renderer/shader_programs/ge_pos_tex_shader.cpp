@@ -25,14 +25,14 @@ void PosAndTex2DShader::Deactivate()
   m_shader->Unbind();
 }
 
-void PosAndTex2DShader::UpdateViewProjectionMatrix(Mat4 viewProj)
-{
-  Activate();
-  m_shader->UploadMat4F("u_VP", viewProj);
-}
-
 void PosAndTex2DShader::UpdateTexture(int id)
 {
   Activate();
   m_shader->UploadInt("u_texture", id);
+}
+
+void PosAndTex2DShader::UpdateViewProjectionMatrix(const Mat4& viewProj)
+{
+  Activate();
+  m_shader->UploadMat4F("u_VP", viewProj);
 }

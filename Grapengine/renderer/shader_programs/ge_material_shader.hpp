@@ -11,13 +11,15 @@ namespace GE
   class MaterialShader final : public IShaderProgram
   {
   public:
+    static Ptr<MaterialShader> Make();
+
     MaterialShader();
     ~MaterialShader() override;
 
     void Activate() override;
     void Deactivate() override;
 
-    void UpdateViewProjectionMatrix(Mat4 viewProj) override;
+    void UpdateViewProjectionMatrix(const Mat4& viewProj) override;
     void UpdateTexture(int id) override;
 
     void UpdateAmbientColor(Color color);

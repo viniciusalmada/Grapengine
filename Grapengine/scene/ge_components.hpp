@@ -60,21 +60,6 @@ namespace GE
     CompType Type() const override;
   };
 
-  struct MaterialComponent : public BaseComponent
-  {
-    Ptr<MaterialShader> shader;
-    MaterialComponent(Ptr<MaterialShader> shader);
-    [[nodiscard]] CompType Type() const final;
-  };
-
-  struct ColorOnlyComponent : public BaseComponent
-  {
-    Ptr<PosAndTex2DShader> shader;
-    [[nodiscard]] CompType Type() const final;
-    ColorOnlyComponent(Ptr<PosAndTex2DShader> s);
-    ColorOnlyComponent(const ColorOnlyComponent&);
-  };
-
   struct CameraComponent : public BaseComponent
   {
     SceneCamera camera;

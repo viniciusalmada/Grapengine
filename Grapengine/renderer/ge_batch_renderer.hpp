@@ -12,21 +12,18 @@ namespace GE
   public:
     explicit BatchRenderer();
 
-    void Begin();
+    void Begin(const Mat4& cameraMatrix);
 
     void End();
 
-    void PushObject(Ptr<IShaderProgram> shader,
-                    VerticesData&& vd,
-                    const std::vector<u32>& indices,
-                    const Mat4& modelMat);
+    void PushObject(VerticesData&& vd, const std::vector<u32>& indices, const Mat4& modelMat);
 
   private:
-    void Draw(const Ptr<IShaderProgram>& shader) const;
+    void Draw() const;
 
-    //    std::set<Ptr<IShaderProgram>> m_shaders;
-    std::map<Ptr<IShaderProgram>, DrawingObject> m_drawing_objects;
-    std::map<Ptr<IShaderProgram>, std::pair<Ptr<VerticesData>, std::vector<u32>>> m_vertices_data;
+    Ptr<IShaderProgram> m_shader;
+    DrawingObject m_drawing_object;
+    std::pair<Ptr<VerticesData>, std::vector<u32>> m_vertices_data;
   };
 } // GE
 

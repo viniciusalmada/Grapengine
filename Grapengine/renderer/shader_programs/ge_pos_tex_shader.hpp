@@ -16,7 +16,7 @@ namespace GE
     void Activate() override;
     void Deactivate() override;
 
-    void UpdateViewProjectionMatrix(Mat4 viewProj) override;
+    void UpdateViewProjectionMatrix(const Mat4& viewProj) override;
     void UpdateTexture(int id) override;
 
   private:
