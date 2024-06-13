@@ -2,8 +2,9 @@
 
 A 3D Graphics Engine made with C++20 and OpenGL core profile.
 
-![img.png](readme.png)
+![readme.png](readme.png)
 
+![readme2.png](readme2.png)
 ### Configure
 
 This project use `CMake`, `VCPKG` as package manager and a `CMakePresets.json` file.
