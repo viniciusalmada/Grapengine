@@ -11,8 +11,8 @@ namespace GE
   public:
     virtual ~Drawable();
 
-    virtual VerticesData GetVerticesData(Color color) const = 0;
-    virtual const std::vector<u32>& GetIndicesData() const = 0;
+    [[nodiscard]] virtual VerticesData GetVerticesData(Color color) const = 0;
+    [[nodiscard]] virtual const std::vector<u32>& GetIndicesData() const = 0;
   };
 }
 

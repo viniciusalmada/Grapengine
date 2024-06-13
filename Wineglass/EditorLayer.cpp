@@ -42,6 +42,14 @@ void EditorLayer::OnAttach()
                                                     Random::GenFloat(-LIM, LIM) });
   }
 
+  {
+    auto mesh_ent = m_scene->CreateEntity("Mesh");
+    m_scene->AddComponent<PrimitiveComponent>(mesh_ent,
+                                              MakeRef<Mesh>("assets/objs/teapot.obj"),
+                                              Colors::WHITE);
+    m_scene->AddComponent<TransformComponent>(mesh_ent);
+  }
+
   m_scene->AddComponent<NativeScriptComponent>(m_front_camera_entity).Bind<CamController>();
 
   m_scene_panel.SetContext(m_scene);

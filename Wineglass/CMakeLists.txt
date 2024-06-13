@@ -20,6 +20,8 @@ target_link_libraries(Wine PRIVATE Grapengine)
 target_link_libraries(Wine PRIVATE NativeScripts)
 target_link_libraries(Wine PRIVATE GrapengineCompileOptions)
 
+target_link_libraries(Wine PRIVATE -ltbb)
+
 add_custom_command(
   TARGET Wine POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E echo "Making assets directory"

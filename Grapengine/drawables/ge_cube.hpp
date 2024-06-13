@@ -17,12 +17,15 @@ namespace GE
     static Ptr<Cube> Make();
 
     Cube();
+    ~Cube() override;
 
     [[nodiscard]] VerticesData GetVerticesData(Color color) const override;
     [[nodiscard]] const std::vector<u32>& GetIndicesData() const override;
 
   private:
     Ptr<Texture2D> m_texture;
+    mutable Color m_color;
+    mutable VerticesData m_vertices;
   };
 }
 

@@ -1,6 +1,7 @@
 #include "drawables/ge_cube.hpp"
 
 #include "math/ge_transformations.hpp"
+#include "profiling/ge_profiler.hpp"
 #include "renderer/ge_vertices_data.hpp"
 
 using namespace GE;
@@ -25,7 +26,7 @@ namespace
     return indices;
   }
 
-  VerticesData GetCubeVerticesPositions(Color color)
+  VerticesData GetCubeVerticesPositions(const Color& color)
   {
     VerticesData position{};
     // clang-format off
@@ -59,12 +60,19 @@ namespace
 }
 
 //-------------------------------------------------------------------------
-Cube::Cube() = default;
+Cube::Cube() : m_color(Colors::WHITE), m_vertices(GetCubeVerticesPositions(m_color)) {}
+
+Cube::~Cube() = default;
 
 VerticesData Cube::GetVerticesData(Color color) const
 {
-  VerticesData vd = GetCubeVerticesPositions(color);
-  return vd;
+  GE_PROFILE;
+  if (color == m_color)
+    return m_vertices;
+
+  m_color = color;
+  m_vertices = GetCubeVerticesPositions(color);
+  return m_vertices;
 }
 
 const std::vector<u32>& Cube::GetIndicesData() const

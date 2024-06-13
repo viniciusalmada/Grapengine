@@ -10,6 +10,7 @@
 #include <cstddef>
 #include <ctime>
 #include <exception>
+#include <execution>
 #include <filesystem>
 #if __has_include(<format>)
   #include <format>

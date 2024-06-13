@@ -56,6 +56,9 @@ namespace GE
         f32(B) / f32(MAX_U8),
       };
     }
+
+    bool operator==(const Color& rhs) const;
+    bool operator!=(const Color& rhs) const;
   };
 
   namespace Colors
