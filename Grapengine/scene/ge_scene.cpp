@@ -47,13 +47,14 @@ void Scene::OnUpdate(TimeStep ts)
       std::vector<std::tuple<Vec3, Color, f32>> props;
       props.reserve(light_spots.size());
 
-      std::ranges::transform(light_spots,
-                             std::back_inserter(props),
-                             [&](Entity l)
-                             {
-                               const auto& lp = m_registry.GetComponent<LightSpotComponent>(l);
-                               return std::make_tuple(lp.position, lp.color, lp.strenght);
-                             });
+      std::ranges::transform(
+        light_spots,
+        std::back_inserter(props),
+        [&](Entity l)
+        {
+          const auto& lp = m_registry.GetComponent<LightSpotComponent>(l);
+          return std::make_tuple(lp.position, lp.color, lp.active ? lp.strenght : 0.0f);
+        });
       Renderer::SetLightSpots(props);
     }
   }
@@ -230,6 +231,8 @@ void Scene::UpdateLightSpots(TimeStep& /*ts*/)
   for (auto ent : light_spots)
   {
     const auto& lp = m_registry.GetComponent<LightSpotComponent>(ent);
+    if (!lp.active)
+      continue;
     Mat4 translate = Transform::Translate(lp.position) * Transform::Scale(0.1f, 0.1f, 0.1f);
     auto vertices = lp.drawable->GetVerticesData(lp.color);
     auto indices = lp.drawable->GetIndicesData();

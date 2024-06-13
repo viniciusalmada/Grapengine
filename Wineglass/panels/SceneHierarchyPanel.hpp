@@ -22,6 +22,8 @@ namespace GE
     void DrawTransform(Entity ent) const;
     void DrawPrimitive(Entity ent) const;
     void DrawCamera(Entity ent) const;
+    void DrawAmbientLight(Entity ent) const;
+    void DrawLights(Entity ent) const;
 
     Ptr<Scene> m_scene_context;
     Opt<Entity> m_selected_entity;

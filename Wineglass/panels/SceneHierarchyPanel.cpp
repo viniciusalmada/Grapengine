@@ -242,6 +242,12 @@ void SceneHierarchyPanel::DrawComponents(Entity ent)
 
   if (m_scene_context->HasComponent<CameraComponent>(ent))
     DrawCamera(ent);
+
+  if (m_scene_context->HasComponent<AmbientLightComponent>(ent))
+    DrawAmbientLight(ent);
+
+  if (m_scene_context->HasComponent<LightSpotComponent>(ent))
+    DrawLights(ent);
 }
 void SceneHierarchyPanel::DrawCamera(Entity ent) const
 {
@@ -340,10 +346,6 @@ void SceneHierarchyPanel::DrawCamera(Entity ent) const
 }
 void SceneHierarchyPanel::DrawPrimitive(Entity ent) const
 {
-  const bool open = ImGui::TreeNodeEx(TypeUtils::ToVoidPtr(typeid(PrimitiveComponent).hash_code()),
-                                      TREE_NODE_FLAGS,
-                                      "Color");
-
   ImGui::SameLine(ImGui::GetWindowWidth() - 25.0f);
   constexpr auto SETTINGS_ID = "SETTINGS_ID";
   if (ImGui::Button("+", { 20, 20 }))
@@ -361,6 +363,9 @@ void SceneHierarchyPanel::DrawPrimitive(Entity ent) const
     ImGui::EndPopup();
   }
 
+  const bool open = ImGui::TreeNodeEx(TypeUtils::ToVoidPtr(typeid(PrimitiveComponent).hash_code()),
+                                      TREE_NODE_FLAGS,
+                                      "Color");
   if (open)
   {
     auto& cube_color = m_scene_context->GetComponent<PrimitiveComponent>(ent).color;
@@ -409,5 +414,50 @@ void SceneHierarchyPanel::DrawTag(Entity ent) const
   if (ImGui::InputText("Tag", buffer.data(), sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue))
   {
     tag = std::string(buffer.data());
+  }
+}
+
+void SceneHierarchyPanel::DrawAmbientLight(Entity ent) const
+{
+  const bool open =
+    ImGui::TreeNodeEx(TypeUtils::ToVoidPtr(typeid(AmbientLightComponent).hash_code()),
+                      TREE_NODE_FLAGS,
+                      "Ambient Light");
+  if (open)
+  {
+    auto& amb_lig = m_scene_context->GetComponent<AmbientLightComponent>(ent);
+
+    static Vec4 imgui_color{};
+    imgui_color = amb_lig.color.ToVec4();
+    ImGui::ColorEdit4("Color", &imgui_color.x0);
+    amb_lig.color = Color(imgui_color);
+
+    ImGui::DragFloat("Strenght", &amb_lig.strenght, 0.01f, 0.0f, 1.0f);
+
+    ImGui::TreePop();
+  }
+}
+
+void SceneHierarchyPanel::DrawLights(Entity ent) const
+{
+  const bool open = ImGui::TreeNodeEx(TypeUtils::ToVoidPtr(typeid(LightSpotComponent).hash_code()),
+                                      TREE_NODE_FLAGS,
+                                      "LightSpot");
+  if (open)
+  {
+    auto& ls = m_scene_context->GetComponent<LightSpotComponent>(ent);
+
+    static Vec4 imgui_color{};
+    imgui_color = ls.color.ToVec4();
+    ImGui::ColorEdit4("Color", &imgui_color.x0);
+    ls.color = Color(imgui_color);
+
+    DrawVec3Control("Position", ls.position, 0.0f);
+
+    ImGui::DragFloat("Strenght", &ls.strenght, 0.1f, 0.0f, 10.0f);
+
+    ImGui::Checkbox("Active", &ls.active);
+
+    ImGui::TreePop();
   }
 }
