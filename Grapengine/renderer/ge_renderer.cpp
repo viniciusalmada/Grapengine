@@ -126,7 +126,6 @@ void Renderer::Batch::End()
 {
   GE_PROFILE;
   GetBatchRenderer().End();
-  GetStats().draw_calls++;
   GetStats().time_spent = (Platform::GetCurrentTimeMS() - GetTiming()) + 1;
 }
 

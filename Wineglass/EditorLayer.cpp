@@ -135,7 +135,7 @@ void EditorLayer::OnImGuiUpdate(TimeStep ts)
       s_timer_checker = 0;
     }
     ImGui::Text("Renderer stats:");
-    ImGui::Text("Draw calls: %05" PRIu64, stats.draw_calls);
+    //    ImGui::Text("Draw calls: %05" PRIu64, stats.draw_calls);
     ImGui::Text("Vertices count: %" PRIu64, stats.vertices_count);
     ImGui::Text("Indices count: %" PRIu64, stats.indices_count);
     ImGui::Text("Time spent to batch: %" PRIu64 "ms", stats.time_spent);

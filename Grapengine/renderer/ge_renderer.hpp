@@ -41,7 +41,6 @@ namespace GE
 
     struct Statistics
     {
-      u64 draw_calls = 0;
       u64 vertices_count = 0;
       u64 indices_count = 0;
       u64 time_spent = 1;
