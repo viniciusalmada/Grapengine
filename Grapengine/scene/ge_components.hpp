@@ -9,9 +9,6 @@
 #include "math/ge_transformations.hpp"
 #include "math/ge_vector.hpp"
 #include "renderer/ge_texture_2d.hpp"
-#include "renderer/ge_vertices_data.hpp"
-#include "renderer/shader_programs/ge_material_shader.hpp"
-#include "renderer/shader_programs/ge_pos_tex_shader.hpp"
 
 namespace GE
 {
@@ -31,7 +28,7 @@ namespace GE
     TagComponent(std::string&& t);
   };
 
-  struct TransformComponent : public BaseComponent
+  struct TransformComponent final : public BaseComponent
   {
     Vec3 rotate_values{ 0, 0, 0 };
     Vec3 position_values{ 0, 0, 0 };
@@ -51,7 +48,7 @@ namespace GE
   };
 
   class DrawingObject;
-  struct PrimitiveComponent : public BaseComponent
+  struct PrimitiveComponent final : public BaseComponent
   {
     Ptr<Drawable> drawable;
     Color color;
@@ -60,19 +57,20 @@ namespace GE
     CompType Type() const override;
   };
 
-  struct CameraComponent : public BaseComponent
+  struct CameraComponent final : public BaseComponent
   {
     SceneCamera camera;
     bool active;
     bool fixed_ratio;
 
     [[nodiscard]] CompType Type() const final;
+    explicit CameraComponent();
     CameraComponent(const Vec3& eye, const Vec3& target, bool act, bool fixedRatio);
   };
 
   class ScriptableEntity;
   class Scene;
-  struct NativeScriptComponent : public BaseComponent
+  struct NativeScriptComponent final : public BaseComponent
   {
     ScriptableEntity* instance;
 

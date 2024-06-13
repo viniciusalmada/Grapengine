@@ -46,6 +46,10 @@ CameraComponent::CameraComponent(const Vec3& eye, const Vec3& target, bool act, 
 {
   camera.SetView(eye, target);
 }
+CameraComponent::CameraComponent() : CameraComponent(Vec3{ 5, 5, 5 }, Vec3{ 0, 0, 0 }, false, true)
+{
+}
+
 NativeScriptComponent::NativeScriptComponent() :
     instance(nullptr), instantiateFun({}), destroyFun({})
 {

@@ -46,7 +46,7 @@ namespace GE
     [[nodiscard]] bool HasComponent(const Opt<Entity>& ent)
     {
       GE_PROFILE;
-      return ent ? m_registry.Has<Component>(ent.value()) : false;
+      return ent && m_registry.Has<Component>(ent.value());
     }
 
     template <typename Component>
