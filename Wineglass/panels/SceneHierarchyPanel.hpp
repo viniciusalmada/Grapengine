@@ -16,11 +16,12 @@ namespace GE
 
   private:
     void DrawEntityNode(Entity ent);
-    void DrawComponents(Opt<Entity> ent);
-    void DrawTag(Opt<Entity>& ent) const;
-    void DrawTransform(Opt<Entity>& ent) const;
-    void DrawPrimitive(Opt<Entity>& ent) const;
-    void DrawCamera(Opt<Entity>& ent) const;
+    void DrawComponents(Entity ent);
+
+    void DrawTag(Entity ent) const;
+    void DrawTransform(Entity ent) const;
+    void DrawPrimitive(Entity ent) const;
+    void DrawCamera(Entity ent) const;
 
     Ptr<Scene> m_scene_context;
     Opt<Entity> m_selected_entity;

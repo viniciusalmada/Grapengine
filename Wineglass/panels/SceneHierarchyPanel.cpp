@@ -106,6 +106,9 @@ namespace
 
     ImGui::PopID();
   }
+
+  constexpr ImGuiTreeNodeFlags TREE_NODE_FLAGS = ImGuiTreeNodeFlags_DefaultOpen //
+                                                 | ImGuiTreeNodeFlags_AllowItemOverlap;
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -128,10 +131,56 @@ void SceneHierarchyPanel::OnImGuiRender()
   if (ImGui::IsMouseDown(ImGuiMouseButton_Left) && ImGui::IsWindowHovered())
     m_selected_entity = std::nullopt;
 
+  if (!m_selected_entity)
+  {
+    if (ImGui::BeginPopupContextWindow())
+    {
+      if (ImGui::MenuItem("Create empty Entity"))
+        m_scene_context->CreateEntity("Empty entity");
+
+      ImGui::EndPopup();
+    }
+  }
+
   ImGui::End();
 
   ImGui::Begin("Entity Properties");
-  DrawComponents(m_selected_entity);
+  if (m_selected_entity)
+  {
+    [&](Entity ent)
+    {
+      DrawComponents(ent);
+      constexpr auto ADD_COMP_ID = "AddComponent";
+      if (ImGui::Button("Add component"))
+        ImGui::OpenPopup(ADD_COMP_ID);
+
+      if (ImGui::BeginPopup(ADD_COMP_ID))
+      {
+        if (!m_scene_context->HasComponent<CameraComponent>(ent))
+        {
+          if (ImGui::MenuItem("Camera"))
+          {
+            m_scene_context->AddComponent<CameraComponent>(ent);
+            ImGui::CloseCurrentPopup();
+          }
+        }
+
+        if (!m_scene_context->HasComponent<PrimitiveComponent>(ent))
+        {
+          if (ImGui::MenuItem("Cube primitive"))
+          {
+            m_scene_context->AddComponent<PrimitiveComponent>(ent,
+                                                              Cube::Make(),
+                                                              Colors::RandomColor());
+            m_scene_context->AddComponent<TransformComponent>(ent);
+            ImGui::CloseCurrentPopup();
+          }
+        }
+
+        ImGui::EndPopup();
+      }
+    }(m_selected_entity.value());
+  }
   ImGui::End();
 }
 
@@ -144,25 +193,43 @@ void SceneHierarchyPanel::DrawEntityNode(Entity ent)
   auto& tag = m_scene_context->GetComponent<TagComponent>(ent);
   bool expanded = ImGui::TreeNodeEx(node_id, flags, "%s", tag.tag.c_str());
 
-  if (ImGui::IsItemClicked())
+  if (ImGui::IsItemClicked(ImGuiMouseButton_Left) || ImGui::IsItemClicked(ImGuiMouseButton_Right))
   {
     m_selected_entity = ent;
   }
 
+  bool delete_entity = false;
+  if (m_selected_entity == ent)
+  {
+    if (ImGui::BeginPopupContextWindow())
+    {
+      if (ImGui::MenuItem("Delete entity"))
+        delete_entity = true;
+      ImGui::EndPopup();
+    }
+  }
+
   if (expanded)
   {
-    constexpr auto OFFSET = 1434;
-    bool expanded2 = ImGui::TreeNodeEx(TypeUtils::ToVoidPtr(OFFSET + i32(ent)),
-                                       ImGuiTreeNodeFlags_None,
-                                       "%s",
-                                       tag.tag.c_str());
-    if (expanded2)
-      ImGui::TreePop();
+    //    constexpr auto OFFSET = 1434;
+    //    bool expanded2 = ImGui::TreeNodeEx(TypeUtils::ToVoidPtr(OFFSET + i32(ent)),
+    //                                       ImGuiTreeNodeFlags_None,
+    //                                       "%s",
+    //                                       tag.tag.c_str());
+    //    if (expanded2)
+    //      ImGui::TreePop();
     ImGui::TreePop();
+  }
+
+  if (delete_entity)
+  {
+    m_scene_context->DestroyEntity(ent);
+    if (ent == m_selected_entity)
+      m_selected_entity = {};
   }
 }
 
-void SceneHierarchyPanel::DrawComponents(Opt<Entity> ent)
+void SceneHierarchyPanel::DrawComponents(Entity ent)
 {
   if (m_scene_context->HasComponent<TagComponent>(ent))
     DrawTag(ent);
@@ -174,17 +241,32 @@ void SceneHierarchyPanel::DrawComponents(Opt<Entity> ent)
     DrawPrimitive(ent);
 
   if (m_scene_context->HasComponent<CameraComponent>(ent))
-  {
     DrawCamera(ent);
-  }
 }
-void SceneHierarchyPanel::DrawCamera(Opt<Entity>& ent) const
+void SceneHierarchyPanel::DrawCamera(Entity ent) const
 {
-  if (ImGui::TreeNodeEx(TypeUtils::ToVoidPtr(typeid(CameraComponent).hash_code()),
-                        ImGuiTreeNodeFlags_DefaultOpen,
-                        "CameraComponent"))
+  const bool open = ImGui::TreeNodeEx(TypeUtils::ToVoidPtr(typeid(CameraComponent).hash_code()),
+                                      TREE_NODE_FLAGS,
+                                      "CameraComponent");
+  ImGui::SameLine();
+  constexpr auto SETTINGS_ID = "SETTINGS_ID";
+  if (ImGui::Button("+"))
   {
-    auto& comp = m_scene_context->GetComponent<CameraComponent>(ent.value());
+    ImGui::OpenPopup(SETTINGS_ID);
+  }
+
+  bool remove_comp = false;
+  if (ImGui::BeginPopup(SETTINGS_ID))
+  {
+    if (ImGui::MenuItem("Remove component"))
+      remove_comp = true;
+
+    ImGui::EndPopup();
+  }
+
+  if (open)
+  {
+    auto& comp = m_scene_context->GetComponent<CameraComponent>(ent);
 
     if (ImGui::Checkbox("Active", &comp.active))
     {
@@ -250,14 +332,38 @@ void SceneHierarchyPanel::DrawCamera(Opt<Entity>& ent) const
 
     ImGui::TreePop();
   }
-}
-void SceneHierarchyPanel::DrawPrimitive(Opt<Entity>& ent) const
-{
-  if (ImGui::TreeNodeEx(TypeUtils::ToVoidPtr(typeid(PrimitiveComponent).hash_code()),
-                        ImGuiTreeNodeFlags_DefaultOpen,
-                        "Color"))
+
+  if (remove_comp)
   {
-    auto& cube_color = m_scene_context->GetComponent<PrimitiveComponent>(ent.value()).color;
+    m_scene_context->RemoveComponent<CameraComponent>(ent);
+  }
+}
+void SceneHierarchyPanel::DrawPrimitive(Entity ent) const
+{
+  const bool open = ImGui::TreeNodeEx(TypeUtils::ToVoidPtr(typeid(PrimitiveComponent).hash_code()),
+                                      TREE_NODE_FLAGS,
+                                      "Color");
+
+  ImGui::SameLine(ImGui::GetWindowWidth() - 25.0f);
+  constexpr auto SETTINGS_ID = "SETTINGS_ID";
+  if (ImGui::Button("+", { 20, 20 }))
+  {
+    ImGui::OpenPopup(SETTINGS_ID);
+  }
+
+  bool remove_comp = false;
+  if (ImGui::BeginPopup(SETTINGS_ID))
+  {
+    if (ImGui::MenuItem("Remove component"))
+    {
+      remove_comp = true;
+    }
+    ImGui::EndPopup();
+  }
+
+  if (open)
+  {
+    auto& cube_color = m_scene_context->GetComponent<PrimitiveComponent>(ent).color;
 
     static Vec4 imgui_color{};
     imgui_color = cube_color.ToVec4();
@@ -267,16 +373,21 @@ void SceneHierarchyPanel::DrawPrimitive(Opt<Entity>& ent) const
     cube_color = Color(imgui_color);
     ImGui::TreePop();
   }
+
+  if (remove_comp)
+  {
+    m_scene_context->RemoveComponent<PrimitiveComponent>(ent);
+  }
 }
-void SceneHierarchyPanel::DrawTransform(Opt<Entity>& ent) const
+void SceneHierarchyPanel::DrawTransform(Entity ent) const
 {
   if (ImGui::TreeNodeEx(TypeUtils::ToVoidPtr(typeid(TransformComponent).hash_code()),
-                        ImGuiTreeNodeFlags_DefaultOpen,
+                        TREE_NODE_FLAGS,
                         "Transform"))
   {
-    auto& pos = m_scene_context->GetComponent<TransformComponent>(ent.value()).position_values;
-    auto& scale = m_scene_context->GetComponent<TransformComponent>(ent.value()).scale_values;
-    auto& rotate = m_scene_context->GetComponent<TransformComponent>(ent.value()).rotate_values;
+    auto& pos = m_scene_context->GetComponent<TransformComponent>(ent).position_values;
+    auto& scale = m_scene_context->GetComponent<TransformComponent>(ent).scale_values;
+    auto& rotate = m_scene_context->GetComponent<TransformComponent>(ent).rotate_values;
 
     DrawVec3Control("Position", pos);
     DrawVec3Control("Scale", scale, 1.0f);
@@ -288,9 +399,9 @@ void SceneHierarchyPanel::DrawTransform(Opt<Entity>& ent) const
     ImGui::TreePop();
   }
 }
-void SceneHierarchyPanel::DrawTag(Opt<Entity>& ent) const
+void SceneHierarchyPanel::DrawTag(Entity ent) const
 {
-  auto& tag = m_scene_context->GetComponent<TagComponent>(ent.value()).tag;
+  auto& tag = m_scene_context->GetComponent<TagComponent>(ent).tag;
 
   constexpr auto BUFFER_SIZE = 256;
   std::array<char, BUFFER_SIZE> buffer{ '\0' };

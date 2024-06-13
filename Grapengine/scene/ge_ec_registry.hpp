@@ -17,7 +17,7 @@ namespace GE
      */
     Entity Create();
 
-    void Destroy(Entity ent);
+    void Destroy(Opt<Entity> ent);
 
     /**
      * Add a component to registry and associate to its entity
@@ -37,6 +37,16 @@ namespace GE
       m_entities_with_components[ent].insert(added->Type());
 
       return dynamic_cast<Component&>(*added);
+    }
+
+    template <typename Component>
+    void RemoveComponent(Entity entity)
+    {
+      BaseComponent& comp = GetComponent<Component>(entity);
+      m_entities_with_components[entity].erase(comp.Type());
+      auto& ent_components = m_components[entity];
+      std::erase_if(ent_components,
+                    [&](const Ptr<BaseComponent>& bc) { return comp.Type() == bc->Type(); });
     }
 
     /**

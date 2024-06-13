@@ -16,7 +16,7 @@ namespace GE
 
     Entity CreateEntity(std::string&& name);
 
-    void DestroyEntity(Entity ent);
+    void DestroyEntity(Opt<Entity> ent);
 
     void OnUpdate(TimeStep ts);
 
@@ -54,6 +54,13 @@ namespace GE
     {
       GE_PROFILE;
       return m_registry.Has<Component>(ent);
+    }
+
+    template <typename Component>
+    void RemoveComponent(Entity ent)
+    {
+      if (HasComponent<Component>(ent))
+        m_registry.RemoveComponent<Component>(ent);
     }
 
     void EachEntity(const std::function<void(Entity)>& fun) const;

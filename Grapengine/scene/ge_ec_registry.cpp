@@ -30,9 +30,11 @@ std::vector<Entity> ECRegistry::Group(const std::set<CompType>&& comps) const
   return entities;
 }
 
-void ECRegistry::Destroy(Entity ent)
+void ECRegistry::Destroy(Opt<Entity> ent)
 {
-  m_entities.erase(ent);
-  m_components.erase(ent);
-  m_entities_with_components.erase(ent);
+  if (!ent)
+    return;
+  m_entities.erase(ent.value());
+  m_components.erase(ent.value());
+  m_entities_with_components.erase(ent.value());
 }
