@@ -13,6 +13,8 @@ namespace GE
     PRIMITIVE,
     CAMERA,
     NATIVE_SCRIPT,
+    AMBIENT_LIGHT,
+    LIGHT_SPOT,
   };
 }
 

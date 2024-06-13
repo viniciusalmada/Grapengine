@@ -113,6 +113,16 @@ Renderer::Statistics& Renderer::GetStats()
   return s_stats;
 }
 
+void Renderer::SetAmbientLight(const Color& color, f32 str)
+{
+  GetBatchRenderer().SetAmbientLight(color, str);
+}
+
+void Renderer::SetLightSpots(const std::vector<std::tuple<Vec3, Color, f32>>& props)
+{
+  GetBatchRenderer().SetLightsSpot(props);
+}
+
 void Renderer::Batch::Begin(const Mat4& cameraMatrix)
 {
   GE_PROFILE;

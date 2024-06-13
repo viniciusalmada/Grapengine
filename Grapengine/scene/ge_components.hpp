@@ -93,6 +93,35 @@ namespace GE
       };
     }
   };
+
+  struct AmbientLightComponent final : public BaseComponent
+  {
+    Color color;
+    f32 strenght;
+    bool active;
+
+    AmbientLightComponent(Color c = Colors::WHITE, f32 str = 1.0f);
+
+    ~AmbientLightComponent() override;
+    [[nodiscard]] CompType Type() const override;
+  };
+
+  struct LightSpotComponent final : public BaseComponent
+  {
+    Color color;
+    Vec3 position;
+    f32 strenght;
+    bool active;
+    Ptr<Drawable> drawable;
+
+    LightSpotComponent(Color c = Colors::WHITE,
+                       Vec3 pos = { 0, 0, 0 },
+                       f32 str = 1.0f,
+                       bool active = true);
+
+    ~LightSpotComponent() override;
+    [[nodiscard]] CompType Type() const override;
+  };
 }
 
 #endif // GRAPENGINE_GE_COMPONENTS_HPP

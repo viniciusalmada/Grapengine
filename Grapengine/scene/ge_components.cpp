@@ -54,3 +54,25 @@ CompType NativeScriptComponent::Type() const
 {
   return CompType::NATIVE_SCRIPT;
 }
+
+AmbientLightComponent::~AmbientLightComponent() = default;
+
+CompType AmbientLightComponent::Type() const
+{
+  return CompType::AMBIENT_LIGHT;
+}
+
+AmbientLightComponent::AmbientLightComponent(Color c, f32 str) :
+    color(c), strenght(str), active(false)
+{
+}
+
+LightSpotComponent::LightSpotComponent(Color c, Vec3 pos, f32 str, bool act) :
+    color(c), position(pos), strenght(str), active(act), drawable(Cube::Make())
+{
+}
+CompType LightSpotComponent::Type() const
+{
+  return CompType::LIGHT_SPOT;
+}
+LightSpotComponent::~LightSpotComponent() = default;

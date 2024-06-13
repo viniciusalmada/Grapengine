@@ -9,27 +9,11 @@
 
 using namespace GE;
 
-namespace
-{
-  constexpr auto LIGHT_STRENGHT = 0.25f;
-  constexpr auto LIGHT_POS = 5;
-}
-
 MaterialShader::MaterialShader()
 {
   GE_PROFILE;
   m_shader =
     Shader::Make("assets/shaders/Material.vshader.glsl", "assets/shaders/Material.fshader.glsl");
-
-  { // TODO: Only for test
-    Activate();
-    UpdateAmbientColor(Colors::WHITE);
-    UpdateAmbientStrength(LIGHT_STRENGHT);
-
-    UpdateLightPosition({ Vec3{}, Vec3{ LIGHT_POS, LIGHT_POS, LIGHT_POS } });
-    UpdateLightColor({ Colors::WHITE, Colors::WHITE });
-    UpdateLightStrength({ 1.0f, 1.0f });
-  }
 }
 
 MaterialShader::~MaterialShader() = default;
@@ -71,13 +55,9 @@ void GE::MaterialShader::UpdateLightPosition(const std::vector<Vec3>& pos)
   m_shader->UploadVec3Array("u_lightPos", pos);
 }
 
-void GE::MaterialShader::UpdateLightColor(std::vector<Color> color)
+void GE::MaterialShader::UpdateLightColor(const std::vector<Vec3>& colors)
 {
-  std::vector<Vec3> colors_vec;
-  std::ranges::transform(color,
-                         std::back_inserter(colors_vec),
-                         [](auto&& c) { return c.ToVec3(); });
-  m_shader->UploadVec3Array("u_lightColor", colors_vec);
+  m_shader->UploadVec3Array("u_lightColor", colors);
 }
 
 void GE::MaterialShader::UpdateLightStrength(const std::vector<f32>& strength)
@@ -88,4 +68,40 @@ void GE::MaterialShader::UpdateLightStrength(const std::vector<f32>& strength)
 Ptr<MaterialShader> MaterialShader::Make()
 {
   return MakeRef<MaterialShader>();
+}
+
+void MaterialShader::UpdateAmbientLight(Color color, f32 strength)
+{
+  UpdateAmbientColor(color);
+  UpdateAmbientStrength(strength);
+}
+
+void MaterialShader::UpdateLightSpots(const std::vector<std::tuple<Vec3, Color, f32>>& lightSpots)
+{
+  std::vector<Vec3> positions;
+  positions.reserve(lightSpots.size());
+  std::vector<Vec3> colors;
+  colors.reserve(lightSpots.size());
+  std::vector<f32> strenghts;
+  strenghts.reserve(lightSpots.size());
+  for (const auto& [p, c, s] : lightSpots)
+  {
+    positions.push_back(p);
+    colors.push_back(c.ToVec3());
+    strenghts.push_back(s);
+  }
+
+  UpdateLightPosition(positions);
+  UpdateLightColor(colors);
+  UpdateLightStrength(strenghts);
+}
+
+void MaterialShader::ClearAmbientLight()
+{
+  UpdateAmbientLight(Colors::WHITE, 1.0f);
+}
+
+void MaterialShader::ClearLightSpots()
+{
+  UpdateLightSpots({});
 }

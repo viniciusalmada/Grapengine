@@ -55,3 +55,15 @@ void BatchRenderer::Draw() const
   m_drawing_object.Bind();
   glDrawElements(GL_TRIANGLES, m_drawing_object.IndicesCount(), GL_UNSIGNED_INT, nullptr);
 }
+
+void BatchRenderer::SetAmbientLight(const Color& color, f32 str)
+{
+  m_shader->Activate();
+  m_shader->UpdateAmbientLight(color, str);
+}
+
+void BatchRenderer::SetLightsSpot(const std::vector<std::tuple<Vec3, Color, f32>>& props)
+{
+  m_shader->Activate();
+  m_shader->UpdateLightSpots(props);
+}

@@ -68,11 +68,13 @@ namespace GE
   private:
     void UpdateNativeScripts(TimeStep& ts);
     void UpdateDrawableEntities(TimeStep& ts);
+    void UpdateLightSpots(TimeStep& ts);
 
     [[nodiscard]] Opt<Entity> RetrieveActiveCamera() const;
 
     ECRegistry m_registry;
     Opt<Entity> m_active_camera;
+    Opt<Entity> m_active_ambient_light;
     Dimension m_viewport;
   };
 

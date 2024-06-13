@@ -1,8 +1,8 @@
 #ifndef GRAPENGINE_RENDERER_HPP
 #define GRAPENGINE_RENDERER_HPP
 
+#include "drawables/ge_color.hpp"
 #include "math/ge_vector.hpp"
-#include "renderer/ge_ishader_program.hpp"
 #include "renderer/ge_vertices_data.hpp"
 #include "utils/ge_dimension.hpp"
 
@@ -27,6 +27,9 @@ namespace GE
     static void DrawIndexed(const Ptr<VertexArray>& vao, i32 count);
 
     static void DrawObject(const Ptr<DrawingObject>& primitive);
+
+    static void SetAmbientLight(const Color& color, f32 str);
+    static void SetLightSpots(const std::vector<std::tuple<Vec3, Color, f32>>& props);
 
     class Batch
     {

@@ -22,14 +22,29 @@ namespace GE
     void UpdateViewProjectionMatrix(const Mat4& viewProj) override;
     void UpdateTexture(int id) override;
 
+    /**
+     * Update ambient light properties
+     * @param color light color
+     * @param strength light strenght limited from 0 to 10
+     */
+    void UpdateAmbientLight(Color color, f32 strength);
+    void ClearAmbientLight();
+
+    /**
+     *
+     * @param lightSpots lights properties
+     */
+    void UpdateLightSpots(const std::vector<std::tuple<Vec3, Color, f32>>& lightSpots);
+    void ClearLightSpots();
+
+  private:
     void UpdateAmbientColor(Color color);
     void UpdateAmbientStrength(f32 strength);
 
     void UpdateLightPosition(const std::vector<Vec3>& pos);
-    void UpdateLightColor(std::vector<Color> color);
+    void UpdateLightColor(const std::vector<Vec3>& color);
     void UpdateLightStrength(const std::vector<f32>& strength);
 
-  private:
     Ptr<Shader> m_shader;
   };
 }

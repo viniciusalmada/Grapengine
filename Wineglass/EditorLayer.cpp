@@ -17,6 +17,15 @@ EditorLayer::EditorLayer() :
 
 void EditorLayer::OnAttach()
 {
+  auto amb_light = m_scene->CreateEntity("Ambient light");
+  auto& c = m_scene->AddComponent<AmbientLightComponent>(amb_light, Colors::WHITE, .25f);
+  c.active = true;
+
+  auto l1 = m_scene->CreateEntity("L1");
+  m_scene->AddComponent<LightSpotComponent>(l1, Colors::RED, Vec3{ 0, 0, 0 }, 1.0f);
+  auto l2 = m_scene->CreateEntity("L2");
+  m_scene->AddComponent<LightSpotComponent>(l2, Colors::BLUE, Vec3{ 5, 5, 5 }, 1.0f);
+
   m_scene->AddComponent<CameraComponent>(m_front_camera_entity,
                                          Vec3{ 0, 0, 10 },
                                          Vec3{ 0, 0, 0 },
@@ -35,7 +44,7 @@ void EditorLayer::OnAttach()
   {
     std::string name{ "Cube " + std::to_string(i) };
     auto cube_ent = m_scene->CreateEntity(name.c_str());
-    m_scene->AddComponent<PrimitiveComponent>(cube_ent, Cube::Make(), Colors::RandomColor());
+    m_scene->AddComponent<PrimitiveComponent>(cube_ent, Cube::Make(), Colors::WHITE);
     m_scene->AddComponent<TransformComponent>(cube_ent,
                                               Vec3{ Random::GenFloat(-LIM, LIM),
                                                     Random::GenFloat(-LIM, LIM),
