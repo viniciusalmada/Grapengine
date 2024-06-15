@@ -17,6 +17,7 @@
 
 // Drawables
 #include "drawables/ge_cube.hpp"
+#include "drawables/ge_cylinder.hpp"
 #include "drawables/ge_mesh.hpp"
 
 // Utilities

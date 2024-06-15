@@ -39,13 +39,12 @@ Cylinder::Cylinder(const GE::Vec3& basePoint,
     final_pts.push_back(pt_final);
   }
 
-  const Ptr<VerticesData> positions = MakeRef<VerticesData>();
   for (u32 i = 0; i < base_pts.size(); ++i)
   {
-    positions->PushVerticesData(
-      { base_pts[i], Vec2{ 1, 1 }, color.ToVec4(), -direction.Normalize() });
-    positions->PushVerticesData(
-      { final_pts[i], Vec2{ 1, 1 }, color.ToVec4(), direction.Normalize() });
+    m_vertices.PushVerticesData(
+      { base_pts[i], Vec2{ 1, 1 }, color.ToVec4(), Vec3{ 0, 0, 0 }.Normalize() });
+    m_vertices.PushVerticesData(
+      { final_pts[i], Vec2{ 1, 1 }, color.ToVec4(), Vec3{ 0, 0, 0 }.Normalize() });
   }
 
   // NOLINTBEGIN(*-magic-numbers)
@@ -77,4 +76,13 @@ VerticesData Cylinder::GetVerticesData(Color /*color*/) const
 const std::vector<u32>& Cylinder::GetIndicesData() const
 {
   return m_indices;
+}
+
+Ptr<Cylinder> Cylinder::Make(const GE::Vec3& basePoint,
+                             f32 radius,
+                             const GE::Vec3& direction,
+                             f32 height,
+                             GE::Color color)
+{
+  return MakeRef<Cylinder>(basePoint, radius, direction, height, color);
 }

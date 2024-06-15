@@ -59,6 +59,26 @@ void EditorLayer::OnAttach()
     m_scene->AddComponent<TransformComponent>(mesh_ent);
   }
 
+  {
+    constexpr auto RADIUS = 0.1f;
+    constexpr auto LENGHT = 100.0f;
+    auto c_x = m_scene->CreateEntity("CX");
+    m_scene->AddComponent<PrimitiveComponent>(
+      c_x,
+      Cylinder::Make(Vec3{ 0, 0, 0 }, RADIUS, Vec3{ 1, 0, 0 }, LENGHT, Colors::RED));
+    m_scene->AddComponent<TransformComponent>(c_x);
+    auto c_y = m_scene->CreateEntity("CY");
+    m_scene->AddComponent<PrimitiveComponent>(
+      c_y,
+      Cylinder::Make(Vec3{ 0, 0, 0 }, RADIUS, Vec3{ 0, 1, 0 }, LENGHT, Colors::GREEN));
+    m_scene->AddComponent<TransformComponent>(c_y);
+    auto c_z = m_scene->CreateEntity("CZ");
+    m_scene->AddComponent<PrimitiveComponent>(
+      c_z,
+      Cylinder::Make(Vec3{ 0, 0, 0 }, RADIUS, Vec3{ 0, 0, 1 }, LENGHT, Colors::BLUE));
+    m_scene->AddComponent<TransformComponent>(c_z);
+  }
+
   m_scene->AddComponent<NativeScriptComponent>(m_front_camera_entity).Bind<CamController>();
 
   m_scene_panel.SetContext(m_scene);
