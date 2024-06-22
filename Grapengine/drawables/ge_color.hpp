@@ -38,15 +38,18 @@ namespace GE
     {
     }
 
-    [[nodiscard]] Vec4 ToVec4() const
+    template <typename T>
+    [[nodiscard]] T ToVec4() const
     {
-      return {
+      return T{
         f32(R) / f32(MAX_U8),
         f32(G) / f32(MAX_U8),
         f32(B) / f32(MAX_U8),
         f32(A) / f32(MAX_U8),
       };
     }
+
+    [[nodiscard]] Vec4 ToVec4() const { return ToVec4<Vec4>(); }
 
     [[nodiscard]] Vec3 ToVec3() const
     {

@@ -81,7 +81,7 @@ void EditorLayer::OnAttach()
 
   m_scene->AddComponent<NativeScriptComponent>(m_front_camera_entity).Bind<CamController>();
 
-  m_scene_panel.SetContext(m_scene);
+  m_scene_panel = MakeRef<SceneHierarchyPanel>(m_scene);
 
   m_fb = Framebuffer::Make({ 1280, 720 });
 }
@@ -159,7 +159,7 @@ void EditorLayer::OnImGuiUpdate(TimeStep ts)
 
   ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 0 });
 
-  m_scene_panel.OnImGuiRender();
+  m_scene_panel->OnImGuiRender();
 
   ImGui::Begin("Stats");
   {

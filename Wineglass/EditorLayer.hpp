@@ -32,7 +32,7 @@ namespace GE
     //    bool m_viewport_focused{};
     bool m_viewport_hovered = true;
 
-    SceneHierarchyPanel m_scene_panel;
+    Ptr<SceneHierarchyPanel> m_scene_panel;
 #else
     EditorCamera m_cam;
     Ref<WorldReference> m_world_ref = nullptr;

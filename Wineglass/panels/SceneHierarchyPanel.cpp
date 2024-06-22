@@ -1,5 +1,7 @@
 #include "SceneHierarchyPanel.hpp"
 
+#include "imgui.h"
+
 #include <imgui_internal.h>
 
 using namespace std::string_literals;
@@ -7,44 +9,21 @@ using namespace GE;
 
 namespace
 {
-  constexpr auto MAX_COLOR = 255.0f;
+  constexpr Color X_NORMAL{ 0xB20F0FFF };
+  constexpr Color X_HOVERED{ 0xC20F0FFF };
+  constexpr Color X_ACTIVE{ 0xB21F0FFF };
+  constexpr Color Y_NORMAL{ 0x317F35FF };
+  constexpr Color Y_HOVERED{ 0x318F35FF };
+  constexpr Color Y_ACTIVE{ 0x417F35FF };
+  constexpr Color Z_NORMAL{ 0x106ECBFF };
+  constexpr Color Z_HOVERED{ 0x107ECBFF };
+  constexpr Color Z_ACTIVE{ 0x106EDBFF };
 
-  struct C
-  {
-    f32 c;
-    constexpr C(u8 u) : c(f32(u) / MAX_COLOR) {}
-  };
-
-  constexpr f32 XN_R = C{ 0xB2 }.c; // X normal
-  constexpr f32 XN_G = C{ 0x0F }.c; // X normal
-  constexpr f32 XN_B = C{ 0x0F }.c; // X normal
-  constexpr f32 XH_R = C{ 0xC2 }.c; // X hovered
-  constexpr f32 XH_G = C{ 0x0F }.c; // X hovered
-  constexpr f32 XH_B = C{ 0x0F }.c; // X hovered
-  constexpr f32 XA_R = C{ 0xB2 }.c; // X active
-  constexpr f32 XA_G = C{ 0x1F }.c; // X active
-  constexpr f32 XA_B = C{ 0x0F }.c; // X active
-  constexpr f32 YN_R = C{ 0x31 }.c; // Y normal
-  constexpr f32 YN_G = C{ 0x7F }.c; // Y normal
-  constexpr f32 YN_B = C{ 0x35 }.c; // Y normal
-  constexpr f32 YH_R = C{ 0x31 }.c; // Y hovered
-  constexpr f32 YH_G = C{ 0x8F }.c; // Y hovered
-  constexpr f32 YH_B = C{ 0x35 }.c; // Y hovered
-  constexpr f32 YA_R = C{ 0x41 }.c; // Y active
-  constexpr f32 YA_G = C{ 0x7F }.c; // Y active
-  constexpr f32 YA_B = C{ 0x35 }.c; // Y active
-  constexpr f32 ZN_R = C{ 0x10 }.c; // Z normal
-  constexpr f32 ZN_G = C{ 0x6E }.c; // Z normal
-  constexpr f32 ZN_B = C{ 0xCB }.c; // Z normal
-  constexpr f32 ZH_R = C{ 0x10 }.c; // Z hovered
-  constexpr f32 ZH_G = C{ 0x7E }.c; // Z hovered
-  constexpr f32 ZH_B = C{ 0xCB }.c; // Z hovered
-  constexpr f32 ZA_R = C{ 0x10 }.c; // Z active
-  constexpr f32 ZA_G = C{ 0x6E }.c; // Z active
-  constexpr f32 ZA_B = C{ 0xDB }.c; // Z active
-
+  //-------------------------------------------------------------------------------------------------
   void DrawVec3Control(const std::string& label, Vec3& values, float resetValue = 0.0f)
   {
+    auto* const BOLD_FONT = ImGui::GetIO().Fonts->Fonts[1];
+
     ImGui::PushID(label.c_str());
 
     constexpr float columnWidth = 65.0f;
@@ -63,11 +42,13 @@ namespace
     constexpr auto SPEED = 0.1f;
 
     {
-      ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ XN_R, XN_G, XN_B, 1.0f });
-      ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ XH_R, XH_G, XH_B, 1.0f });
-      ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ XA_R, XA_G, XA_B, 1.0f });
+      ImGui::PushStyleColor(ImGuiCol_Button, X_NORMAL.ToVec4<ImVec4>());
+      ImGui::PushStyleColor(ImGuiCol_ButtonHovered, X_HOVERED.ToVec4<ImVec4>());
+      ImGui::PushStyleColor(ImGuiCol_ButtonActive, X_ACTIVE.ToVec4<ImVec4>());
+      ImGui::PushFont(BOLD_FONT);
       if (ImGui::Button("x", button_size))
         values.x = resetValue;
+      ImGui::PopFont();
       ImGui::PopStyleColor(3);
 
       ImGui::SameLine();
@@ -76,11 +57,13 @@ namespace
       ImGui::SameLine();
     }
     {
-      ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ YN_R, YN_G, YN_B, 1.0f });
-      ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ YH_R, YH_G, YH_B, 1.0f });
-      ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ YA_R, YA_G, YA_B, 1.0f });
+      ImGui::PushStyleColor(ImGuiCol_Button, Y_NORMAL.ToVec4<ImVec4>());
+      ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Y_HOVERED.ToVec4<ImVec4>());
+      ImGui::PushStyleColor(ImGuiCol_ButtonActive, Y_ACTIVE.ToVec4<ImVec4>());
+      ImGui::PushFont(BOLD_FONT);
       if (ImGui::Button("y", button_size))
         values.y = resetValue;
+      ImGui::PopFont();
       ImGui::PopStyleColor(3);
 
       ImGui::SameLine();
@@ -89,11 +72,13 @@ namespace
       ImGui::SameLine();
     }
     {
-      ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ ZN_R, ZN_G, ZN_B, 1.0f });
-      ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ ZH_R, ZH_G, ZH_B, 1.0f });
-      ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ ZA_R, ZA_G, ZA_B, 1.0f });
+      ImGui::PushStyleColor(ImGuiCol_Button, Z_NORMAL.ToVec4<ImVec4>());
+      ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Z_HOVERED.ToVec4<ImVec4>());
+      ImGui::PushStyleColor(ImGuiCol_ButtonActive, Z_ACTIVE.ToVec4<ImVec4>());
+      ImGui::PushFont(BOLD_FONT);
       if (ImGui::Button("z", button_size))
         values.z = resetValue;
+      ImGui::PopFont();
       ImGui::PopStyleColor(3);
 
       ImGui::SameLine();
@@ -109,24 +94,186 @@ namespace
 
   constexpr ImGuiTreeNodeFlags TREE_NODE_FLAGS = ImGuiTreeNodeFlags_DefaultOpen //
                                                  | ImGuiTreeNodeFlags_AllowItemOverlap;
+
+  //-------------------------------------------------------------------------------------------------
+  template <typename T, typename UIFun>
+  void DrawComponent(const std::string&& name, Scene& scene, Entity ent, const UIFun&& fun)
+  {
+    if (!scene.HasComponent<T>(ent))
+      return;
+    constexpr auto FRAME_PADDING = ImVec2{ 4, 4 };
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, FRAME_PADDING);
+    bool open = ImGui::TreeNodeEx(TypeUtils::ToVoidPtr(typeid(T).hash_code()),
+                                  TREE_NODE_FLAGS,
+                                  "%s",
+                                  name.c_str());
+    constexpr auto X_OFFSET = 25.0f;
+    ImGui::SameLine(ImGui::GetWindowWidth() - X_OFFSET);
+    constexpr auto BUTTON_SIZE = ImVec2{ 20, 20 };
+    constexpr auto SETTINGS_ID = "ComponentSettings";
+    if (ImGui::Button("+", BUTTON_SIZE))
+    {
+      ImGui::OpenPopup(SETTINGS_ID);
+    }
+    ImGui::PopStyleVar();
+
+    bool remove_comp = false;
+    if (ImGui::BeginPopup(SETTINGS_ID))
+    {
+      if (ImGui::MenuItem("Remove commponent"))
+        remove_comp = true;
+
+      ImGui::EndPopup();
+    }
+
+    if (open)
+    {
+      fun(std::ref(scene.GetComponent<T>(ent)));
+      ImGui::TreePop();
+    }
+
+    if (remove_comp)
+      scene.RemoveComponent<T>(ent);
+  }
+
+  //-------------------------------------------------------------------------------------------------
+  void DrawCamera(CameraComponent& comp)
+  {
+    if (ImGui::Checkbox("Active", &comp.active))
+    {
+      comp.active = true;
+      //      scene.UpdateActiveCamera(ent); TODO
+    }
+    ImGui::Checkbox("Fixed AR", &comp.fixed_ratio);
+
+    const std::array TITLES{ "Perspective"s, "Orthographic"s };
+    u8 current_mode = u8(comp.camera.GetProjectionMode());
+    const char* preview_value = TITLES.at(current_mode).c_str();
+    if (ImGui::BeginCombo("Projection", preview_value))
+    {
+      for (u32 n = 0; n < TITLES.size(); n++)
+      {
+        const bool is_selected = (current_mode == n);
+        if (ImGui::Selectable(TITLES.at(n).c_str(), is_selected))
+        {
+          current_mode = u8(n);
+          comp.camera.SetProjectionMode(ProjectionMode(current_mode));
+        }
+
+        if (is_selected)
+          ImGui::SetItemDefaultFocus();
+      }
+      ImGui::EndCombo();
+    }
+
+    if (comp.camera.IsInProjectionMode(ProjectionMode::PERSPECTIVE))
+    {
+      f32 fov = comp.camera.GetFov();
+      if (ImGui::DragFloat("FOV",
+                           &fov,
+                           1.0f,
+                           15.0f,
+                           100.0f,
+                           "%1.0f deg",
+                           ImGuiSliderFlags_AlwaysClamp))
+        comp.camera.SetFov(fov);
+    }
+
+    if (comp.camera.IsInProjectionMode(ProjectionMode::ORTHO))
+    {
+      f32 size = comp.camera.GetOrthographicSize();
+      if (ImGui::DragFloat("Size",
+                           &size,
+                           10.0f,
+                           5.0f,
+                           100.0f,
+                           "%1.0f",
+                           ImGuiSliderFlags_AlwaysClamp))
+        comp.camera.SetOrthographicSize(size);
+    }
+
+    Vec3 eye = comp.camera.GetPosition();
+    Vec3 target = comp.camera.GetTarget();
+
+    bool changed_eye = ImGui::DragFloat3("Eye", &eye.x, 0.01f);
+    bool changed_target = ImGui::DragFloat3("Target", &target.x, 0.01f);
+
+    if (changed_eye || changed_target)
+      comp.camera.SetView(eye, target);
+  }
+
+  //-------------------------------------------------------------------------------------------------
+  void DrawPrimitive(PrimitiveComponent& comp)
+  {
+    //    auto& cube_color = scene.GetComponent<PrimitiveComponent>(ent).color;
+
+    static Vec4 imgui_color{};
+    imgui_color = comp.color.ToVec4();
+
+    ImGui::ColorEdit4("Color", &imgui_color.x0);
+
+    comp.color = Color(imgui_color);
+  }
+
+  //-------------------------------------------------------------------------------------------------
+  void DrawTransform(TransformComponent& comp)
+  {
+    auto& pos = comp.position_values;
+    auto& scale = comp.scale_values;
+    auto& rotate = comp.rotate_values;
+
+    DrawVec3Control("Position", pos);
+    DrawVec3Control("Scale", scale, 1.0f);
+    scale.x = Arithmetic::IsEqual(scale.x, 0.0f) ? 1.0f : scale.x;
+    scale.y = Arithmetic::IsEqual(scale.y, 0.0f) ? 1.0f : scale.y;
+    scale.z = Arithmetic::IsEqual(scale.z, 0.0f) ? 1.0f : scale.z;
+    DrawVec3Control("Rotate", rotate);
+  }
+
+  //-------------------------------------------------------------------------------------------------
+  void DrawAmbientLight(AmbientLightComponent& comp)
+  {
+    //    auto& amb_lig = scene.GetComponent<AmbientLightComponent>(ent);
+
+    static Vec4 imgui_color{};
+    imgui_color = comp.color.ToVec4();
+    ImGui::ColorEdit4("Color", &imgui_color.x0);
+    comp.color = Color(imgui_color);
+
+    ImGui::DragFloat("Strenght", &comp.strenght, 0.01f, 0.0f, 1.0f);
+  }
+
+  //-------------------------------------------------------------------------------------------------
+  void DrawLights(LightSpotComponent& comp)
+  {
+    static Vec4 imgui_color{};
+    //    auto& ls = scene.GetComponent<LightSpotComponent>(ent);
+    imgui_color = comp.color.ToVec4();
+    ImGui::ColorEdit4("Color", &imgui_color.x0);
+    comp.color = Color(imgui_color);
+
+    DrawVec3Control("Position", comp.position, 0.0f);
+
+    ImGui::DragFloat("Strenght", &comp.strenght, 0.1f, 0.0f, 10.0f);
+
+    ImGui::Checkbox("Active", &comp.active);
+  }
+
 }
 
 //--------------------------------------------------------------------------------------------------
-SceneHierarchyPanel::SceneHierarchyPanel(const Ptr<Scene>& scene) : m_scene_context(scene) {}
-
-void SceneHierarchyPanel::SetContext(const Ptr<Scene>& scene)
+SceneHierarchyPanel::SceneHierarchyPanel(const Ptr<Scene>& scene) : m_scene_context(*scene)
 {
-  m_scene_context = scene;
-
   { // TODO: Remove later
     m_selected_entity = Entity{ 2 };
   }
 }
 
+//-------------------------------------------------------------------------------------------------
 void SceneHierarchyPanel::OnImGuiRender()
 {
   ImGui::Begin("Scene Entities");
-  m_scene_context->EachEntity([&](Entity ent) { DrawEntityNode(ent); });
+  m_scene_context.EachEntity([&](Entity ent) { DrawEntityNode(ent); });
 
   if (ImGui::IsMouseDown(ImGuiMouseButton_Left) && ImGui::IsWindowHovered())
     m_selected_entity = std::nullopt;
@@ -136,7 +283,7 @@ void SceneHierarchyPanel::OnImGuiRender()
     if (ImGui::BeginPopupContextWindow())
     {
       if (ImGui::MenuItem("Create empty Entity"))
-        m_scene_context->CreateEntity("Empty entity");
+        m_scene_context.CreateEntity("Empty entity");
 
       ImGui::EndPopup();
     }
@@ -156,23 +303,23 @@ void SceneHierarchyPanel::OnImGuiRender()
 
       if (ImGui::BeginPopup(ADD_COMP_ID))
       {
-        if (!m_scene_context->HasComponent<CameraComponent>(ent))
+        if (!m_scene_context.HasComponent<CameraComponent>(ent))
         {
           if (ImGui::MenuItem("Camera"))
           {
-            m_scene_context->AddComponent<CameraComponent>(ent);
+            m_scene_context.AddComponent<CameraComponent>(ent);
             ImGui::CloseCurrentPopup();
           }
         }
 
-        if (!m_scene_context->HasComponent<PrimitiveComponent>(ent))
+        if (!m_scene_context.HasComponent<PrimitiveComponent>(ent))
         {
           if (ImGui::MenuItem("Cube primitive"))
           {
-            m_scene_context->AddComponent<PrimitiveComponent>(ent,
-                                                              Cube::Make(),
-                                                              Colors::RandomColor());
-            m_scene_context->AddComponent<TransformComponent>(ent);
+            m_scene_context.AddComponent<PrimitiveComponent>(ent,
+                                                             Cube::Make(),
+                                                             Colors::RandomColor());
+            m_scene_context.AddComponent<TransformComponent>(ent);
             ImGui::CloseCurrentPopup();
           }
         }
@@ -184,13 +331,14 @@ void SceneHierarchyPanel::OnImGuiRender()
   ImGui::End();
 }
 
+//-------------------------------------------------------------------------------------------------
 void SceneHierarchyPanel::DrawEntityNode(Entity ent)
 {
   void* node_id = TypeUtils::ToVoidPtr(i32(ent));
   const int is_selected = ent == m_selected_entity ? ImGuiTreeNodeFlags_Selected : 0;
-  const int flags = is_selected | ImGuiTreeNodeFlags_OpenOnArrow;
+  const int flags = is_selected | ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanFullWidth;
 
-  auto& tag = m_scene_context->GetComponent<TagComponent>(ent);
+  auto& tag = m_scene_context.GetComponent<TagComponent>(ent);
   bool expanded = ImGui::TreeNodeEx(node_id, flags, "%s", tag.tag.c_str());
 
   if (ImGui::IsItemClicked(ImGuiMouseButton_Left) || ImGui::IsItemClicked(ImGuiMouseButton_Right))
@@ -223,190 +371,29 @@ void SceneHierarchyPanel::DrawEntityNode(Entity ent)
 
   if (delete_entity)
   {
-    m_scene_context->DestroyEntity(ent);
+    m_scene_context.DestroyEntity(ent);
     if (ent == m_selected_entity)
       m_selected_entity = {};
   }
 }
 
+//-------------------------------------------------------------------------------------------------
 void SceneHierarchyPanel::DrawComponents(Entity ent)
 {
-  if (m_scene_context->HasComponent<TagComponent>(ent))
+  if (m_scene_context.HasComponent<TagComponent>(ent))
     DrawTag(ent);
 
-  if (m_scene_context->HasComponent<TransformComponent>(ent))
-    DrawTransform(ent);
-
-  if (m_scene_context->HasComponent<PrimitiveComponent>(ent))
-    DrawPrimitive(ent);
-
-  if (m_scene_context->HasComponent<CameraComponent>(ent))
-    DrawCamera(ent);
-
-  if (m_scene_context->HasComponent<AmbientLightComponent>(ent))
-    DrawAmbientLight(ent);
-
-  if (m_scene_context->HasComponent<LightSpotComponent>(ent))
-    DrawLights(ent);
+  DrawComponent<TransformComponent>("Transform", m_scene_context, ent, DrawTransform);
+  DrawComponent<PrimitiveComponent>("Primitive", m_scene_context, ent, DrawPrimitive);
+  DrawComponent<CameraComponent>("Camera", m_scene_context, ent, DrawCamera);
+  DrawComponent<AmbientLightComponent>("Ambient Light", m_scene_context, ent, DrawAmbientLight);
+  DrawComponent<LightSpotComponent>("Light Spots", m_scene_context, ent, DrawLights);
 }
-void SceneHierarchyPanel::DrawCamera(Entity ent) const
-{
-  const bool open = ImGui::TreeNodeEx(TypeUtils::ToVoidPtr(typeid(CameraComponent).hash_code()),
-                                      TREE_NODE_FLAGS,
-                                      "CameraComponent");
-  ImGui::SameLine();
-  constexpr auto SETTINGS_ID = "SETTINGS_ID";
-  if (ImGui::Button("+"))
-  {
-    ImGui::OpenPopup(SETTINGS_ID);
-  }
 
-  bool remove_comp = false;
-  if (ImGui::BeginPopup(SETTINGS_ID))
-  {
-    if (ImGui::MenuItem("Remove component"))
-      remove_comp = true;
-
-    ImGui::EndPopup();
-  }
-
-  if (open)
-  {
-    auto& comp = m_scene_context->GetComponent<CameraComponent>(ent);
-
-    if (ImGui::Checkbox("Active", &comp.active))
-    {
-      comp.active = true;
-      m_scene_context->UpdateActiveCamera(ent);
-    }
-    ImGui::Checkbox("Fixed AR", &comp.fixed_ratio);
-
-    const std::array TITLES{ "Perspective"s, "Orthographic"s };
-    u8 current_mode = u8(comp.camera.GetProjectionMode());
-    const char* preview_value = TITLES.at(current_mode).c_str();
-    if (ImGui::BeginCombo("Projection", preview_value))
-    {
-      for (u32 n = 0; n < TITLES.size(); n++)
-      {
-        const bool is_selected = (current_mode == n);
-        if (ImGui::Selectable(TITLES.at(n).c_str(), is_selected))
-        {
-          current_mode = u8(n);
-          comp.camera.SetProjectionMode(ProjectionMode(current_mode));
-        }
-
-        if (is_selected)
-          ImGui::SetItemDefaultFocus();
-      }
-      ImGui::EndCombo();
-    }
-
-    if (comp.camera.IsInProjectionMode(ProjectionMode::PERSPECTIVE))
-    {
-      f32 fov = comp.camera.GetFov();
-      if (ImGui::DragFloat("FOV",
-                           &fov,
-                           10.0f,
-                           30.0f,
-                           100.0f,
-                           "%1.0f deg",
-                           ImGuiSliderFlags_AlwaysClamp))
-        comp.camera.SetFov(fov);
-    }
-
-    if (comp.camera.IsInProjectionMode(ProjectionMode::ORTHO))
-    {
-      f32 size = comp.camera.GetOrthographicSize();
-      if (ImGui::DragFloat("Size",
-                           &size,
-                           10.0f,
-                           5.0f,
-                           100.0f,
-                           "%1.0f",
-                           ImGuiSliderFlags_AlwaysClamp))
-        comp.camera.SetOrthographicSize(size);
-    }
-
-    Vec3 eye = comp.camera.GetPosition();
-    Vec3 target = comp.camera.GetTarget();
-
-    bool changed_eye = ImGui::DragFloat3("Eye", &eye.x, 0.01f);
-    bool changed_target = ImGui::DragFloat3("Target", &target.x, 0.01f);
-
-    if (changed_eye || changed_target)
-      comp.camera.SetView(eye, target);
-
-    ImGui::TreePop();
-  }
-
-  if (remove_comp)
-  {
-    m_scene_context->RemoveComponent<CameraComponent>(ent);
-  }
-}
-void SceneHierarchyPanel::DrawPrimitive(Entity ent) const
-{
-  ImGui::SameLine(ImGui::GetWindowWidth() - 25.0f);
-  constexpr auto SETTINGS_ID = "SETTINGS_ID";
-  if (ImGui::Button("+", { 20, 20 }))
-  {
-    ImGui::OpenPopup(SETTINGS_ID);
-  }
-
-  bool remove_comp = false;
-  if (ImGui::BeginPopup(SETTINGS_ID))
-  {
-    if (ImGui::MenuItem("Remove component"))
-    {
-      remove_comp = true;
-    }
-    ImGui::EndPopup();
-  }
-
-  const bool open = ImGui::TreeNodeEx(TypeUtils::ToVoidPtr(typeid(PrimitiveComponent).hash_code()),
-                                      TREE_NODE_FLAGS,
-                                      "Color");
-  if (open)
-  {
-    auto& cube_color = m_scene_context->GetComponent<PrimitiveComponent>(ent).color;
-
-    static Vec4 imgui_color{};
-    imgui_color = cube_color.ToVec4();
-
-    ImGui::ColorEdit4("Color", &imgui_color.x0);
-
-    cube_color = Color(imgui_color);
-    ImGui::TreePop();
-  }
-
-  if (remove_comp)
-  {
-    m_scene_context->RemoveComponent<PrimitiveComponent>(ent);
-  }
-}
-void SceneHierarchyPanel::DrawTransform(Entity ent) const
-{
-  if (ImGui::TreeNodeEx(TypeUtils::ToVoidPtr(typeid(TransformComponent).hash_code()),
-                        TREE_NODE_FLAGS,
-                        "Transform"))
-  {
-    auto& pos = m_scene_context->GetComponent<TransformComponent>(ent).position_values;
-    auto& scale = m_scene_context->GetComponent<TransformComponent>(ent).scale_values;
-    auto& rotate = m_scene_context->GetComponent<TransformComponent>(ent).rotate_values;
-
-    DrawVec3Control("Position", pos);
-    DrawVec3Control("Scale", scale, 1.0f);
-    scale.x = Arithmetic::IsEqual(scale.x, 0.0f) ? 1.0f : scale.x;
-    scale.y = Arithmetic::IsEqual(scale.y, 0.0f) ? 1.0f : scale.y;
-    scale.z = Arithmetic::IsEqual(scale.z, 0.0f) ? 1.0f : scale.z;
-    DrawVec3Control("Rotate", rotate);
-
-    ImGui::TreePop();
-  }
-}
+//-------------------------------------------------------------------------------------------------
 void SceneHierarchyPanel::DrawTag(Entity ent) const
 {
-  auto& tag = m_scene_context->GetComponent<TagComponent>(ent).tag;
+  auto& tag = m_scene_context.GetComponent<TagComponent>(ent).tag;
 
   constexpr auto BUFFER_SIZE = 256;
   std::array<char, BUFFER_SIZE> buffer{ '\0' };
@@ -414,50 +401,5 @@ void SceneHierarchyPanel::DrawTag(Entity ent) const
   if (ImGui::InputText("Tag", buffer.data(), sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue))
   {
     tag = std::string(buffer.data());
-  }
-}
-
-void SceneHierarchyPanel::DrawAmbientLight(Entity ent) const
-{
-  const bool open =
-    ImGui::TreeNodeEx(TypeUtils::ToVoidPtr(typeid(AmbientLightComponent).hash_code()),
-                      TREE_NODE_FLAGS,
-                      "Ambient Light");
-  if (open)
-  {
-    auto& amb_lig = m_scene_context->GetComponent<AmbientLightComponent>(ent);
-
-    static Vec4 imgui_color{};
-    imgui_color = amb_lig.color.ToVec4();
-    ImGui::ColorEdit4("Color", &imgui_color.x0);
-    amb_lig.color = Color(imgui_color);
-
-    ImGui::DragFloat("Strenght", &amb_lig.strenght, 0.01f, 0.0f, 1.0f);
-
-    ImGui::TreePop();
-  }
-}
-
-void SceneHierarchyPanel::DrawLights(Entity ent) const
-{
-  const bool open = ImGui::TreeNodeEx(TypeUtils::ToVoidPtr(typeid(LightSpotComponent).hash_code()),
-                                      TREE_NODE_FLAGS,
-                                      "LightSpot");
-  if (open)
-  {
-    auto& ls = m_scene_context->GetComponent<LightSpotComponent>(ent);
-
-    static Vec4 imgui_color{};
-    imgui_color = ls.color.ToVec4();
-    ImGui::ColorEdit4("Color", &imgui_color.x0);
-    ls.color = Color(imgui_color);
-
-    DrawVec3Control("Position", ls.position, 0.0f);
-
-    ImGui::DragFloat("Strenght", &ls.strenght, 0.1f, 0.0f, 10.0f);
-
-    ImGui::Checkbox("Active", &ls.active);
-
-    ImGui::TreePop();
   }
 }
