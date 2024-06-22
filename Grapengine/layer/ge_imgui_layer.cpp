@@ -1,11 +1,11 @@
 #include "layer/ge_imgui_layer.hpp"
 
+#include "core/ge_time_step.hpp"
 #include "profiling/ge_profiler.hpp"
 
 #include <GLFW/glfw3.h>
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
-#include <core/ge_time_step.hpp>
 #include <imgui.h>
 
 #undef USE_MULTIPLE_VIEWPORTS
@@ -39,6 +39,10 @@ void ImGuiLayer::OnAttach()
   io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
   io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
   io.IniFilename = nullptr;
+  constexpr auto FONT_SIZE = 16.0f;
+  io.Fonts->AddFontFromFileTTF("assets/fonts/Inter-Regular.ttf", FONT_SIZE);
+  io.Fonts->AddFontFromFileTTF("assets/fonts/Inter-Bold.ttf", FONT_SIZE);
+
   ImGui::LoadIniSettingsFromDisk("imgui.ini");
 #ifdef USE_MULTIPLE_VIEWPORTS
   io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
