@@ -24,7 +24,7 @@ TEST(IO, ReadFromFile)
   std::stringstream ss;
   {
     for (u32 r : randoms)
-      ss << r << "\n";
+      ss << r;
     std::ofstream testing_file{ file_to_read };
     testing_file << ss.rdbuf();
   }
