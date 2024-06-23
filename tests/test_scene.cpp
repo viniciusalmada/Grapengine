@@ -31,8 +31,7 @@ TEST(Scene, AddComponents)
 
   ASSERT_DEATH(scene->AddComponent<GE::TagComponent>(first_ent, "Other"), "");
   auto& transf = scene->AddComponent<GE::TransformComponent>(second_ent);
-  transf.position_values = GE::Vec3{};
+  transf.Position() = GE::Vec3{};
 
-  ASSERT_EQ(scene->GetComponent<GE::TransformComponent>(second_ent).position_values.x,
-            GE::Vec3{}.x);
+  ASSERT_EQ(scene->GetComponent<GE::TransformComponent>(second_ent).Position().x, GE::Vec3{}.x);
 }

@@ -9,9 +9,7 @@ namespace GE
   {
   public:
     Camera();
-    Camera(const Camera&) = delete;
     Camera(const Mat4 projection) : m_projection(projection) {}
-    virtual ~Camera();
 
     [[nodiscard]] const Mat4& GetProjection() const { return m_projection; }
 

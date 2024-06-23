@@ -26,11 +26,11 @@ void CamController::OnUpdate(TimeStep ts)
   const f32 incr = speed * ts.f();
 
   auto& camera_comp = m_scene.GetComponent<CameraComponent>(m_entity);
-  if (!camera_comp.active)
+  if (!camera_comp.IsActive())
     return;
 
-  auto cam_pos = camera_comp.camera.GetPosition();
-  auto tar_pos = camera_comp.camera.GetTarget();
+  auto cam_pos = camera_comp.GetCamera().GetPosition();
+  auto tar_pos = camera_comp.GetCamera().GetTarget();
 
   if (Input::IsKeyPressed(KeyCode::A))
   {
@@ -63,7 +63,7 @@ void CamController::OnUpdate(TimeStep ts)
     tar_pos.z += incr;
   }
 
-  camera_comp.camera.SetView(cam_pos, tar_pos);
+  camera_comp.GetCamera().SetView(cam_pos, tar_pos);
 }
 
 CamController::~CamController() = default;

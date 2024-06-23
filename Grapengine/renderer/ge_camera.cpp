@@ -226,5 +226,3 @@
 using namespace GE;
 
 Camera::Camera() = default;
-
-Camera::~Camera() = default;

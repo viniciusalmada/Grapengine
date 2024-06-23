@@ -18,8 +18,6 @@ namespace GE
   {
   public:
     SceneCamera();
-    SceneCamera(const SceneCamera&) = delete;
-    ~SceneCamera() override;
 
     [[nodiscard]] Mat4 GetViewProjection() const;
     [[nodiscard]] Vec3 GetPosition() const { return m_position; }
@@ -28,6 +26,7 @@ namespace GE
     [[nodiscard]] f32 GetOrthographicSize() const { return m_orthographic_size; }
     [[nodiscard]] ProjectionMode GetProjectionMode() const { return m_projection_mode; }
     [[nodiscard]] bool IsInProjectionMode(ProjectionMode m) const { return m == m_projection_mode; }
+    [[nodiscard]] const auto& GetViewport() const { return m_viewport; }
 
     void SetView(Vec3 position, Vec3 target);
     void SetFov(f32 fov);

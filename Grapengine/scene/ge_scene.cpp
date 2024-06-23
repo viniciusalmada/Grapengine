@@ -25,23 +25,23 @@ void Scene::OnUpdate(TimeStep ts)
   UpdateLightSpots(ts);
 
   {
-    auto amb_lights = m_registry.Group({ CompType::AMBIENT_LIGHT });
+    auto amb_lights = m_registry.Group<AmbientLightComponent>();
     if (!amb_lights.empty())
     {
       auto amb_light_itr = std::ranges::find_if(
         amb_lights,
-        [&](Entity al) { return m_registry.GetComponent<AmbientLightComponent>(al).active; });
+        [&](Entity al) { return m_registry.GetComponent<AmbientLightComponent>(al).IsActive(); });
 
       if (amb_light_itr != amb_lights.end())
       {
         const AmbientLightComponent& amb_light =
           m_registry.GetComponent<AmbientLightComponent>(*amb_light_itr);
-        Renderer::SetAmbientLight(amb_light.color, amb_light.strenght);
+        Renderer::SetAmbientLight(amb_light.GetColor(), amb_light.GetStr());
       }
     }
   }
   {
-    auto light_spots = m_registry.Group({ CompType::LIGHT_SPOT });
+    auto light_spots = m_registry.Group<LightSpotComponent>();
     if (!light_spots.empty())
     {
       std::vector<std::tuple<Vec3, Color, f32>> props;
@@ -53,7 +53,7 @@ void Scene::OnUpdate(TimeStep ts)
         [&](Entity l)
         {
           const auto& lp = m_registry.GetComponent<LightSpotComponent>(l);
-          return std::make_tuple(lp.position, lp.color, lp.active ? lp.strenght : 0.0f);
+          return std::make_tuple(lp.GetPos(), lp.GetColor(), lp.IsActive() ? lp.GetStr() : 0.0f);
         });
       Renderer::SetLightSpots(props);
     }
@@ -65,19 +65,19 @@ void Scene::OnUpdate(TimeStep ts)
 void Scene::UpdateNativeScripts(TimeStep& ts)
 {
   GE_PROFILE;
-  const std::vector<Entity> g = m_registry.Group({ CompType::NATIVE_SCRIPT });
+  const std::vector<Entity> g = m_registry.Group<NativeScriptComponent>();
 
   // Move to Scene::OnScenePlay
   for (auto ent : g)
   {
     const auto& nsc = m_registry.GetComponent<NativeScriptComponent>(ent);
-    if (nsc.instance == nullptr)
+    if (!nsc.IsValid())
     {
-      nsc.instantiateFun(ent, *this);
-      nsc.instance->OnCreate();
+      nsc.Instantiate(ent, *this);
+      nsc.GetInstance()->OnCreate();
     }
 
-    nsc.instance->OnUpdate(ts);
+    nsc.GetInstance()->OnUpdate(ts);
   }
 }
 
@@ -94,19 +94,19 @@ void Scene::UpdateDrawableEntities(TimeStep& /*ts*/)
 
   const CameraComponent& cam_component = m_registry.GetComponent<CameraComponent>(active_camera);
 
-  const std::vector<Entity> gmat = m_registry.Group({ CompType::TRANF, CompType::PRIMITIVE });
+  const std::vector<Entity> gmat = m_registry.Group<TransformComponent, PrimitiveComponent>();
 
   {
     GE_PROFILE_SECTION("Batch renderer");
-    Renderer::Batch::Begin(cam_component.camera.GetViewProjection());
+    Renderer::Batch::Begin(cam_component.GetCamera().GetViewProjection());
     for (auto ent : gmat)
     {
       const TransformComponent& transl_scale_comp =
         m_registry.GetComponent<TransformComponent>(ent);
 
       const PrimitiveComponent& primitive = m_registry.GetComponent<PrimitiveComponent>(ent);
-      auto vertices = primitive.drawable->GetVerticesData(primitive.color);
-      auto indices = primitive.drawable->GetIndicesData();
+      auto vertices = primitive.GetDrawable()->GetVerticesData(primitive.GetColor());
+      auto indices = primitive.GetDrawable()->GetIndicesData();
 
       Renderer::Batch::PushObject(std::move(vertices), indices, transl_scale_comp.GetModelMat());
     }
@@ -140,13 +140,13 @@ void Scene::OnViewportResize(Dimension dim)
 {
   m_viewport = dim;
 
-  const std::vector<Entity> camera_entities = m_registry.Group({ CompType::CAMERA });
+  const std::vector<Entity> camera_entities = m_registry.Group<CameraComponent>();
   for (auto ent : camera_entities)
   {
     auto& cam_comp = m_registry.GetComponent<CameraComponent>(ent);
-    if (!cam_comp.fixed_ratio)
+    if (!cam_comp.IsFixedRatio())
     {
-      cam_comp.camera.SetViewport(dim);
+      cam_comp.GetCamera().SetViewport(dim);
     }
   }
 }
@@ -154,7 +154,7 @@ void Scene::OnViewportResize(Dimension dim)
 Opt<Entity> Scene::RetrieveActiveCamera() const
 {
   GE_PROFILE;
-  std::vector<Entity> camera_group = m_registry.Group({ CompType::CAMERA });
+  std::vector<Entity> camera_group = m_registry.Group<CameraComponent>();
   if (camera_group.empty())
   {
     GE_INFO("No camera")
@@ -165,18 +165,18 @@ Opt<Entity> Scene::RetrieveActiveCamera() const
                            [&](Entity ent)
                            {
                              const auto& cc = m_registry.GetComponent<CameraComponent>(ent);
-                             return cc.active;
+                             return cc.IsActive();
                            }))
   {
     GE_INFO("No active camera")
     return std::nullopt;
   }
 
-  if (std::ranges::count(
-        camera_group |
-          std::views::transform([&](Entity ent) -> bool
-                                { return m_registry.GetComponent<CameraComponent>(ent).active; }),
-        true) > 1)
+  if (std::ranges::count(camera_group |
+                           std::views::transform(
+                             [&](Entity ent) -> bool
+                             { return m_registry.GetComponent<CameraComponent>(ent).IsActive(); }),
+                         true) > 1)
   {
     GE_INFO("More than one active camera")
     return std::nullopt;
@@ -184,7 +184,7 @@ Opt<Entity> Scene::RetrieveActiveCamera() const
 
   const Entity active_camera = *std::ranges::find_if(
     camera_group,
-    [&](Entity ent) -> bool { return m_registry.GetComponent<CameraComponent>(ent).active; });
+    [&](Entity ent) -> bool { return m_registry.GetComponent<CameraComponent>(ent).IsActive(); });
 
   return active_camera;
 }
@@ -198,12 +198,12 @@ void Scene::EachEntity(const std::function<void(Entity)>& fun) const
 void Scene::UpdateActiveCamera(Opt<Entity> activeCamera)
 {
   GE_PROFILE;
-  auto cameras = m_registry.Group({ CompType::CAMERA });
+  auto cameras = m_registry.Group<CameraComponent>();
   for (const Entity& ent : cameras)
   {
     if (ent == activeCamera)
       continue;
-    m_registry.GetComponent<CameraComponent>(ent).active = false;
+    m_registry.GetComponent<CameraComponent>(ent).SetActive(false);
   }
   m_active_camera = activeCamera;
 }
@@ -220,22 +220,22 @@ void Scene::UpdateLightSpots(TimeStep& /*ts*/)
   const auto& active_camera = m_active_camera.value();
 
   const CameraComponent& cam_component = m_registry.GetComponent<CameraComponent>(active_camera);
-  const std::vector<Entity> light_spots = m_registry.Group({ CompType::LIGHT_SPOT });
+  const std::vector<Entity> light_spots = m_registry.Group<LightSpotComponent>();
 
   Renderer::SetAmbientLight(Colors::WHITE, 1.0f);
   Renderer::SetLightSpots(std::vector<std::tuple<Vec3, Color, f32>>{
     std::make_tuple(Vec3{ 0, 0, 0 }, Colors::BLACK, 0.0f),
     std::make_tuple(Vec3{ 0, 0, 0 }, Colors::BLACK, 0.0f) });
 
-  Renderer::Batch::Begin(cam_component.camera.GetViewProjection());
+  Renderer::Batch::Begin(cam_component.GetCamera().GetViewProjection());
   for (auto ent : light_spots)
   {
     const auto& lp = m_registry.GetComponent<LightSpotComponent>(ent);
-    if (!lp.active)
+    if (!lp.IsActive())
       continue;
-    Mat4 translate = Transform::Translate(lp.position) * Transform::Scale(0.1f, 0.1f, 0.1f);
-    auto vertices = lp.drawable->GetVerticesData(lp.color);
-    auto indices = lp.drawable->GetIndicesData();
+    Mat4 translate = Transform::Translate(lp.GetPos()) * Transform::Scale(0.1f, 0.1f, 0.1f);
+    auto vertices = lp.GetDrawable()->GetVerticesData(lp.GetColor());
+    auto indices = lp.GetDrawable()->GetIndicesData();
     Renderer::Batch::PushObject(std::move(vertices), indices, translate);
   }
   Renderer::Batch::End();

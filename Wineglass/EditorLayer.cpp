@@ -19,12 +19,12 @@ void EditorLayer::OnAttach()
 {
   auto amb_light = m_scene->CreateEntity("Ambient light");
   auto& c = m_scene->AddComponent<AmbientLightComponent>(amb_light, Colors::WHITE, .25f);
-  c.active = true;
+  c.SetActive(true);
 
   auto l1 = m_scene->CreateEntity("L1");
-  m_scene->AddComponent<LightSpotComponent>(l1, Colors::RED, Vec3{ 0, 0, 0 }, 1.0f);
+  m_scene->AddComponent<LightSpotComponent>(l1, Colors::RED, Vec3{ 0, 0, 0 }, 1.0f, true);
   auto l2 = m_scene->CreateEntity("L2");
-  m_scene->AddComponent<LightSpotComponent>(l2, Colors::BLUE, Vec3{ 5, 5, 5 }, 1.0f);
+  m_scene->AddComponent<LightSpotComponent>(l2, Colors::BLUE, Vec3{ 5, 5, 5 }, 1.0f, true);
 
   m_scene->AddComponent<CameraComponent>(m_front_camera_entity,
                                          Vec3{ 0, 0, 10 },

@@ -139,15 +139,17 @@ namespace
   //-------------------------------------------------------------------------------------------------
   void DrawCamera(CameraComponent& comp)
   {
-    if (ImGui::Checkbox("Active", &comp.active))
+    bool camera_active = comp.IsActive();
+    if (ImGui::Checkbox("Active", &camera_active))
     {
-      comp.active = true;
+      comp.SetActive(true);
       //      scene.UpdateActiveCamera(ent); TODO
     }
-    ImGui::Checkbox("Fixed AR", &comp.fixed_ratio);
+    bool is_fixed = comp.IsFixedRatio();
+    ImGui::Checkbox("Fixed AR", &is_fixed);
 
     const std::array TITLES{ "Perspective"s, "Orthographic"s };
-    u8 current_mode = u8(comp.camera.GetProjectionMode());
+    u8 current_mode = u8(comp.GetCamera().GetProjectionMode());
     const char* preview_value = TITLES.at(current_mode).c_str();
     if (ImGui::BeginCombo("Projection", preview_value))
     {
@@ -157,7 +159,7 @@ namespace
         if (ImGui::Selectable(TITLES.at(n).c_str(), is_selected))
         {
           current_mode = u8(n);
-          comp.camera.SetProjectionMode(ProjectionMode(current_mode));
+          comp.GetCamera().SetProjectionMode(ProjectionMode(current_mode));
         }
 
         if (is_selected)
@@ -166,9 +168,9 @@ namespace
       ImGui::EndCombo();
     }
 
-    if (comp.camera.IsInProjectionMode(ProjectionMode::PERSPECTIVE))
+    if (comp.GetCamera().IsInProjectionMode(ProjectionMode::PERSPECTIVE))
     {
-      f32 fov = comp.camera.GetFov();
+      f32 fov = comp.GetCamera().GetFov();
       if (ImGui::DragFloat("FOV",
                            &fov,
                            1.0f,
@@ -176,12 +178,12 @@ namespace
                            100.0f,
                            "%1.0f deg",
                            ImGuiSliderFlags_AlwaysClamp))
-        comp.camera.SetFov(fov);
+        comp.GetCamera().SetFov(fov);
     }
 
-    if (comp.camera.IsInProjectionMode(ProjectionMode::ORTHO))
+    if (comp.GetCamera().IsInProjectionMode(ProjectionMode::ORTHO))
     {
-      f32 size = comp.camera.GetOrthographicSize();
+      f32 size = comp.GetCamera().GetOrthographicSize();
       if (ImGui::DragFloat("Size",
                            &size,
                            10.0f,
@@ -189,38 +191,36 @@ namespace
                            100.0f,
                            "%1.0f",
                            ImGuiSliderFlags_AlwaysClamp))
-        comp.camera.SetOrthographicSize(size);
+        comp.GetCamera().SetOrthographicSize(size);
     }
 
-    Vec3 eye = comp.camera.GetPosition();
-    Vec3 target = comp.camera.GetTarget();
+    Vec3 eye = comp.GetCamera().GetPosition();
+    Vec3 target = comp.GetCamera().GetTarget();
 
     bool changed_eye = ImGui::DragFloat3("Eye", &eye.x, 0.01f);
     bool changed_target = ImGui::DragFloat3("Target", &target.x, 0.01f);
 
     if (changed_eye || changed_target)
-      comp.camera.SetView(eye, target);
+      comp.GetCamera().SetView(eye, target);
   }
 
   //-------------------------------------------------------------------------------------------------
   void DrawPrimitive(PrimitiveComponent& comp)
   {
-    //    auto& cube_color = scene.GetComponent<PrimitiveComponent>(ent).color;
-
     static Vec4 imgui_color{};
-    imgui_color = comp.color.ToVec4();
+    imgui_color = comp.GetColor().ToVec4();
 
     ImGui::ColorEdit4("Color", &imgui_color.x0);
 
-    comp.color = Color(imgui_color);
+    comp.SetColor(Color(imgui_color));
   }
 
   //-------------------------------------------------------------------------------------------------
   void DrawTransform(TransformComponent& comp)
   {
-    auto& pos = comp.position_values;
-    auto& scale = comp.scale_values;
-    auto& rotate = comp.rotate_values;
+    auto& pos = comp.Position();
+    auto& scale = comp.Scale();
+    auto& rotate = comp.Rotate();
 
     DrawVec3Control("Position", pos);
     DrawVec3Control("Scale", scale, 1.0f);
@@ -233,30 +233,29 @@ namespace
   //-------------------------------------------------------------------------------------------------
   void DrawAmbientLight(AmbientLightComponent& comp)
   {
-    //    auto& amb_lig = scene.GetComponent<AmbientLightComponent>(ent);
-
     static Vec4 imgui_color{};
-    imgui_color = comp.color.ToVec4();
+    imgui_color = comp.GetColor().ToVec4();
     ImGui::ColorEdit4("Color", &imgui_color.x0);
-    comp.color = Color(imgui_color);
+    comp.SetColor(Color(imgui_color));
 
-    ImGui::DragFloat("Strenght", &comp.strenght, 0.01f, 0.0f, 1.0f);
+    f32 str = comp.GetStr();
+    ImGui::DragFloat("Strenght", &str, 0.01f, 0.0f, 1.0f);
+    comp.SetStr(str);
   }
 
   //-------------------------------------------------------------------------------------------------
   void DrawLights(LightSpotComponent& comp)
   {
     static Vec4 imgui_color{};
-    //    auto& ls = scene.GetComponent<LightSpotComponent>(ent);
-    imgui_color = comp.color.ToVec4();
+    imgui_color = comp.ColorRef().ToVec4();
     ImGui::ColorEdit4("Color", &imgui_color.x0);
-    comp.color = Color(imgui_color);
+    comp.ColorRef() = Color(imgui_color);
 
-    DrawVec3Control("Position", comp.position, 0.0f);
+    DrawVec3Control("Position", comp.Position(), 0.0f);
 
-    ImGui::DragFloat("Strenght", &comp.strenght, 0.1f, 0.0f, 10.0f);
+    ImGui::DragFloat("Strenght", &comp.Strenght(), 0.1f, 0.0f, 10.0f);
 
-    ImGui::Checkbox("Active", &comp.active);
+    ImGui::Checkbox("Active", &comp.Active());
   }
 
 }
@@ -307,7 +306,7 @@ void SceneHierarchyPanel::OnImGuiRender()
         {
           if (ImGui::MenuItem("Camera"))
           {
-            m_scene_context.AddComponent<CameraComponent>(ent);
+            m_scene_context.AddComponent<CameraComponent>(ent, Vec3{}, Vec3{}, false, true);
             ImGui::CloseCurrentPopup();
           }
         }
@@ -339,7 +338,7 @@ void SceneHierarchyPanel::DrawEntityNode(Entity ent)
   const int flags = is_selected | ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanFullWidth;
 
   auto& tag = m_scene_context.GetComponent<TagComponent>(ent);
-  bool expanded = ImGui::TreeNodeEx(node_id, flags, "%s", tag.tag.c_str());
+  bool expanded = ImGui::TreeNodeEx(node_id, flags, "%s", tag.GetTag());
 
   if (ImGui::IsItemClicked(ImGuiMouseButton_Left) || ImGui::IsItemClicked(ImGuiMouseButton_Right))
   {
@@ -393,7 +392,7 @@ void SceneHierarchyPanel::DrawComponents(Entity ent)
 //-------------------------------------------------------------------------------------------------
 void SceneHierarchyPanel::DrawTag(Entity ent) const
 {
-  auto& tag = m_scene_context.GetComponent<TagComponent>(ent).tag;
+  auto& tag = m_scene_context.GetComponent<TagComponent>(ent).Tag();
 
   constexpr auto BUFFER_SIZE = 256;
   std::array<char, BUFFER_SIZE> buffer{ '\0' };

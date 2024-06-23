@@ -1,7 +1,6 @@
 #ifndef GRAPENGINE_GE_EC_REGISTRY_HPP
 #define GRAPENGINE_GE_EC_REGISTRY_HPP
 
-#include "ge_comp_types.hpp"
 #include "ge_components.hpp"
 #include "ge_entity.hpp"
 #include "profiling/ge_profiler.hpp"
@@ -32,21 +31,20 @@ namespace GE
       GE_PROFILE;
       GE_ASSERT(!Has<Component>(ent), "Entity already has this component!")
 
-      auto& added = m_components[ent].emplace_back(MakeRef<Component>(std::forward<Args>(args)...));
-      GE_ASSERT(added->Type() != CompType::BASE, "Component must not have BASE type")
-      m_entities_with_components[ent].insert(added->Type());
+      VarComponent& added =
+        m_components[ent].emplace_back(std::in_place_type<Component>, std::forward<Args>(args)...);
+      m_entities_with_components[ent].insert(typeid(Component).hash_code());
 
-      return dynamic_cast<Component&>(*added);
+      return *std::get_if<Component>(&added);
     }
 
     template <typename Component>
     void RemoveComponent(Entity entity)
     {
-      BaseComponent& comp = GetComponent<Component>(entity);
-      m_entities_with_components[entity].erase(comp.Type());
+      m_entities_with_components[entity].erase(typeid(Component).hash_code());
       auto& ent_components = m_components[entity];
       std::erase_if(ent_components,
-                    [&](const Ptr<BaseComponent>& bc) { return comp.Type() == bc->Type(); });
+                    [&](const VarComponent& c) { return std::holds_alternative<Component>(c); });
     }
 
     /**
@@ -61,10 +59,12 @@ namespace GE
       GE_PROFILE;
       GE_ASSERT(Has<Component>(ent), "Entity does not have this component!")
 
-      auto found =
-        std::ranges::find_if(m_components.at(ent),
-                             [&](auto&& anyComp) { return typeid(*anyComp) == typeid(Component); });
-      return dynamic_cast<Component&>(**found);
+      auto found = std::ranges::find_if(m_components.at(ent),
+                                        [&](auto&& anyComp)
+                                        { return std::holds_alternative<Component>(anyComp); });
+      VarComponent& var_component = *found;
+      Component* alc = std::get_if<Component>(&var_component);
+      return *alc;
     }
 
     /**
@@ -79,10 +79,12 @@ namespace GE
       GE_PROFILE;
       GE_ASSERT(Has<Component>(ent), "Entity does not have this component!")
 
-      auto found =
-        std::ranges::find_if(m_components.at(ent),
-                             [&](auto&& anyComp) { return typeid(*anyComp) == typeid(Component); });
-      return dynamic_cast<const Component&>(**found);
+      auto found = std::ranges::find_if(m_components.at(ent),
+                                        [&](auto&& anyComp)
+                                        { return std::holds_alternative<Component>(anyComp); });
+      const VarComponent& var_component = *found;
+      const Component* alc = std::get_if<Component>(&var_component);
+      return *alc;
     }
 
     /**
@@ -104,29 +106,41 @@ namespace GE
       if (m_components.at(ent).empty())
         return false;
 
-      auto found = std::ranges::find_if(m_components.at(ent),
-                                        [&](const Ptr<BaseComponent>& anyComp)
-                                        {
-                                          [[maybe_unused]] auto& comp_ref = *anyComp;
-                                          return typeid(comp_ref) == typeid(Comp);
-                                        });
-      return found != m_components.at(ent).end();
+      auto found = std::ranges::find_if(m_entities_with_components.at(ent),
+                                        [&](u64 compHashCode)
+                                        { return typeid(Comp).hash_code() == compHashCode; });
+      return found != m_entities_with_components.at(ent).end();
     }
 
     /**
      * Retrieve list of entities that has all passed components
-     * @param comps list of components used to query the entities
+     * @tparam Comps list of components used to query the entities
      * @return set of entities that has all given components in common
      */
-    [[nodiscard]] std::vector<Entity> Group(const std::set<CompType>&& comps) const;
+    template <typename... Comps>
+    [[nodiscard]] std::vector<Entity> Group() const
+    {
+      GE_PROFILE;
+
+      std::set<u64> comps;
+      (..., [&] { comps.insert(typeid(Comps).hash_code()); }());
+
+      std::vector<Entity> entities;
+      for (const auto& [ent, its_comps] : m_entities_with_components)
+      {
+        if (std::ranges::includes(its_comps, comps))
+          entities.push_back(ent);
+      }
+      return entities;
+    }
 
     void Each(const std::function<void(Entity)>& action) const;
 
   private:
     u32 m_entity_next_id = 0;
     std::set<Entity> m_entities;
-    std::map<Entity, std::list<Ptr<BaseComponent>>> m_components;
-    std::map<Entity, std::set<CompType>> m_entities_with_components;
+    std::map<Entity, std::vector<VarComponent>> m_components;
+    std::map<Entity, std::set<u64>> m_entities_with_components;
   };
 } // GE
 
