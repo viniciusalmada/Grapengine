@@ -63,7 +63,7 @@ namespace GE
         m_registry.RemoveComponent<Component>(ent);
     }
 
-    void EachEntity(const std::function<void(Entity)>& fun) const;
+    void EachEntity(const std::function<void(Entity)>& fun);
 
   private:
     void UpdateNativeScripts(TimeStep& ts);

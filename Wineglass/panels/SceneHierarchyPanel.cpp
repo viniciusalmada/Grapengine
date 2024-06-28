@@ -92,8 +92,11 @@ namespace
     ImGui::PopID();
   }
 
-  constexpr ImGuiTreeNodeFlags TREE_NODE_FLAGS = ImGuiTreeNodeFlags_DefaultOpen //
-                                                 | ImGuiTreeNodeFlags_AllowItemOverlap;
+  //  const int flags = is_selected | ImGuiTreeNodeFlags_OpenOnArrow |
+  //  ImGuiTreeNodeFlags_SpanFullWidth;
+  constexpr ImGuiTreeNodeFlags TREE_NODE_FLAGS =
+    ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_DefaultOpen //
+    | ImGuiTreeNodeFlags_AllowOverlap | ImGuiTreeNodeFlags_SpanFullWidth;
 
   //-------------------------------------------------------------------------------------------------
   template <typename T, typename UIFun>
@@ -128,7 +131,7 @@ namespace
 
     if (open)
     {
-      fun(std::ref(scene.GetComponent<T>(ent)));
+      fun(scene, ent, std::ref(scene.GetComponent<T>(ent)));
       ImGui::TreePop();
     }
 
@@ -137,29 +140,31 @@ namespace
   }
 
   //-------------------------------------------------------------------------------------------------
-  void DrawCamera(CameraComponent& comp)
+  void DrawCamera(Scene& scene, Entity e, CameraComponent& comp)
   {
-    bool camera_active = comp.IsActive();
-    if (ImGui::Checkbox("Active", &camera_active))
+    if (!comp.IsActive())
     {
-      comp.SetActive(true);
-      //      scene.UpdateActiveCamera(ent); TODO
+      if (ImGui::Button("Activate camera"))
+      {
+        comp.SetActive(true);
+        scene.UpdateActiveCamera(e);
+      }
     }
     bool is_fixed = comp.IsFixedRatio();
     ImGui::Checkbox("Fixed AR", &is_fixed);
 
     const std::array TITLES{ "Perspective"s, "Orthographic"s };
-    u8 current_mode = u8(comp.GetCamera().GetProjectionMode());
-    const char* preview_value = TITLES.at(current_mode).c_str();
+    auto current_mode = comp.GetCamera().GetProjectionMode();
+    const char* preview_value = TITLES.at(static_cast<u8>(current_mode)).c_str();
     if (ImGui::BeginCombo("Projection", preview_value))
     {
       for (u32 n = 0; n < TITLES.size(); n++)
       {
-        const bool is_selected = (current_mode == n);
+        const bool is_selected = (static_cast<u8>(current_mode) == n);
         if (ImGui::Selectable(TITLES.at(n).c_str(), is_selected))
         {
-          current_mode = u8(n);
-          comp.GetCamera().SetProjectionMode(ProjectionMode(current_mode));
+          current_mode = static_cast<ProjectionMode>(n);
+          comp.GetCamera().SetProjectionMode(current_mode);
         }
 
         if (is_selected)
@@ -197,15 +202,16 @@ namespace
     Vec3 eye = comp.GetCamera().GetPosition();
     Vec3 target = comp.GetCamera().GetTarget();
 
-    bool changed_eye = ImGui::DragFloat3("Eye", &eye.x, 0.01f);
-    bool changed_target = ImGui::DragFloat3("Target", &target.x, 0.01f);
+    constexpr auto CAMERA_STEP = 0.01f;
+    bool changed_eye = ImGui::DragFloat3("Eye", &eye.x, CAMERA_STEP);
+    bool changed_target = ImGui::DragFloat3("Target", &target.x, CAMERA_STEP);
 
     if (changed_eye || changed_target)
       comp.GetCamera().SetView(eye, target);
   }
 
   //-------------------------------------------------------------------------------------------------
-  void DrawPrimitive(PrimitiveComponent& comp)
+  void DrawPrimitive(Scene& /*scene*/, Entity /*e*/, PrimitiveComponent& comp)
   {
     static Vec4 imgui_color{};
     imgui_color = comp.GetColor().ToVec4();
@@ -216,7 +222,7 @@ namespace
   }
 
   //-------------------------------------------------------------------------------------------------
-  void DrawTransform(TransformComponent& comp)
+  void DrawTransform(Scene& /*scene*/, Entity /*e*/, TransformComponent& comp)
   {
     auto& pos = comp.Position();
     auto& scale = comp.Scale();
@@ -231,7 +237,7 @@ namespace
   }
 
   //-------------------------------------------------------------------------------------------------
-  void DrawAmbientLight(AmbientLightComponent& comp)
+  void DrawAmbientLight(Scene& /*scene*/, Entity /*e*/, AmbientLightComponent& comp)
   {
     static Vec4 imgui_color{};
     imgui_color = comp.GetColor().ToVec4();
@@ -239,12 +245,13 @@ namespace
     comp.SetColor(Color(imgui_color));
 
     f32 str = comp.GetStr();
-    ImGui::DragFloat("Strenght", &str, 0.01f, 0.0f, 1.0f);
+    constexpr auto STRENGHT_STEP = 0.01f;
+    ImGui::DragFloat("Strenght", &str, STRENGHT_STEP, 0.0f, 1.0f);
     comp.SetStr(str);
   }
 
   //-------------------------------------------------------------------------------------------------
-  void DrawLights(LightSpotComponent& comp)
+  void DrawLights(Scene& /*scene*/, Entity /*e*/, LightSpotComponent& comp)
   {
     static Vec4 imgui_color{};
     imgui_color = comp.ColorRef().ToVec4();
@@ -253,7 +260,10 @@ namespace
 
     DrawVec3Control("Position", comp.Position(), 0.0f);
 
-    ImGui::DragFloat("Strenght", &comp.Strenght(), 0.1f, 0.0f, 10.0f);
+    constexpr auto LIGHT_STEP = 0.1f;
+    constexpr auto MIN_LIGHT_STR = 0.0f;
+    constexpr auto MAX_LIGHT_STR = 10.0f;
+    ImGui::DragFloat("Strenght", &comp.Strenght(), LIGHT_STEP, MIN_LIGHT_STR, MAX_LIGHT_STR);
 
     ImGui::Checkbox("Active", &comp.Active());
   }
@@ -272,6 +282,7 @@ SceneHierarchyPanel::SceneHierarchyPanel(const Ptr<Scene>& scene) : m_scene_cont
 void SceneHierarchyPanel::OnImGuiRender()
 {
   ImGui::Begin("Scene Entities");
+
   m_scene_context.EachEntity([&](Entity ent) { DrawEntityNode(ent); });
 
   if (ImGui::IsMouseDown(ImGuiMouseButton_Left) && ImGui::IsWindowHovered())
@@ -333,14 +344,8 @@ void SceneHierarchyPanel::OnImGuiRender()
 //-------------------------------------------------------------------------------------------------
 void SceneHierarchyPanel::DrawEntityNode(Entity ent)
 {
-  void* node_id = TypeUtils::ToVoidPtr(i32(ent));
-  const int is_selected = ent == m_selected_entity ? ImGuiTreeNodeFlags_Selected : 0;
-  const int flags = is_selected | ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanFullWidth;
-
   auto& tag = m_scene_context.GetComponent<TagComponent>(ent);
-  bool expanded = ImGui::TreeNodeEx(node_id, flags, "%s", tag.GetTag());
-
-  if (ImGui::IsItemClicked(ImGuiMouseButton_Left) || ImGui::IsItemClicked(ImGuiMouseButton_Right))
+  if (ImGui::Selectable(tag.GetTag(), ent == m_selected_entity))
   {
     m_selected_entity = ent;
   }
@@ -356,24 +361,42 @@ void SceneHierarchyPanel::DrawEntityNode(Entity ent)
     }
   }
 
-  if (expanded)
-  {
-    //    constexpr auto OFFSET = 1434;
-    //    bool expanded2 = ImGui::TreeNodeEx(TypeUtils::ToVoidPtr(OFFSET + i32(ent)),
-    //                                       ImGuiTreeNodeFlags_None,
-    //                                       "%s",
-    //                                       tag.tag.c_str());
-    //    if (expanded2)
-    //      ImGui::TreePop();
-    ImGui::TreePop();
-  }
-
   if (delete_entity)
   {
     m_scene_context.DestroyEntity(ent);
     if (ent == m_selected_entity)
       m_selected_entity = {};
   }
+
+  //  void* node_id = TypeUtils::ToVoidPtr(i32(ent));
+  //  const int is_selected = ent == m_selected_entity ? ImGuiTreeNodeFlags_Selected : 0;
+  //
+  //  auto& tag = m_scene_context.GetComponent<TagComponent>(ent);
+  //  bool expanded = ImGui::TreeNodeEx(node_id, TREE_NODE_FLAGS, "%s", tag.GetTag());
+  //
+  //  if (ImGui::IsItemClicked(ImGuiMouseButton_Left) ||
+  //  ImGui::IsItemClicked(ImGuiMouseButton_Right))
+  //  {
+  //    m_selected_entity = ent;
+  //  }
+  //
+  //  bool delete_entity = false;
+  //  if (m_selected_entity == ent)
+  //  {
+  //    if (ImGui::BeginPopupContextWindow())
+  //    {
+  //      if (ImGui::MenuItem("Delete entity"))
+  //        delete_entity = true;
+  //      ImGui::EndPopup();
+  //    }
+  //  }
+  //
+  //  if (delete_entity)
+  //  {
+  //    m_scene_context.DestroyEntity(ent);
+  //    if (ent == m_selected_entity)
+  //      m_selected_entity = {};
+  //  }
 }
 
 //-------------------------------------------------------------------------------------------------

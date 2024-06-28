@@ -189,7 +189,7 @@ Opt<Entity> Scene::RetrieveActiveCamera() const
   return active_camera;
 }
 
-void Scene::EachEntity(const std::function<void(Entity)>& fun) const
+void Scene::EachEntity(const std::function<void(Entity)>& fun)
 {
   GE_PROFILE;
   m_registry.Each(fun);

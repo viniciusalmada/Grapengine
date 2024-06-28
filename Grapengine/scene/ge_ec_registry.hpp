@@ -134,13 +134,15 @@ namespace GE
       return entities;
     }
 
-    void Each(const std::function<void(Entity)>& action) const;
+    void Each(const std::function<void(Entity)>& action);
 
   private:
     u32 m_entity_next_id = 0;
     std::set<Entity> m_entities;
     std::map<Entity, std::vector<VarComponent>> m_components;
     std::map<Entity, std::set<u64>> m_entities_with_components;
+    bool m_in_loop = false;
+    std::set<Entity> m_destroy_queue;
   };
 } // GE
 
