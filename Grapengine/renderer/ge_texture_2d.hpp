@@ -12,12 +12,14 @@ namespace GE
   {
   public:
     static Ptr<Texture2D> Make();
+    static Ptr<Texture2D> Make(const std::filesystem::path& path);
 
     explicit Texture2D();
     explicit Texture2D(const std::filesystem::path& path);
     ~Texture2D();
 
     void Bind(u32 slot) const;
+    RendererID GetRendererID() const;
 
   private:
     std::filesystem::path m_path;

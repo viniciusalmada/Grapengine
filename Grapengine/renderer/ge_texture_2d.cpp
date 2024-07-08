@@ -47,7 +47,7 @@ Texture2D::Texture2D(const std::filesystem::path& path) : m_dim(), m_renderer_ID
   {
     u32 id = 0;
     glCreateTextures(GL_TEXTURE_2D, 1, &id);
-    m_renderer_ID = RendererID{ 0 };
+    m_renderer_ID = RendererID{ id };
   }
   glTextureStorage2D(u32(m_renderer_ID), 1, internal_format, w, h);
 
@@ -113,4 +113,14 @@ void Texture2D::Bind(u32 slot) const
 Ptr<Texture2D> GE::Texture2D::Make()
 {
   return GE::MakeRef<Texture2D>();
+}
+
+Ptr<Texture2D> GE::Texture2D::Make(const std::filesystem::path& path)
+{
+  return GE::MakeRef<Texture2D>(path);
+}
+
+RendererID GE::Texture2D::GetRendererID() const
+{
+  return m_renderer_ID;
 }
