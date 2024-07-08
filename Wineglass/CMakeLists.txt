@@ -18,7 +18,6 @@ target_include_directories(Wine PRIVATE SYSTEM
 )
 target_link_libraries(Wine PRIVATE Grapengine)
 target_link_libraries(Wine PRIVATE NativeScripts)
-target_link_libraries(Wine PRIVATE GrapengineCompileOptions)
 
 target_link_libraries(Wine PRIVATE -ltbb)
 

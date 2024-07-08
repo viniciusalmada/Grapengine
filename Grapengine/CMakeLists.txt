@@ -50,7 +50,7 @@ target_compile_definitions(Grapengine PRIVATE
   GRAPENGINE_CORE
 )
 
-target_link_libraries(Grapengine PRIVATE GrapengineCompileOptions)
+target_link_libraries(Grapengine PUBLIC GrapengineCompileOptions)
 
 ##############################################################################
 #
