@@ -6,6 +6,7 @@
 #include "core/ge_assert.hpp"
 #include "core/ge_memory.hpp"
 #include "core/ge_time_step.hpp"
+#include "core/ge_type_aliases.hpp"
 #include "core/ge_window.hpp"
 
 // Input
