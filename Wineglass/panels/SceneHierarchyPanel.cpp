@@ -271,12 +271,7 @@ namespace
 }
 
 //--------------------------------------------------------------------------------------------------
-SceneHierarchyPanel::SceneHierarchyPanel(const Ptr<Scene>& scene) : m_scene_context(*scene)
-{
-  { // TODO: Remove later
-    m_selected_entity = Entity{ 2 };
-  }
-}
+SceneHierarchyPanel::SceneHierarchyPanel(const Ptr<Scene>& scene) : m_scene_context(*scene) {}
 
 //-------------------------------------------------------------------------------------------------
 void SceneHierarchyPanel::OnImGuiRender()
@@ -284,9 +279,6 @@ void SceneHierarchyPanel::OnImGuiRender()
   ImGui::Begin("Scene Entities");
 
   m_scene_context.EachEntity([&](Entity ent) { DrawEntityNode(ent); });
-
-  if (ImGui::IsMouseDown(ImGuiMouseButton_Left) && ImGui::IsWindowHovered())
-    m_selected_entity = std::nullopt;
 
   if (!m_selected_entity)
   {
@@ -298,7 +290,6 @@ void SceneHierarchyPanel::OnImGuiRender()
       ImGui::EndPopup();
     }
   }
-
   ImGui::End();
 
   ImGui::Begin("Entity Properties");
@@ -344,21 +335,24 @@ void SceneHierarchyPanel::OnImGuiRender()
 //-------------------------------------------------------------------------------------------------
 void SceneHierarchyPanel::DrawEntityNode(Entity ent)
 {
-  auto& tag = m_scene_context.GetComponent<TagComponent>(ent);
-  if (ImGui::Selectable(tag.GetTag(), ent == m_selected_entity))
-  {
+  auto tag = m_scene_context.GetComponent<TagComponent>(ent);
+  ImGui::SetNextItemAllowOverlap();
+  if (ImGui::Selectable(tag.GetTag(),
+                        m_selected_entity == ent,
+                        ImGuiSelectableFlags_SpanAllColumns))
     m_selected_entity = ent;
-  }
 
   bool delete_entity = false;
-  if (m_selected_entity == ent)
+  if (ImGui::BeginPopupContextItem()) // <-- use last item id as popup id
   {
-    if (ImGui::BeginPopupContextWindow())
+    m_selected_entity = ent;
+    //    ImGui::Text("This a popup for \"%s\"!", tag.GetTag());
+    if (ImGui::Button("Deletar"))
     {
-      if (ImGui::MenuItem("Delete entity"))
-        delete_entity = true;
-      ImGui::EndPopup();
+      delete_entity = true;
+      //      ImGui::CloseCurrentPopup();
     }
+    ImGui::EndPopup();
   }
 
   if (delete_entity)
@@ -367,36 +361,6 @@ void SceneHierarchyPanel::DrawEntityNode(Entity ent)
     if (ent == m_selected_entity)
       m_selected_entity = {};
   }
-
-  //  void* node_id = TypeUtils::ToVoidPtr(i32(ent));
-  //  const int is_selected = ent == m_selected_entity ? ImGuiTreeNodeFlags_Selected : 0;
-  //
-  //  auto& tag = m_scene_context.GetComponent<TagComponent>(ent);
-  //  bool expanded = ImGui::TreeNodeEx(node_id, TREE_NODE_FLAGS, "%s", tag.GetTag());
-  //
-  //  if (ImGui::IsItemClicked(ImGuiMouseButton_Left) ||
-  //  ImGui::IsItemClicked(ImGuiMouseButton_Right))
-  //  {
-  //    m_selected_entity = ent;
-  //  }
-  //
-  //  bool delete_entity = false;
-  //  if (m_selected_entity == ent)
-  //  {
-  //    if (ImGui::BeginPopupContextWindow())
-  //    {
-  //      if (ImGui::MenuItem("Delete entity"))
-  //        delete_entity = true;
-  //      ImGui::EndPopup();
-  //    }
-  //  }
-  //
-  //  if (delete_entity)
-  //  {
-  //    m_scene_context.DestroyEntity(ent);
-  //    if (ent == m_selected_entity)
-  //      m_selected_entity = {};
-  //  }
 }
 
 //-------------------------------------------------------------------------------------------------
