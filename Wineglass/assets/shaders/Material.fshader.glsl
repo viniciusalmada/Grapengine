@@ -18,6 +18,9 @@ uniform vec3 u_lightPos[MAX_LIGHTS];
 uniform vec3 u_lightColor[MAX_LIGHTS];
 uniform float u_lightStrength[MAX_LIGHTS];
 
+/*uniform */float u_specularStrenght = 0.5;
+uniform vec3 u_viewPos;
+
 void main()
 {
   // Get fragment normal
@@ -41,7 +44,16 @@ void main()
 
   vec3 ambient = u_ambientStrength * u_ambientColor;
 
+  vec3 view_direction = normalize(u_viewPos - out_frag_pos);
+  vec3 speculars = vec3(0, 0, 0);
+  for (int i = 0; i < MAX_LIGHTS; i++)
+  {
+    vec3 reflect_dir = reflect(-light_directions[i], frag_normal);
+    float spec = pow(max(dot(view_direction, reflect_dir), 0.0), 32);
+    speculars = speculars + u_specularStrenght * spec * u_lightColor[i];
+  }
+
   vec3 object_color = (texture2D(u_texture, out_texture_coords) * out_color).rgb;
-  vec3 result = (ambient + diffuses) * object_color;
+  vec3 result = (ambient + diffuses + speculars) * object_color;
   fragColor = vec4(result, out_color.a);
 }

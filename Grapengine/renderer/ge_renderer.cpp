@@ -123,13 +123,13 @@ void Renderer::SetLightSources(const std::vector<std::tuple<Vec3, Color, f32>>& 
   GetBatchRenderer().SetLightsSources(props);
 }
 
-void Renderer::Batch::Begin(const Mat4& cameraMatrix)
+void Renderer::Batch::Begin(const Mat4& cameraMatrix, const Vec3& viewPosition)
 {
   GE_PROFILE;
   GetStats().vertices_count = 0;
   GetStats().indices_count = 0;
   GetTiming() = Platform::GetCurrentTimeMS();
-  GetBatchRenderer().Begin(cameraMatrix);
+  GetBatchRenderer().Begin(cameraMatrix, viewPosition);
 }
 
 void Renderer::Batch::End()

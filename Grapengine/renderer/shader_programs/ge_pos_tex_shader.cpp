@@ -31,7 +31,7 @@ void PosAndTex2DShader::UpdateTexture(int id)
   m_shader->UploadInt("u_texture", id);
 }
 
-void PosAndTex2DShader::UpdateViewProjectionMatrix(const Mat4& viewProj)
+void PosAndTex2DShader::UpdateViewProjectionMatrix(const Mat4& viewProj, const Vec3& /*viewPosition*/)
 {
   Activate();
   m_shader->UploadMat4F("u_VP", viewProj);

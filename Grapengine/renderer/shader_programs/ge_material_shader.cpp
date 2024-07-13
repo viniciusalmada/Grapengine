@@ -37,6 +37,7 @@ void MaterialShader::UpdateViewProjectionMatrix(const Mat4& viewProj, const Vec3
 {
   Activate();
   m_shader->UploadMat4F("u_VP", viewProj);
+  m_shader->UploadVec3("u_viewPos", viewPosition);
 }
 
 void MaterialShader::UpdateTexture(int id)

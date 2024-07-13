@@ -32,12 +32,12 @@ void BatchRenderer::PushObject(VerticesData&& vd,
   std::ranges::for_each(indices, [&](u32 i) { indices_data.push_back(i + current_max_id + 1); });
 }
 
-void BatchRenderer::Begin(const Mat4& cameraMatrix)
+void BatchRenderer::Begin(const Mat4& cameraMatrix, const Vec3& viewPosition)
 {
   m_vertices_data.first->Clear();
   m_vertices_data.second.clear();
   m_shader->Activate();
-  m_shader->UpdateViewProjectionMatrix(cameraMatrix);
+  m_shader->UpdateViewProjectionMatrix(cameraMatrix, viewPosition);
 }
 
 void BatchRenderer::End()

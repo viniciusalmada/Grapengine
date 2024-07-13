@@ -34,7 +34,7 @@ namespace GE
     class Batch
     {
     public:
-      static void Begin(const Mat4& cameraMatrix);
+      static void Begin(const Mat4& cameraMatrix, const Vec3& viewPosition);
 
       static void End();
 
