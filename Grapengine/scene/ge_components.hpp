@@ -143,10 +143,10 @@ namespace GE
   };
 
   //----------------------------------------------------------------------------------------------
-  class LightSpotComponent
+  class LightSourceComponent
   {
   public:
-    LightSpotComponent(Color c, Vec3 pos, f32 str, bool active);
+    LightSourceComponent(Color c, Vec3 pos, f32 str, bool active);
 
     [[nodiscard]] Color& ColorRef() { return m_color; }
     [[nodiscard]] Vec3& Position() { return m_position; }
@@ -175,7 +175,7 @@ namespace GE
     CameraComponent,
     NativeScriptComponent,
     AmbientLightComponent,
-    LightSpotComponent //
+    LightSourceComponent //
     >;
 }
 

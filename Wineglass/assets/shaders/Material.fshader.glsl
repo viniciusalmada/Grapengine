@@ -1,6 +1,6 @@
 #version 330 core
 
-#define MAX_LIGHTS 2
+#define MAX_LIGHTS 100
 
 in vec2 out_texture_coords;
 in vec4 out_color;

@@ -26,12 +26,12 @@ NativeScriptComponent::NativeScriptComponent() :
 
 //----------------------------------------------------------------------------------------------
 AmbientLightComponent::AmbientLightComponent(Color c, f32 str) :
-    m_color(c), m_strenght(str), m_active(false)
+    m_color(c), m_strenght(str), m_active(true)
 {
 }
 
 //----------------------------------------------------------------------------------------------
-LightSpotComponent::LightSpotComponent(Color c, Vec3 pos, f32 str, bool act) :
+LightSourceComponent::LightSourceComponent(Color c, Vec3 pos, f32 str, bool act) :
     m_color(c), m_position(pos), m_strenght(str), m_active(act), m_drawable(Cube::Make())
 {
 }

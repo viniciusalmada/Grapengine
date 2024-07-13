@@ -147,7 +147,7 @@ namespace
       if (ImGui::Button("Activate camera"))
       {
         comp.SetActive(true);
-        scene.UpdateActiveCamera(e);
+        scene.SetActiveCamera(e);
       }
     }
     bool is_fixed = comp.IsFixedRatio();
@@ -251,7 +251,7 @@ namespace
   }
 
   //-------------------------------------------------------------------------------------------------
-  void DrawLights(Scene& /*scene*/, Entity /*e*/, LightSpotComponent& comp)
+  void DrawLights(Scene& /*scene*/, Entity /*e*/, LightSourceComponent& comp)
   {
     static Vec4 imgui_color{};
     imgui_color = comp.ColorRef().ToVec4();
@@ -325,6 +325,28 @@ void SceneHierarchyPanel::OnImGuiRender()
           }
         }
 
+        if (!m_scene_context.HasComponent<AmbientLightComponent>(ent))
+        {
+          if (ImGui::MenuItem("Ambient light"))
+          {
+            m_scene_context.AddComponent<AmbientLightComponent>(ent, Colors::WHITE, 1.0f);
+            ImGui::CloseCurrentPopup();
+          }
+        }
+
+        if (!m_scene_context.HasComponent<LightSourceComponent>(ent))
+        {
+          if (ImGui::MenuItem("Light Source"))
+          {
+            m_scene_context.AddComponent<LightSourceComponent>(ent,
+                                                             Colors::WHITE,
+                                                             Vec3{ 0, 0, 0 },
+                                                             1.0f,
+                                                             true);
+            ImGui::CloseCurrentPopup();
+          }
+        }
+
         ImGui::EndPopup();
       }
     }(m_selected_entity.value());
@@ -335,6 +357,9 @@ void SceneHierarchyPanel::OnImGuiRender()
 //-------------------------------------------------------------------------------------------------
 void SceneHierarchyPanel::DrawEntityNode(Entity ent)
 {
+  if (ImGui::IsMouseDown(ImGuiMouseButton_Left) && ImGui::IsWindowHovered())
+    m_selected_entity = {};
+
   auto tag = m_scene_context.GetComponent<TagComponent>(ent);
   ImGui::SetNextItemAllowOverlap();
   if (ImGui::Selectable(tag.GetTag(),
@@ -373,7 +398,7 @@ void SceneHierarchyPanel::DrawComponents(Entity ent)
   DrawComponent<PrimitiveComponent>("Primitive", m_scene_context, ent, DrawPrimitive);
   DrawComponent<CameraComponent>("Camera", m_scene_context, ent, DrawCamera);
   DrawComponent<AmbientLightComponent>("Ambient Light", m_scene_context, ent, DrawAmbientLight);
-  DrawComponent<LightSpotComponent>("Light Spots", m_scene_context, ent, DrawLights);
+  DrawComponent<LightSourceComponent>("Light Source", m_scene_context, ent, DrawLights);
 }
 
 //-------------------------------------------------------------------------------------------------

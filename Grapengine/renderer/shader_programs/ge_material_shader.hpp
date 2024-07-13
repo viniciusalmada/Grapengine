@@ -32,10 +32,10 @@ namespace GE
 
     /**
      *
-     * @param lightSpots lights properties
+     * @param lightSources lights properties
      */
-    void UpdateLightSpots(const std::vector<std::tuple<Vec3, Color, f32>>& lightSpots);
-    void ClearLightSpots();
+    void UpdateLightSources(const std::vector<std::tuple<Vec3, Color, f32>>& lightSources);
+    void ClearLightSources();
 
   private:
     void UpdateAmbientColor(Color color);

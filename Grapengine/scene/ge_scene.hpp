@@ -24,7 +24,7 @@ namespace GE
 
     void OnViewportResize(Dimension dim);
 
-    void UpdateActiveCamera(Opt<Entity> activeCamera);
+    void SetActiveCamera(Opt<Entity> activeCamera);
 
     // Registry wrappers functions
 
@@ -68,7 +68,10 @@ namespace GE
   private:
     void UpdateNativeScripts(TimeStep& ts);
     void UpdateDrawableEntities(TimeStep& ts);
-    void UpdateLightSpots(TimeStep& ts);
+    void UpdateLightSourcesPosition(TimeStep& ts);
+    void UpdateActiveCamera();
+    void UpdateLightSources() const;
+    void UpdateAmbientLight() const;
 
     [[nodiscard]] Opt<Entity> RetrieveActiveCamera() const;
 

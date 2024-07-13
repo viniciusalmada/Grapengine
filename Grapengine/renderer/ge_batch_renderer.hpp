@@ -13,7 +13,7 @@ namespace GE
     explicit BatchRenderer();
 
     void SetAmbientLight(const Color& color, f32 str);
-    void SetLightsSpot(const std::vector<std::tuple<Vec3, Color, f32>>& props);
+    void SetLightsSources(const std::vector<std::tuple<Vec3, Color, f32>>& props);
 
     void Begin(const Mat4& cameraMatrix);
 

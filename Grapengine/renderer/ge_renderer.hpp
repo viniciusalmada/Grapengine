@@ -29,7 +29,7 @@ namespace GE
     static void DrawObject(const Ptr<DrawingObject>& primitive);
 
     static void SetAmbientLight(const Color& color, f32 str);
-    static void SetLightSpots(const std::vector<std::tuple<Vec3, Color, f32>>& props);
+    static void SetLightSources(const std::vector<std::tuple<Vec3, Color, f32>>& props);
 
     class Batch
     {

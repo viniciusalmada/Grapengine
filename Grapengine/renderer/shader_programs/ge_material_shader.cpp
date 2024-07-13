@@ -9,6 +9,11 @@
 
 using namespace GE;
 
+namespace{
+  constexpr auto MAX_LIGHTS_SOURCES = 100;
+}
+
+
 MaterialShader::MaterialShader()
 {
   GE_PROFILE;
@@ -28,7 +33,7 @@ void MaterialShader::Deactivate()
   m_shader->Unbind();
 }
 
-void MaterialShader::UpdateViewProjectionMatrix(const Mat4& viewProj)
+void MaterialShader::UpdateViewProjectionMatrix(const Mat4& viewProj, const Vec3& viewPosition)
 {
   Activate();
   m_shader->UploadMat4F("u_VP", viewProj);
@@ -76,15 +81,17 @@ void MaterialShader::UpdateAmbientLight(Color color, f32 strength)
   UpdateAmbientStrength(strength);
 }
 
-void MaterialShader::UpdateLightSpots(const std::vector<std::tuple<Vec3, Color, f32>>& lightSpots)
+void MaterialShader::UpdateLightSources(const std::vector<std::tuple<Vec3, Color, f32>>& lightSources)
 {
+  GE_ASSERT(lightSources.size() <= MAX_LIGHTS_SOURCES)
+
   std::vector<Vec3> positions;
-  positions.reserve(lightSpots.size());
+  positions.reserve(lightSources.size());
   std::vector<Vec3> colors;
-  colors.reserve(lightSpots.size());
+  colors.reserve(lightSources.size());
   std::vector<f32> strenghts;
-  strenghts.reserve(lightSpots.size());
-  for (const auto& [p, c, s] : lightSpots)
+  strenghts.reserve(lightSources.size());
+  for (const auto& [p, c, s] : lightSources)
   {
     positions.push_back(p);
     colors.push_back(c.ToVec3());
@@ -101,7 +108,7 @@ void MaterialShader::ClearAmbientLight()
   UpdateAmbientLight(Colors::WHITE, 1.0f);
 }
 
-void MaterialShader::ClearLightSpots()
+void MaterialShader::ClearLightSources()
 {
-  UpdateLightSpots({});
+  UpdateLightSources({});
 }

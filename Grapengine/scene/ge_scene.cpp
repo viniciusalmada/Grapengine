@@ -16,50 +16,57 @@ void Scene::OnUpdate(TimeStep ts)
 {
   GE_PROFILE;
   UpdateNativeScripts(ts);
+  UpdateActiveCamera();
+  UpdateLightSourcesPosition(ts);
+  UpdateLightSources();
+  UpdateAmbientLight();
+  UpdateDrawableEntities(ts);
+}
 
+void Scene::UpdateLightSources() const
+{
+  auto light_sources = m_registry.Group<LightSourceComponent>();
+  if (!light_sources.empty())
+  {
+    std::vector<std::tuple<Vec3, Color, f32>> props;
+    props.reserve(light_sources.size());
+
+    std::ranges::transform(
+      light_sources,
+      std::back_inserter(props),
+      [&](Entity l)
+      {
+        const auto& lp = m_registry.GetComponent<LightSourceComponent>(l);
+        return std::make_tuple(lp.GetPos(), lp.GetColor(), lp.IsActive() ? lp.GetStr() : 0.0f);
+      });
+    Renderer::SetLightSources(props);
+  }
+}
+
+void Scene::UpdateAmbientLight() const
+{
+  auto amb_lights = m_registry.Group<AmbientLightComponent>();
+  if (!amb_lights.empty())
+  {
+    auto amb_light_itr = std::ranges::find_if(
+      amb_lights,
+      [&](Entity al) { return m_registry.GetComponent<AmbientLightComponent>(al).IsActive(); });
+
+    if (amb_light_itr != amb_lights.end())
+    {
+      const AmbientLightComponent& amb_light =
+        m_registry.GetComponent<AmbientLightComponent>(*amb_light_itr);
+      Renderer::SetAmbientLight(amb_light.GetColor(), amb_light.GetStr());
+    }
+  }
+}
+
+void Scene::UpdateActiveCamera()
+{
   if (!m_active_camera)
   {
     m_active_camera = RetrieveActiveCamera();
   }
-
-  UpdateLightSpots(ts);
-
-  {
-    auto amb_lights = m_registry.Group<AmbientLightComponent>();
-    if (!amb_lights.empty())
-    {
-      auto amb_light_itr = std::ranges::find_if(
-        amb_lights,
-        [&](Entity al) { return m_registry.GetComponent<AmbientLightComponent>(al).IsActive(); });
-
-      if (amb_light_itr != amb_lights.end())
-      {
-        const AmbientLightComponent& amb_light =
-          m_registry.GetComponent<AmbientLightComponent>(*amb_light_itr);
-        Renderer::SetAmbientLight(amb_light.GetColor(), amb_light.GetStr());
-      }
-    }
-  }
-  {
-    auto light_spots = m_registry.Group<LightSpotComponent>();
-    if (!light_spots.empty())
-    {
-      std::vector<std::tuple<Vec3, Color, f32>> props;
-      props.reserve(light_spots.size());
-
-      std::ranges::transform(
-        light_spots,
-        std::back_inserter(props),
-        [&](Entity l)
-        {
-          const auto& lp = m_registry.GetComponent<LightSpotComponent>(l);
-          return std::make_tuple(lp.GetPos(), lp.GetColor(), lp.IsActive() ? lp.GetStr() : 0.0f);
-        });
-      Renderer::SetLightSpots(props);
-    }
-  }
-
-  UpdateDrawableEntities(ts);
 }
 
 void Scene::UpdateNativeScripts(TimeStep& ts)
@@ -98,7 +105,8 @@ void Scene::UpdateDrawableEntities(TimeStep& /*ts*/)
 
   {
     GE_PROFILE_SECTION("Batch renderer");
-    Renderer::Batch::Begin(cam_component.GetCamera().GetViewProjection());
+    Renderer::Batch::Begin(cam_component.GetCamera().GetViewProjection(),
+                           cam_component.GetCamera().GetPosition());
     for (auto ent : gmat)
     {
       const TransformComponent& transl_scale_comp =
@@ -195,7 +203,7 @@ void Scene::EachEntity(const std::function<void(Entity)>& fun)
   m_registry.Each(fun);
 }
 
-void Scene::UpdateActiveCamera(Opt<Entity> activeCamera)
+void Scene::SetActiveCamera(Opt<Entity> activeCamera)
 {
   GE_PROFILE;
   auto cameras = m_registry.Group<CameraComponent>();
@@ -214,23 +222,29 @@ void Scene::DestroyEntity(Opt<Entity> ent)
   m_registry.Destroy(ent);
 }
 
-void Scene::UpdateLightSpots(TimeStep& /*ts*/)
+void Scene::UpdateLightSourcesPosition(TimeStep& /*ts*/)
 {
   GE_PROFILE;
+  const std::vector<Entity> light_sources = m_registry.Group<LightSourceComponent>();
+  if (light_sources.empty())
+    return;
+
   const auto& active_camera = m_active_camera.value();
 
   const CameraComponent& cam_component = m_registry.GetComponent<CameraComponent>(active_camera);
-  const std::vector<Entity> light_spots = m_registry.Group<LightSpotComponent>();
 
-  Renderer::SetAmbientLight(Colors::WHITE, 1.0f);
-  Renderer::SetLightSpots(std::vector<std::tuple<Vec3, Color, f32>>{
-    std::make_tuple(Vec3{ 0, 0, 0 }, Colors::BLACK, 0.0f),
-    std::make_tuple(Vec3{ 0, 0, 0 }, Colors::BLACK, 0.0f) });
+  { // Reset ambient and light colors
+    Renderer::SetAmbientLight(Colors::WHITE, 1.0f);
+    Renderer::SetLightSources(std::vector<std::tuple<Vec3, Color, f32>>{
+      std::make_tuple(Vec3{ 0, 0, 0 }, Colors::BLACK, 0.0f),
+      std::make_tuple(Vec3{ 0, 0, 0 }, Colors::BLACK, 0.0f) });
+  }
 
-  Renderer::Batch::Begin(cam_component.GetCamera().GetViewProjection());
-  for (auto ent : light_spots)
+  Renderer::Batch::Begin(cam_component.GetCamera().GetViewProjection(),
+                         cam_component.GetCamera().GetPosition());
+  for (auto ent : light_sources)
   {
-    const auto& lp = m_registry.GetComponent<LightSpotComponent>(ent);
+    const auto& lp = m_registry.GetComponent<LightSourceComponent>(ent);
     if (!lp.IsActive())
       continue;
     Mat4 translate = Transform::Translate(lp.GetPos()) * Transform::Scale(0.1f, 0.1f, 0.1f);
@@ -239,4 +253,11 @@ void Scene::UpdateLightSpots(TimeStep& /*ts*/)
     Renderer::Batch::PushObject(std::move(vertices), indices, translate);
   }
   Renderer::Batch::End();
+
+  { // Reset ambient and light colors
+    Renderer::SetAmbientLight(Colors::BLACK, 0.0f);
+    Renderer::SetLightSources(std::vector<std::tuple<Vec3, Color, f32>>{
+      std::make_tuple(Vec3{ 0, 0, 0 }, Colors::BLACK, 0.0f),
+      std::make_tuple(Vec3{ 0, 0, 0 }, Colors::BLACK, 0.0f) });
+  }
 }
