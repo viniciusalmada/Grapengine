@@ -63,13 +63,16 @@ namespace GE
   public:
     PrimitiveComponent(Ptr<Drawable> drawable, Color color = Colors::WHITE);
 
-    [[nodiscard]] const Ptr<GE::Drawable>& GetDrawable() const { return m_drawable; }
-    [[nodiscard]] const Color& GetColor() const { return m_color; }
+    PrimitiveComponent(const Drawable& drawable, Color color);
 
-    void SetColor(Color c) { m_color = c; }
+    [[nodiscard]] const Drawable& GetDrawable() const;
+    [[nodiscard]] Drawable& GetDrawable();
+    [[nodiscard]] const Color& GetColor() const;
+
+    void SetColor(Color c);
 
   private:
-    Ptr<Drawable> m_drawable;
+    Drawable m_drawable;
     Color m_color;
   };
 
@@ -157,14 +160,15 @@ namespace GE
     [[nodiscard]] const Vec3& GetPos() const { return m_position; }
     [[nodiscard]] f32 GetStr() const { return m_strenght; }
     [[nodiscard]] bool IsActive() const { return m_active; }
-    [[nodiscard]] const Ptr<GE::Drawable>& GetDrawable() const { return m_drawable; }
+    [[nodiscard]] const Drawable& GetDrawable() const { return m_drawable; }
+    [[nodiscard]] Drawable& GetDrawable() { return m_drawable; }
 
   private:
     Color m_color;
     Vec3 m_position;
     f32 m_strenght;
     bool m_active;
-    Ptr<Drawable> m_drawable;
+    Drawable m_drawable;
   };
 
   //----------------------------------------------------------------------------------------------

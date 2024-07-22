@@ -26,8 +26,9 @@ namespace
     return indices;
   }
 
-  VerticesData GetCubeVerticesPositions(const Color& color)
+  VerticesData GetCubeVerticesPositions()
   {
+    const Color& color = Colors::WHITE;
     VerticesData position{};
     // clang-format off
     position.PushVerticesData({Vec3{ -HALF, -HALF, +HALF  },Vec2{ 0.00f + 0 * THIRD, 0.00f + 0 * THIRD }, color.ToVec4(), Vec3{+0,+0,+1}.Normalize()});// Front face
@@ -60,27 +61,9 @@ namespace
 }
 
 //-------------------------------------------------------------------------
-Cube::Cube() : m_color(Colors::WHITE), m_vertices(GetCubeVerticesPositions(m_color)) {}
+Cube::Cube() : m_drawable(GetCubeVerticesPositions(), GetIndices()) {}
 
-Cube::~Cube() = default;
-
-VerticesData Cube::GetVerticesData(Color color) const
+const Drawable& Cube::GetDrawable() const
 {
-  GE_PROFILE;
-  if (color == m_color)
-    return m_vertices;
-
-  m_color = color;
-  m_vertices = GetCubeVerticesPositions(color);
-  return m_vertices;
-}
-
-const std::vector<u32>& Cube::GetIndicesData() const
-{
-  return GetIndices();
-}
-
-Ptr<Cube> Cube::Make()
-{
-  return MakeRef<Cube>();
+  return m_drawable;
 }

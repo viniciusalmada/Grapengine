@@ -6,9 +6,24 @@ using namespace GE;
 TagComponent::TagComponent(std::string&& t) : m_tag(std::move(t)) {}
 
 //----------------------------------------------------------------------------------------------
-PrimitiveComponent::PrimitiveComponent(Ptr<Drawable> dra, Color c) :
-    m_drawable(std::move(dra)), m_color(c)
+PrimitiveComponent::PrimitiveComponent(const Drawable& dra, Color c) : m_drawable(dra), m_color(c)
 {
+}
+const Drawable& PrimitiveComponent::GetDrawable() const
+{
+  return m_drawable;
+}
+Drawable& PrimitiveComponent::GetDrawable()
+{
+  return m_drawable;
+}
+const Color& PrimitiveComponent::GetColor() const
+{
+  return m_color;
+}
+void PrimitiveComponent::SetColor(Color c)
+{
+  m_color = c;
 }
 
 //----------------------------------------------------------------------------------------------
@@ -32,6 +47,6 @@ AmbientLightComponent::AmbientLightComponent(Color c, f32 str) :
 
 //----------------------------------------------------------------------------------------------
 LightSourceComponent::LightSourceComponent(Color c, Vec3 pos, f32 str, bool act) :
-    m_color(c), m_position(pos), m_strenght(str), m_active(act), m_drawable(Cube::Make())
+    m_color(c), m_position(pos), m_strenght(str), m_active(act), m_drawable(Cube().GetDrawable())
 {
 }

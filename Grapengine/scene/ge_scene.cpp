@@ -112,9 +112,10 @@ void Scene::UpdateDrawableEntities(TimeStep& /*ts*/)
       const TransformComponent& transl_scale_comp =
         m_registry.GetComponent<TransformComponent>(ent);
 
-      const PrimitiveComponent& primitive = m_registry.GetComponent<PrimitiveComponent>(ent);
-      auto vertices = primitive.GetDrawable()->GetVerticesData(primitive.GetColor());
-      auto indices = primitive.GetDrawable()->GetIndicesData();
+      PrimitiveComponent& primitive = m_registry.GetComponent<PrimitiveComponent>(ent);
+      primitive.GetDrawable().UpdateColor(primitive.GetColor());
+      VerticesData vertices = primitive.GetDrawable().GetVerticesData();
+      std::vector<u32> indices = primitive.GetDrawable().GetIndicesData();
 
       Renderer::Batch::PushObject(std::move(vertices), indices, transl_scale_comp.GetModelMat());
     }
@@ -243,12 +244,13 @@ void Scene::UpdateLightSourcesPosition(TimeStep& /*ts*/)
                          cam_component.GetCamera().GetPosition());
   for (auto ent : light_sources)
   {
-    const auto& lp = m_registry.GetComponent<LightSourceComponent>(ent);
+    auto& lp = m_registry.GetComponent<LightSourceComponent>(ent);
     if (!lp.IsActive())
       continue;
     Mat4 translate = Transform::Translate(lp.GetPos()) * Transform::Scale(0.1f, 0.1f, 0.1f);
-    auto vertices = lp.GetDrawable()->GetVerticesData(lp.GetColor());
-    auto indices = lp.GetDrawable()->GetIndicesData();
+    lp.GetDrawable().UpdateColor(lp.GetColor());
+    auto vertices = lp.GetDrawable().GetVerticesData();
+    auto indices = lp.GetDrawable().GetIndicesData();
     Renderer::Batch::PushObject(std::move(vertices), indices, translate);
   }
   Renderer::Batch::End();

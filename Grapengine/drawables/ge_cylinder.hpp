@@ -7,22 +7,16 @@
 
 namespace GE
 {
-  class Cylinder final : public Drawable
+  class Cylinder final
   {
   public:
-    static Ptr<Cylinder>
-    Make(const Vec3& basePoint, f32 radius, const Vec3& direction, f32 height, Color color);
+    Cylinder(const Vec3& basePoint, f32 radius, const Vec3& direction, f32 height);
 
-    Cylinder(const Vec3& basePoint, f32 radius, const Vec3& direction, f32 height, Color color);
-    ~Cylinder() override;
-
-    [[nodiscard]] VerticesData GetVerticesData(Color color) const override;
-    [[nodiscard]] const std::vector<u32>& GetIndicesData() const override;
+    const Drawable& GetDrawable() const;
 
   private:
-    Color m_color{ 0 };
-    VerticesData m_vertices;
-    std::vector<u32> m_indices;
+    Drawable m_drawable;
+
   };
 }
 

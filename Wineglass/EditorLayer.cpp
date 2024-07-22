@@ -65,17 +65,20 @@ void EditorLayer::OnAttach()
     auto c_x = m_scene->CreateEntity("CX");
     m_scene->AddComponent<PrimitiveComponent>(
       c_x,
-      Cylinder::Make(Vec3{ 0, 0, 0 }, RADIUS, Vec3{ 1, 0, 0 }, LENGHT, Colors::RED));
+      Cylinder{ Vec3{ 0, 0, 0 }, RADIUS, Vec3{ 1, 0, 0 }, LENGHT }.GetDrawable(),
+      Colors::RED);
     m_scene->AddComponent<TransformComponent>(c_x);
     auto c_y = m_scene->CreateEntity("CY");
     m_scene->AddComponent<PrimitiveComponent>(
       c_y,
-      Cylinder::Make(Vec3{ 0, 0, 0 }, RADIUS, Vec3{ 0, 1, 0 }, LENGHT, Colors::GREEN));
+      Cylinder{ Vec3{ 0, 0, 0 }, RADIUS, Vec3{ 0, 1, 0 }, LENGHT }.GetDrawable(),
+      Colors::GREEN);
     m_scene->AddComponent<TransformComponent>(c_y);
     auto c_z = m_scene->CreateEntity("CZ");
     m_scene->AddComponent<PrimitiveComponent>(
       c_z,
-      Cylinder::Make(Vec3{ 0, 0, 0 }, RADIUS, Vec3{ 0, 0, 1 }, LENGHT, Colors::BLUE));
+      Cylinder{ Vec3{ 0, 0, 0 }, RADIUS, Vec3{ 0, 0, 1 }, LENGHT }.GetDrawable(),
+      Colors::BLUE);
     m_scene->AddComponent<TransformComponent>(c_z);
   }
 

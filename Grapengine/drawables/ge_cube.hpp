@@ -11,21 +11,16 @@
 
 namespace GE
 {
-  class Cube final : public Drawable
+  class Cube final
   {
   public:
-    static Ptr<Cube> Make();
-
     Cube();
-    ~Cube() override;
 
-    [[nodiscard]] VerticesData GetVerticesData(Color color) const override;
-    [[nodiscard]] const std::vector<u32>& GetIndicesData() const override;
+    const Drawable& GetDrawable() const;
 
   private:
     Ptr<Texture2D> m_texture;
-    mutable Color m_color;
-    mutable VerticesData m_vertices;
+    Drawable m_drawable;
   };
 }
 

@@ -5,34 +5,24 @@
 
 namespace GE
 {
-  class Mesh : public Drawable
+  struct Face
+  {
+    IVec3 indices;
+    Vec3 center;
+    Vec3 normal;
+  };
+
+  class Mesh
   {
   public:
     Mesh(std::string_view path);
 
-    ~Mesh() override;
-
-    [[nodiscard]] VerticesData GetVerticesData(Color color) const override;
-    [[nodiscard]] const std::vector<u32>& GetIndicesData() const override;
+    const Drawable& GetDrawable() const;
 
   private:
-    struct Face
-    {
-      IVec3 indices;
-      Vec3 center;
-      Vec3 normal;
-    };
-
-    [[nodiscard]] Vec3 GetNormal(u64 idx) const;
     void UpdateVerticesData() const;
-    void ReadFile(std::string_view path);
 
-    std::vector<Vec3> m_vertices;
-    std::vector<Face> m_faces;
-    std::vector<Vec3> m_normals;
-    mutable Color m_color = Colors::MAGENTA;
-    mutable VerticesData m_vertices_data;
-    std::vector<u32> m_indices;
+    Drawable m_drawable;
   };
 }
 

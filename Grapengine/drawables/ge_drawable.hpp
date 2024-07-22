@@ -6,13 +6,18 @@
 
 namespace GE
 {
-  class Drawable
+  class Drawable final
   {
   public:
-    virtual ~Drawable();
+    explicit Drawable(const VerticesData& vertices, const std::vector<u32>& indices);
 
-    [[nodiscard]] virtual VerticesData GetVerticesData(Color color) const = 0;
-    [[nodiscard]] virtual const std::vector<u32>& GetIndicesData() const = 0;
+    void UpdateColor(const Color&);
+    [[nodiscard]] const VerticesData& GetVerticesData() const;
+    [[nodiscard]] virtual const std::vector<u32>& GetIndicesData() const;
+
+  private:
+    VerticesData m_vertices_data;
+    std::vector<u32> m_indices_data;
   };
 }
 
