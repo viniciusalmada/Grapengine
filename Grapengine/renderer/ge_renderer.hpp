@@ -4,6 +4,7 @@
 #include "drawables/ge_color.hpp"
 #include "math/ge_vector.hpp"
 #include "renderer/ge_vertices_data.hpp"
+#include "renderer/shader_programs/ge_light_source.hpp"
 #include "utils/ge_dimension.hpp"
 
 namespace GE
@@ -29,7 +30,7 @@ namespace GE
     static void DrawObject(const Ptr<DrawingObject>& primitive);
 
     static void SetAmbientLight(const Color& color, f32 str);
-    static void SetLightSources(const std::vector<std::tuple<Vec3, Color, f32>>& props);
+    static void SetLightSources(const std::vector<LightSource>& props);
 
     class Batch
     {

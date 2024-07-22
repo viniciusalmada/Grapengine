@@ -118,7 +118,7 @@ void Renderer::SetAmbientLight(const Color& color, f32 str)
   GetBatchRenderer().SetAmbientLight(color, str);
 }
 
-void Renderer::SetLightSources(const std::vector<std::tuple<Vec3, Color, f32>>& props)
+void Renderer::SetLightSources(const std::vector<LightSource>& props)
 {
   GetBatchRenderer().SetLightsSources(props);
 }

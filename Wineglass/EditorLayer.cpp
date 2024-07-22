@@ -22,9 +22,9 @@ void EditorLayer::OnAttach()
   c.SetActive(true);
 
   auto l1 = m_scene->CreateEntity("L1");
-  m_scene->AddComponent<LightSpotComponent>(l1, Colors::RED, Vec3{ 0, 0, 0 }, 1.0f, true);
+  m_scene->AddComponent<LightSourceComponent>(l1, Colors::RED, Vec3{ 0, 0, 0 }, 1.0f, true);
   auto l2 = m_scene->CreateEntity("L2");
-  m_scene->AddComponent<LightSpotComponent>(l2, Colors::BLUE, Vec3{ 5, 5, 5 }, 1.0f, true);
+  m_scene->AddComponent<LightSourceComponent>(l2, Colors::BLUE, Vec3{ 5, 5, 5 }, 1.0f, true);
 
   m_scene->AddComponent<CameraComponent>(m_front_camera_entity,
                                          Vec3{ 0, 0, 10 },

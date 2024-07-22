@@ -62,7 +62,7 @@ void BatchRenderer::SetAmbientLight(const Color& color, f32 str)
   m_shader->UpdateAmbientLight(color, str);
 }
 
-void BatchRenderer::SetLightsSources(const std::vector<std::tuple<Vec3, Color, f32>>& props)
+void BatchRenderer::SetLightsSources(const std::vector<LightSource>& props)
 {
   m_shader->Activate();
   m_shader->UpdateLightSources(props);

@@ -28,16 +28,16 @@ void Scene::UpdateLightSources() const
   auto light_sources = m_registry.Group<LightSourceComponent>();
   if (!light_sources.empty())
   {
-    std::vector<std::tuple<Vec3, Color, f32>> props;
+    std::vector<LightSource> props;
     props.reserve(light_sources.size());
 
     std::ranges::transform(
       light_sources,
       std::back_inserter(props),
-      [&](Entity l)
+      [&](Entity l) -> LightSource
       {
         const auto& lp = m_registry.GetComponent<LightSourceComponent>(l);
-        return std::make_tuple(lp.GetPos(), lp.GetColor(), lp.IsActive() ? lp.GetStr() : 0.0f);
+        return { lp.GetPos(), lp.GetColor(), lp.IsActive() ? lp.GetStr() : 0.0f, 0.5f, 32.0f };
       });
     Renderer::SetLightSources(props);
   }
@@ -235,9 +235,8 @@ void Scene::UpdateLightSourcesPosition(TimeStep& /*ts*/)
 
   { // Reset ambient and light colors
     Renderer::SetAmbientLight(Colors::WHITE, 1.0f);
-    Renderer::SetLightSources(std::vector<std::tuple<Vec3, Color, f32>>{
-      std::make_tuple(Vec3{ 0, 0, 0 }, Colors::BLACK, 0.0f),
-      std::make_tuple(Vec3{ 0, 0, 0 }, Colors::BLACK, 0.0f) });
+    Renderer::SetLightSources(
+      std::vector<LightSource>{ { Vec3{ 0, 0, 0 }, Colors::BLACK, 0.0f, 0.5f, 32.0f } });
   }
 
   Renderer::Batch::Begin(cam_component.GetCamera().GetViewProjection(),
@@ -256,8 +255,7 @@ void Scene::UpdateLightSourcesPosition(TimeStep& /*ts*/)
 
   { // Reset ambient and light colors
     Renderer::SetAmbientLight(Colors::BLACK, 0.0f);
-    Renderer::SetLightSources(std::vector<std::tuple<Vec3, Color, f32>>{
-      std::make_tuple(Vec3{ 0, 0, 0 }, Colors::BLACK, 0.0f),
-      std::make_tuple(Vec3{ 0, 0, 0 }, Colors::BLACK, 0.0f) });
+    Renderer::SetLightSources(
+      std::vector<LightSource>{ { Vec3{ 0, 0, 0 }, Colors::BLACK, 0.0f, 0.5f, 32.0f } });
   }
 }

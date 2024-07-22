@@ -9,10 +9,10 @@
 
 using namespace GE;
 
-namespace{
+namespace
+{
   constexpr auto MAX_LIGHTS_SOURCES = 100;
 }
-
 
 MaterialShader::MaterialShader()
 {
@@ -82,34 +82,43 @@ void MaterialShader::UpdateAmbientLight(Color color, f32 strength)
   UpdateAmbientStrength(strength);
 }
 
-void MaterialShader::UpdateLightSources(const std::vector<std::tuple<Vec3, Color, f32>>& lightSources)
+void MaterialShader::UpdateLightSources(const std::vector<LightSource>& lightSources)
 {
   GE_ASSERT(lightSources.size() <= MAX_LIGHTS_SOURCES)
 
+  //  m_shader->UploadVec3("u_LightSource", std::ref(lightSources.front().position));
   std::vector<Vec3> positions;
   positions.reserve(lightSources.size());
   std::vector<Vec3> colors;
   colors.reserve(lightSources.size());
   std::vector<f32> strenghts;
   strenghts.reserve(lightSources.size());
-  for (const auto& [p, c, s] : lightSources)
+  std::vector<f32> specular_strenghts;
+  specular_strenghts.reserve(lightSources.size());
+  std::vector<f32> specular_shininess;
+  specular_shininess.reserve(lightSources.size());
+  for (const auto& [pos, color, str, spec, shine] : lightSources)
   {
-    positions.push_back(p);
-    colors.push_back(c.ToVec3());
-    strenghts.push_back(s);
+    positions.push_back(pos);
+    colors.push_back(color.ToVec3());
+    strenghts.push_back(str);
+    specular_strenghts.push_back(spec);
+    specular_shininess.push_back(shine);
   }
 
   UpdateLightPosition(positions);
   UpdateLightColor(colors);
   UpdateLightStrength(strenghts);
+//  m_shader->UploadFloatArray("u_specularStrenght", specular_strenghts);
+//  m_shader->UploadFloatArray("u_specularShininess", specular_shininess);
 }
 
-void MaterialShader::ClearAmbientLight()
-{
-  UpdateAmbientLight(Colors::WHITE, 1.0f);
-}
-
-void MaterialShader::ClearLightSources()
-{
-  UpdateLightSources({});
-}
+//void MaterialShader::ClearAmbientLight()
+//{
+//  UpdateAmbientLight(Colors::WHITE, 1.0f);
+//}
+//
+//void MaterialShader::ClearLightSources()
+//{
+//  UpdateLightSources({});
+//}
