@@ -84,7 +84,7 @@ void MaterialShader::UpdateAmbientLight(Color color, f32 strength)
 
 void MaterialShader::UpdateLightSources(const std::vector<LightSource>& lightSources)
 {
-  GE_ASSERT(lightSources.size() <= MAX_LIGHTS_SOURCES)
+  GE_ASSERT_NO_MSG(lightSources.size() <= MAX_LIGHTS_SOURCES);
 
   //  m_shader->UploadVec3("u_LightSource", std::ref(lightSources.front().position));
   std::vector<Vec3> positions;

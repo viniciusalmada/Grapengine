@@ -61,10 +61,7 @@ namespace
       glGetShaderInfoLog(shader, max_length, &max_length, info_log.data());
 
       const std::string shader_name = GetGLShaderName(type);
-      std::stringstream ss;
-      ss << "Failure at compiling the " << shader_name << " shader\n";
-      ss << info_log.data();
-      GE_ASSERT(false, ss.str().c_str())
+      GE_ASSERT(false, "Failure at compiling the {} shader\n  {}", shader_name, info_log.data());
 
       glDeleteShader(shader);
     }
@@ -103,10 +100,7 @@ namespace
       info_log.resize(static_cast<u32>(max_length));
       glGetProgramInfoLog(renderer_id, max_length, &max_length, info_log.data());
 
-      std::stringstream ss;
-      ss << "Failure at linking program!\n";
-      ss << info_log.data();
-      GE_ASSERT(false, ss.str().c_str())
+      GE_ASSERT(false, "Failure at linking program!\n  {}", info_log.data());
 
       glDeleteProgram(renderer_id);
 
@@ -213,13 +207,13 @@ Ptr<Shader> GE::Shader::Make(const std::filesystem::path& vertexPath,
 
 i32 Shader::RetrieveUniform(const std::string& name)
 {
-  GE_ASSERT(IsBound(), "Shader not bound")
+  GE_ASSERT(IsBound(), "Shader not bound");
 
   if (m_uniforms.contains(name))
     return m_uniforms[name];
 
   const i32 location = glGetUniformLocation(u32(m_renderer_id), name.c_str());
-  GE_ASSERT(location != -1, "Invalid uniform name")
+  GE_ASSERT(location != -1, "Invalid uniform name");
 
   m_uniforms[name] = location;
   return location;

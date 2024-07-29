@@ -49,10 +49,7 @@ void OpenGLDebuggerFunc([[maybe_unused]] GLenum source,
   if (id == BUFFER_INFO_ID || id == SHADER_RECOMPILED)
     return;
 
-  std::stringstream ss;
-  ss << "OpenGL Error:\n";
-  ss << "  (0x" << std::setfill('0') << std::setw(4) << std::hex << id << "): " << message << '\n';
-  GE_ASSERT(false, ss.str().c_str())
+  GE_ASSERT(false, "OpenGL Error:\n (0x{:04x}): {}\n", id, message);
 }
 
 void Renderer::Init()

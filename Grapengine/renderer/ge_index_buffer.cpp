@@ -12,7 +12,7 @@ IndexBuffer::IndexBuffer(const std::vector<u32>& indices, u64 count, RendererID 
     m_id(0), m_parent(parent)
 {
   GE_PROFILE;
-  GE_ASSERT(IsVAOBound(u32(parent)), "The associated VAO lacks a binding")
+  GE_ASSERT(IsVAOBound(u32(parent)), "The associated VAO lacks a binding");
 
   u32 id = 0;
   glGenBuffers(1, &id);
@@ -24,7 +24,7 @@ IndexBuffer::IndexBuffer(const std::vector<u32>& indices, u64 count, RendererID 
 void IndexBuffer::Bind() const
 {
   GE_PROFILE;
-  GE_ASSERT(IsVAOBound(u32(m_parent)), "The associated VAO lacks a binding")
+  GE_ASSERT(IsVAOBound(u32(m_parent)), "The associated VAO lacks a binding");
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, u32(m_id));
 }

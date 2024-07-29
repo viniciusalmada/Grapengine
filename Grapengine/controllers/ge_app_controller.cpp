@@ -17,14 +17,14 @@ void GE::Ctrl::App::Shutdown()
 void GE::Ctrl::App::Close()
 {
   const auto app = Get().m_application;
-  GE_ASSERT(app != nullptr, "Application destroyed")
+  GE_ASSERT(app != nullptr, "Application destroyed");
 
   app->Close();
 }
 void GE::Ctrl::App::AllowImGuiEvents(bool value)
 {
   const auto app = Get().m_application;
-  GE_ASSERT(app != nullptr, "Application destroyed")
+  GE_ASSERT(app != nullptr, "Application destroyed");
 
   app->GetImGuiLayer()->AllowMouseAndKeyboardEvents(value);
 }

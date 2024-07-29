@@ -12,7 +12,7 @@ namespace
 {
   void ErrorCB(i32 error_code, const char* description)
   {
-    GE_ASSERT(false, "Code: {} \'{}\'", error_code, description)
+    GE_ASSERT(false, "Code: {} \'{}\'", error_code, description);
   }
 }
 
@@ -22,8 +22,7 @@ Window::Window(const WindowProps& props, const EventCallbackFn& cb) :
   GE_PROFILE;
   GE_INFO("GLFW initialization")
   const bool success = bool(glfwInit());
-  if (!success)
-    throw std::runtime_error("Error GLFW");
+  GE_ASSERT_OR_RETURN_VOID(success, "Failed to initialize GLFW");
 
   glfwSetErrorCallback(ErrorCB);
 

@@ -348,7 +348,7 @@ Mat4 Mat4::Adjoint() const
 
 Mat4& Mat4::operator/(f32 div)
 {
-  GE_ASSERT(!Arithmetic::IsEqual(div, 0.0f), "Division by zero")
+  GE_ASSERT(!Arithmetic::IsEqual(div, 0.0f), "Division by zero");
 
   data.at(0).at(0) /= div;
   data.at(0).at(1) /= div;
@@ -485,7 +485,7 @@ Mat3 Mat3::Inverse() const
 
 Mat3& Mat3::operator/(f32 div)
 {
-  GE_ASSERT(!Arithmetic::IsEqual(div, 0.0f), "Division by zero")
+  GE_ASSERT(!Arithmetic::IsEqual(div, 0.0f), "Division by zero");
 
   data.at(0).at(0) /= div;
   data.at(0).at(1) /= div;

@@ -26,7 +26,7 @@ namespace
     for (auto& [normal, w] : normals)
       w = w / distance_sums;
 
-    GE_ASSERT(!normals.empty(), "Not normal")
+    GE_ASSERT(!normals.empty(), "Not normal");
 
     const Vec3 normal =
       std::reduce(normals.begin(),
@@ -40,15 +40,11 @@ namespace
     return normal;
   }
 
-  auto ReadFacesAndVertices(std::string_view path)
+  std::tuple<std::vector<Face>, std::vector<Vec3>> ReadFacesAndVertices(std::string_view path)
   {
     GE_PROFILE;
     std::ifstream file{ std::string{ path } };
-    if (!file.is_open())
-    {
-      GE_ERROR("File do not found!")
-      throw std::runtime_error{ "File do not found" };
-    }
+    GE_ASSERT_OR_RETURN(file.is_open(), {}, "File not found");
     std::string line;
     std::vector<Vec3> vertices;
     std::vector<Face> faces;
@@ -117,13 +113,14 @@ namespace
     {
       GE_PROFILE_SECTION("Calculate normals");
       normals.resize(vertices.size());
-      std::vector<u64> v_ids;
-      for (u64 i = 0; i < vertices.size(); i++)
+      std::vector<u32> v_ids;
+      for (u32 i = 0; i < static_cast<u32>(vertices.size()); i++)
         v_ids.push_back(i);
+
       std::for_each(std::execution::par_unseq,
                     v_ids.begin(),
                     v_ids.end(),
-                    [&](u64 idx) { normals.at(idx) = GetNormal(idx, faces, vertices); });
+                    [&](u32 idx) { normals.at(idx) = GetNormal(idx, faces, vertices); });
     }
 
     VerticesData vertices_data;

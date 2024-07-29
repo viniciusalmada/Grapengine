@@ -72,7 +72,7 @@ Texture2D::Texture2D() : m_dim(), m_renderer_ID(0)
   constexpr auto width = 1;
   constexpr auto height = 1;
   const bool size_check = true; // size == width * height * 4;
-  GE_ASSERT(size_check, "Error at texture size!")
+  GE_ASSERT(size_check, "Error at texture size!");
 
   {
     u32 i = 0;
