@@ -11,6 +11,8 @@ namespace GE
     Vec2 texture_coord;
     Vec4 color;
     Vec3 normal;
+
+    bool operator==(const VertexStruct& other) const = default;
   };
 
   class IShaderProgram

@@ -21,6 +21,8 @@ namespace GE
 
     [[nodiscard]] const char* GetTag() const { return m_tag.c_str(); }
 
+    bool operator==(const TagComponent&) const = default;
+
   private:
     std::string m_tag;
   };
@@ -31,29 +33,34 @@ namespace GE
   public:
     TransformComponent(const Vec3& pos = Vec3{ 0, 0, 0 },
                        const Vec3& scale = Vec3{ 1, 1, 1 },
-                       const Vec3& rotate = Vec3{ 0, 0, 0 }) :
-        m_position_values(pos), m_scale_values(scale), m_rotate_values(rotate)
+                       const Vec3& rotation = Vec3{ 0, 0, 0 }) :
+        m_position_values(pos), m_scale_values(scale), m_rotation_values(rotation)
     {
     }
     TransformComponent(const TransformComponent& other) = default;
     TransformComponent& operator=(const TransformComponent& other) = default;
     [[nodiscard]] Mat4 GetModelMat() const
     {
-      auto rotate = Transform::Rotate(m_rotate_values.x, { 1, 0, 0 }) *
-                    Transform::Rotate(m_rotate_values.y, { 0, 1, 0 }) *
-                    Transform::Rotate(m_rotate_values.z, { 0, 0, 1 });
+      auto rotate = Transform::Rotate(m_rotation_values.x, { 1, 0, 0 }) *
+                    Transform::Rotate(m_rotation_values.y, { 0, 1, 0 }) *
+                    Transform::Rotate(m_rotation_values.z, { 0, 0, 1 });
 
       return Transform::Translate(m_position_values) * rotate * Transform::Scale(m_scale_values);
     }
 
     [[nodiscard]] Vec3& Position() { return m_position_values; }
     [[nodiscard]] Vec3& Scale() { return m_scale_values; }
-    [[nodiscard]] Vec3& Rotate() { return m_rotate_values; }
+    [[nodiscard]] Vec3& Rotation() { return m_rotation_values; }
+    [[nodiscard]] const Vec3& Position() const { return m_position_values; }
+    [[nodiscard]] const Vec3& Scale() const { return m_scale_values; }
+    [[nodiscard]] const Vec3& Rotation() const { return m_rotation_values; }
+
+    bool operator==(const TransformComponent&) const = default;
 
   private:
     Vec3 m_position_values{ 0, 0, 0 };
     Vec3 m_scale_values{ 1, 1, 1 };
-    Vec3 m_rotate_values{ 0, 0, 0 };
+    Vec3 m_rotation_values{ 0, 0, 0 };
   };
 
   //----------------------------------------------------------------------------------------------
@@ -61,8 +68,6 @@ namespace GE
   class PrimitiveComponent
   {
   public:
-    PrimitiveComponent(Ptr<Drawable> drawable, Color color = Colors::WHITE);
-
     PrimitiveComponent(const Drawable& drawable, Color color);
 
     [[nodiscard]] const Drawable& GetDrawable() const;
@@ -70,6 +75,8 @@ namespace GE
     [[nodiscard]] const Color& GetColor() const;
 
     void SetColor(Color c);
+
+    bool operator==(const PrimitiveComponent&) const = default;
 
   private:
     Drawable m_drawable;
@@ -81,6 +88,7 @@ namespace GE
   {
   public:
     //    explicit CameraComponent();
+    CameraComponent(const SceneCamera& cam, bool isActive, bool isFixedRatio);
     CameraComponent(const Vec3& eye, const Vec3& target, bool act, bool fixedRatio);
 
     [[nodiscard]] const SceneCamera& GetCamera() const { return m_camera; }
@@ -89,6 +97,8 @@ namespace GE
     [[nodiscard]] bool IsFixedRatio() const { return m_fixed_ratio; }
 
     void SetActive(bool active) { m_active = active; }
+
+    bool operator==(const CameraComponent&) const = default;
 
   private:
     SceneCamera m_camera;
@@ -107,7 +117,10 @@ namespace GE
     template <typename T>
     void Bind()
     {
-      m_instantiate_fun = [this](Entity e, Scene& s) { m_instance = new T(e, std::ref(s)); };
+      m_instantiate_fun = [this](Entity e, Scene& s)
+      {
+        m_instance = new T(e, std::ref(s));
+      };
       m_destroy_fun = [this]()
       {
         delete static_cast<T*>(m_instance);
@@ -118,6 +131,8 @@ namespace GE
     [[nodiscard]] bool IsValid() const { return m_instance != nullptr; }
     void Instantiate(Entity ent, Scene& scene) const { m_instantiate_fun(ent, scene); }
     [[nodiscard]] ScriptableEntity* GetInstance() const { return m_instance; }
+
+    // bool operator==(const NativeScriptComponent&) const = default;
 
   private:
     ScriptableEntity* m_instance;
@@ -130,6 +145,7 @@ namespace GE
   {
   public:
     AmbientLightComponent(Color c, f32 str);
+    AmbientLightComponent(Color c, f32 str, bool active);
 
     [[nodiscard]] bool IsActive() const { return m_active; }
     [[nodiscard]] const Color& GetColor() const { return m_color; }
@@ -138,6 +154,8 @@ namespace GE
     void SetActive(bool active) { m_active = active; }
     void SetColor(Color c) { m_color = c; }
     void SetStr(f32 s) { m_strenght = s; }
+
+    bool operator==(const AmbientLightComponent&) const;
 
   private:
     Color m_color;
@@ -162,6 +180,8 @@ namespace GE
     [[nodiscard]] bool IsActive() const { return m_active; }
     [[nodiscard]] const Drawable& GetDrawable() const { return m_drawable; }
     [[nodiscard]] Drawable& GetDrawable() { return m_drawable; }
+
+    bool operator==(const LightSourceComponent&) const;
 
   private:
     Color m_color;

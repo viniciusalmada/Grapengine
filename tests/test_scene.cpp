@@ -8,7 +8,7 @@
 
 TEST(Scene, CreateEntities)
 {
-  GE::Ptr<GE::Scene> scene = GE::Scene::Make();
+  GE::Ptr<GE::Scene> scene = GE::Scene::Make("TestScene");
   GE::Entity first_ent = scene->CreateEntity("First");
   GE::Entity second_ent = scene->CreateEntity("Second");
   GE::Entity third_ent = scene->CreateEntity("Third");
@@ -24,7 +24,7 @@ TEST(Scene, CreateEntities)
 
 TEST(Scene, AddComponents)
 {
-  GE::Ptr<GE::Scene> scene = GE::Scene::Make();
+  GE::Ptr<GE::Scene> scene = GE::Scene::Make("TestScene");
   GE::Entity first_ent = scene->CreateEntity("First");
   GE::Entity second_ent = scene->CreateEntity("Second");
   [[maybe_unused]] GE::Entity third_ent = scene->CreateEntity("Third");

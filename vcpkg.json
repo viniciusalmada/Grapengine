@@ -4,7 +4,8 @@
     "glfw3",
     "stb",
     "gtest",
-    "spdlog"
+    "spdlog",
+    "yaml-cpp"
   ],
   "name": "grapengine",
   "version": "0.0.1"

@@ -226,7 +226,7 @@ namespace
   {
     auto& pos = comp.Position();
     auto& scale = comp.Scale();
-    auto& rotate = comp.Rotate();
+    auto& rotate = comp.Rotation();
 
     DrawVec3Control("Position", pos);
     DrawVec3Control("Scale", scale, 1.0f);
@@ -318,7 +318,7 @@ void SceneHierarchyPanel::OnImGuiRender()
           if (ImGui::MenuItem("Cube primitive"))
           {
             m_scene_context.AddComponent<PrimitiveComponent>(ent,
-                                                             Cube::Make(),
+                                                             Cube().GetDrawable(),
                                                              Colors::RandomColor());
             m_scene_context.AddComponent<TransformComponent>(ent);
             ImGui::CloseCurrentPopup();

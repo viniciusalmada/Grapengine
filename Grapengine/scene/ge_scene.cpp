@@ -10,7 +10,7 @@
 
 using namespace GE;
 
-Scene::Scene() : m_registry({}), m_active_camera(std::nullopt), m_viewport(Dimension{ 1, 1 }) {}
+Scene::Scene(const std::string& name) : m_name(name), m_registry({}), m_active_camera(std::nullopt), m_viewport(Dimension{ 1, 1 }) {}
 
 void Scene::OnUpdate(TimeStep ts)
 {
@@ -93,7 +93,7 @@ void Scene::UpdateDrawableEntities(TimeStep& /*ts*/)
   GE_PROFILE;
   if (!m_active_camera.has_value())
   {
-    GE_ASSERT(false, "No active camera!")
+    GE_ASSERT(false, "No active camera!");
     return;
   }
 
@@ -132,9 +132,16 @@ Entity Scene::CreateEntity(std::string&& name)
   return ent;
 }
 
-Ptr<Scene> Scene::Make()
+void Scene::PushEntity(Entity entity)
 {
-  return MakeRef<Scene>();
+  GE_PROFILE;
+  m_registry.Push(entity);
+  GE_INFO("Pushing entity with id={}", entity.handle)
+}
+
+Ptr<Scene> Scene::Make(const std::string& name)
+{
+  return MakeRef<Scene>(name);
 }
 
 void Scene::OnEvent(Event& /*ev*/)
@@ -198,10 +205,30 @@ Opt<Entity> Scene::RetrieveActiveCamera() const
   return active_camera;
 }
 
-void Scene::EachEntity(const std::function<void(Entity)>& fun)
+void Scene::EachEntity(const std::function<void(Entity)>& fun) const
 {
   GE_PROFILE;
   m_registry.Each(fun);
+}
+
+const std::set<Entity>& Scene::GetEntities() const
+{
+  return m_registry.GetEntities();
+}
+
+const std::vector<VarComponent>& Scene::GetComponents(const Entity& ent) const
+{
+  return m_registry.GetComponents(ent);
+}
+
+const std::string& Scene::GetName() const
+{
+  return m_name;
+}
+
+void Scene::SetName(const std::string& name)
+{
+  m_name = name;
 }
 
 void Scene::SetActiveCamera(Opt<Entity> activeCamera)

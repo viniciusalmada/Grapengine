@@ -31,8 +31,8 @@ f32 Vec2::Dot(Vec2 other) const noexcept
 }
 bool Vec2::operator==(const Vec2& rhs) const
 {
-  return std::abs(x - rhs.x) < std::numeric_limits<f32>::epsilon() &&
-         std::abs(y - rhs.y) < std::numeric_limits<f32>::epsilon();
+  return Arithmetic::IsEqual(x, rhs.x) && //
+         Arithmetic::IsEqual(y, rhs.y);
 }
 
 bool Vec2::operator!=(const Vec2& rhs) const
@@ -113,6 +113,13 @@ f32 Vec3::Distance(const Vec3& other) const
 {
   const Vec3 diff = *this - other;
   return diff.Length();
+}
+
+bool Vec3::operator==(const Vec3& rhs) const
+{
+  return Arithmetic::IsEqual(x, rhs.x) && //
+         Arithmetic::IsEqual(y, rhs.y) && //
+         Arithmetic::IsEqual(z, rhs.z);
 }
 
 f32 Vec3::Length() const
@@ -401,6 +408,14 @@ Vec4 Vec4::operator+(const Vec4& other) const
 Vec4 Vec4::operator-(const Vec4& other) const
 {
   return { x0 - other.x0, x1 - other.x1, x2 - other.x2, x3 - other.x3 };
+}
+
+bool Vec4::operator==(const Vec4& rhs) const
+{
+  return Arithmetic::IsEqual(x0, rhs.x0) && //
+         Arithmetic::IsEqual(x1, rhs.x1) && //
+         Arithmetic::IsEqual(x2, rhs.x2) && //
+         Arithmetic::IsEqual(x3, rhs.x3);
 }
 
 Mat3::Mat3() : Mat3({ { 1, 0, 0 } }, { { 0, 1, 0 } }, { { 0, 0, 1 } }) {}

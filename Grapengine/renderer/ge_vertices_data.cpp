@@ -14,7 +14,7 @@ void VerticesData::RawPushData(VerticesData&& data)
                 std::make_move_iterator(data.m_data.end()));
 }
 
-VerticesData::VerticesData() = default;
+VerticesData::VerticesData(const std::vector<VertexStruct>& data) : m_data(data){};
 
 u64 VerticesData::GetSize() const
 {
@@ -35,6 +35,11 @@ BufferLayout VerticesData::GetLayout()
 }
 
 std::vector<VertexStruct>& VerticesData::GetData()
+{
+  return m_data;
+}
+
+const std::vector<VertexStruct>& VerticesData::GetData() const
 {
   return m_data;
 }

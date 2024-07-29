@@ -13,7 +13,7 @@ namespace GE
 
     [[nodiscard]] static BufferLayout GetLayout();
 
-    explicit VerticesData();
+    explicit VerticesData(const std::vector<VertexStruct>& vertices = {});
 
     void PushVerticesData(VertexStruct&& vs);
 
@@ -28,6 +28,9 @@ namespace GE
     void Clear();
 
     std::vector<VertexStruct>& GetData();
+    const std::vector<VertexStruct>& GetData() const;
+
+    bool operator==(const VerticesData& other) const = default;
 
   private:
     std::vector<VertexStruct> m_data;

@@ -16,6 +16,8 @@ namespace GE
      */
     Entity Create();
 
+    void Push(Entity ent);
+
     void Destroy(Opt<Entity> ent);
 
     /**
@@ -29,13 +31,23 @@ namespace GE
     Component& AddComponent(const Entity& ent, Args... args)
     {
       GE_PROFILE;
-      GE_ASSERT(!Has<Component>(ent), "Entity already has this component!")
+      GE_ASSERT(!Has<Component>(ent), "Entity already has this component!");
 
       VarComponent& added =
         m_components[ent].emplace_back(std::in_place_type<Component>, std::forward<Args>(args)...);
       m_entities_with_components[ent].insert(typeid(Component).hash_code());
 
       return *std::get_if<Component>(&added);
+    }
+
+    template <typename Component>
+    void PushComponent(const Entity& ent, Component&& component)
+    {
+      GE_PROFILE;
+      GE_ASSERT(!Has<Component>(ent), "Entity already has this component!");
+
+      m_components[ent].emplace_back(component);
+      m_entities_with_components[ent].insert(typeid(Component).hash_code());
     }
 
     template <typename Component>
@@ -57,7 +69,7 @@ namespace GE
     [[nodiscard]] Component& GetComponent(const Entity& ent)
     {
       GE_PROFILE;
-      GE_ASSERT(Has<Component>(ent), "Entity does not have this component!")
+      GE_ASSERT(Has<Component>(ent), "Entity does not have this component!");
 
       auto found = std::ranges::find_if(m_components.at(ent),
                                         [&](auto&& anyComp)
@@ -77,7 +89,7 @@ namespace GE
     [[nodiscard]] const Component& GetComponent(const Entity& ent) const
     {
       GE_PROFILE;
-      GE_ASSERT(Has<Component>(ent), "Entity does not have this component!")
+      GE_ASSERT(Has<Component>(ent), "Entity does not have this component!");
 
       auto found = std::ranges::find_if(m_components.at(ent),
                                         [&](auto&& anyComp)
@@ -86,6 +98,10 @@ namespace GE
       const Component* alc = std::get_if<Component>(&var_component);
       return *alc;
     }
+
+    [[nodiscard]] const std::vector<VarComponent>& GetComponents(const Entity& ent) const;
+
+    [[nodiscard]] const std::set<Entity>& GetEntities() const;
 
     /**
      * Verify if associated component exist with given entity
@@ -135,6 +151,9 @@ namespace GE
     }
 
     void Each(const std::function<void(Entity)>& action);
+    void Each(const std::function<void(Entity)>& action) const;
+
+    // [[nodiscard]] bool operator==(const ECRegistry& other) const;
 
   private:
     u32 m_entity_next_id = 0;

@@ -226,3 +226,8 @@
 using namespace GE;
 
 Camera::Camera() = default;
+
+void Camera::SetProjection(const Mat4& m)
+{
+  m_projection = m;
+}

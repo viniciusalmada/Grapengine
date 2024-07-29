@@ -56,6 +56,8 @@ namespace GE
     [[nodiscard]] f32 Dot(const Vec3& other) const;
     [[nodiscard]] f32 Distance(const Vec3& other) const;
 
+    bool operator==(const Vec3&) const;
+
     friend std::ostream& operator<<(std::ostream& os, const Vec3& vec3);
     [[nodiscard]] f32 Length() const;
   };
@@ -74,6 +76,8 @@ namespace GE
     Vec4 operator*(const Vec4& other) const;
     Vec4 operator+(const Vec4& other) const;
     Vec4 operator-(const Vec4& other) const;
+
+    bool operator==(const Vec4&) const;
   };
 
   class Mat3

@@ -8,6 +8,7 @@ file(GLOB_RECURSE GRAPES_SOURCES
   drawables/*.cpp
   events/*.cpp
   input/*.cpp
+  serializer/*.cpp
   layer/*.cpp
   log/*.cpp
   math/*.cpp
@@ -23,6 +24,7 @@ file(GLOB_RECURSE GRAPES_HEADERS
   drawables/*.hpp
   events/*.hpp
   input/*.hpp
+  serializer/*.hpp
   layer/*.hpp
   log/*.hpp
   math/*.hpp
@@ -102,3 +104,6 @@ target_include_directories(Grapengine SYSTEM PRIVATE ${Stb_INCLUDE_DIR})
 
 find_package(spdlog CONFIG REQUIRED)
 target_link_libraries(Grapengine PUBLIC spdlog::spdlog_header_only)
+
+find_package(yaml-cpp CONFIG REQUIRED)
+target_link_libraries(Grapengine PRIVATE yaml-cpp::yaml-cpp)

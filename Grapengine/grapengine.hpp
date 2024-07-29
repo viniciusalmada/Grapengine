@@ -48,6 +48,9 @@
 // Controllers
 #include "controllers/ge_app_controller.hpp"
 
+// Serializer
+#include "serializer/ge_scene_serializer.hpp"
+
 // ImGui
 #include <imgui.h>
 

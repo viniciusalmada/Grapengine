@@ -9,11 +9,15 @@ namespace GE
   class Drawable final
   {
   public:
+    Drawable() = default;
+
     explicit Drawable(const VerticesData& vertices, const std::vector<u32>& indices);
 
     void UpdateColor(const Color&);
     [[nodiscard]] const VerticesData& GetVerticesData() const;
     [[nodiscard]] virtual const std::vector<u32>& GetIndicesData() const;
+
+    bool operator==(const Drawable& other) const = default;
 
   private:
     VerticesData m_vertices_data;

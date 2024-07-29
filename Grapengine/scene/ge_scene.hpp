@@ -10,11 +10,13 @@ namespace GE
   class Scene
   {
   public:
-    static Ptr<Scene> Make();
+    static Ptr<Scene> Make(const std::string& name);
 
-    Scene();
+    Scene(const std::string& name);
 
     Entity CreateEntity(std::string&& name);
+
+    void PushEntity(Entity entity);
 
     void DestroyEntity(Opt<Entity> ent);
 
@@ -33,6 +35,16 @@ namespace GE
     {
       GE_PROFILE;
       return m_registry.AddComponent<Component>(ent, std::forward<Args>(args)...);
+    }
+
+    template <typename Component>
+    void PushComponent(const Entity& ent, Opt<Component> component)
+    {
+      GE_PROFILE;
+      if (!component)
+        return;
+
+      return m_registry.PushComponent<Component>(ent, std::move(component.value()));
     }
 
     template <typename Component>
@@ -63,7 +75,16 @@ namespace GE
         m_registry.RemoveComponent<Component>(ent);
     }
 
-    void EachEntity(const std::function<void(Entity)>& fun);
+    void EachEntity(const std::function<void(Entity)>& fun) const;
+    const std::set<Entity>& GetEntities() const;
+
+    const std::vector<VarComponent>& GetComponents(const Entity& ent) const;
+
+    const std::string& GetName() const;
+    void SetName(const std::string& name);
+
+    // [[nodiscard]] bool operator==(const Scene& other) const;
+    // [[nodiscard]] bool operator!=(const Scene& other) const;
 
   private:
     void UpdateNativeScripts(TimeStep& ts);
@@ -75,6 +96,7 @@ namespace GE
 
     [[nodiscard]] Opt<Entity> RetrieveActiveCamera() const;
 
+    std::string m_name;
     ECRegistry m_registry;
     Opt<Entity> m_active_camera;
     Opt<Entity> m_active_ambient_light;
