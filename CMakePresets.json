@@ -95,6 +95,17 @@
       }
     },
     {
+      "name": "clang-win-coverage",
+      "displayName": "Build to generate coverage results",
+      "inherits": [
+        "clang-win-debug"
+      ],
+      "cacheVariables": {
+        "CMAKE_CXX_FLAGS": "-fcoverage-mapping -fprofile-instr-generate",
+        "COVERAGE_ENABLED": true
+      }
+    },
+    {
       "name": "clang-win-release",
       "displayName": "Optimized build with Clang compiler as MSVC frontend",
       "inherits": [

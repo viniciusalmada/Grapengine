@@ -6,27 +6,31 @@ using namespace GE;
 
 std::string IO::ReadFileToString(const std::filesystem::path& path)
 {
+#if !defined(GE_COVERAGE_ENABLED)
   try
   {
-    if (!std::filesystem::exists(path))
-      throw std::runtime_error("File \'" + path.string() + "\' not found (pwd: " +
-                               std::filesystem::current_path().string() + ")");
+#endif
+    GE_ASSERT_OR_RETURN(std::filesystem::exists(path),
+                        {},
+                        "File {} not found (pwd: {})",
+                        path.string(),
+                        std::filesystem::current_path().string());
 
-    if (!std::filesystem::is_regular_file(path))
-      throw std::runtime_error("File is not regular");
+    GE_ASSERT_OR_RETURN(std::filesystem::is_regular_file(path), {}, "File is not regular");
 
     const std::ifstream stream(path, std::ios ::in | std::ios ::binary);
-    if (!stream.is_open())
-      throw std::runtime_error("Failed to open file for reading: " + path.string());
+    GE_ASSERT_OR_RETURN(stream.is_open(), {}, "Failed to open file for reading: {}", path.string());
 
     std::ostringstream out_content;
     out_content << stream.rdbuf();
 
     return out_content.str();
+#if !defined(GE_COVERAGE_ENABLED)
   }
   catch (const std::exception& ex)
   {
-    GE_ASSERT(false, ex.what())
+    GE_ASSERT(false, "Exception found {}", ex.what());
     return {};
   }
+#endif
 }

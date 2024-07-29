@@ -10,6 +10,10 @@ else ()
   message(FATAL_ERROR "Unsupported platform")
 endif ()
 
+if (DEFINED COVERAGE_ENABLED)
+  target_compile_definitions(GrapengineCompileOptions INTERFACE GE_COVERAGE_ENABLED)
+endif()
+
 message(STATUS "GRAPENGINE: Setting up compiler flags for ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION} (${CMAKE_CXX_COMPILER_FRONTEND_VARIANT})")
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   target_compile_definitions(GrapengineCompileOptions INTERFACE GE_MSVC_COMPILER)
