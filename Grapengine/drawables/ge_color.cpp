@@ -10,21 +10,26 @@ Color Colors::RandomColor()
     Vec3{ Random::GenFloat(0.0, 1.0f), Random::GenFloat(0.0, 1.0f), Random::GenFloat(0.0, 1.0f) });
 }
 
-u32 Color::HexARGB() const
+u32 Color::HexRGB() const
 {
-  u32 a = u32(A() << (BITS_ONE_BYTE * 3));
-  u32 r = u32(R() << (BITS_ONE_BYTE * 2));
-  u32 g = u32(G() << (BITS_ONE_BYTE * 1));
-  u32 b = u32(B() << (BITS_ONE_BYTE * 0));
-  return a | r | g | b;
+  return m_rgb;
 }
 
-Color::Color(Vec3 rgb) :
-    m_alpha(0xff),
-    m_red(static_cast<u8>(rgb.x * MAX_U8)),
-    m_green(static_cast<u8>(rgb.y * MAX_U8)),
-    m_blue(static_cast<u8>(rgb.z * MAX_U8))
+Color::Color(Vec3 rgbDec) : m_alpha(0xff), m_rgb(0xff)
 {
+  auto red = u8(rgbDec.x * MAX_U8);
+  auto green = u8(rgbDec.y * MAX_U8);
+  auto blue = u8(rgbDec.z * MAX_U8);
+  m_rgb = u32(                     //
+    red << (BITS_ONE_BYTE * 2) |   //
+    green << (BITS_ONE_BYTE * 1) | //
+    blue << (BITS_ONE_BYTE * 0)    //
+  );
+}
+
+Color::Color(Vec4 rgba) : Color(Vec3{ rgba.x0, rgba.x1, rgba.x2 })
+{
+  m_alpha = static_cast<u8>(rgba.x3 * MAX_U8);
 }
 
 Vec4 Color::ToVec4() const

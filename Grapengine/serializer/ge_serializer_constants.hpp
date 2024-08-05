@@ -33,6 +33,8 @@ namespace GE
     constexpr auto VERTICES_DATA = "VerticesData";
     constexpr auto TEX_COORDINATES = "TextureCoordinates";
     constexpr auto COLOR_RGBA = "ColorRGBA";
+    constexpr auto RGB = "RGB";
+    constexpr auto ALPHA = "Alpha";
     constexpr auto COLOR_DECIMAL = "ColorDecimal";
     constexpr auto NORMAL = "Normal";
     constexpr auto INDICES_DATA = "IndicesData";

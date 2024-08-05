@@ -2,7 +2,7 @@
 
 #include "nativescripts/CamController.hpp"
 
-static constexpr const auto CLEAR_COLOR = 0x222222FF;
+static constexpr const auto CLEAR_COLOR = 0x222222;
 
 using namespace GE;
 

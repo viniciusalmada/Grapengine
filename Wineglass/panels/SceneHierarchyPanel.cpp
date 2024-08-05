@@ -9,15 +9,15 @@ using namespace GE;
 
 namespace
 {
-  constexpr Color X_NORMAL{ 0xB20F0FFF };
-  constexpr Color X_HOVERED{ 0xC20F0FFF };
-  constexpr Color X_ACTIVE{ 0xB21F0FFF };
-  constexpr Color Y_NORMAL{ 0x317F35FF };
-  constexpr Color Y_HOVERED{ 0x318F35FF };
-  constexpr Color Y_ACTIVE{ 0x417F35FF };
-  constexpr Color Z_NORMAL{ 0x106ECBFF };
-  constexpr Color Z_HOVERED{ 0x107ECBFF };
-  constexpr Color Z_ACTIVE{ 0x106EDBFF };
+  constexpr Color X_NORMAL{ 0xB20F0F };
+  constexpr Color X_HOVERED{ 0xC20F0F };
+  constexpr Color X_ACTIVE{ 0xB21F0F };
+  constexpr Color Y_NORMAL{ 0x317F35 };
+  constexpr Color Y_HOVERED{ 0x318F35 };
+  constexpr Color Y_ACTIVE{ 0x417F35 };
+  constexpr Color Z_NORMAL{ 0x106ECB };
+  constexpr Color Z_HOVERED{ 0x107ECB };
+  constexpr Color Z_ACTIVE{ 0x106EDB };
 
   //-------------------------------------------------------------------------------------------------
   void DrawVec3Control(const std::string& label, Vec3& values, float resetValue = 0.0f)

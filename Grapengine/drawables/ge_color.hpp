@@ -13,17 +13,17 @@ namespace GE
   public:
     constexpr Color() = default;
 
-    constexpr explicit Color(u32 argb) :
-        m_alpha(static_cast<u8>((argb >> BITS_ONE_BYTE * 3) & MAX_U8)),
-        m_red(static_cast<u8>((argb >> BITS_ONE_BYTE * 2) & MAX_U8)),
-        m_green(static_cast<u8>((argb >> BITS_ONE_BYTE * 1) & MAX_U8)),
-        m_blue(static_cast<u8>((argb >> BITS_ONE_BYTE * 0) & MAX_U8))
+    constexpr explicit Color(u32 rgb, u8 alpha = 0xFF) :
+        m_alpha(alpha),
+        m_rgb(rgb)
     {
     }
 
-    u32 HexARGB() const;
+    u32 HexRGB() const;
 
-    explicit Color(Vec3 rgb);
+    explicit Color(Vec3 rgbDecimal);
+
+    explicit Color(Vec4 rgbaDecimal);
 
     template <typename T>
     [[nodiscard]] T ToVec4() const
@@ -43,27 +43,25 @@ namespace GE
     bool operator==(const Color& rhs) const = default;
 
     u8 A() const { return m_alpha; }
-    u8 R() const { return m_red; }
-    u8 G() const { return m_green; }
-    u8 B() const { return m_blue; }
+    u8 R() const { return static_cast<u8>((m_rgb >> BITS_ONE_BYTE * 2) & MAX_U8); }
+    u8 G() const { return static_cast<u8>((m_rgb >> BITS_ONE_BYTE * 1) & MAX_U8); }
+    u8 B() const { return static_cast<u8>((m_rgb >> BITS_ONE_BYTE * 0) & MAX_U8); }
 
   private:
     u8 m_alpha = MAX_U8;
-    u8 m_red = 0x00;
-    u8 m_green = 0x00;
-    u8 m_blue = 0x00;
+    u32 m_rgb = 0x0;
   };
 
   namespace Colors
   {
-    [[maybe_unused]] constexpr Color BLACK{ 0xFF000000 };
-    [[maybe_unused]] constexpr Color WHITE{ 0xFFFFFFFF };
-    [[maybe_unused]] constexpr Color RED{ 0xFFFF3333 };
-    [[maybe_unused]] constexpr Color BLUE{ 0xFF3333FF };
-    [[maybe_unused]] constexpr Color GREEN{ 0xFF33FF33 };
-    [[maybe_unused]] constexpr Color YELLOW{ 0xFFFFFF33 };
-    [[maybe_unused]] constexpr Color MAGENTA{ 0xFFFF33FF };
-    [[maybe_unused]] constexpr Color ORANGE{ 0xFFF79300 }; // McLaren
+    [[maybe_unused]] constexpr Color BLACK{ 0x000000 };
+    [[maybe_unused]] constexpr Color WHITE{ 0xFFFFFF };
+    [[maybe_unused]] constexpr Color RED{ 0xFF3333 };
+    [[maybe_unused]] constexpr Color BLUE{ 0x3333FF };
+    [[maybe_unused]] constexpr Color GREEN{ 0x33FF33 };
+    [[maybe_unused]] constexpr Color YELLOW{ 0xFFFF33 };
+    [[maybe_unused]] constexpr Color MAGENTA{ 0xFF33FF };
+    [[maybe_unused]] constexpr Color ORANGE{ 0xF79300 }; // McLaren
 
     Color RandomColor();
   }

@@ -35,7 +35,10 @@ namespace
   }
   YAML::Emitter& operator<<(YAML::Emitter& e, const Color& c)
   {
-    e << YAML::Hex << c.HexARGB();
+    e << YAML::BeginMap;
+    e << YAML::Key << "RGB" << YAML::Value << YAML::Hex << c.HexRGB();
+    e << YAML::Key << "Alpha" << YAML::Value << YAML::Hex << u32(c.A());
+    e << YAML::EndMap;
     GE_ASSERT_NO_MSG(e.good());
     return e;
   }
@@ -114,10 +117,11 @@ namespace YAML
   {
     static bool decode(const Node& node, Color& d)
     {
-      GE_ASSERT_OR_RETURN(!node.IsSequence() && node.IsScalar(), false, "Color not found");
+      GE_ASSERT_OR_RETURN(node.IsMap(), false, "Color not found");
 
-      const auto& c = node.as<u32>();
-      d = Color{ c };
+      const auto& rgb = node[Fields::RGB].as<u32>();
+      const auto& alpha = node[Fields::ALPHA].as<u32>();
+      d = Color{ rgb, u8(std::clamp(alpha, 0x0u, 0xffu)) };
       return true;
     }
   };
@@ -396,8 +400,7 @@ Opt<PrimitiveComponent> ComponentDeserializer::GetPrimitive() const
   VerticesData vertices_data{ vertices };
   auto indices_data = drawable_node[Fields::INDICES_DATA].as<std::vector<u32>>();
   Drawable drawable{ vertices_data, indices_data };
-  auto color_u32 = comp[Fields::COLOR_RGBA].as<u32>();
-  const Color color{ color_u32 };
+  Color color = comp[Fields::COLOR_RGBA].as<Color>();
 
   return PrimitiveComponent{ drawable, color };
 }
