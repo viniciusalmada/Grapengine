@@ -44,9 +44,9 @@ namespace
     for (u32 i = 0; i < base_pts.size(); ++i)
     {
       vertices_data.PushVerticesData(
-        { base_pts[i], Vec2{ 1, 1 }, color, Vec3{ 0, 0, 0 }.Normalize() });
+        { base_pts[i], Vec2{ 1, 1 }, color, Vec3{ 0, 0, 0 } });
       vertices_data.PushVerticesData(
-        { final_pts[i], Vec2{ 1, 1 }, color, Vec3{ 0, 0, 0 }.Normalize() });
+        { final_pts[i], Vec2{ 1, 1 }, color, Vec3{ 0, 0, 0 } });
     }
 
     return vertices_data;
