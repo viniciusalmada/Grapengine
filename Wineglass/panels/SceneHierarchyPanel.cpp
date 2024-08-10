@@ -260,10 +260,14 @@ namespace
 
     DrawVec3Control("Position", comp.Position(), 0.0f);
 
-    constexpr auto LIGHT_STEP = 0.1f;
+    constexpr auto LIGHT_STEP = 0.01f;
     constexpr auto MIN_LIGHT_STR = 0.0f;
-    constexpr auto MAX_LIGHT_STR = 10.0f;
+    constexpr auto MAX_LIGHT_STR = 1.0f;
     ImGui::DragFloat("Strenght", &comp.Strenght(), LIGHT_STEP, MIN_LIGHT_STR, MAX_LIGHT_STR);
+    ImGui::DragFloat("Spec. Strenght", &comp.SpecStr(), LIGHT_STEP, MIN_LIGHT_STR, MAX_LIGHT_STR);
+    int shine = comp.SpecShine();
+    ImGui::DragInt("Spec. Shineness", &shine, 1,1,1024);
+    comp.SpecShine() = shine;
 
     ImGui::Checkbox("Active", &comp.Active());
   }

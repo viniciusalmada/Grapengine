@@ -1,6 +1,6 @@
 #version 330 core
 
-#define MAX_LIGHTS 100
+#define MAX_LIGHTS 10
 
 in vec2 out_texture_coords;
 in vec4 out_color;
@@ -17,8 +17,11 @@ uniform float u_ambientStrength;
 uniform vec3 u_lightPos[MAX_LIGHTS];
 uniform vec3 u_lightColor[MAX_LIGHTS];
 uniform float u_lightStrength[MAX_LIGHTS];
+uniform float u_specularStrenght[MAX_LIGHTS];
+uniform float u_specularShininess[MAX_LIGHTS];
 
-/*uniform */float u_specularStrenght = 0.5;
+uniform int u_lights_count;
+
 uniform vec3 u_viewPos;
 
 void main()
@@ -28,13 +31,13 @@ void main()
 
   // Calculate ray direction
   vec3 light_directions[MAX_LIGHTS];
-  for (int i = 0; i < MAX_LIGHTS; i++)
-  light_directions[i] = normalize(u_lightPos[i] - out_frag_pos);
+  for (int i = 0; i < u_lights_count; i++)
+    light_directions[i] = normalize(u_lightPos[i] - out_frag_pos);
 
 
   // Calculate ray inclination
   vec3 diffuses = vec3(0, 0, 0);
-  for (int i = 0; i < MAX_LIGHTS; i++)
+  for (int i = 0; i < u_lights_count; i++)
   {
     float cosine = dot(frag_normal, light_directions[i]);// -1 to 1
     float diff = max(0, cosine);
@@ -46,11 +49,11 @@ void main()
 
   vec3 view_direction = normalize(u_viewPos - out_frag_pos);
   vec3 speculars = vec3(0, 0, 0);
-  for (int i = 0; i < MAX_LIGHTS; i++)
+  for (int i = 0; i < u_lights_count; i++)
   {
     vec3 reflect_dir = reflect(-light_directions[i], frag_normal);
-    float spec = pow(max(dot(view_direction, reflect_dir), 0.0), 32);
-    speculars = speculars + u_specularStrenght * spec * u_lightColor[i];
+    float spec = pow(max(dot(view_direction, reflect_dir), 0.0), u_specularShininess[i]);
+    speculars = speculars + u_specularStrenght[i] * spec * u_lightColor[i];
   }
 
   vec3 object_color = (texture2D(u_texture, out_texture_coords) * out_color).rgb;

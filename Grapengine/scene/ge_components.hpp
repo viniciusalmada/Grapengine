@@ -170,6 +170,8 @@ namespace GE
     [[nodiscard]] Vec3& Position() { return m_position; }
     [[nodiscard]] f32& Strenght() { return m_strenght; }
     [[nodiscard]] bool& Active() { return m_active; }
+    [[nodiscard]] f32& SpecStr() { return m_specular_strenght; }
+    [[nodiscard]] u32& SpecShine() { return m_specular_shininess; }
 
     [[nodiscard]] const Color& GetColor() const { return m_color; }
     [[nodiscard]] const Vec3& GetPos() const { return m_position; }
@@ -177,6 +179,8 @@ namespace GE
     [[nodiscard]] bool IsActive() const { return m_active; }
     [[nodiscard]] const Drawable& GetDrawable() const { return m_drawable; }
     [[nodiscard]] Drawable& GetDrawable() { return m_drawable; }
+    [[nodiscard]] f32 GetSpecStr() const { return m_specular_strenght; }
+    [[nodiscard]] u32 GetSpecShine() const { return m_specular_shininess; }
 
     bool operator==(const LightSourceComponent&) const;
 
@@ -186,6 +190,8 @@ namespace GE
     f32 m_strenght;
     bool m_active;
     Drawable m_drawable;
+    u32 m_specular_shininess;
+    f32 m_specular_strenght;
   };
 
   //----------------------------------------------------------------------------------------------
