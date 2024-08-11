@@ -221,7 +221,7 @@ namespace YAML
 
       const auto& camera = node[Fields::CAMERA].as<Camera>();
       const auto& pos = node[Fields::POSITION].as<Vec3>();
-      const auto& target = node[Fields::POSITION].as<Vec3>();
+      const auto& target = node[Fields::TARGET].as<Vec3>();
       const auto& viewport = node[Fields::VIEWPORT].as<Dimension>();
       const auto& fov = node[Fields::FOV].as<f32>();
       const auto& ortho = node[Fields::ORTHO_SIZE].as<f32>();
