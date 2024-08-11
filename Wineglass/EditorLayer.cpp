@@ -158,7 +158,7 @@ void EditorLayer::OnImGuiUpdate(TimeStep ts)
       {
         m_scene = Scene::Make("Untitled");
         m_scene_panel->SetContext(m_scene);
-        SceneSerializer{ m_scene }.DeserializeFromFile("SaveScene.yaml");
+        SceneSerializer{ m_scene }.DeserializeFromFile("SavedScene.yaml");
       }
       if (ImGui::MenuItem("Exit"))
         Ctrl::App::Close();
