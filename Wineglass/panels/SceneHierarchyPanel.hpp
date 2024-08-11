@@ -16,13 +16,15 @@ namespace GE
 
     void OnImGuiRender();
 
+    void SetContext(const Ptr<Scene>& scene);
+
   private:
     void DrawEntityNode(Entity ent);
     void DrawComponents(Entity ent);
 
     void DrawTag(Entity ent) const;
 
-    Scene& m_scene_context;
+    Ptr<Scene> m_scene_context;
     Opt<Entity> m_selected_entity;
   };
 

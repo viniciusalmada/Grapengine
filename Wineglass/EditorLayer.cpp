@@ -8,7 +8,7 @@ using namespace GE;
 
 EditorLayer::EditorLayer() :
     Layer("EditorLayer"),
-    m_scene(Scene::Make()),
+    m_scene(Scene::Make("Default")),
     m_front_camera_entity(m_scene->CreateEntity("Front Camera")),
     m_oblique_camera_entity(m_scene->CreateEntity("Oblique Camera")),
     m_scene_panel(nullptr)
@@ -150,8 +150,24 @@ void EditorLayer::OnImGuiUpdate(TimeStep ts)
   {
     if (ImGui::BeginMenu("File"))
     {
+      if (ImGui::MenuItem("Save Scene"))
+      {
+        SceneSerializer{ m_scene }.SerializeToFile("SaveScene.json");
+      }
+      if (ImGui::MenuItem("Load Scene"))
+      {
+        m_scene = Scene::Make("Untitled");
+        m_scene_panel->SetContext(m_scene);
+        SceneSerializer{ m_scene }.DeserializeFromFile("SaveScene.json");
+        // bool scenes_equal = *m_old_scene == *m_scene;
+        // GE_ASSERT(scenes_equal, "Scenes not equal");
+      }
       if (ImGui::MenuItem("Exit"))
         Ctrl::App::Close();
+      ImGui::EndMenu();
+    }
+    if (ImGui::BeginMenu("Help"))
+    {
       if (ImGui::MenuItem("Show demo", nullptr, &show_demo))
       {
       }

@@ -34,6 +34,8 @@ namespace GE
     void SetViewport(Dimension vp);
     void SetProjectionMode(ProjectionMode mode);
 
+    bool operator==(const SceneCamera&) const;
+
   private:
     void RecalculateProjection();
 

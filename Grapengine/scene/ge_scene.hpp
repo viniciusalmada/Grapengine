@@ -28,6 +28,17 @@ namespace GE
 
     void SetActiveCamera(Opt<Entity> activeCamera);
 
+    void OnEachEntity(const std::function<void(Entity)>& fun);
+    const std::list<Entity>& GetEntitiesList() const;
+    const std::set<Entity>& GetEntitiesSet() const;
+
+    const std::vector<VarComponent>& GetComponents(const Entity& ent) const;
+
+    const std::string& GetName() const;
+    void SetName(const std::string& name);
+
+    [[nodiscard]] bool operator==(const Scene& other) const = default;
+
     // Registry wrappers functions
 
     template <typename Component, typename... Args>
@@ -44,7 +55,7 @@ namespace GE
       if (!component)
         return;
 
-      return m_registry.PushComponent<Component>(ent, std::move(component.value()));
+      m_registry.PushComponent<Component>(ent, std::move(component.value()));
     }
 
     template <typename Component>
@@ -75,17 +86,6 @@ namespace GE
         m_registry.RemoveComponent<Component>(ent);
     }
 
-    void EachEntity(const std::function<void(Entity)>& fun) const;
-    const std::set<Entity>& GetEntities() const;
-
-    const std::vector<VarComponent>& GetComponents(const Entity& ent) const;
-
-    const std::string& GetName() const;
-    void SetName(const std::string& name);
-
-    // [[nodiscard]] bool operator==(const Scene& other) const;
-    // [[nodiscard]] bool operator!=(const Scene& other) const;
-
   private:
     void UpdateNativeScripts(TimeStep& ts);
     void UpdateDrawableEntities(TimeStep& ts);
@@ -99,8 +99,6 @@ namespace GE
     std::string m_name;
     ECRegistry m_registry;
     Opt<Entity> m_active_camera;
-    Opt<Entity> m_active_ambient_light;
-    Dimension m_viewport;
   };
 
 } // GE

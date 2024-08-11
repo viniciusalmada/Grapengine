@@ -1,6 +1,7 @@
 #include "ge_scene_camera.hpp"
 
 #include "core/ge_platform.hpp"
+#include "math/ge_arithmetic.hpp"
 #include "math/ge_transformations.hpp"
 #include "profiling/ge_profiler.hpp"
 
@@ -74,6 +75,17 @@ void SceneCamera::SetProjectionMode(ProjectionMode mode)
   GE_PROFILE;
   m_projection_mode = mode;
   RecalculateProjection();
+}
+
+bool SceneCamera::operator==(const SceneCamera& other) const
+{
+  GE_PROFILE;
+  return m_position == other.m_position &&                                      //
+         m_target == other.m_target &&                                          //
+         m_viewport == other.m_viewport &&                                      //
+         Arithmetic::IsEqual(m_fov, other.m_fov) &&                             //
+         Arithmetic::IsEqual(m_orthographic_size, other.m_orthographic_size) && //
+         m_projection_mode == other.m_projection_mode;
 }
 
 void SceneCamera::SetOrthographicSize(f32 size)

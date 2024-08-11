@@ -100,9 +100,9 @@ namespace
 
   //-------------------------------------------------------------------------------------------------
   template <typename T, typename UIFun>
-  void DrawComponent(const std::string&& name, Scene& scene, Entity ent, const UIFun&& fun)
+  void DrawComponent(const std::string&& name, const Ptr<Scene>& scene, Entity ent, const UIFun&& fun)
   {
-    if (!scene.HasComponent<T>(ent))
+    if (!scene->HasComponent<T>(ent))
       return;
     constexpr auto FRAME_PADDING = ImVec2{ 4, 4 };
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, FRAME_PADDING);
@@ -131,23 +131,23 @@ namespace
 
     if (open)
     {
-      fun(scene, ent, std::ref(scene.GetComponent<T>(ent)));
+      fun(scene, ent, std::ref(scene->GetComponent<T>(ent)));
       ImGui::TreePop();
     }
 
     if (remove_comp)
-      scene.RemoveComponent<T>(ent);
+      scene->RemoveComponent<T>(ent);
   }
 
   //-------------------------------------------------------------------------------------------------
-  void DrawCamera(Scene& scene, Entity e, CameraComponent& comp)
+  void DrawCamera(const Ptr<Scene>& scene, Entity e, CameraComponent& comp)
   {
     if (!comp.IsActive())
     {
       if (ImGui::Button("Activate camera"))
       {
         comp.SetActive(true);
-        scene.SetActiveCamera(e);
+        scene->SetActiveCamera(e);
       }
     }
     bool is_fixed = comp.IsFixedRatio();
@@ -211,7 +211,7 @@ namespace
   }
 
   //-------------------------------------------------------------------------------------------------
-  void DrawPrimitive(Scene& /*scene*/, Entity /*e*/, PrimitiveComponent& comp)
+  void DrawPrimitive(const Ptr<Scene>& /*scene*/, Entity /*e*/, PrimitiveComponent& comp)
   {
     static Vec4 imgui_color{};
     imgui_color = comp.GetColor().ToVec4();
@@ -222,7 +222,7 @@ namespace
   }
 
   //-------------------------------------------------------------------------------------------------
-  void DrawTransform(Scene& /*scene*/, Entity /*e*/, TransformComponent& comp)
+  void DrawTransform(const Ptr<Scene>& /*scene*/, Entity /*e*/, TransformComponent& comp)
   {
     auto& pos = comp.Position();
     auto& scale = comp.Scale();
@@ -237,7 +237,7 @@ namespace
   }
 
   //-------------------------------------------------------------------------------------------------
-  void DrawAmbientLight(Scene& /*scene*/, Entity /*e*/, AmbientLightComponent& comp)
+  void DrawAmbientLight(const Ptr<Scene>& /*scene*/, Entity /*e*/, AmbientLightComponent& comp)
   {
     static Vec4 imgui_color{};
     imgui_color = comp.GetColor().ToVec4();
@@ -251,7 +251,7 @@ namespace
   }
 
   //-------------------------------------------------------------------------------------------------
-  void DrawLights(Scene& /*scene*/, Entity /*e*/, LightSourceComponent& comp)
+  void DrawLights(const Ptr<Scene>& /*scene*/, Entity /*e*/, LightSourceComponent& comp)
   {
     static Vec4 imgui_color{};
     imgui_color = comp.ColorRef().ToVec4();
@@ -275,21 +275,21 @@ namespace
 }
 
 //--------------------------------------------------------------------------------------------------
-SceneHierarchyPanel::SceneHierarchyPanel(const Ptr<Scene>& scene) : m_scene_context(*scene) {}
+SceneHierarchyPanel::SceneHierarchyPanel(const Ptr<Scene>& scene) : m_scene_context(scene) {}
 
 //-------------------------------------------------------------------------------------------------
 void SceneHierarchyPanel::OnImGuiRender()
 {
   ImGui::Begin("Scene Entities");
 
-  m_scene_context.EachEntity([&](Entity ent) { DrawEntityNode(ent); });
+  m_scene_context->OnEachEntity([&](Entity ent) { DrawEntityNode(ent); });
 
   if (!m_selected_entity)
   {
     if (ImGui::BeginPopupContextWindow())
     {
       if (ImGui::MenuItem("Create empty Entity"))
-        m_scene_context.CreateEntity("Empty entity");
+        m_scene_context->CreateEntity("Empty entity");
 
       ImGui::EndPopup();
     }
@@ -308,45 +308,45 @@ void SceneHierarchyPanel::OnImGuiRender()
 
       if (ImGui::BeginPopup(ADD_COMP_ID))
       {
-        if (!m_scene_context.HasComponent<CameraComponent>(ent))
+        if (!m_scene_context->HasComponent<CameraComponent>(ent))
         {
           if (ImGui::MenuItem("Camera"))
           {
-            m_scene_context.AddComponent<CameraComponent>(ent, Vec3{}, Vec3{}, false, true);
+            m_scene_context->AddComponent<CameraComponent>(ent, Vec3{}, Vec3{}, false, true);
             ImGui::CloseCurrentPopup();
           }
         }
 
-        if (!m_scene_context.HasComponent<PrimitiveComponent>(ent))
+        if (!m_scene_context->HasComponent<PrimitiveComponent>(ent))
         {
           if (ImGui::MenuItem("Cube primitive"))
           {
-            m_scene_context.AddComponent<PrimitiveComponent>(ent,
+            m_scene_context->AddComponent<PrimitiveComponent>(ent,
                                                              Cube().GetDrawable(),
                                                              Colors::RandomColor());
-            m_scene_context.AddComponent<TransformComponent>(ent);
+            m_scene_context->AddComponent<TransformComponent>(ent);
             ImGui::CloseCurrentPopup();
           }
         }
 
-        if (!m_scene_context.HasComponent<AmbientLightComponent>(ent))
+        if (!m_scene_context->HasComponent<AmbientLightComponent>(ent))
         {
           if (ImGui::MenuItem("Ambient light"))
           {
-            m_scene_context.AddComponent<AmbientLightComponent>(ent, Colors::WHITE, 1.0f);
+            m_scene_context->AddComponent<AmbientLightComponent>(ent, Colors::WHITE, 1.0f);
             ImGui::CloseCurrentPopup();
           }
         }
 
-        if (!m_scene_context.HasComponent<LightSourceComponent>(ent))
+        if (!m_scene_context->HasComponent<LightSourceComponent>(ent))
         {
           if (ImGui::MenuItem("Light Source"))
           {
-            m_scene_context.AddComponent<LightSourceComponent>(ent,
-                                                             Colors::WHITE,
-                                                             Vec3{ 0, 0, 0 },
-                                                             1.0f,
-                                                             true);
+            m_scene_context->AddComponent<LightSourceComponent>(ent,
+                                                               Colors::WHITE,
+                                                               Vec3{ 0, 0, 0 },
+                                                               1.0f,
+                                                               true);
             ImGui::CloseCurrentPopup();
           }
         }
@@ -358,13 +358,18 @@ void SceneHierarchyPanel::OnImGuiRender()
   ImGui::End();
 }
 
+void SceneHierarchyPanel::SetContext(const Ptr<Scene>& scene)
+{
+  m_scene_context = scene;
+}
+
 //-------------------------------------------------------------------------------------------------
 void SceneHierarchyPanel::DrawEntityNode(Entity ent)
 {
   if (ImGui::IsMouseDown(ImGuiMouseButton_Left) && ImGui::IsWindowHovered())
     m_selected_entity = {};
 
-  auto tag = m_scene_context.GetComponent<TagComponent>(ent);
+  auto tag = m_scene_context->GetComponent<TagComponent>(ent);
   ImGui::SetNextItemAllowOverlap();
   if (ImGui::Selectable(tag.GetTag(),
                         m_selected_entity == ent,
@@ -395,7 +400,7 @@ void SceneHierarchyPanel::DrawEntityNode(Entity ent)
 //-------------------------------------------------------------------------------------------------
 void SceneHierarchyPanel::DrawComponents(Entity ent)
 {
-  if (m_scene_context.HasComponent<TagComponent>(ent))
+  if (m_scene_context->HasComponent<TagComponent>(ent))
     DrawTag(ent);
 
   DrawComponent<TransformComponent>("Transform", m_scene_context, ent, DrawTransform);
@@ -408,7 +413,7 @@ void SceneHierarchyPanel::DrawComponents(Entity ent)
 //-------------------------------------------------------------------------------------------------
 void SceneHierarchyPanel::DrawTag(Entity ent) const
 {
-  auto& tag = m_scene_context.GetComponent<TagComponent>(ent).Tag();
+  auto& tag = m_scene_context->GetComponent<TagComponent>(ent).Tag();
 
   constexpr auto BUFFER_SIZE = 256;
   std::array<char, BUFFER_SIZE> buffer{ '\0' };

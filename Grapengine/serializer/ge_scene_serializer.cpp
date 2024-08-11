@@ -25,7 +25,7 @@ std::string SceneSerializer::Serialize() const
   out << YAML::Key << Constants::ENTITIES;
   out << YAML::Value << YAML::BeginSeq;
 
-  m_scene->EachEntity(
+  m_scene->OnEachEntity(
     [&](Entity ent)
     {
       out << YAML::BeginMap; // Entity node
@@ -80,7 +80,13 @@ void SceneSerializer::Deserialize(const std::string& sceneString)
     m_scene->PushComponent<TagComponent>(ent, deserializer.GetTag());
     m_scene->PushComponent<PrimitiveComponent>(ent, deserializer.GetPrimitive());
     m_scene->PushComponent<TransformComponent>(ent, deserializer.GetTransform());
-    m_scene->PushComponent<CameraComponent>(ent, deserializer.GetCamera());
+    auto camera = deserializer.GetCamera();
+    if (camera)
+    {
+      m_scene->PushComponent<CameraComponent>(ent, camera);
+      if (camera->IsActive())
+        m_scene->SetActiveCamera(ent);
+    }
     m_scene->PushComponent<AmbientLightComponent>(ent, deserializer.GetAmbientLight());
     m_scene->PushComponent<LightSourceComponent>(ent, deserializer.GetLightSource());
   }

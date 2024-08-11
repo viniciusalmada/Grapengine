@@ -29,7 +29,7 @@ TEST(SceneSerializer, Serialize)
                                                   GE::Vec3{ 1, 2, 3 },
                                                   5.5f,
                                                   true);
-  const std::set<GE::Entity>& entities = scene->GetEntities();
+  const std::set<GE::Entity>& entities = scene->GetEntitiesSet();
   GE::SceneSerializer serializer{ scene };
   serializer.SerializeToFile(file_path);
 
@@ -39,7 +39,9 @@ TEST(SceneSerializer, Serialize)
   GE::SceneSerializer serializer2{ scene_2_read };
   serializer2.DeserializeFromFile(file_path);
 
-  scene_2_read->EachEntity(
+  ASSERT_EQ(*scene, *scene_2_read);
+
+  scene_2_read->OnEachEntity(
     [&](GE::Entity entity)
     {
       ASSERT_TRUE(entities.contains(entity));
