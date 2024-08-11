@@ -46,7 +46,8 @@ void OpenGLDebuggerFunc([[maybe_unused]] GLenum source,
 {
   constexpr auto BUFFER_INFO_ID = 0x20071;
   constexpr auto SHADER_RECOMPILED = 0x20092;
-  if (id == BUFFER_INFO_ID || id == SHADER_RECOMPILED)
+  constexpr auto NO_TEXTURES = 0x20084;
+  if (id == BUFFER_INFO_ID || id == SHADER_RECOMPILED || id == NO_TEXTURES)
     return;
 
   GE_ASSERT(false, "OpenGL Error:\n (0x{:04x}): {}\n", id, message);
