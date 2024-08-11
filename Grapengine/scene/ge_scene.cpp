@@ -10,7 +10,18 @@
 
 using namespace GE;
 
-Scene::Scene(const std::string& name) : m_name(name), m_registry({}), m_active_camera(std::nullopt), m_viewport(Dimension{ 1, 1 }) {}
+namespace
+{
+  std::deque<Entity>& GetQueue()
+  {
+    static std::deque<Entity> m_destroy_queue{};
+    return m_destroy_queue;
+  };
+}
+
+Scene::Scene(const std::string& name) : m_name(name), m_registry({}), m_active_camera(std::nullopt)
+{
+}
 
 void Scene::OnUpdate(TimeStep ts)
 {
@@ -31,14 +42,17 @@ void Scene::UpdateLightSources() const
     std::vector<LightSource> props;
     props.reserve(light_sources.size());
 
-    std::ranges::transform(
-      light_sources,
-      std::back_inserter(props),
-      [&](Entity l) -> LightSource
-      {
-        const auto& lp = m_registry.GetComponent<LightSourceComponent>(l);
-        return { lp.GetPos(), lp.GetColor(), lp.IsActive() ? lp.GetStr() : 0.0f, 0.5f, 32.0f };
-      });
+    std::ranges::transform(light_sources,
+                           std::back_inserter(props),
+                           [&](Entity l) -> LightSource
+                           {
+                             const auto& lp = m_registry.GetComponent<LightSourceComponent>(l);
+                             return { lp.GetPos(),
+                                      lp.GetColor(),
+                                      lp.IsActive() ? lp.GetStr() : 0.0f,
+                                      lp.IsActive() ? lp.GetSpecStr() : 0.0f,
+                                      lp.IsActive() ? lp.GetSpecShine() : 1.0f };
+                           });
     Renderer::SetLightSources(props);
   }
 }
@@ -154,8 +168,6 @@ void Scene::OnEvent(Event& /*ev*/)
 
 void Scene::OnViewportResize(Dimension dim)
 {
-  m_viewport = dim;
-
   const std::vector<Entity> camera_entities = m_registry.Group<CameraComponent>();
   for (auto ent : camera_entities)
   {
@@ -205,15 +217,23 @@ Opt<Entity> Scene::RetrieveActiveCamera() const
   return active_camera;
 }
 
-void Scene::EachEntity(const std::function<void(Entity)>& fun) const
+void Scene::OnEachEntity(const std::function<void(Entity)>& fun)
 {
   GE_PROFILE;
-  m_registry.Each(fun);
+  m_registry.OnEach(fun);
+
+  for (auto ent : GetQueue())
+    m_registry.Destroy(ent);
 }
 
-const std::set<Entity>& Scene::GetEntities() const
+const std::list<Entity>& Scene::GetEntitiesList() const
 {
-  return m_registry.GetEntities();
+  return m_registry.GetEntitiesList();
+}
+
+const std::set<Entity>& Scene::GetEntitiesSet() const
+{
+  return m_registry.GetEntitiesSet();
 }
 
 const std::vector<VarComponent>& Scene::GetComponents(const Entity& ent) const
@@ -244,10 +264,13 @@ void Scene::SetActiveCamera(Opt<Entity> activeCamera)
   m_active_camera = activeCamera;
 }
 
-void Scene::DestroyEntity(Opt<Entity> ent)
+void Scene::EnqueueToDestroy(Opt<Entity> ent)
 {
   GE_PROFILE;
-  m_registry.Destroy(ent);
+  if (!ent)
+    return;
+
+  GetQueue().push_back(ent.value());
 }
 
 void Scene::UpdateLightSourcesPosition(TimeStep& /*ts*/)

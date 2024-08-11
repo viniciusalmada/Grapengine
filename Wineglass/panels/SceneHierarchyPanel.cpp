@@ -382,7 +382,7 @@ void SceneHierarchyPanel::DrawEntityNode(Entity ent)
 
   if (delete_entity)
   {
-    m_scene_context.DestroyEntity(ent);
+    m_scene_context->EnqueueToDestroy(ent);
     if (ent == m_selected_entity)
       m_selected_entity = {};
   }

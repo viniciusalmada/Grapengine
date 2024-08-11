@@ -18,7 +18,7 @@ namespace GE
 
     void PushEntity(Entity entity);
 
-    void DestroyEntity(Opt<Entity> ent);
+    void EnqueueToDestroy(Opt<Entity> ent);
 
     void OnUpdate(TimeStep ts);
 
