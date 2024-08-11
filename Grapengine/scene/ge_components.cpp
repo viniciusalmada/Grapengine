@@ -77,3 +77,11 @@ bool LightSourceComponent::operator==(const LightSourceComponent& rhs) const
          m_active == rhs.m_active &&                        //
          m_drawable == rhs.m_drawable;
 }
+
+bool operator==(const GE::VarComponent& lhs, const GE::VarComponent& rhs)
+{
+  if (lhs.index() != rhs.index())
+    return false;
+
+  return std::visit([](const auto& l, const auto& r) { return l == r; }, lhs, rhs);
+}

@@ -117,10 +117,7 @@ namespace GE
     template <typename T>
     void Bind()
     {
-      m_instantiate_fun = [this](Entity e, Scene& s)
-      {
-        m_instance = new T(e, std::ref(s));
-      };
+      m_instantiate_fun = [this](Entity e, Scene& s) { m_instance = new T(e, std::ref(s)); };
       m_destroy_fun = [this]()
       {
         delete static_cast<T*>(m_instance);
@@ -132,7 +129,7 @@ namespace GE
     void Instantiate(Entity ent, Scene& scene) const { m_instantiate_fun(ent, scene); }
     [[nodiscard]] ScriptableEntity* GetInstance() const { return m_instance; }
 
-    // bool operator==(const NativeScriptComponent&) const = default;
+    bool operator==(const NativeScriptComponent&) const { return false; }
 
   private:
     ScriptableEntity* m_instance;
@@ -202,5 +199,7 @@ namespace GE
     LightSourceComponent //
     >;
 }
+
+bool operator==(const GE::VarComponent& lhs, const GE::VarComponent& rhs);
 
 #endif // GRAPENGINE_GE_COMPONENTS_HPP
