@@ -103,7 +103,7 @@ void MaterialShader::UpdateLightSources(const std::vector<LightSource>& lightSou
     colors.push_back(color.ToVec3());
     strenghts.push_back(str);
     specular_strenghts.push_back(spec);
-    specular_shininess.push_back(shine);
+    specular_shininess.push_back(f32(shine));
   }
 
   UpdateLightPosition(positions);
@@ -111,7 +111,7 @@ void MaterialShader::UpdateLightSources(const std::vector<LightSource>& lightSou
   UpdateLightStrength(strenghts);
   m_shader->UploadFloatArray("u_specularStrenght", specular_strenghts);
   m_shader->UploadFloatArray("u_specularShininess", specular_shininess);
-  m_shader->UploadInt("u_lights_count", lightSources.size());
+  m_shader->UploadInt("u_lights_count", i32(lightSources.size()));
 }
 
 //void MaterialShader::ClearAmbientLight()

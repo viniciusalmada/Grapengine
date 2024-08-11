@@ -1,6 +1,7 @@
 #ifndef GRAPENGINE_GE_COMPONENTS_HPP
 #define GRAPENGINE_GE_COMPONENTS_HPP
 
+#include "renderer/ge_light_source.hpp"
 #include "drawables/ge_color.hpp"
 #include "drawables/ge_cube.hpp"
 #include "ge_entity.hpp"
@@ -164,34 +165,29 @@ namespace GE
   class LightSourceComponent
   {
   public:
+    LightSourceComponent(LightSource ls, bool active);
     LightSourceComponent(Color c, Vec3 pos, f32 str, bool active);
 
-    [[nodiscard]] Color& ColorRef() { return m_color; }
-    [[nodiscard]] Vec3& Position() { return m_position; }
-    [[nodiscard]] f32& Strenght() { return m_strenght; }
+    [[nodiscard]] Color& ColorRef() { return m_light_source.color; }
+    [[nodiscard]] Vec3& Position() { return m_light_source.position; }
+    [[nodiscard]] f32& Strenght() { return m_light_source.light_str; }
     [[nodiscard]] bool& Active() { return m_active; }
-    [[nodiscard]] f32& SpecStr() { return m_specular_strenght; }
-    [[nodiscard]] u32& SpecShine() { return m_specular_shininess; }
+    [[nodiscard]] f32& SpecStr() { return m_light_source.specular_str; }
+    [[nodiscard]] u32& SpecShine() { return m_light_source.shininess; }
 
-    [[nodiscard]] const Color& GetColor() const { return m_color; }
-    [[nodiscard]] const Vec3& GetPos() const { return m_position; }
-    [[nodiscard]] f32 GetStr() const { return m_strenght; }
+    [[nodiscard]] const Color& GetColor() const { return m_light_source.color; }
+    [[nodiscard]] const Vec3& GetPos() const { return m_light_source.position; }
     [[nodiscard]] bool IsActive() const { return m_active; }
     [[nodiscard]] const Drawable& GetDrawable() const { return m_drawable; }
     [[nodiscard]] Drawable& GetDrawable() { return m_drawable; }
-    [[nodiscard]] f32 GetSpecStr() const { return m_specular_strenght; }
-    [[nodiscard]] u32 GetSpecShine() const { return m_specular_shininess; }
+    [[nodiscard]] const LightSource& GetLightSource() const { return m_light_source; }
 
     bool operator==(const LightSourceComponent&) const;
 
   private:
-    Color m_color;
-    Vec3 m_position;
-    f32 m_strenght;
+    LightSource m_light_source;
     bool m_active;
     Drawable m_drawable;
-    u32 m_specular_shininess;
-    f32 m_specular_strenght;
   };
 
   //----------------------------------------------------------------------------------------------

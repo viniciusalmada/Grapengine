@@ -265,9 +265,9 @@ namespace
     constexpr auto MAX_LIGHT_STR = 1.0f;
     ImGui::DragFloat("Strenght", &comp.Strenght(), LIGHT_STEP, MIN_LIGHT_STR, MAX_LIGHT_STR);
     ImGui::DragFloat("Spec. Strenght", &comp.SpecStr(), LIGHT_STEP, MIN_LIGHT_STR, MAX_LIGHT_STR);
-    int shine = comp.SpecShine();
+    int shine = static_cast<int>(comp.SpecShine());
     ImGui::DragInt("Spec. Shineness", &shine, 1,1,1024);
-    comp.SpecShine() = shine;
+    comp.SpecShine() = u32(shine);
 
     ImGui::Checkbox("Active", &comp.Active());
   }

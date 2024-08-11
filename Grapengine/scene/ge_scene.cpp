@@ -47,11 +47,7 @@ void Scene::UpdateLightSources() const
                            [&](Entity l) -> LightSource
                            {
                              const auto& lp = m_registry.GetComponent<LightSourceComponent>(l);
-                             return { lp.GetPos(),
-                                      lp.GetColor(),
-                                      lp.IsActive() ? lp.GetStr() : 0.0f,
-                                      lp.IsActive() ? lp.GetSpecStr() : 0.0f,
-                                      lp.IsActive() ? lp.GetSpecShine() : 1.0f };
+                             return lp.GetLightSource();
                            });
     Renderer::SetLightSources(props);
   }
@@ -286,8 +282,7 @@ void Scene::UpdateLightSourcesPosition(TimeStep& /*ts*/)
 
   { // Reset ambient and light colors
     Renderer::SetAmbientLight(Colors::WHITE, 1.0f);
-    Renderer::SetLightSources(
-      std::vector<LightSource>{ { Vec3{ 0, 0, 0 }, Colors::BLACK, 0.0f, 0.5f, 32.0f } });
+    Renderer::SetLightSources({});
   }
 
   Renderer::Batch::Begin(cam_component.GetCamera().GetViewProjection(),
@@ -307,7 +302,6 @@ void Scene::UpdateLightSourcesPosition(TimeStep& /*ts*/)
 
   { // Reset ambient and light colors
     Renderer::SetAmbientLight(Colors::BLACK, 0.0f);
-    Renderer::SetLightSources(
-      std::vector<LightSource>{ { Vec3{ 0, 0, 0 }, Colors::BLACK, 0.0f, 0.5f, 32.0f } });
+    Renderer::SetLightSources({});
   }
 }

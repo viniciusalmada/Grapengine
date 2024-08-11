@@ -108,6 +108,18 @@ namespace
     GE_ASSERT_NO_MSG(e.good());
     return e;
   }
+  YAML::Emitter& operator<<(YAML::Emitter& e, const LightSource& ls)
+  {
+    e << YAML::BeginMap; // lightsource
+    e << YAML::Key << Fields::POSITION << YAML::Value << ls.position;
+    e << YAML::Key << Fields::COLOR_RGBA << YAML::Value << ls.color;
+    e << YAML::Key << Fields::STRENGHT << YAML::Value << ls.light_str;
+    e << YAML::Key << Fields::SPEC_STRENGHT << YAML::Value << ls.specular_str;
+    e << YAML::Key << Fields::SPEC_SHINE << YAML::Value << ls.shininess;
+    e << YAML::EndMap; // lightsource
+    GE_ASSERT_NO_MSG(e.good());
+    return e;
+  }
 }
 
 namespace YAML
@@ -271,6 +283,22 @@ namespace YAML
       return true;
     }
   };
+
+  template <>
+  struct convert<LightSource>
+  {
+    static bool decode(const Node& node, LightSource& ls)
+    {
+      GE_ASSERT_OR_RETURN(!node.IsSequence() && node.IsMap(), false, "LightSource not found");
+
+      ls.position = node[Fields::POSITION].as<Vec3>();
+      ls.color = node[Fields::COLOR_RGBA].as<Color>();
+      ls.light_str = node[Fields::STRENGHT].as<f32>();
+      ls.specular_str = node[Fields::SPEC_STRENGHT].as<f32>();
+      ls.shininess = node[Fields::SPEC_SHINE].as<u32>();
+      return true;
+    }
+  };
 }
 
 ComponentSerializer::ComponentSerializer(YAML::Emitter& emmiter) : m_emitter(emmiter) {}
@@ -336,11 +364,9 @@ void ComponentSerializer::operator()(const LightSourceComponent& c) const
 {
   m_emitter << YAML::Key << Titles::LIGHT_SOURCE_COMP << YAML::Value;
   m_emitter << YAML::BeginMap; // component
-  m_emitter << YAML::Key << Fields::COLOR_RGBA << YAML::Value << c.GetColor();
-  m_emitter << YAML::Key << Fields::POSITION << YAML::Value << c.GetPos();
-  m_emitter << YAML::Key << Fields::STRENGHT << YAML::Value << c.GetStr();
+  m_emitter << YAML::Key << Fields::LIGHT_SOURCE << YAML::Value << c.GetLightSource();
   m_emitter << YAML::Key << Fields::ACTIVE << YAML::Value << c.IsActive();
-  m_emitter << YAML::Key << Fields::DRAWABLE << YAML::Value << c.GetDrawable();
+  // m_emitter << YAML::Key << Fields::DRAWABLE << YAML::Value << c.GetDrawable(); // not needed
   m_emitter << YAML::EndMap; // component
   GE_ASSERT_NO_MSG(m_emitter.good());
 }
@@ -441,10 +467,7 @@ Opt<LightSourceComponent> ComponentDeserializer::GetLightSource() const
   if (!comp)
     return {};
 
-  auto color = comp[Fields::COLOR_RGBA].as<Color>();
-  auto position = comp[Fields::POSITION].as<Vec3>();
-  auto strenght = comp[Fields::STRENGHT].as<f32>();
+  auto ls = comp[Fields::LIGHT_SOURCE].as<LightSource>();
   auto active = comp[Fields::ACTIVE].as<bool>();
-  auto drawable = comp[Fields::DRAWABLE].as<Drawable>();
-  return LightSourceComponent{ color, position, strenght, active };
+  return LightSourceComponent{ ls, active };
 }

@@ -21,6 +21,7 @@ TEST(SceneSerializer, Serialize)
                                                 GE::Colors::ORANGE);
   [[maybe_unused]] const GE::CameraComponent& camera_comp =
     scene->AddComponent<GE::CameraComponent>(full_ent, GE::Vec3{}, GE::Vec3{}, true, true);
+  scene->SetActiveCamera(full_ent);
   [[maybe_unused]] const GE::AmbientLightComponent& ambient_comp =
     scene->AddComponent<GE::AmbientLightComponent>(full_ent, GE::Colors::MAGENTA, 0.75f);
   [[maybe_unused]] const GE::LightSourceComponent& light_comp =

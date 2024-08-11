@@ -2,9 +2,9 @@
 #define GRAPENGINE_RENDERER_HPP
 
 #include "drawables/ge_color.hpp"
+#include "ge_light_source.hpp"
 #include "math/ge_vector.hpp"
 #include "renderer/ge_vertices_data.hpp"
-#include "renderer/shader_programs/ge_light_source.hpp"
 #include "utils/ge_dimension.hpp"
 
 namespace GE

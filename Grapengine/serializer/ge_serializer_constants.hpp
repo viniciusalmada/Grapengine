@@ -49,6 +49,9 @@ namespace GE
     constexpr auto ACTIVE = "Active";
     constexpr auto FIXED_RATIO = "FixedRatio";
     constexpr auto STRENGHT = "Strenght";
+    constexpr auto SPEC_STRENGHT = "SpecularStrenght";
+    constexpr auto SPEC_SHINE = "SpecularShininess";
+    constexpr auto LIGHT_SOURCE = "LightSource";
   }
 }
 #endif // GE_SERIALIZER_CONSTANTS_HPP

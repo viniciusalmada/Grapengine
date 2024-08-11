@@ -4,8 +4,8 @@
 #include "drawables/ge_color.hpp"
 #include "math/ge_vector.hpp"
 #include "renderer/ge_ishader_program.hpp"
+#include "renderer/ge_light_source.hpp"
 #include "renderer/ge_shader.hpp"
-#include "renderer/shader_programs/ge_light_source.hpp"
 
 namespace GE
 {
@@ -29,14 +29,14 @@ namespace GE
      * @param strength light strenght limited from 0 to 10
      */
     void UpdateAmbientLight(Color color, f32 strength);
-//    void ClearAmbientLight();
+    //    void ClearAmbientLight();
 
     /**
      *
      * @param lightSources lights properties
      */
     void UpdateLightSources(const std::vector<LightSource>& lightSources);
-//    void ClearLightSources();
+    //    void ClearLightSources();
 
   private:
     void UpdateAmbientColor(Color color);

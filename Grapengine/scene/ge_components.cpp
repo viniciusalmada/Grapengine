@@ -63,26 +63,20 @@ bool AmbientLightComponent::operator==(const AmbientLightComponent& lhs) const
          m_active == lhs.m_active &&                        //
          m_color == lhs.m_color;
 }
+LightSourceComponent::LightSourceComponent(LightSource ls, bool active) :
+    m_light_source(ls), m_active(active), m_drawable(Cube().GetDrawable())
+{
+}
 //----------------------------------------------------------------------------------------------
 LightSourceComponent::LightSourceComponent(Color c, Vec3 pos, f32 str, bool act) :
-    m_color(c),
-    m_position(pos),
-    m_strenght(str),
-    m_active(act),
-    m_drawable(Cube().GetDrawable()),
-    m_specular_shininess(32),
-    m_specular_strenght(0.5f)
+    LightSourceComponent({ pos, c, str, 0.5f, 32 }, act)
 {
 }
 
 bool LightSourceComponent::operator==(const LightSourceComponent& rhs) const
 {
-  return m_color == rhs.m_color &&                                              //
-         m_position == rhs.m_position &&                                        //
-         Arithmetic::IsEqual(m_strenght, rhs.m_strenght) &&                     //
-         m_specular_shininess == rhs.m_specular_shininess && //
-         Arithmetic::IsEqual(m_specular_strenght, rhs.m_specular_strenght) &&   //
-         m_active == rhs.m_active &&                                            //
+  return m_light_source == rhs.m_light_source && //
+         m_active == rhs.m_active &&             //
          m_drawable == rhs.m_drawable;
 }
 
