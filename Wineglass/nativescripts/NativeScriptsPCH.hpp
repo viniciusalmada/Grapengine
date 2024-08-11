@@ -13,6 +13,7 @@
 #include <random>
 #include <ranges>
 #include <set>
+#include <source_location>
 #include <variant>
 
 #endif // GRAPENGINE_NATIVESCRIPTSPCH_HPP
