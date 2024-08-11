@@ -2,4 +2,4 @@
 
 using namespace GE;
 
-Entity::Entity(u32 h) : handle(i32(h)) {}
+Entity::Entity(u32 h) : handle(h) {}

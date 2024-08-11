@@ -13,13 +13,9 @@ TEST(Scene, CreateEntities)
   GE::Entity second_ent = scene->CreateEntity("Second");
   GE::Entity third_ent = scene->CreateEntity("Third");
 
-  ASSERT_TRUE(first_ent);
-  ASSERT_TRUE(second_ent);
-  ASSERT_TRUE(third_ent);
-
-  ASSERT_NE(i32(first_ent), i32(second_ent));
-  ASSERT_NE(i32(second_ent), i32(third_ent));
-  ASSERT_NE(i32(first_ent), i32(third_ent));
+  ASSERT_NE(first_ent, second_ent);
+  ASSERT_NE(second_ent, third_ent);
+  ASSERT_NE(first_ent, third_ent);
 }
 
 TEST(Scene, AddComponents)

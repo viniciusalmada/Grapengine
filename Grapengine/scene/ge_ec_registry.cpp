@@ -1,14 +1,18 @@
 #include "scene/ge_ec_registry.hpp"
 
 #include "profiling/ge_profiler.hpp"
+#include "utils/ge_random.hpp"
 
 using namespace GE;
 
 Entity ECRegistry::Create()
 {
   GE_PROFILE;
-  Entity e{ m_entity_next_id++ };
-  m_entities.insert(e);
+  auto id = Random::GenInt();
+  Entity e{ id };
+  auto [_, ok] = m_entities.insert(e);
+  GE_ASSERT(ok, "Random id collision");
+  m_entities_sorted_list.push_back(e);
   return e;
 }
 
@@ -16,29 +20,24 @@ void ECRegistry::Push(Entity ent)
 {
   auto [it, inserted] = m_entities.insert(ent);
   GE_ASSERT_OR_RETURN_VOID(inserted, "Entity already exists");
-
-  auto max_id = std::ranges::max_element(m_entities);
-  m_entity_next_id = u32(max_id->handle + 1);
+  m_entities_sorted_list.push_back(ent);
 }
 
-void ECRegistry::Each(const std::function<void(Entity)>& action) const
+void ECRegistry::OnEach(const std::function<void(Entity)>& action) const
 {
-  std::ranges::for_each(m_entities, action);
+  std::ranges::for_each(m_entities_sorted_list, action);
 }
 
-// bool ECRegistry::operator==(const ECRegistry& other) const
-// {
-//   return m_entities == other.m_entities                                    //
-//          && m_entities_with_components == other.m_entities_with_components //
-//          && m_components == other.m_components;
-// }
-
-void ECRegistry::Each(const std::function<void(Entity)>& action)
+bool ECRegistry::operator==(const ECRegistry& other) const
 {
-  m_in_loop = true;
-  std::ranges::for_each(m_entities, action);
-  m_in_loop = false;
-  std::ranges::for_each(m_destroy_queue, [&](auto&& e) { Destroy(e); });
+  const bool entities_equal = m_entities == other.m_entities;
+  const bool components_equal = m_entities_with_components == other.m_entities_with_components;
+  return entities_equal && components_equal;
+}
+
+void ECRegistry::OnEach(const std::function<void(Entity)>& action)
+{
+  std::ranges::for_each(m_entities_sorted_list, action);
 }
 
 void ECRegistry::Destroy(Opt<Entity> ent)
@@ -46,15 +45,10 @@ void ECRegistry::Destroy(Opt<Entity> ent)
   if (!ent)
     return;
 
-  if (!m_in_loop)
-  {
-    m_entities.erase(ent.value());
-    m_components.erase(ent.value());
-    m_entities_with_components.erase(ent.value());
-    return;
-  }
-
-  m_destroy_queue.insert(ent.value());
+  m_entities.erase(ent.value());
+  std::erase(m_entities_sorted_list, ent.value());
+  m_components.erase(ent.value());
+  m_entities_with_components.erase(ent.value());
 }
 
 const std::vector<VarComponent>& ECRegistry::GetComponents(const Entity& ent) const
@@ -64,7 +58,12 @@ const std::vector<VarComponent>& ECRegistry::GetComponents(const Entity& ent) co
   return m_components.at(ent);
 }
 
-const std::set<Entity>& ECRegistry::GetEntities() const
+const std::list<Entity>& ECRegistry::GetEntitiesList() const
+{
+  return m_entities_sorted_list;
+}
+
+const std::set<Entity>& ECRegistry::GetEntitiesSet() const
 {
   return m_entities;
 }

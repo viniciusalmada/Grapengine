@@ -101,7 +101,8 @@ namespace GE
 
     [[nodiscard]] const std::vector<VarComponent>& GetComponents(const Entity& ent) const;
 
-    [[nodiscard]] const std::set<Entity>& GetEntities() const;
+    [[nodiscard]] const std::list<Entity>& GetEntitiesList() const;
+    [[nodiscard]] const std::set<Entity>& GetEntitiesSet() const;
 
     /**
      * Verify if associated component exist with given entity
@@ -150,17 +151,16 @@ namespace GE
       return entities;
     }
 
-    void Each(const std::function<void(Entity)>& action);
-    void Each(const std::function<void(Entity)>& action) const;
+    void OnEach(const std::function<void(Entity)>& action);
+    void OnEach(const std::function<void(Entity)>& action) const;
 
-    // [[nodiscard]] bool operator==(const ECRegistry& other) const;
+    [[nodiscard]] bool operator==(const ECRegistry& other) const;
 
   private:
-    u32 m_entity_next_id = 0;
     std::set<Entity> m_entities;
+    std::list<Entity> m_entities_sorted_list;
     std::map<Entity, std::vector<VarComponent>> m_components;
     std::map<Entity, std::set<u64>> m_entities_with_components;
-    bool m_in_loop = false;
     std::set<Entity> m_destroy_queue;
   };
 } // GE
