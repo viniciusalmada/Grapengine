@@ -44,7 +44,7 @@ void EditorLayer::OnAttach()
   {
     std::string name{ "Cube " + std::to_string(i) };
     auto cube_ent = m_scene->CreateEntity(name.c_str());
-    m_scene->AddComponent<PrimitiveComponent>(cube_ent, Cube::Make(), Colors::WHITE);
+    m_scene->AddComponent<PrimitiveComponent>(cube_ent, Cube().GetDrawable(), Colors::WHITE);
     m_scene->AddComponent<TransformComponent>(cube_ent,
                                               Vec3{ Random::GenFloat(-LIM, LIM),
                                                     Random::GenFloat(-LIM, LIM),
@@ -54,7 +54,7 @@ void EditorLayer::OnAttach()
   {
     auto mesh_ent = m_scene->CreateEntity("Mesh");
     m_scene->AddComponent<PrimitiveComponent>(mesh_ent,
-                                              MakeRef<Mesh>("assets/objs/teapot.obj"),
+                                              Mesh{"assets/objs/teapot.obj"}.GetDrawable(),
                                               Colors::WHITE);
     m_scene->AddComponent<TransformComponent>(mesh_ent);
   }
@@ -152,15 +152,13 @@ void EditorLayer::OnImGuiUpdate(TimeStep ts)
     {
       if (ImGui::MenuItem("Save Scene"))
       {
-        SceneSerializer{ m_scene }.SerializeToFile("SaveScene.json");
+        SceneSerializer{ m_scene }.SerializeToFile("SavedScene.yaml");
       }
       if (ImGui::MenuItem("Load Scene"))
       {
         m_scene = Scene::Make("Untitled");
         m_scene_panel->SetContext(m_scene);
-        SceneSerializer{ m_scene }.DeserializeFromFile("SaveScene.json");
-        // bool scenes_equal = *m_old_scene == *m_scene;
-        // GE_ASSERT(scenes_equal, "Scenes not equal");
+        SceneSerializer{ m_scene }.DeserializeFromFile("SaveScene.yaml");
       }
       if (ImGui::MenuItem("Exit"))
         Ctrl::App::Close();
