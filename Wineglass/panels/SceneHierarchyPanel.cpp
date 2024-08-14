@@ -9,6 +9,8 @@ using namespace GE;
 
 namespace
 {
+  constexpr auto BUFFER_SIZE = 256;
+
   constexpr Color X_NORMAL{ 0xB20F0F };
   constexpr Color X_HOVERED{ 0xC20F0F };
   constexpr Color X_ACTIVE{ 0xB21F0F };
@@ -100,7 +102,8 @@ namespace
 
   //-------------------------------------------------------------------------------------------------
   template <typename T, typename UIFun>
-  void DrawComponent(const std::string&& name, const Ptr<Scene>& scene, Entity ent, const UIFun&& fun)
+  void
+  DrawComponent(const std::string&& name, const Ptr<Scene>& scene, Entity ent, const UIFun&& fun)
   {
     if (!scene->HasComponent<T>(ent))
       return;
@@ -266,7 +269,7 @@ namespace
     ImGui::DragFloat("Strenght", &comp.Strenght(), LIGHT_STEP, MIN_LIGHT_STR, MAX_LIGHT_STR);
     ImGui::DragFloat("Spec. Strenght", &comp.SpecStr(), LIGHT_STEP, MIN_LIGHT_STR, MAX_LIGHT_STR);
     int shine = static_cast<int>(comp.SpecShine());
-    ImGui::DragInt("Spec. Shineness", &shine, 1,1,1024);
+    ImGui::DragInt("Spec. Shineness", &shine, 1, 1, 1024);
     comp.SpecShine() = u32(shine);
 
     ImGui::Checkbox("Active", &comp.Active());
@@ -280,6 +283,20 @@ SceneHierarchyPanel::SceneHierarchyPanel(const Ptr<Scene>& scene) : m_scene_cont
 //-------------------------------------------------------------------------------------------------
 void SceneHierarchyPanel::OnImGuiRender()
 {
+  ImGui::Begin("Scene");
+  {
+    std::array<char, BUFFER_SIZE> buffer{ '\0' };
+    std::ranges::copy(m_scene_context->GetName(), buffer.begin());
+    if (ImGui::InputText("Name",
+                         buffer.data(),
+                         sizeof(buffer),
+                         ImGuiInputTextFlags_EnterReturnsTrue))
+    {
+      m_scene_context->SetName(buffer.data());
+    }
+  }
+  ImGui::End();
+
   ImGui::Begin("Scene Entities");
 
   m_scene_context->OnEachEntity([&](Entity ent) { DrawEntityNode(ent); });
@@ -322,8 +339,8 @@ void SceneHierarchyPanel::OnImGuiRender()
           if (ImGui::MenuItem("Cube primitive"))
           {
             m_scene_context->AddComponent<PrimitiveComponent>(ent,
-                                                             Cube().GetDrawable(),
-                                                             Colors::RandomColor());
+                                                              Cube().GetDrawable(),
+                                                              Colors::RandomColor());
             m_scene_context->AddComponent<TransformComponent>(ent);
             ImGui::CloseCurrentPopup();
           }
@@ -343,10 +360,10 @@ void SceneHierarchyPanel::OnImGuiRender()
           if (ImGui::MenuItem("Light Source"))
           {
             m_scene_context->AddComponent<LightSourceComponent>(ent,
-                                                               Colors::WHITE,
-                                                               Vec3{ 0, 0, 0 },
-                                                               1.0f,
-                                                               true);
+                                                                Colors::WHITE,
+                                                                Vec3{ 0, 0, 0 },
+                                                                1.0f,
+                                                                true);
             ImGui::CloseCurrentPopup();
           }
         }
@@ -415,7 +432,6 @@ void SceneHierarchyPanel::DrawTag(Entity ent) const
 {
   auto& tag = m_scene_context->GetComponent<TagComponent>(ent).Tag();
 
-  constexpr auto BUFFER_SIZE = 256;
   std::array<char, BUFFER_SIZE> buffer{ '\0' };
   std::ranges::copy(tag, buffer.begin());
   if (ImGui::InputText("Tag", buffer.data(), sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue))

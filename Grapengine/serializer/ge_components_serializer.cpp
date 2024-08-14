@@ -346,7 +346,8 @@ void ComponentSerializer::operator()(const CameraComponent& c) const
 
 void ComponentSerializer::operator()(const NativeScriptComponent&) const
 {
-  GE_ASSERT_NO_MSG(false);
+  GE_ERROR("Not writing NativeScriptComponent");
+  // GE_ASSERT_NO_MSG(false);
 }
 
 void ComponentSerializer::operator()(const AmbientLightComponent& c) const

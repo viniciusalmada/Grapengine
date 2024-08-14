@@ -152,7 +152,9 @@ void EditorLayer::OnImGuiUpdate(TimeStep ts)
     {
       if (ImGui::MenuItem("Save Scene"))
       {
-        SceneSerializer{ m_scene }.SerializeToFile("SavedScene.yaml");
+        std::string filename =
+          std::vformat("Scene_{}.yaml", std::make_format_args(m_scene->GetName()));
+        SceneSerializer{ m_scene }.SerializeToFile(filename);
       }
       if (ImGui::MenuItem("Load Scene"))
       {
