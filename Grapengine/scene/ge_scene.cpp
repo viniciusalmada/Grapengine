@@ -42,7 +42,10 @@ void Scene::UpdateLightSources() const
     std::vector<LightSource> props;
     props.reserve(light_sources.size());
 
-    std::ranges::transform(light_sources,
+    auto is_active = [&](auto&& ls)
+    { return m_registry.GetComponent<LightSourceComponent>(ls).IsActive(); };
+
+    std::ranges::transform(light_sources | std::views::filter(is_active),
                            std::back_inserter(props),
                            [&](Entity l) -> LightSource
                            {
