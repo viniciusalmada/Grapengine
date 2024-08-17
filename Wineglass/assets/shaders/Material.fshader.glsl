@@ -24,17 +24,14 @@ uniform int u_lights_count;
 
 uniform vec3 u_viewPos;
 
-void main()
+vec3 get_ambient()
 {
-  // Get fragment normal
-  vec3 frag_normal = normalize(out_normal);
+  vec3 ambient = u_ambientStrength * u_ambientColor;
+  return ambient;
+}
 
-  // Calculate ray direction
-  vec3 light_directions[MAX_LIGHTS];
-  for (int i = 0; i < u_lights_count; i++)
-    light_directions[i] = normalize(u_lightPos[i] - out_frag_pos);
-
-
+vec3 get_diffuse(inout vec3 frag_normal, inout vec3 light_directions[MAX_LIGHTS])
+{
   // Calculate ray inclination
   vec3 diffuses = vec3(0, 0, 0);
   for (int i = 0; i < u_lights_count; i++)
@@ -44,9 +41,11 @@ void main()
     float dist_inv = 1 / distance(out_frag_pos, u_lightPos[i]);
     diffuses = diffuses + (dist_inv * u_lightStrength[i] * diff * u_lightColor[i]);
   }
+  return diffuses;
+}
 
-  vec3 ambient = u_ambientStrength * u_ambientColor;
-
+vec3 get_specular(inout vec3 frag_normal, inout vec3 light_directions[MAX_LIGHTS])
+{
   vec3 view_direction = normalize(u_viewPos - out_frag_pos);
   vec3 speculars = vec3(0, 0, 0);
   for (int i = 0; i < u_lights_count; i++)
@@ -55,8 +54,22 @@ void main()
     float spec = pow(max(dot(view_direction, reflect_dir), 0.0), u_specularShininess[i]);
     speculars = speculars + u_specularStrenght[i] * spec * u_lightColor[i];
   }
+  return speculars;
+}
+
+void main()
+{
+  // Get fragment normal
+  vec3 frag_normal = normalize(out_normal);
+
+  // Calculate ray direction
+  vec3 light_directions[MAX_LIGHTS];
+  for (int i = 0; i < u_lights_count; i++)
+  {
+    light_directions[i] = normalize(u_lightPos[i] - out_frag_pos);
+  }
 
   vec3 object_color = (texture2D(u_texture, out_texture_coords) * out_color).rgb;
-  vec3 result = (ambient + diffuses + speculars) * object_color;
+  vec3 result = (get_ambient() + get_diffuse(frag_normal, light_directions) + get_specular(frag_normal, light_directions)) * object_color;
   fragColor = vec4(result, out_color.a);
 }
