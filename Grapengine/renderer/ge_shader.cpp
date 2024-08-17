@@ -213,7 +213,7 @@ i32 Shader::RetrieveUniform(const std::string& name)
     return m_uniforms[name];
 
   const i32 location = glGetUniformLocation(u32(m_renderer_id), name.c_str());
-  GE_ASSERT(location != -1, "Invalid uniform name");
+  GE_ASSERT(location != -1, "Invalid uniform name: {}", name);
 
   m_uniforms[name] = location;
   return location;
