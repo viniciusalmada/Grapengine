@@ -25,7 +25,6 @@ namespace GE
 #ifdef FIRST_SCENE_TEST
     Ptr<Scene> m_scene;
     Entity m_front_camera_entity;
-    Entity m_oblique_camera_entity;
 
     Ptr<Framebuffer> m_fb = nullptr;
     Dimension m_viewport_dimension{};

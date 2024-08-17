@@ -10,7 +10,6 @@ EditorLayer::EditorLayer() :
     Layer("EditorLayer"),
     m_scene(Scene::Make("Default")),
     m_front_camera_entity(m_scene->CreateEntity("Front Camera")),
-    m_oblique_camera_entity(m_scene->CreateEntity("Oblique Camera")),
     m_scene_panel(nullptr)
 {
 }
@@ -21,66 +20,15 @@ void EditorLayer::OnAttach()
   auto& c = m_scene->AddComponent<AmbientLightComponent>(amb_light, Colors::WHITE, .25f);
   c.SetActive(true);
 
-  auto l1 = m_scene->CreateEntity("L1");
-  m_scene->AddComponent<LightSourceComponent>(l1, Colors::RED, Vec3{ 0, 0, 0 }, 1.0f, true);
-  auto l2 = m_scene->CreateEntity("L2");
-  m_scene->AddComponent<LightSourceComponent>(l2, Colors::BLUE, Vec3{ 5, 5, 5 }, 1.0f, true);
-
   m_scene->AddComponent<CameraComponent>(m_front_camera_entity,
                                          Vec3{ 0, 0, 10 },
                                          Vec3{ 0, 0, 0 },
                                          true,
                                          false);
-  m_scene->AddComponent<CameraComponent>(m_oblique_camera_entity,
-                                         Vec3{ 10, 10, -10 },
-                                         Vec3{ 0, 0, 0 },
-                                         false,
-                                         false);
 
-  constexpr auto CUBE_COUNT = 1'00;
-  constexpr auto LIM = 20.0f;
-
-  for (u32 i = 0; i < CUBE_COUNT; i++)
-  {
-    std::string name{ "Cube " + std::to_string(i) };
-    auto cube_ent = m_scene->CreateEntity(name.c_str());
-    m_scene->AddComponent<PrimitiveComponent>(cube_ent, Cube().GetDrawable(), Colors::WHITE);
-    m_scene->AddComponent<TransformComponent>(cube_ent,
-                                              Vec3{ Random::GenFloat(-LIM, LIM),
-                                                    Random::GenFloat(-LIM, LIM),
-                                                    Random::GenFloat(-LIM, LIM) });
-  }
-
-  {
-    auto mesh_ent = m_scene->CreateEntity("Mesh");
-    m_scene->AddComponent<PrimitiveComponent>(mesh_ent,
-                                              Mesh{"assets/objs/teapot.obj"}.GetDrawable(),
-                                              Colors::WHITE);
-    m_scene->AddComponent<TransformComponent>(mesh_ent);
-  }
-
-  {
-    constexpr auto RADIUS = 0.1f;
-    constexpr auto LENGHT = 100.0f;
-    auto c_x = m_scene->CreateEntity("CX");
-    m_scene->AddComponent<PrimitiveComponent>(
-      c_x,
-      Cylinder{ Vec3{ 0, 0, 0 }, RADIUS, Vec3{ 1, 0, 0 }, LENGHT }.GetDrawable(),
-      Colors::RED);
-    m_scene->AddComponent<TransformComponent>(c_x);
-    auto c_y = m_scene->CreateEntity("CY");
-    m_scene->AddComponent<PrimitiveComponent>(
-      c_y,
-      Cylinder{ Vec3{ 0, 0, 0 }, RADIUS, Vec3{ 0, 1, 0 }, LENGHT }.GetDrawable(),
-      Colors::GREEN);
-    m_scene->AddComponent<TransformComponent>(c_y);
-    auto c_z = m_scene->CreateEntity("CZ");
-    m_scene->AddComponent<PrimitiveComponent>(
-      c_z,
-      Cylinder{ Vec3{ 0, 0, 0 }, RADIUS, Vec3{ 0, 0, 1 }, LENGHT }.GetDrawable(),
-      Colors::BLUE);
-    m_scene->AddComponent<TransformComponent>(c_z);
-  }
+  auto cube_ent = m_scene->CreateEntity("Cube");
+  m_scene->AddComponent<PrimitiveComponent>(cube_ent, Cube().GetDrawable(), Colors::WHITE);
+  m_scene->AddComponent<TransformComponent>(cube_ent, Vec3{ 0, 0, 0 });
 
   m_scene->AddComponent<NativeScriptComponent>(m_front_camera_entity).Bind<CamController>();
 
@@ -150,17 +98,34 @@ void EditorLayer::OnImGuiUpdate(TimeStep ts)
   {
     if (ImGui::BeginMenu("File"))
     {
-      if (ImGui::MenuItem("Save Scene"))
+      if (ImGui::MenuItem("Save scene"))
       {
         std::string filename =
           std::vformat("Scene_{}.yaml", std::make_format_args(m_scene->GetName()));
         SceneSerializer{ m_scene }.SerializeToFile(filename);
       }
-      if (ImGui::MenuItem("Load Scene"))
+      if (ImGui::MenuItem("Load scene"))
       {
         m_scene = Scene::Make("Untitled");
         m_scene_panel->SetContext(m_scene);
-        SceneSerializer{ m_scene }.DeserializeFromFile("SavedScene.yaml");
+        SceneSerializer{ m_scene }.DeserializeFromFile("Scene_Default.yaml");
+      }
+      if (ImGui::BeginMenu("Load local scenes"))
+      {
+        std::filesystem::path curr_path = std::filesystem::current_path();
+        for (const auto& entry : std::filesystem::directory_iterator(curr_path))
+        {
+          if (entry.is_regular_file() && entry.path().extension() == ".yaml")
+          {
+            if (ImGui::MenuItem(entry.path().string().c_str()))
+            {
+              m_scene = Scene::Make("Untitled");
+              m_scene_panel->SetContext(m_scene);
+              SceneSerializer{ m_scene }.DeserializeFromFile(entry);
+            }
+          }
+        }
+        ImGui::EndMenu();
       }
       if (ImGui::MenuItem("Exit"))
         Ctrl::App::Close();
