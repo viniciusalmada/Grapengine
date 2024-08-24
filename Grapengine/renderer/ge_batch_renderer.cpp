@@ -8,7 +8,6 @@
 using namespace GE;
 
 BatchRenderer::BatchRenderer() :
-    m_shader(MaterialShader::Make()),
     m_vertices_data(std::make_pair(VerticesData::Make(), std::vector<u32>{}))
 {
 }
@@ -32,18 +31,14 @@ void BatchRenderer::PushObject(VerticesData&& vd,
   std::ranges::for_each(indices, [&](u32 i) { indices_data.push_back(i + current_max_id + 1); });
 }
 
-void BatchRenderer::Begin(const Mat4& cameraMatrix, const Vec3& viewPosition)
+void BatchRenderer::Begin()
 {
   m_vertices_data.first->Clear();
   m_vertices_data.second.clear();
-  m_shader->Activate();
-  m_shader->UpdateViewProjectionMatrix(cameraMatrix, viewPosition);
 }
 
 void BatchRenderer::End()
 {
-  m_shader->Activate();
-
   m_drawing_object.SetVerticesData(m_vertices_data.first);
   m_drawing_object.SetIndicesData(m_vertices_data.second);
 
@@ -54,16 +49,4 @@ void BatchRenderer::Draw() const
 {
   m_drawing_object.Bind();
   glDrawElements(GL_TRIANGLES, m_drawing_object.IndicesCount(), GL_UNSIGNED_INT, nullptr);
-}
-
-void BatchRenderer::SetAmbientLight(const Color& color, f32 str)
-{
-  m_shader->Activate();
-  m_shader->UpdateAmbientLight(color, str);
-}
-
-void BatchRenderer::SetLightsSources(const std::vector<LightSource>& props)
-{
-  m_shader->Activate();
-  m_shader->UpdateLightSources(props);
 }

@@ -12,10 +12,7 @@ namespace GE
   public:
     explicit BatchRenderer();
 
-    void SetAmbientLight(const Color& color, f32 str);
-    void SetLightsSources(const std::vector<LightSource>& props);
-
-    void Begin(const Mat4& cameraMatrix, const Vec3& viewPosition);
+    void Begin();
 
     void End();
 
@@ -24,7 +21,6 @@ namespace GE
   private:
     void Draw() const;
 
-    Ptr<MaterialShader> m_shader;
     DrawingObject m_drawing_object;
     std::pair<Ptr<VerticesData>, std::vector<u32>> m_vertices_data;
   };

@@ -13,6 +13,12 @@ using namespace GE;
 
 namespace
 {
+  void OnShader(std::function<void(MaterialShader&)> fun)
+  {
+    static MaterialShader shader;
+    fun(shader);
+  }
+
   //--------------------------------------------------------------------------------------------------
   BatchRenderer& GetBatchRenderer()
   {
@@ -113,28 +119,59 @@ Renderer::Statistics& Renderer::GetStats()
 
 void Renderer::SetAmbientLight(const Color& color, f32 str)
 {
-  GetBatchRenderer().SetAmbientLight(color, str);
+  OnShader(
+    [&](MaterialShader& shader)
+    {
+      shader.Activate();
+      shader.UpdateAmbientLight(color, str);
+    });
 }
 
 void Renderer::SetLightSources(const std::vector<LightSource>& props)
 {
-  GetBatchRenderer().SetLightsSources(props);
+  OnShader(
+    [&](MaterialShader& shader)
+    {
+      shader.Activate();
+      shader.UpdateLightSources(props);
+    });
+}
+
+void Renderer::SetTextureSlots(const std::vector<i32>& textureSlots)
+{
+  OnShader(
+    [&](MaterialShader& shader)
+    {
+      shader.Activate();
+      shader.UpdateTextures(textureSlots);
+    });
 }
 
 void Renderer::Batch::Begin(const Mat4& cameraMatrix, const Vec3& viewPosition)
 {
   GE_PROFILE;
-  GetStats().vertices_count = 0;
-  GetStats().indices_count = 0;
-  GetTiming() = Platform::GetCurrentTimeMS();
-  GetBatchRenderer().Begin(cameraMatrix, viewPosition);
+  {
+    GetStats().vertices_count = 0;
+    GetStats().indices_count = 0;
+    GetTiming() = Platform::GetCurrentTimeMS();
+  }
+  OnShader(
+    [&](MaterialShader& shader)
+    {
+      shader.Activate();
+      shader.UpdateViewProjectionMatrix(cameraMatrix, viewPosition);
+    });
+  GetBatchRenderer().Begin();
 }
 
 void Renderer::Batch::End()
 {
   GE_PROFILE;
+  OnShader([&](MaterialShader& shader) { shader.Activate(); });
   GetBatchRenderer().End();
-  GetStats().time_spent = (Platform::GetCurrentTimeMS() - GetTiming()) + 1;
+  {
+    GetStats().time_spent = (Platform::GetCurrentTimeMS() - GetTiming()) + 1;
+  }
 }
 
 void Renderer::Batch::PushObject(VerticesData&& vd,
