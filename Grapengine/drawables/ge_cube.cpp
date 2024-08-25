@@ -31,30 +31,30 @@ namespace
     const Color& color = Colors::WHITE;
     VerticesData position{};
     // clang-format off
-    position.PushVerticesData({Vec3{ -HALF, -HALF, +HALF  },Vec2{ 0.00f + 0 * THIRD, 0.00f + 0 * THIRD }, color.ToVec4(), Vec3{+0,+0,+1}.Normalize()});// Front face
-    position.PushVerticesData({Vec3{ +HALF, -HALF, +HALF  },Vec2{ THIRD + 0 * THIRD, 0.00f + 0 * THIRD }, color.ToVec4(), Vec3{+0,+0,+1}.Normalize()});
-    position.PushVerticesData({Vec3{ +HALF, +HALF, +HALF  },Vec2{ THIRD + 0 * THIRD, THIRD + 0 * THIRD }, color.ToVec4(), Vec3{+0,+0,+1}.Normalize()});
-    position.PushVerticesData({Vec3{ -HALF, +HALF, +HALF  },Vec2{ 0.00f + 0 * THIRD, THIRD + 0 * THIRD }, color.ToVec4(), Vec3{+0,+0,+1}.Normalize()});
-    position.PushVerticesData({Vec3{ +HALF, -HALF, +HALF  },Vec2{ 0.00f + 2 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4(), Vec3{+1,+0,+0}.Normalize()});// Right face
-    position.PushVerticesData({Vec3{ +HALF, -HALF, -HALF  },Vec2{ THIRD + 2 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4(), Vec3{+1,+0,+0}.Normalize()});
-    position.PushVerticesData({Vec3{ +HALF, +HALF, -HALF  },Vec2{ THIRD + 2 * THIRD, THIRD + 1 * THIRD }, color.ToVec4(), Vec3{+1,+0,+0}.Normalize()});
-    position.PushVerticesData({Vec3{ +HALF, +HALF, +HALF  },Vec2{ 0.00f + 2 * THIRD, THIRD + 1 * THIRD }, color.ToVec4(), Vec3{+1,+0,+0}.Normalize()});
-    position.PushVerticesData({Vec3{ +HALF, -HALF, -HALF  },Vec2{ 0.00f + 2 * THIRD, 0.00f + 0 * THIRD }, color.ToVec4(), Vec3{+0,+0,-1}.Normalize()});// Back face
-    position.PushVerticesData({Vec3{ -HALF, -HALF, -HALF  },Vec2{ THIRD + 2 * THIRD, 0.00f + 0 * THIRD }, color.ToVec4(), Vec3{+0,+0,-1}.Normalize()});
-    position.PushVerticesData({Vec3{ -HALF, +HALF, -HALF  },Vec2{ THIRD + 2 * THIRD, THIRD + 0 * THIRD }, color.ToVec4(), Vec3{+0,+0,-1}.Normalize()});
-    position.PushVerticesData({Vec3{ +HALF, +HALF, -HALF  },Vec2{ 0.00f + 2 * THIRD, THIRD + 0 * THIRD }, color.ToVec4(), Vec3{+0,+0,-1}.Normalize()});
-    position.PushVerticesData({Vec3{ -HALF, -HALF, -HALF  },Vec2{ 0.00f + 1 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4(), Vec3{-1,+0,+0}.Normalize()});// Left face
-    position.PushVerticesData({Vec3{ -HALF, -HALF, +HALF  },Vec2{ THIRD + 1 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4(), Vec3{-1,+0,+0}.Normalize()});
-    position.PushVerticesData({Vec3{ -HALF, +HALF, +HALF  },Vec2{ THIRD + 1 * THIRD, THIRD + 1 * THIRD }, color.ToVec4(), Vec3{-1,+0,+0}.Normalize()});
-    position.PushVerticesData({Vec3{ -HALF, +HALF, -HALF  },Vec2{ 0.00f + 1 * THIRD, THIRD + 1 * THIRD }, color.ToVec4(), Vec3{-1,+0,+0}.Normalize()});
-    position.PushVerticesData({Vec3{ -HALF, +HALF, +HALF  },Vec2{ 0.00f + 0 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4(), Vec3{+0,+1,+0}.Normalize()});// Top face
-    position.PushVerticesData({Vec3{ +HALF, +HALF, +HALF  },Vec2{ THIRD + 0 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4(), Vec3{+0,+1,+0}.Normalize()});
-    position.PushVerticesData({Vec3{ +HALF, +HALF, -HALF  },Vec2{ THIRD + 0 * THIRD, THIRD + 1 * THIRD }, color.ToVec4(), Vec3{+0,+1,+0}.Normalize()});
-    position.PushVerticesData({Vec3{ -HALF, +HALF, -HALF  },Vec2{ 0.00f + 0 * THIRD, THIRD + 1 * THIRD }, color.ToVec4(), Vec3{+0,+1,+0}.Normalize()});
-    position.PushVerticesData({Vec3{ -HALF, -HALF, -HALF  },Vec2{ 0.00f + 0 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4(), Vec3{+0,-1,+0}.Normalize()});// Bottom face
-    position.PushVerticesData({Vec3{ +HALF, -HALF, -HALF  },Vec2{ THIRD + 0 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4(), Vec3{+0,-1,+0}.Normalize()});
-    position.PushVerticesData({Vec3{ +HALF, -HALF, +HALF  },Vec2{ THIRD + 0 * THIRD, THIRD + 1 * THIRD }, color.ToVec4(), Vec3{+0,-1,+0}.Normalize()});
-    position.PushVerticesData({Vec3{ -HALF, -HALF, +HALF  },Vec2{ 0.00f + 0 * THIRD, THIRD + 1 * THIRD }, color.ToVec4(), Vec3{+0,-1,+0}.Normalize()});
+    position.PushVerticesData({Vec3{ -HALF, -HALF, +HALF  },Vec2{ 0.00f + 0 * THIRD, 0.00f + 0 * THIRD }, color.ToVec4(), Vec3{+0,+0,+1}.Normalize(), Texture2D::EMPTY_TEX_SLOT});// Front face
+    position.PushVerticesData({Vec3{ +HALF, -HALF, +HALF  },Vec2{ THIRD + 0 * THIRD, 0.00f + 0 * THIRD }, color.ToVec4(), Vec3{+0,+0,+1}.Normalize(), Texture2D::EMPTY_TEX_SLOT});
+    position.PushVerticesData({Vec3{ +HALF, +HALF, +HALF  },Vec2{ THIRD + 0 * THIRD, THIRD + 0 * THIRD }, color.ToVec4(), Vec3{+0,+0,+1}.Normalize(), Texture2D::EMPTY_TEX_SLOT});
+    position.PushVerticesData({Vec3{ -HALF, +HALF, +HALF  },Vec2{ 0.00f + 0 * THIRD, THIRD + 0 * THIRD }, color.ToVec4(), Vec3{+0,+0,+1}.Normalize(), Texture2D::EMPTY_TEX_SLOT});
+    position.PushVerticesData({Vec3{ +HALF, -HALF, +HALF  },Vec2{ 0.00f + 2 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4(), Vec3{+1,+0,+0}.Normalize(), Texture2D::EMPTY_TEX_SLOT});// Right face
+    position.PushVerticesData({Vec3{ +HALF, -HALF, -HALF  },Vec2{ THIRD + 2 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4(), Vec3{+1,+0,+0}.Normalize(), Texture2D::EMPTY_TEX_SLOT});
+    position.PushVerticesData({Vec3{ +HALF, +HALF, -HALF  },Vec2{ THIRD + 2 * THIRD, THIRD + 1 * THIRD }, color.ToVec4(), Vec3{+1,+0,+0}.Normalize(), Texture2D::EMPTY_TEX_SLOT});
+    position.PushVerticesData({Vec3{ +HALF, +HALF, +HALF  },Vec2{ 0.00f + 2 * THIRD, THIRD + 1 * THIRD }, color.ToVec4(), Vec3{+1,+0,+0}.Normalize(), Texture2D::EMPTY_TEX_SLOT});
+    position.PushVerticesData({Vec3{ +HALF, -HALF, -HALF  },Vec2{ 0.00f + 2 * THIRD, 0.00f + 0 * THIRD }, color.ToVec4(), Vec3{+0,+0,-1}.Normalize(), Texture2D::EMPTY_TEX_SLOT});// Back face
+    position.PushVerticesData({Vec3{ -HALF, -HALF, -HALF  },Vec2{ THIRD + 2 * THIRD, 0.00f + 0 * THIRD }, color.ToVec4(), Vec3{+0,+0,-1}.Normalize(), Texture2D::EMPTY_TEX_SLOT});
+    position.PushVerticesData({Vec3{ -HALF, +HALF, -HALF  },Vec2{ THIRD + 2 * THIRD, THIRD + 0 * THIRD }, color.ToVec4(), Vec3{+0,+0,-1}.Normalize(), Texture2D::EMPTY_TEX_SLOT});
+    position.PushVerticesData({Vec3{ +HALF, +HALF, -HALF  },Vec2{ 0.00f + 2 * THIRD, THIRD + 0 * THIRD }, color.ToVec4(), Vec3{+0,+0,-1}.Normalize(), Texture2D::EMPTY_TEX_SLOT});
+    position.PushVerticesData({Vec3{ -HALF, -HALF, -HALF  },Vec2{ 0.00f + 1 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4(), Vec3{-1,+0,+0}.Normalize(), Texture2D::EMPTY_TEX_SLOT});// Left face
+    position.PushVerticesData({Vec3{ -HALF, -HALF, +HALF  },Vec2{ THIRD + 1 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4(), Vec3{-1,+0,+0}.Normalize(), Texture2D::EMPTY_TEX_SLOT});
+    position.PushVerticesData({Vec3{ -HALF, +HALF, +HALF  },Vec2{ THIRD + 1 * THIRD, THIRD + 1 * THIRD }, color.ToVec4(), Vec3{-1,+0,+0}.Normalize(), Texture2D::EMPTY_TEX_SLOT});
+    position.PushVerticesData({Vec3{ -HALF, +HALF, -HALF  },Vec2{ 0.00f + 1 * THIRD, THIRD + 1 * THIRD }, color.ToVec4(), Vec3{-1,+0,+0}.Normalize(), Texture2D::EMPTY_TEX_SLOT});
+    position.PushVerticesData({Vec3{ -HALF, +HALF, +HALF  },Vec2{ 0.00f + 0 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4(), Vec3{+0,+1,+0}.Normalize(), Texture2D::EMPTY_TEX_SLOT});// Top face
+    position.PushVerticesData({Vec3{ +HALF, +HALF, +HALF  },Vec2{ THIRD + 0 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4(), Vec3{+0,+1,+0}.Normalize(), Texture2D::EMPTY_TEX_SLOT});
+    position.PushVerticesData({Vec3{ +HALF, +HALF, -HALF  },Vec2{ THIRD + 0 * THIRD, THIRD + 1 * THIRD }, color.ToVec4(), Vec3{+0,+1,+0}.Normalize(), Texture2D::EMPTY_TEX_SLOT});
+    position.PushVerticesData({Vec3{ -HALF, +HALF, -HALF  },Vec2{ 0.00f + 0 * THIRD, THIRD + 1 * THIRD }, color.ToVec4(), Vec3{+0,+1,+0}.Normalize(), Texture2D::EMPTY_TEX_SLOT});
+    position.PushVerticesData({Vec3{ -HALF, -HALF, -HALF  },Vec2{ 0.00f + 0 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4(), Vec3{+0,-1,+0}.Normalize(), Texture2D::EMPTY_TEX_SLOT});// Bottom face
+    position.PushVerticesData({Vec3{ +HALF, -HALF, -HALF  },Vec2{ THIRD + 0 * THIRD, 0.00f + 1 * THIRD }, color.ToVec4(), Vec3{+0,-1,+0}.Normalize(), Texture2D::EMPTY_TEX_SLOT});
+    position.PushVerticesData({Vec3{ +HALF, -HALF, +HALF  },Vec2{ THIRD + 0 * THIRD, THIRD + 1 * THIRD }, color.ToVec4(), Vec3{+0,-1,+0}.Normalize(), Texture2D::EMPTY_TEX_SLOT});
+    position.PushVerticesData({Vec3{ -HALF, -HALF, +HALF  },Vec2{ 0.00f + 0 * THIRD, THIRD + 1 * THIRD }, color.ToVec4(), Vec3{+0,-1,+0}.Normalize(), Texture2D::EMPTY_TEX_SLOT});
     // clang-format on
     return position;
   }

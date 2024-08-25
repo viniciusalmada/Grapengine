@@ -19,7 +19,8 @@ namespace
   };
 }
 
-Scene::Scene(const std::string& name) : m_name(name), m_registry({}), m_active_camera(std::nullopt)
+Scene::Scene(const std::string& name) :
+    m_name(name), m_registry({}), m_active_camera(std::nullopt), m_textures_registry()
 {
 }
 
@@ -110,6 +111,19 @@ void Scene::UpdateDrawableEntities(TimeStep& /*ts*/)
     return;
   }
 
+  {
+    const std::vector<Entity> primitives = m_registry.Group<PrimitiveComponent>();
+    std::set<i32> textures_ids;
+    for (const auto& ent : primitives)
+    {
+      PrimitiveComponent& primitive = m_registry.GetComponent<PrimitiveComponent>(ent);
+      m_textures_registry.BindTexture(primitive.GetTexSlot());
+      textures_ids.insert(static_cast<i32>(primitive.GetTexSlot()));
+    }
+    std::vector<i32> textures{ textures_ids.begin(), textures_ids.end() };
+    Renderer::SetTextureSlots(textures);
+  }
+
   const auto& active_camera = m_active_camera.value();
 
   const CameraComponent& cam_component = m_registry.GetComponent<CameraComponent>(active_camera);
@@ -127,6 +141,7 @@ void Scene::UpdateDrawableEntities(TimeStep& /*ts*/)
 
       PrimitiveComponent& primitive = m_registry.GetComponent<PrimitiveComponent>(ent);
       primitive.GetDrawable().UpdateColor(primitive.GetColor());
+      primitive.GetDrawable().UpdateTexture(primitive.GetTexSlot());
       VerticesData vertices = primitive.GetDrawable().GetVerticesData();
       std::vector<u32> indices = primitive.GetDrawable().GetIndicesData();
 
@@ -250,6 +265,21 @@ void Scene::SetName(const std::string& name)
   m_name = name;
 }
 
+u32 Scene::RegisterTexture(const std::filesystem::path& path)
+{
+  return m_textures_registry.Register(path, m_attached);
+}
+
+const TexturesRegistry& Scene::GetTextureRegistry() const
+{
+  return m_textures_registry;
+}
+
+TexturesRegistry& Scene::GetTextureRegistry()
+{
+  return m_textures_registry;
+}
+
 void Scene::SetActiveCamera(Opt<Entity> activeCamera)
 {
   GE_PROFILE;
@@ -270,6 +300,12 @@ void Scene::EnqueueToDestroy(Opt<Entity> ent)
     return;
 
   GetQueue().push_back(ent.value());
+}
+
+void Scene::OnAttach()
+{
+  m_attached = true;
+  m_textures_registry.LoadTextures();
 }
 
 void Scene::UpdateLightSourcesPosition(TimeStep& /*ts*/)

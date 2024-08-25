@@ -32,6 +32,7 @@ void EditorLayer::OnAttach()
 
   m_scene->AddComponent<NativeScriptComponent>(m_front_camera_entity).Bind<CamController>();
 
+  m_scene->OnAttach();
   m_scene_panel = MakeRef<SceneHierarchyPanel>(m_scene);
 
   m_fb = Framebuffer::Make({ 1280, 720 });

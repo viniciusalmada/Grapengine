@@ -24,6 +24,8 @@ namespace
       return 4;
     case DataPurpose::TEXTURE_COORDINATE_F2:
       return 2;
+    case DataPurpose::TEX_ID_INT:
+      return 1;
     }
     Platform::Unreachable();
   }
@@ -37,6 +39,8 @@ namespace
     case DataPurpose::TEXTURE_COORDINATE_F2:
     case DataPurpose::NORMAL_F3:
       return GL_FLOAT;
+    case DataPurpose::TEX_ID_INT:
+      return GL_INT;
     }
     Platform::Unreachable();
   }
@@ -74,13 +78,25 @@ void VertexArray::SetVertexBuffer(const Ptr<VertexBuffer>& vertexBuffer, BufferL
     {
       glEnableVertexAttribArray(attrib_index);
       const std::size_t offset = elem.offset;
-      glVertexAttribPointer(
-        attrib_index,
-        GetComponentCount(elem),
-        ShaderDataTypeToOpenGLBaseType(elem.purpose),
-        elem.normalized,
-        static_cast<i32>(layout.GetStride()),
-        reinterpret_cast<void*>(offset)); // NOLINT(*-pro-type-reinterpret-cast, *-no-int-to-ptr)
+      auto data_type = ShaderDataTypeToOpenGLBaseType(elem.purpose);
+      if (data_type == GL_FLOAT)
+      {
+        glVertexAttribPointer(
+          attrib_index,
+          GetComponentCount(elem),
+          GL_FLOAT,
+          elem.normalized,
+          static_cast<i32>(layout.GetStride()),
+          reinterpret_cast<void*>(offset)); // NOLINT(*-pro-type-reinterpret-cast, *-no-int-to-ptr)
+      }
+      else if (data_type == GL_INT)
+      {
+        glVertexAttribIPointer(attrib_index,
+                               GetComponentCount(elem),
+                               GL_INT,
+                               static_cast<i32>(layout.GetStride()),
+                               reinterpret_cast<void*>(offset));
+      }
       attrib_index++;
     });
   this->vertex_buffer = vertexBuffer;

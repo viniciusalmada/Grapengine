@@ -15,6 +15,12 @@ void Drawable::UpdateColor(const Color& color)
     v.color = color.ToVec4();
 }
 
+void Drawable::UpdateTexture(u32 texID)
+{
+  for (auto& v : m_vertices_data.GetData())
+    v.texture_slot = texID;
+}
+
 const VerticesData& Drawable::GetVerticesData() const
 {
   return m_vertices_data;

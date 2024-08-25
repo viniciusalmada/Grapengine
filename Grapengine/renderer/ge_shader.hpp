@@ -35,6 +35,7 @@ namespace GE
 
     void UploadVec3Array(const std::string& name, const std::vector<Vec3>& vec3);
     void UploadFloatArray(const std::string& name, const std::vector<f32>& vec3);
+    void UploadIntArray(const std::string& name, const std::vector<i32>& arr);
 
   private:
     i32 RetrieveUniform(const std::string& name);

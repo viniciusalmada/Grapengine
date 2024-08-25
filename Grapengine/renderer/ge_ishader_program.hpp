@@ -1,6 +1,7 @@
 #ifndef GRAPENGINE_ISHADER_PROGRAM_HPP
 #define GRAPENGINE_ISHADER_PROGRAM_HPP
 
+#include "ge_renderer_id.hpp"
 #include "math/ge_vector.hpp"
 
 namespace GE
@@ -11,6 +12,7 @@ namespace GE
     Vec2 texture_coord;
     Vec4 color;
     Vec3 normal;
+    u32 texture_slot;
 
     bool operator==(const VertexStruct& other) const = default;
   };

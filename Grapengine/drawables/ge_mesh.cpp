@@ -2,6 +2,7 @@
 
 #include "drawables/ge_color.hpp"
 #include "profiling/ge_profiler.hpp"
+#include "renderer/ge_texture_2d.hpp"
 #include "renderer/ge_vertices_data.hpp"
 
 using namespace GE;
@@ -130,7 +131,7 @@ namespace
       for (const u64 vtx_idx : std::views::iota(0u, vertices.size()))
       {
         vertices_data.PushVerticesData(
-          { vertices.at(vtx_idx), Vec2{}, color, normals.at(vtx_idx) });
+          { vertices.at(vtx_idx), Vec2{}, color, normals.at(vtx_idx), Texture2D::EMPTY_TEX_SLOT });
       }
     }
 

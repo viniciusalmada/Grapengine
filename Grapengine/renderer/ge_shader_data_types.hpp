@@ -25,7 +25,8 @@ namespace GE
     POSITION_F3,
     COLOR_F4,
     TEXTURE_COORDINATE_F2,
-    NORMAL_F3
+    NORMAL_F3,
+    TEX_ID_INT
   };
 }
 

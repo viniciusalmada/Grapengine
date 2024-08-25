@@ -1,13 +1,13 @@
 #ifndef GRAPENGINE_GE_COMPONENTS_HPP
 #define GRAPENGINE_GE_COMPONENTS_HPP
 
-#include "renderer/ge_light_source.hpp"
 #include "drawables/ge_color.hpp"
 #include "drawables/ge_cube.hpp"
 #include "ge_entity.hpp"
 #include "ge_scene_camera.hpp"
 #include "math/ge_transformations.hpp"
 #include "math/ge_vector.hpp"
+#include "renderer/ge_light_source.hpp"
 #include "renderer/ge_texture_2d.hpp"
 
 namespace GE
@@ -69,11 +69,14 @@ namespace GE
   class PrimitiveComponent
   {
   public:
-    PrimitiveComponent(const Drawable& drawable, Color color);
+    PrimitiveComponent(const Drawable& drawable,
+                       Color color,
+                       u32 texSlot = Texture2D::EMPTY_TEX_SLOT);
 
     [[nodiscard]] const Drawable& GetDrawable() const;
     [[nodiscard]] Drawable& GetDrawable();
     [[nodiscard]] const Color& GetColor() const;
+    [[nodiscard]] u32 GetTexSlot() const;
 
     void SetColor(Color c);
 
@@ -82,6 +85,7 @@ namespace GE
   private:
     Drawable m_drawable;
     Color m_color;
+    u32 m_texture_slot;
   };
 
   //----------------------------------------------------------------------------------------------

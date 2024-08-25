@@ -77,6 +77,7 @@ namespace
       e << YAML::Key << Fields::TEX_COORDINATES << YAML::Value << vd.texture_coord;
       e << YAML::Key << Fields::COLOR_DECIMAL << YAML::Value << vd.color;
       e << YAML::Key << Fields::NORMAL << YAML::Value << vd.normal;
+      e << YAML::Key << Fields::TEXTURE_SLOT << YAML::Value << vd.texture_slot;
       e << YAML::EndMap; // vertex
     }
     e << YAML::EndSeq; // vertices
@@ -257,10 +258,11 @@ namespace YAML
     {
       GE_ASSERT_OR_RETURN(!node.IsSequence() && node.IsMap(), false, "VertexStruct not found");
 
-      d.position = node[Fields::POSITION].as<Vec3>();
-      d.texture_coord = node[Fields::TEX_COORDINATES].as<Vec2>();
-      d.color = node[Fields::COLOR_DECIMAL].as<Vec4>();
-      d.normal = node[Fields::NORMAL].as<Vec3>();
+      d.position = node[Fields::POSITION].as<decltype(d.position)>();
+      d.texture_coord = node[Fields::TEX_COORDINATES].as<decltype(d.texture_coord)>();
+      d.color = node[Fields::COLOR_DECIMAL].as<decltype(d.color)>();
+      d.normal = node[Fields::NORMAL].as<decltype(d.normal)>();
+      d.texture_slot = node[Fields::TEXTURE_SLOT].as<decltype(d.texture_slot)>();
 
       return true;
     }
@@ -346,7 +348,7 @@ void ComponentSerializer::operator()(const CameraComponent& c) const
 
 void ComponentSerializer::operator()(const NativeScriptComponent&) const
 {
-  GE_ERROR("Not writing NativeScriptComponent");
+  GE_ERROR("Not writing NativeScriptComponent")
   // GE_ASSERT_NO_MSG(false);
 }
 
@@ -416,11 +418,15 @@ Opt<PrimitiveComponent> ComponentDeserializer::GetPrimitive() const
     auto tex_array = _[Fields::TEX_COORDINATES].as<std::array<f32, 2>>();
     auto color_array = _[Fields::COLOR_DECIMAL].as<std::array<f32, 4>>();
     auto normal = _[Fields::NORMAL].as<std::array<f32, 3>>();
+    u32 tex_slot = Texture2D::EMPTY_TEX_SLOT;
+    if (_[Fields::TEXTURE_SLOT].IsDefined())
+      tex_slot = _[Fields::TEXTURE_SLOT].as<u32>();
 
     VertexStruct vertex{ Vec3{ pos_array[0], pos_array[1], pos_array[2] },
                          Vec2{ tex_array[0], tex_array[1] },
                          Vec4{ color_array[0], color_array[1], color_array[2], color_array[3] },
-                         Vec3{ normal[0], normal[1], normal[2] } };
+                         Vec3{ normal[0], normal[1], normal[2] },
+                         tex_slot };
 
     vertices.push_back(vertex);
   }
@@ -428,8 +434,11 @@ Opt<PrimitiveComponent> ComponentDeserializer::GetPrimitive() const
   auto indices_data = drawable_node[Fields::INDICES_DATA].as<std::vector<u32>>();
   Drawable drawable{ vertices_data, indices_data };
   Color color = comp[Fields::COLOR_RGBA].as<Color>();
+  u32 tex_slot = Texture2D::EMPTY_TEX_SLOT;
+  if (comp[Fields::TEXTURE_SLOT].IsDefined())
+    tex_slot = comp[Fields::TEXTURE_SLOT].as<u32>();
 
-  return PrimitiveComponent{ drawable, color };
+  return PrimitiveComponent{ drawable, color, tex_slot };
 }
 
 Opt<CameraComponent> ComponentDeserializer::GetCamera() const

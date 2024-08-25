@@ -3,10 +3,7 @@
 #include "drawables/ge_color.hpp"
 #include "drawables/ge_drawing_object.hpp"
 #include "profiling/ge_profiler.hpp"
-#include "renderer/ge_buffer_layout.hpp"
 #include "renderer/ge_texture_2d.hpp"
-#include "renderer/ge_vertices_data.hpp"
-#include "renderer/shader_programs/ge_pos_tex_shader.hpp"
 #include "utils/ge_random.hpp"
 
 using namespace GE;
@@ -44,9 +41,9 @@ namespace
     for (u32 i = 0; i < base_pts.size(); ++i)
     {
       vertices_data.PushVerticesData(
-        { base_pts[i], Vec2{ 1, 1 }, color, Vec3{ 0, 0, 0 } });
+        { base_pts[i], Vec2{ 1, 1 }, color, Vec3{ 0, 0, 0 }, Texture2D::EMPTY_TEX_SLOT });
       vertices_data.PushVerticesData(
-        { final_pts[i], Vec2{ 1, 1 }, color, Vec3{ 0, 0, 0 } });
+        { final_pts[i], Vec2{ 1, 1 }, color, Vec3{ 0, 0, 0 }, Texture2D::EMPTY_TEX_SLOT });
     }
 
     return vertices_data;

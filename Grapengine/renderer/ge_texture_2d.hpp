@@ -11,6 +11,7 @@ namespace GE
   class Texture2D
   {
   public:
+    constexpr static u32 EMPTY_TEX_SLOT = 0;
     static Ptr<Texture2D> Make();
     static Ptr<Texture2D> Make(const std::filesystem::path& path);
 

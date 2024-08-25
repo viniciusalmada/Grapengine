@@ -17,6 +17,8 @@ namespace
       return sizeof(f32) * 4;
     case DataPurpose::TEXTURE_COORDINATE_F2:
       return sizeof(f32) * 2;
+    case DataPurpose::TEX_ID_INT:
+      return sizeof(i32);
     }
     Platform::Unreachable();
   }

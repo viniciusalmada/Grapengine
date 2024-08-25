@@ -15,10 +15,12 @@ TEST(SceneSerializer, Serialize)
   const GE::Entity& full_ent = scene->CreateEntity("My model");
   [[maybe_unused]] const GE::TransformComponent& transf_comp =
     scene->AddComponent<GE::TransformComponent>(full_ent);
+  auto tex_slot = scene->RegisterTexture("path-to-texture");
   [[maybe_unused]] const GE::PrimitiveComponent& primitive_comp =
     scene->AddComponent<GE::PrimitiveComponent>(full_ent,
                                                 GE::Cube().GetDrawable(),
-                                                GE::Colors::ORANGE);
+                                                GE::Colors::ORANGE,
+                                                tex_slot);
   [[maybe_unused]] const GE::CameraComponent& camera_comp =
     scene->AddComponent<GE::CameraComponent>(full_ent, GE::Vec3{}, GE::Vec3{}, true, true);
   scene->SetActiveCamera(full_ent);

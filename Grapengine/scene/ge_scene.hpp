@@ -4,6 +4,7 @@
 #include "core/ge_time_step.hpp"
 #include "events/ge_event.hpp"
 #include "ge_ec_registry.hpp"
+#include "ge_textures_registry.hpp"
 
 namespace GE
 {
@@ -19,6 +20,11 @@ namespace GE
     void PushEntity(Entity entity);
 
     void EnqueueToDestroy(Opt<Entity> ent);
+
+    /**
+     * Called when already exists a GL valid context
+     */
+    void OnAttach();
 
     void OnUpdate(TimeStep ts);
 
@@ -36,6 +42,10 @@ namespace GE
 
     const std::string& GetName() const;
     void SetName(const std::string& name);
+
+    u32 RegisterTexture(const std::filesystem::path& path);
+    const TexturesRegistry& GetTextureRegistry() const;
+    TexturesRegistry& GetTextureRegistry();
 
     [[nodiscard]] bool operator==(const Scene& other) const = default;
 
@@ -99,6 +109,8 @@ namespace GE
     std::string m_name;
     ECRegistry m_registry;
     Opt<Entity> m_active_camera;
+    TexturesRegistry m_textures_registry;
+    bool m_attached = false;
   };
 
 } // GE

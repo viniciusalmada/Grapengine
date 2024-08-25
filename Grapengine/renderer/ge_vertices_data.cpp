@@ -28,10 +28,13 @@ const VertexStruct* VerticesData::GetPtr() const
 
 BufferLayout VerticesData::GetLayout()
 {
-  return BufferLayout{ BufferLayout::BuildElementsList({ DataPurpose::POSITION_F3,
-                                                         DataPurpose::TEXTURE_COORDINATE_F2,
-                                                         DataPurpose::COLOR_F4,
-                                                         DataPurpose::NORMAL_F3 }) };
+  return BufferLayout{ BufferLayout::BuildElementsList({
+    DataPurpose::POSITION_F3,
+    DataPurpose::TEXTURE_COORDINATE_F2,
+    DataPurpose::COLOR_F4,
+    DataPurpose::NORMAL_F3,
+    DataPurpose::TEX_ID_INT,
+  }) };
 }
 
 std::vector<VertexStruct>& VerticesData::GetData()

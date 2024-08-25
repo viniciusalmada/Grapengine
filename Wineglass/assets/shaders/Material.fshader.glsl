@@ -1,15 +1,18 @@
-#version 330 core
+#version 400 core
 
 #define MAX_LIGHTS 10
+#define MAX_TEXTURES 16
+#define WHITE_V3 vec3(1, 1, 1)
 
 in vec2 out_texture_coords;
 in vec4 out_color;
 in vec3 out_normal;
 in vec3 out_frag_pos;
+flat in int out_tex_id;
 
 out vec4 fragColor;
 
-uniform sampler2D u_texture;
+uniform sampler2D u_textures[MAX_TEXTURES];
 
 uniform vec3 u_ambientColor;
 uniform float u_ambientStrength;
@@ -69,7 +72,8 @@ void main()
     light_directions[i] = normalize(u_lightPos[i] - out_frag_pos);
   }
 
-  vec3 object_color = (texture2D(u_texture, out_texture_coords) * out_color).rgb;
+  vec4 texture = texture2D(u_textures[out_tex_id], out_texture_coords);
+  vec3 object_color = out_color.rgb * texture.rgb;
   vec3 result = (get_ambient() + get_diffuse(frag_normal, light_directions) + get_specular(frag_normal, light_directions)) * object_color;
   fragColor = vec4(result, out_color.a);
 }

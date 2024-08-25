@@ -46,6 +46,12 @@ void MaterialShader::UpdateTexture(int id)
   m_shader->UploadInt("u_texture", id);
 }
 
+void MaterialShader::UpdateTextures(const std::vector<i32>& textures)
+{
+  Activate();
+  m_shader->UploadIntArray("u_textures", textures);
+}
+
 void GE::MaterialShader::UpdateAmbientColor(Color color)
 {
   m_shader->UploadVec3("u_ambientColor", color.ToVec3());

@@ -66,10 +66,11 @@ TEST(Components, Primitive)
   GE::VertexStruct vs{ GE::Vec3{ 1, 2, 3 },
                        GE::Vec2{ 4, 5 },
                        GE::Vec4{ 6, 7, 8, 9 },
-                       GE::Vec3{ 9, 10, 11 } };
+                       GE::Vec3{ 9, 10, 11 },
+                       0 };
   GE::VerticesData vd{ { vs } };
   GE::Drawable d{ vd, { 0 } };
-  GE::VarComponent comp = GE::PrimitiveComponent{ d, GE::Colors::RED };
+  GE::VarComponent comp = GE::PrimitiveComponent{ d, GE::Colors::RED, 42 };
   const auto& primitive = *std::get_if<GE::PrimitiveComponent>(&comp);
 
   // When serialized

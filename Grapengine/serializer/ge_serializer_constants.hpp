@@ -6,9 +6,6 @@ namespace GE
   namespace Constants
   {
     constexpr auto SERIALIZE_TITLE = "Grapengine Scene";
-    constexpr auto NAME = "Name";
-    constexpr auto ENTITIES = "Entities";
-    constexpr auto ENTITY_ID = "EntityID";
   }
 
   namespace Titles
@@ -24,6 +21,10 @@ namespace GE
 
   namespace Fields
   {
+    constexpr auto NAME = "Name";
+    constexpr auto ENTITIES = "Entities";
+    constexpr auto ENTITY_ID = "EntityID";
+    constexpr auto TEXTURES = "Textures";
     constexpr auto TAG = "Tag";
     constexpr auto POSITION = "Position";
     constexpr auto ROTATION = "Rotation";
@@ -37,6 +38,8 @@ namespace GE
     constexpr auto ALPHA = "Alpha";
     constexpr auto COLOR_DECIMAL = "ColorDecimal";
     constexpr auto NORMAL = "Normal";
+    constexpr auto TEXTURE_SLOT = "TextureSlot";
+    constexpr auto TEXTURE_PATH = "TexturePath";
     constexpr auto INDICES_DATA = "IndicesData";
     constexpr auto SCENE_CAMERA = "SceneCamera";
     constexpr auto CAMERA = "Camera";

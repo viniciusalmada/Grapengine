@@ -179,6 +179,12 @@ void GE::Shader::UploadFloatArray(const std::string& name, const std::vector<f32
   glUniform1fv(location, static_cast<GLsizei>(vec3.size()), vec3.data());
 }
 
+void Shader::UploadIntArray(const std::string& name, const std::vector<i32>& arr)
+{
+  auto location = RetrieveUniform(name);
+  glUniform1iv(location, arr.size(), arr.data());
+}
+
 [[maybe_unused]] bool Shader::IsValid() const
 {
   return bool(glIsProgram(u32(m_renderer_id)));

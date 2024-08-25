@@ -82,7 +82,7 @@ Texture2D::Texture2D() : m_dim(), m_renderer_ID(0)
   glTextureStorage2D(u32(m_renderer_ID), 1, internal_format, width, height);
 
   glTextureParameteri(u32(m_renderer_ID), GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTextureParameteri(u32(m_renderer_ID), GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  glTextureParameteri(u32(m_renderer_ID), GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
   glTextureParameteri(u32(m_renderer_ID), GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTextureParameteri(u32(m_renderer_ID), GL_TEXTURE_WRAP_T, GL_REPEAT);

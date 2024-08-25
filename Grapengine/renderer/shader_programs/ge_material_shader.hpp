@@ -22,6 +22,7 @@ namespace GE
 
     void UpdateViewProjectionMatrix(const Mat4& viewProj, const Vec3& viewPosition) override;
     void UpdateTexture(int id) override;
+    void UpdateTextures(const std::vector<i32>& textures);
 
     /**
      * Update ambient light properties

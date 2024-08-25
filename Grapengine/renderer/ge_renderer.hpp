@@ -32,6 +32,8 @@ namespace GE
     static void SetAmbientLight(const Color& color, f32 str);
     static void SetLightSources(const std::vector<LightSource>& props);
 
+    static void SetTextureSlots(const std::vector<i32>& textureSlots);
+
     class Batch
     {
     public:

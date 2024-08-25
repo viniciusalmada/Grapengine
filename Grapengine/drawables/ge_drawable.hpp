@@ -14,6 +14,7 @@ namespace GE
     explicit Drawable(const VerticesData& vertices, const std::vector<u32>& indices);
 
     void UpdateColor(const Color&);
+    void UpdateTexture(u32 textureID);
     [[nodiscard]] const VerticesData& GetVerticesData() const;
     [[nodiscard]] virtual const std::vector<u32>& GetIndicesData() const;
 
