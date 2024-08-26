@@ -79,6 +79,7 @@ namespace GE
     [[nodiscard]] u32 GetTexSlot() const;
 
     void SetColor(Color c);
+    void SetTexSlot(u32 slot);
 
     bool operator==(const PrimitiveComponent&) const = default;
 

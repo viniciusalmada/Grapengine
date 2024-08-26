@@ -113,14 +113,14 @@ void Scene::UpdateDrawableEntities(TimeStep& /*ts*/)
 
   {
     const std::vector<Entity> primitives = m_registry.Group<PrimitiveComponent>();
-    std::set<i32> textures_ids;
+    std::set<i32> textures_slots{ Texture2D::EMPTY_TEX_SLOT };
     for (const auto& ent : primitives)
     {
       PrimitiveComponent& primitive = m_registry.GetComponent<PrimitiveComponent>(ent);
       m_textures_registry.BindTexture(primitive.GetTexSlot());
-      textures_ids.insert(static_cast<i32>(primitive.GetTexSlot()));
+      textures_slots.insert(static_cast<i32>(primitive.GetTexSlot()));
     }
-    std::vector<i32> textures{ textures_ids.begin(), textures_ids.end() };
+    std::vector<i32> textures{ textures_slots.begin(), textures_slots.end() };
     Renderer::SetTextureSlots(textures);
   }
 

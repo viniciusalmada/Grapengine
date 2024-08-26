@@ -331,6 +331,7 @@ void ComponentSerializer::operator()(const PrimitiveComponent& c) const
   m_emitter << YAML::BeginMap; // component
   m_emitter << YAML::Key << Fields::DRAWABLE << YAML::Value << c.GetDrawable();
   m_emitter << YAML::Key << Fields::COLOR_RGBA << YAML::Value << c.GetColor();
+  m_emitter << YAML::Key << Fields::TEXTURE_SLOT << YAML::Value << c.GetTexSlot();
   m_emitter << YAML::EndMap; // component
   GE_ASSERT_NO_MSG(m_emitter.good());
 }

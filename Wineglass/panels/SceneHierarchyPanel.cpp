@@ -11,6 +11,13 @@ namespace
 {
   constexpr auto BUFFER_SIZE = 256;
 
+  const char* StringToCharPtr(const std::string& str)
+  {
+    if (str.empty())
+      return "Blank Texture";
+    return str.c_str();
+  }
+
   constexpr Color X_NORMAL{ 0xB20F0F };
   constexpr Color X_HOVERED{ 0xC20F0F };
   constexpr Color X_ACTIVE{ 0xB21F0F };
@@ -214,14 +221,22 @@ namespace
   }
 
   //-------------------------------------------------------------------------------------------------
-  void DrawPrimitive(const Ptr<Scene>& /*scene*/, Entity /*e*/, PrimitiveComponent& comp)
+  void DrawPrimitive(const Ptr<Scene>& scene, Entity /*e*/, PrimitiveComponent& comp)
   {
     static Vec4 imgui_color{};
     imgui_color = comp.GetColor().ToVec4();
-
     ImGui::ColorEdit4("Color", &imgui_color.x0);
-
     comp.SetColor(Color(imgui_color));
+
+    const TexturesRegistry& tex_reg = scene->GetTextureRegistry();
+    const std::map<u32, std::string>& textures = tex_reg.GetTexturesPaths();
+    int current_tex = static_cast<int>(comp.GetTexSlot());
+    auto paths_views = textures | std::views::values | std::views::transform(StringToCharPtr);
+    const std::vector<const char*> paths{ paths_views.begin(), paths_views.end() };
+    if (ImGui::Combo("Texture", &current_tex, paths.data(), static_cast<int>(paths.size())))
+    {
+      comp.SetTexSlot(static_cast<u32>(current_tex));
+    }
   }
 
   //-------------------------------------------------------------------------------------------------

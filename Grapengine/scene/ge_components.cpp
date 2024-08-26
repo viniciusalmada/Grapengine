@@ -34,6 +34,11 @@ void PrimitiveComponent::SetColor(Color c)
   m_color = c;
 }
 
+void PrimitiveComponent::SetTexSlot(u32 slot)
+{
+  m_texture_slot = slot;
+}
+
 //----------------------------------------------------------------------------------------------
 CameraComponent::CameraComponent(const SceneCamera& cam, bool isActive, bool isFixedRatio) :
     m_camera(cam), m_active(isActive), m_fixed_ratio(isFixedRatio)
