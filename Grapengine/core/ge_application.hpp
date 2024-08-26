@@ -29,6 +29,8 @@ namespace GE
 
     f32 GetFPS() const { return m_current_fps; }
 
+    Ptr<Window> GetWindow();
+
   private:
     void
     Init(std::string_view title, Dimension dim, std::string_view icon, const EventCallbackFn& cb);

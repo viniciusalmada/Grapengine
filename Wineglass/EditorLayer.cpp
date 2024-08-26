@@ -95,6 +95,7 @@ void EditorLayer::OnImGuiUpdate(TimeStep ts)
   }
 
   static bool show_demo = false;
+  static bool is_vsync = Ctrl::App::IsVSyncOn();
   if (ImGui::BeginMenuBar())
   {
     if (ImGui::BeginMenu("File"))
@@ -132,6 +133,16 @@ void EditorLayer::OnImGuiUpdate(TimeStep ts)
         Ctrl::App::Close();
       ImGui::EndMenu();
     }
+
+    if (ImGui::BeginMenu("Renderer"))
+    {
+      if (ImGui::MenuItem("Enable VSync", nullptr, &is_vsync))
+      {
+        Ctrl::App::SetVSync(is_vsync);
+      }
+      ImGui::EndMenu();
+    }
+
     if (ImGui::BeginMenu("Help"))
     {
       if (ImGui::MenuItem("Show demo", nullptr, &show_demo))

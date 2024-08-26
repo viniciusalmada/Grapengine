@@ -41,6 +41,11 @@ Application::~Application()
   GE_INFO("Application shutdown")
 }
 
+Ptr<Window> Application::GetWindow()
+{
+  return m_window;
+}
+
 void Application::Init(std::string_view title,
                        Dimension dim,
                        std::string_view icon,

@@ -13,6 +13,9 @@ namespace GE::Ctrl
 
     static void Close();
 
+    static void SetVSync(bool enable);
+    static bool IsVSyncOn();
+
     static void AllowImGuiEvents(bool value);
 
     static f32 GetFPS();

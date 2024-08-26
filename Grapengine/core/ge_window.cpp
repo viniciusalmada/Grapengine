@@ -85,6 +85,11 @@ void Window::SetVsync(bool enabled)
   glfwSwapInterval(m_vsync ? 1 : 0);
 }
 
+bool Window::IsVsync() const
+{
+  return m_vsync;
+}
+
 void Window::OnUpdate()
 {
   GE_PROFILE;

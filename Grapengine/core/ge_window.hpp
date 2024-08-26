@@ -40,6 +40,7 @@ namespace GE
     [[nodiscard]] Dimension GetDimension() const;
 
     void SetVsync(bool enabled);
+    bool IsVsync() const;
 
     void OnUpdate();
 

@@ -21,6 +21,19 @@ void GE::Ctrl::App::Close()
 
   app->Close();
 }
+
+void Ctrl::App::SetVSync(bool enable)
+{
+  const Ptr<Application> app = Get().m_application;
+  app->GetWindow()->SetVsync(enable);
+}
+
+bool Ctrl::App::IsVSyncOn()
+{
+  const Ptr<Application> app = Get().m_application;
+  return app->GetWindow()->IsVsync();
+}
+
 void GE::Ctrl::App::AllowImGuiEvents(bool value)
 {
   const auto app = Get().m_application;
