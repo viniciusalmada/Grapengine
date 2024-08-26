@@ -22,7 +22,8 @@ namespace GE
     void OnEvent(Event& ev) override;
 
   private:
-#ifdef FIRST_SCENE_TEST
+    void ReadToCurrentScene(const std::filesystem::path& path);
+
     Ptr<Scene> m_scene;
     Entity m_front_camera_entity;
 

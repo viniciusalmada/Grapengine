@@ -108,9 +108,7 @@ void EditorLayer::OnImGuiUpdate(TimeStep ts)
       }
       if (ImGui::MenuItem("Load scene"))
       {
-        m_scene = Scene::Make("Untitled");
-        m_scene_panel->SetContext(m_scene);
-        SceneSerializer{ m_scene }.DeserializeFromFile("Scene_Default.yaml");
+        ReadToCurrentScene("Scene_Default.yaml");
       }
       if (ImGui::BeginMenu("Load local scenes"))
       {
@@ -121,9 +119,7 @@ void EditorLayer::OnImGuiUpdate(TimeStep ts)
           {
             if (ImGui::MenuItem(entry.path().string().c_str()))
             {
-              m_scene = Scene::Make("Untitled");
-              m_scene_panel->SetContext(m_scene);
-              SceneSerializer{ m_scene }.DeserializeFromFile(entry);
+              ReadToCurrentScene(entry);
             }
           }
         }
@@ -202,4 +198,12 @@ void EditorLayer::OnImGuiUpdate(TimeStep ts)
 void EditorLayer::OnEvent(Event& e)
 {
   m_scene->OnEvent(e);
+}
+
+void EditorLayer::ReadToCurrentScene(const std::filesystem::path& path)
+{
+  m_scene = Scene::Make("Untitled");
+  m_scene_panel->SetContext(m_scene);
+  SceneSerializer{ m_scene }.DeserializeFromFile(path);
+  m_scene->OnAttach();
 }
