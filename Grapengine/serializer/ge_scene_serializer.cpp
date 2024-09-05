@@ -110,6 +110,7 @@ void SceneSerializer::DeserializeFromFile(const std::filesystem::path& path)
 {
   GE_PROFILE;
   GE_ASSERT(m_scene != nullptr, "Invalid scene");
+  GE_ASSERT(std::filesystem::exists(path), "File not found: {}", path.string());
   GE_INFO("Deserializing scene from '{}'", path.string())
 
   std::ifstream file(path);

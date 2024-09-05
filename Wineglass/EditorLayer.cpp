@@ -104,15 +104,16 @@ void EditorLayer::OnImGuiUpdate(TimeStep ts)
       {
         std::string filename =
           std::vformat("Scene_{}.yaml", std::make_format_args(m_scene->GetName()));
-        SceneSerializer{ m_scene }.SerializeToFile(filename);
+        std::filesystem::path path = std::filesystem::current_path() / "Assets/Scene/" / filename;
+        SceneSerializer{ m_scene }.SerializeToFile(path);
       }
       if (ImGui::MenuItem("Load scene"))
       {
-        ReadToCurrentScene("Scene_Default.yaml");
+        ReadToCurrentScene("Assets/scenes/Scene_Default.yaml");
       }
       if (ImGui::BeginMenu("Load local scenes"))
       {
-        std::filesystem::path curr_path = std::filesystem::current_path() / "Wineglass";
+        std::filesystem::path curr_path = std::filesystem::current_path() / "Assets/scenes/";
         for (const auto& entry : std::filesystem::directory_iterator(curr_path))
         {
           if (entry.is_regular_file() && entry.path().extension() == ".yaml")

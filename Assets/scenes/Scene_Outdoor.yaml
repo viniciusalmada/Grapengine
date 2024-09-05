@@ -1,0 +1,164 @@
+Grapengine Scene:
+  Name: Outdoor
+  Entities:
+    - EntityID: 361099589
+      TagComponent:
+        Tag: Front Camera
+      CameraComponent:
+        SceneCamera:
+          Camera:
+            Projection: [2.99349952, 0, 0, 0, 0, 2.41421342, 0, 0, 0, 0, -1.00019991, -0.20002, 0, 0, -1, 0]
+          Position: [2.29999995, 4.05000019, 13.1899996]
+          Target: [-0.370000005, 0.25999999, -1.86999989]
+          Viewport: [771, 956]
+          Fov: 45
+          OrthoSize: 10
+          ProjectionMode: 0
+        Active: true
+        FixedRatio: false
+    - EntityID: 80398751
+      TagComponent:
+        Tag: Ambient light
+      AmbientLightComponent:
+        ColorRGBA:
+          RGB: 0xbd21c5
+          Alpha: 0xff
+        Strenght: 0.560000002
+        Active: true
+    - EntityID: 213733929
+      TagComponent:
+        Tag: Cube
+      PrimitiveComponent:
+        Drawable:
+          VerticesCount: 24
+          VerticesData:
+            - Position: [-0.5, -0.5, 0.5]
+              TextureCoordinates: [0, 0]
+              ColorDecimal: [1, 1, 1, 1]
+              Normal: [0, 0, 1]
+            - Position: [0.5, -0.5, 0.5]
+              TextureCoordinates: [0.333333343, 0]
+              ColorDecimal: [1, 1, 1, 1]
+              Normal: [0, 0, 1]
+            - Position: [0.5, 0.5, 0.5]
+              TextureCoordinates: [0.333333343, 0.333333343]
+              ColorDecimal: [1, 1, 1, 1]
+              Normal: [0, 0, 1]
+            - Position: [-0.5, 0.5, 0.5]
+              TextureCoordinates: [0, 0.333333343]
+              ColorDecimal: [1, 1, 1, 1]
+              Normal: [0, 0, 1]
+            - Position: [0.5, -0.5, 0.5]
+              TextureCoordinates: [0.666666687, 0.333333343]
+              ColorDecimal: [1, 1, 1, 1]
+              Normal: [1, 0, 0]
+            - Position: [0.5, -0.5, -0.5]
+              TextureCoordinates: [1, 0.333333343]
+              ColorDecimal: [1, 1, 1, 1]
+              Normal: [1, 0, 0]
+            - Position: [0.5, 0.5, -0.5]
+              TextureCoordinates: [1, 0.666666687]
+              ColorDecimal: [1, 1, 1, 1]
+              Normal: [1, 0, 0]
+            - Position: [0.5, 0.5, 0.5]
+              TextureCoordinates: [0.666666687, 0.666666687]
+              ColorDecimal: [1, 1, 1, 1]
+              Normal: [1, 0, 0]
+            - Position: [0.5, -0.5, -0.5]
+              TextureCoordinates: [0.666666687, 0]
+              ColorDecimal: [1, 1, 1, 1]
+              Normal: [0, 0, -1]
+            - Position: [-0.5, -0.5, -0.5]
+              TextureCoordinates: [1, 0]
+              ColorDecimal: [1, 1, 1, 1]
+              Normal: [0, 0, -1]
+            - Position: [-0.5, 0.5, -0.5]
+              TextureCoordinates: [1, 0.333333343]
+              ColorDecimal: [1, 1, 1, 1]
+              Normal: [0, 0, -1]
+            - Position: [0.5, 0.5, -0.5]
+              TextureCoordinates: [0.666666687, 0.333333343]
+              ColorDecimal: [1, 1, 1, 1]
+              Normal: [0, 0, -1]
+            - Position: [-0.5, -0.5, -0.5]
+              TextureCoordinates: [0.333333343, 0.333333343]
+              ColorDecimal: [1, 1, 1, 1]
+              Normal: [-1, 0, 0]
+            - Position: [-0.5, -0.5, 0.5]
+              TextureCoordinates: [0.666666687, 0.333333343]
+              ColorDecimal: [1, 1, 1, 1]
+              Normal: [-1, 0, 0]
+            - Position: [-0.5, 0.5, 0.5]
+              TextureCoordinates: [0.666666687, 0.666666687]
+              ColorDecimal: [1, 1, 1, 1]
+              Normal: [-1, 0, 0]
+            - Position: [-0.5, 0.5, -0.5]
+              TextureCoordinates: [0.333333343, 0.666666687]
+              ColorDecimal: [1, 1, 1, 1]
+              Normal: [-1, 0, 0]
+            - Position: [-0.5, 0.5, 0.5]
+              TextureCoordinates: [0, 0.333333343]
+              ColorDecimal: [1, 1, 1, 1]
+              Normal: [0, 1, 0]
+            - Position: [0.5, 0.5, 0.5]
+              TextureCoordinates: [0.333333343, 0.333333343]
+              ColorDecimal: [1, 1, 1, 1]
+              Normal: [0, 1, 0]
+            - Position: [0.5, 0.5, -0.5]
+              TextureCoordinates: [0.333333343, 0.666666687]
+              ColorDecimal: [1, 1, 1, 1]
+              Normal: [0, 1, 0]
+            - Position: [-0.5, 0.5, -0.5]
+              TextureCoordinates: [0, 0.666666687]
+              ColorDecimal: [1, 1, 1, 1]
+              Normal: [0, 1, 0]
+            - Position: [-0.5, -0.5, -0.5]
+              TextureCoordinates: [0, 0.333333343]
+              ColorDecimal: [1, 1, 1, 1]
+              Normal: [0, -1, 0]
+            - Position: [0.5, -0.5, -0.5]
+              TextureCoordinates: [0.333333343, 0.333333343]
+              ColorDecimal: [1, 1, 1, 1]
+              Normal: [0, -1, 0]
+            - Position: [0.5, -0.5, 0.5]
+              TextureCoordinates: [0.333333343, 0.666666687]
+              ColorDecimal: [1, 1, 1, 1]
+              Normal: [0, -1, 0]
+            - Position: [-0.5, -0.5, 0.5]
+              TextureCoordinates: [0, 0.666666687]
+              ColorDecimal: [1, 1, 1, 1]
+              Normal: [0, -1, 0]
+          IndicesData: [0, 1, 2, 2, 3, 0, 4, 5, 6, 6, 7, 4, 8, 9, 10, 10, 11, 8, 12, 13, 14, 14, 15, 12, 16, 17, 18, 18, 19, 16, 20, 21, 22, 22, 23, 20]
+        ColorRGBA:
+          RGB: 0xffffff
+          Alpha: 0xff
+      TransformComponent:
+        Position: [0, 0, -0.300000012]
+        Rotation: [183.5, 0, 0]
+        Scale: [6, 3.5, 1.39999998]
+    - EntityID: 4070471094
+      TagComponent:
+        Tag: diffuse
+      LightSourceComponent:
+        LightSource:
+          Position: [-1.89999998, -1.20000005, 2.29999995]
+          ColorRGBA:
+            RGB: 0xe76f00
+            Alpha: 0xff
+          Strenght: 1
+          SpecularStrenght: 1
+          SpecularShininess: 25
+        Active: true
+    - EntityID: 3940968069
+      TagComponent:
+        Tag: specular
+      LightSourceComponent:
+        LightSource:
+          Position: [1.5, -1.5, 4]
+          ColorRGBA:
+            RGB: 0x12ef1
+            Alpha: 0xff
+          Strenght: 1
+          SpecularStrenght: 0.469999999
+          SpecularShininess: 54
+        Active: true
