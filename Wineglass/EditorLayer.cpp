@@ -112,7 +112,7 @@ void EditorLayer::OnImGuiUpdate(TimeStep ts)
       }
       if (ImGui::BeginMenu("Load local scenes"))
       {
-        std::filesystem::path curr_path = std::filesystem::current_path();
+        std::filesystem::path curr_path = std::filesystem::current_path() / "Wineglass";
         for (const auto& entry : std::filesystem::directory_iterator(curr_path))
         {
           if (entry.is_regular_file() && entry.path().extension() == ".yaml")

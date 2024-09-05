@@ -18,7 +18,7 @@ MaterialShader::MaterialShader()
 {
   GE_PROFILE;
   m_shader =
-    Shader::Make("assets/shaders/Material.vshader.glsl", "assets/shaders/Material.fshader.glsl");
+    Shader::Make("Assets/shaders/Material.vshader.glsl", "Assets/shaders/Material.fshader.glsl");
 }
 
 MaterialShader::~MaterialShader() = default;

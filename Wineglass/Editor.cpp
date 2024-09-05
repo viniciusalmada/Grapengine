@@ -9,7 +9,7 @@ namespace
 }
 
 GE::Editor::Editor() :
-    Application("Wineglass - Grapengine", HD_DIMENSION, "assets/ic_grapengine.png")
+    Application("Wineglass - Grapengine", HD_DIMENSION, "Assets/ic_grapengine.png")
 {
   GE_INFO("Create Wineglass Editor")
   auto editor_layer = MakeRef<EditorLayer>();

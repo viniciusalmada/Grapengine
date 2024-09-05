@@ -40,8 +40,8 @@ void ImGuiLayer::OnAttach()
   io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
   io.IniFilename = nullptr;
   constexpr auto FONT_SIZE = 16.0f;
-  io.Fonts->AddFontFromFileTTF("assets/fonts/Inter-Regular.ttf", FONT_SIZE);
-  io.Fonts->AddFontFromFileTTF("assets/fonts/Inter-Bold.ttf", FONT_SIZE);
+  io.Fonts->AddFontFromFileTTF("Assets/fonts/Inter-Regular.ttf", FONT_SIZE);
+  io.Fonts->AddFontFromFileTTF("Assets/fonts/Inter-Bold.ttf", FONT_SIZE);
 
   ImGui::LoadIniSettingsFromDisk("imgui.ini");
 #ifdef USE_MULTIPLE_VIEWPORTS

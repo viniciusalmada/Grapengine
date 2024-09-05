@@ -28,7 +28,7 @@ public:
     //    m_light_2 = GE::Cube::Make(GE::Colors::WHITE, m_simple_shader, GE::Texture2D::Make());
     //    m_light_2->SetScale(0.5f, 0.5f, 0.5f);
     m_world = GE::MakeScope<GE::WorldReference>(m_simple_shader, 10);
-    //    m_mesh = GE::MakeScope<GE::Mesh>("assets/objs/teapot.obj", m_material_shader);
+    //    m_mesh = GE::MakeScope<GE::Mesh>("Assets/objs/teapot.obj", m_material_shader);
 
     m_framebuffer = GE::Framebuffer::Make(GE::FBSpecs{ 1280, 720, 1, true });
   }
@@ -124,7 +124,7 @@ private:
 class Client : public GE::Application
 {
 public:
-  Client() : Application("Grapengine", 1280, 720, "assets/ic_grapengine.png")
+  Client() : Application("Grapengine", 1280, 720, "Assets/ic_grapengine.png")
   {
     GE_INFO("Client application creation");
 

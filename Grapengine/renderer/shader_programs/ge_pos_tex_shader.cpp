@@ -9,8 +9,8 @@ using namespace GE;
 PosAndTex2DShader::PosAndTex2DShader()
 {
   GE_PROFILE;
-  m_shader = Shader::Make("assets/shaders/PositionAndTex2D.vshader.glsl",
-                          "assets/shaders/PositionAndTex2D.fshader.glsl");
+  m_shader = Shader::Make("Assets/shaders/PositionAndTex2D.vshader.glsl",
+                          "Assets/shaders/PositionAndTex2D.fshader.glsl");
 }
 
 PosAndTex2DShader::~PosAndTex2DShader() = default;
