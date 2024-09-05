@@ -23,6 +23,9 @@ namespace
 Texture2D::Texture2D(const std::filesystem::path& path) : m_dim(), m_renderer_ID(0)
 {
   GE_PROFILE;
+
+  GE_ASSERT(std::filesystem::exists(path), "File not found at: {}", path.string());
+
   stbi_set_flip_vertically_on_load(1);
   i32 w{};
   i32 h{};
