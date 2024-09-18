@@ -75,6 +75,7 @@ void Application::OnDestroy()
 void Application::Run()
 {
   GE_PROFILE;
+  m_last_frame_time = Platform::GetCurrentTimeMS();
 
   while (m_running)
   {
